@@ -1,0 +1,70 @@
+const SCREEN_ROUTER_APP = {
+  PRODUCT: 'PRODUCT',
+  NOTIFICATION: 'NOTIFICATION',
+  CART: 'CART',
+  PRODUCT_FLASH_SALE: 'PRODUCT_FLASH_SALE',
+  PRODUCT_SELLING: 'PRODUCT_SELLING',
+  HOME: 'HOME',
+  ORDER: 'ORDER',
+  USER: 'USER',
+}
+
+const API_STATUS = {
+  SUCCESS: 200,
+  CREATED: 201,
+  NOTFOUND: 404,
+  BAD_REQUEST: 400,
+  SERVER: 500,
+  UNAUTHORIZED: 401,
+  CONFLICT: 409,
+  FORBIDDEN: 403,
+  BAD_GATEWAY: 502,
+  NOT_EXISTED: 405,
+}
+
+const SCREEN_ROUTER_APP_ADMIN = {
+  PRODUCT: 'PRODUCT',
+  NOTIFICATION: 'NOTIFICATION',
+  CART: 'CART',
+}
+
+const SCREEN_ROUTER_AUTH = {
+  SPLASH: 'SPLASH',
+  LOGIN: 'LOGIN',
+  REGISTER: 'REGISTER',
+  FORGOT_PASSWORD: 'FORGOT_PASSWORD',
+  CHANGE_PASSWORD: 'CHANGE_PASSWORD',
+  OTP: 'OTP',
+}
+
+const SCREEN_ROUTER = {
+  SPLASH: 'SPLASH',
+  AUTH: 'AUTH',
+  MAIN: 'MAIN',
+}
+
+export const ROOT_STACK = {
+  MAIN_APP: 'MAIN_APP',
+}
+
+export const APP_SLICE = {
+  SWITCH: 'switchNavigatorReducer',
+}
+
+const DEFAULT_PARAMS = {
+  PAGE: 1,
+  LIMIT: 24,
+}
+
+// const REG_EMAIL =
+//   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+export {
+  DEFAULT_PARAMS,
+  SCREEN_ROUTER,
+  SCREEN_ROUTER_APP,
+  SCREEN_ROUTER_APP_ADMIN,
+  SCREEN_ROUTER_AUTH,
+  API_STATUS,
+  // REG_EMAIL,
+}
