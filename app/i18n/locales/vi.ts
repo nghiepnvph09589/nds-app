@@ -1,4 +1,5 @@
 export default {
+  lao: 'alo',
   cancel: 'Huỷ',
   confirm: 'Xác nhận',
   notification: 'Thông báo',
@@ -34,7 +35,7 @@ export default {
   input_tax_code: 'Nhập mã số thuế',
   address_tax_code: 'Địa chỉ mã số thuế',
   address_input_tax_code: 'Nhập địa chỉ mã số thuế',
-  forgot_password: 'Quên mật khẩu',
+  forgot_password: 'Quên mật khẩu ?',
   note_input_phone: 'Vui lòng nhập số điện thoại mà bạn đã đăng ký',
   note_otp: 'Nhập mã OTP đã được gửi về số điện thoại của bạn',
   send: 'Gửi',
@@ -44,4 +45,17 @@ export default {
   login_with_your_account: 'Đăng nhập với tài khoản của bạn',
   remember_account: 'Nhớ tài khoản',
   you_have_not_an_account: 'Bạn chưa có tài khoản ?',
+  next: 'Tiếp theo',
+  phone_blank: 'Số điện thoại đang để trống',
+  note_phone: 'Nhập số điện thoại của bạn để tiếp tục',
+  password_note: 'Nhập mật khẩu của bạn để tiếp tục',
+  note_email:
+    'Vui lòng nhập email bạn đã đăng ký. Hệ thống sẽ gửi mật khẩu về email của bạn',
+  email_blank: 'Email của bạn đang để trống',
+  note_pass: 'Nhập mật khẩu được gửi về mail của bạn để đăng nhập',
+  password_blank: 'Mật khẩu của bạn đan để trống',
+  question_email: 'Bạn chưa nhận được mail?',
+  send_back: 'Gửi lại',
+  note_change_pass: 'Vui lòng đặt lại mật khẩu mới cho tài khoản của bạn',
+  confirm_password_not_success: 'Xác nhận mật khẩu chưa chính xác',
 }

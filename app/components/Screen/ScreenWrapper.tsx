@@ -1,13 +1,12 @@
-import { enhance } from '@app/common'
-import React, { memo, useMemo } from 'react'
-import isEqual from 'react-fast-compare'
 import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView as RNSafeArea,
+  RefreshControl,
   ScrollView,
   StyleSheet,
 } from 'react-native'
+import React, { memo, useMemo } from 'react'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Block } from '../Block/Block'
 import Error from '../Error/Error'
@@ -15,11 +14,13 @@ import Loading from '../Loading'
 import LoadingProgress from '../LoadingProgress'
 import RNHeader from '../RNHeader'
 import { ScreenWrapperProps } from './ScreenWrapper.props'
+import { enhance } from '@app/common'
+import isEqual from 'react-fast-compare'
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
   },
   outer: {
     backgroundColor: 'transparent',
@@ -136,6 +137,7 @@ function ScreenWithScrolling(props: ScreenWrapperProps) {
     children,
     leftInsetColor = '#ffffff',
     rightInsetColor = '#ffffff',
+    onRefresh,
   } = props
 
   const backgroundStyle = useMemo(
@@ -198,6 +200,9 @@ function ScreenWithScrolling(props: ScreenWrapperProps) {
       <Wrapper edges={forceInset ?? undefined} style={[styles.inner]} block>
         <Block block>
           <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={false} onRefresh={onRefresh} />
+            }
             showsVerticalScrollIndicator={showVertical}
             showsHorizontalScrollIndicator={showHorizontal}
             keyboardShouldPersistTaps="handled"
@@ -224,6 +229,7 @@ function ScreenWrapperComponent(props: ScreenWrapperProps) {
     dialogLoading,
     backgroundHeader,
     unsafe,
+    onPressButtonBack,
   } = props
   const renderBody = () => {
     const { isLoading, isError, reload } = props
@@ -250,6 +256,7 @@ function ScreenWrapperComponent(props: ScreenWrapperProps) {
     <Block style={[styles.root]} color={props.backgroundColor}>
       {!!titleHeader && (
         <RNHeader
+          onPress={onPressButtonBack}
           titleHeader={titleHeader}
           back={back}
           color={color}
@@ -260,6 +267,7 @@ function ScreenWrapperComponent(props: ScreenWrapperProps) {
         />
       )}
       {!unsafe ? (
+        // eslint-disable-next-line react-native/no-inline-styles
         <RNSafeArea style={{ flex: 1 }}>{renderBody()}</RNSafeArea>
       ) : (
         renderBody()

@@ -31,8 +31,10 @@ const SCREEN_ROUTER_APP_ADMIN = {
 const SCREEN_ROUTER_AUTH = {
   SPLASH: 'SPLASH',
   LOGIN: 'LOGIN',
+  LOGIN_STEP_2: 'LOGIN_STEP_2',
   REGISTER: 'REGISTER',
-  FORGOT_PASSWORD: 'FORGOT_PASSWORD',
+  FORGET_PASSWORD: 'FORGOT_PASSWORD',
+  FORGET_PASSWORD_STEP_2: 'FORGET_PASSWORD_STEP_2',
   CHANGE_PASSWORD: 'CHANGE_PASSWORD',
   OTP: 'OTP',
 }
@@ -56,8 +58,11 @@ const DEFAULT_PARAMS = {
   LIMIT: 24,
 }
 
-// const REG_EMAIL =
-//   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const PHONE_REGEX =
+  /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/
+
+const EMAIL_REGEX =
+  /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
 
 export {
   DEFAULT_PARAMS,
@@ -66,5 +71,6 @@ export {
   SCREEN_ROUTER_APP_ADMIN,
   SCREEN_ROUTER_AUTH,
   API_STATUS,
-  // REG_EMAIL,
+  PHONE_REGEX,
+  EMAIL_REGEX,
 }

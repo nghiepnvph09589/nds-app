@@ -1,4 +1,5 @@
 import { StyleProp, ViewStyle } from 'react-native'
+
 import { Edge } from 'react-native-safe-area-context'
 
 export interface ScreenWrapperProps {
@@ -125,4 +126,6 @@ export interface ScreenWrapperProps {
    * @default []
    */
   forceInset?: Edge[]
+  onRefresh?: () => void
+  onPressButtonBack?: () => void
 }

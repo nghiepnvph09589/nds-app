@@ -3,6 +3,9 @@ export const colors = {
   line: '#BFBFBF',
   primary: '#F26522',
   backgroundColor: '#E5E5E5',
+  placeHolder: '#8898A7',
+  text: '#373E50',
+  border: '#D0DBEA',
   white: '#ffffff',
   black: '#000000',
   focus: '#B4C1D5',
@@ -49,12 +52,12 @@ export const colors = {
     primary: '#FF4D4F',
     light: '#FFA39E',
   },
-  text: {
-    primary: '#212B36',
-    light: '#454F5B',
-    lighter: '#637381',
-    lightest: '#919EAB',
-  },
+  // text: {
+  //   primary: '#212B36',
+  //   light: '#454F5B',
+  //   lighter: '#637381',
+  //   lightest: '#919EAB',
+  // },
 }
 
 export const ColorDefault = {

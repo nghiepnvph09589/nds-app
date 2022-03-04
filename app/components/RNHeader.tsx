@@ -1,22 +1,21 @@
-import React, { Component } from 'react'
+import * as theme from '@app/theme'
+
 import {
-  View,
+  Platform,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  StatusBar,
-  StyleProp,
-  Platform,
   ViewStyle,
 } from 'react-native'
+import React, { Component } from 'react'
+import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
+
+import FastImage from 'react-native-fast-image'
 import { Header } from 'react-native-elements'
 import NavigationUtil from '../navigation/NavigationUtil'
-import * as theme from '@app/theme'
 import R from '@app/assets/R'
-import FastImage from 'react-native-fast-image'
-import { colors } from '../theme'
-import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
+import { fonts } from '@app/theme'
+
 interface Props {
   color?: string
   backgroundHeader?: string
@@ -38,22 +37,25 @@ interface Props {
    */
   titleHeader: string
   numberLine?: number
+  onPress?: () => void
 }
 interface BackProps {
   style?: ViewStyle
   isWhiteBackground?: boolean
+  onPress?: () => void
 }
 export class BackButton extends Component<BackProps> {
   render() {
-    const { style } = this.props
+    const { style, onPress } = this.props
     return (
       <TouchableOpacity
         style={[style || styles.leftComp]}
-        onPress={NavigationUtil.goBack}
+        onPress={onPress ? onPress : NavigationUtil.goBack}
       >
         <FastImage
           source={R.images.ic_back}
-          style={{ marginLeft: 10, width: 24, height: 24 }}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{ width: 24, height: 24 }}
           tintColor={theme.colors.black}
           resizeMode="contain"
         />
@@ -71,9 +73,9 @@ export default class RNHeader extends Component<Props> {
       titleHeader,
       rightComponent,
       leftComponent,
-      centerComponent,
       borderBottomHeader,
       backgroundHeader,
+      onPress,
     } = this.props
     return (
       <Header
@@ -84,20 +86,24 @@ export default class RNHeader extends Component<Props> {
           height:
             Platform.OS !== 'ios'
               ? undefined
-              : numberLine == 2
+              : numberLine === 2
               ? getStatusBarHeight() + (!isIphoneX() ? 65 : 85)
-              : getStatusBarHeight() + (!isIphoneX() ? 45 : 65),
-          // height: numberLine == 2 ? 110 : 0,
+              : getStatusBarHeight() + (!isIphoneX() ? 65 : 65),
         }}
         leftComponent={
-          <>{back ? <BackButton /> : leftComponent ? leftComponent : null}</>
+          <>
+            {back ? (
+              <BackButton onPress={onPress} />
+            ) : leftComponent ? (
+              leftComponent
+            ) : null}
+          </>
         }
         centerComponent={
           <Text
             style={[
               {
-                fontSize: 18,
-                fontFamily: R.fonts.san_semi_bold,
+                ...fonts.semi_bold18,
               },
               { color: color || 'white' },
             ]}
@@ -107,9 +113,12 @@ export default class RNHeader extends Component<Props> {
         }
         rightComponent={rightComponent}
         statusBarProps={{
-          //barStyle: 'light-content',
+          barStyle: 'dark-content',
           translucent: true,
-          // backgroundColor: 'blue',
+          backgroundColor: 'transparent',
+          // barStyle: 'light-content',
+          // translucent: true,
+          // // backgroundColor: 'blue',
         }}
       />
     )
@@ -118,16 +127,13 @@ export default class RNHeader extends Component<Props> {
 
 const styles = StyleSheet.create({
   leftComp: {
-    marginTop: -17,
-    // height: '100%',
-    // backgroundColor: 'red',
+    marginTop: -20,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 10,
+    paddingLeft: 5,
     paddingRight: 50,
     paddingTop: 20,
     paddingBottom: 10,
-    //marginLeft: 20,
     width: 30,
   },
   rightComp: {

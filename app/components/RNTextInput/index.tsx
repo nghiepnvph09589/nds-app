@@ -1,180 +1,127 @@
-import { Input, Text } from 'react-native-elements'
-import React, { memo } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { colors, fonts } from '@app/theme'
-
-import { RNInputProps } from './RNInput.props'
-import { isEqual } from 'lodash'
-
-import FstImage from '../FstImage'
-import {
-  TextField,
-  FilledTextField,
-  OutlinedTextField,
-} from 'rn-material-ui-textfield'
 import R from '@app/assets/R'
+import { colors, fonts } from '@app/theme'
+import { isEqual } from 'lodash'
+import React, { memo, useState } from 'react'
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import { Text } from 'react-native-elements'
+import FstImage from '../FstImage'
+import { RNInputProps } from './RNInput.props'
 
-const InputComponent = (props: RNInputProps) => {
+const InputComponent = (props: RNInputProps<any>) => {
   const {
+    containerStyle,
     placeholder,
     leftIcon,
-    rightIcon,
-    label,
     secureTextEntry,
-    errorMeg,
+    errorMessage,
     onChangeText,
     onFocus,
     keyboardType,
-    onRight,
-    disabled,
+    editable,
     onBlur,
     autoFocus,
     value,
-    isRequite,
+    touched,
+    isRequire,
     inputStyle,
-    rightText,
     returnKeyType,
     onSubmitEditing,
     maxLength,
     ref,
     inputContainerStyle,
-    placeholderColor,
-    style,
     errorStyle,
-    tinColorLeftIcon,
-    tinColorRightIcon,
     isPlaceholderRequire,
     isFocused,
   } = props
 
+  const [isSecureText, setIsSecureText] =
+    useState<boolean | undefined>(secureTextEntry)
+
   return (
-    <TextField
-      onSubmitEditing
-      //label="Phone number"
-      keyboardType="phone-pad"
-      containerStyle={{ backgroundColor: 'white' }}
-      inputContainerStyle={{
-        backgroundColor: 'red',
-      }}
-      lineType="none"
-      prefix={'alo'}
-      suffix={'alo'}
-      renderLeftAccessory={() => (
-        <FstImage
-          style={{ width: 24, height: 24 }}
-          source={R.images.ic_arrow_down}
+    <View style={[containerStyle]}>
+      <View style={[styles.v_container, inputContainerStyle]}>
+        {!!leftIcon && (
+          <FstImage
+            source={leftIcon}
+            style={styles.iconLeft}
+            resizeMode="contain"
+          />
+        )}
+        <TextInput
+          autoFocus={autoFocus || false}
+          ref={ref}
+          onFocus={onFocus}
+          editable={editable}
+          onChangeText={onChangeText}
+          value={value}
+          maxLength={maxLength}
+          placeholderTextColor={colors.placeHolder}
+          style={[styles.textInput, inputStyle]}
+          placeholder={placeholder}
+          onBlur={onBlur}
+          keyboardType={keyboardType}
+          autoCapitalize={'none'}
+          onSubmitEditing={onSubmitEditing}
+          secureTextEntry={isSecureText}
+          returnKeyType={returnKeyType}
+        />
+        {/* {' '}
+          {placeholder && <Text>{placeholder}</Text>}
+        </TextInput> */}
+        {!!secureTextEntry && (
+          <TouchableOpacity onPress={() => setIsSecureText(!isSecureText)}>
+            <FstImage
+              source={isSecureText ? R.images.ic_eye : R.images.ic_eye_hide}
+              style={styles.iconRight}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+      {!!errorMessage && touched && (
+        <Text
+          style={[styles.error_message, errorStyle]}
+          children={errorMessage}
         />
       )}
-
-      // formatText={this.formatText}
-      // onSubmitEditing={this.onSubmit}
-      // ref={this.fieldRef}
-    />
-    // <View style={inputStyle}>
-    //   <Input
-    //     label={() => (
-    //       <Text style={styles.labelStyle}>
-    //         {label}
-    //         {!!isRequite && <Text style={styles.isRequite} children={' *'} />}
-    //       </Text>
-    //     )}
-    //     ref={ref}
-    //     autoFocus={autoFocus || false}
-    //     onFocus={onFocus}
-    //     maxLength={maxLength}
-    //     placeholder={isPlaceholderRequire ? '' : placeholder}
-    //     disabled={disabled}
-    //     placeholderTextColor={placeholderColor}
-    //     secureTextEntry={
-    //       isPlaceholderRequire && !isFocused && !value
-    //         ? false
-    //         : secureTextEntry
-    //         ? true
-    //         : false
-    //     }
-    //     onChangeText={onChangeText}
-    //     onBlur={onBlur}
-    //     returnKeyType={returnKeyType}
-    //     keyboardType={keyboardType}
-    //     onSubmitEditing={onSubmitEditing}
-    //     autoCapitalize={'none'}
-    //     errorMessage={errorMeg}
-    //     errorStyle={[styles.errorStyle, errorStyle]}
-    //     inputContainerStyle={[
-    //       // eslint-disable-next-line react-native/no-inline-styles
-    //       { paddingLeft: leftIcon ? 0 : 10 },
-    //       inputContainerStyle,
-    //     ]}
-    //     style={style}
-    //     leftIcon={
-    //       !!leftIcon && (
-    //         <FstImage
-    //           source={leftIcon}
-    //           style={styles.iconLeft}
-    //           resizeMode={'contain'}
-    //           tintColor={tinColorLeftIcon}
-    //         />
-    //       )
-    //     }
-    //     rightIcon={
-    //       rightIcon ? (
-    //         <TouchableOpacity onPress={onRight}>
-    //           <FstImage
-    //             source={rightIcon}
-    //             style={styles.iconRight}
-    //             resizeMode={'contain'}
-    //             tintColor={tinColorRightIcon}
-    //           />
-    //         </TouchableOpacity>
-    //       ) : (
-    //         !!rightText && (
-    //           <Text style={styles.rightText} children={rightText} />
-    //         )
-    //       )
-    //     }
-    //   >
-    //     {isPlaceholderRequire &&
-    //     isPlaceholderRequire === true &&
-    //     !isFocused &&
-    //     !value ? (
-    //       <Text style={styles.textPlaceholder}>
-    //         {placeholder}
-    //         <Text children={' *'} style={styles.isRequite} />
-    //       </Text>
-    //     ) : (
-    //       <Text children={value} style={style} />
-    //     )}
-    //   </Input>
-    // </View>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  labelStyle: {
-    ...fonts.regular14,
-    marginBottom: 10,
-  },
-  errorStyle: {
-    fontSize: 15,
-  },
-  isRequite: {
-    color: 'red',
-  },
-  rightText: {
-    color: colors.black,
+  v_container: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    paddingVertical: 11.5,
+    borderRadius: 16,
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   iconRight: {
-    width: 20,
-    height: 20,
+    width: 24,
+    aspectRatio: 1,
+    marginLeft: 10,
   },
   iconLeft: {
-    width: 20,
-    height: 20,
-    marginRight: 5,
+    width: 24,
+    aspectRatio: 1,
+    marginRight: 10,
   },
   textPlaceholder: {
     color: '#8C8C8C',
     fontSize: 16,
+  },
+  textInput: {
+    ...fonts.regular16,
+    flex: 1,
+    paddingVertical: 0,
+    color: colors.text,
+  },
+  error_message: {
+    ...fonts.italic12,
+    textAlign: 'right',
+    color: '#FFB7B7',
+    marginTop: '2%',
   },
 })
 

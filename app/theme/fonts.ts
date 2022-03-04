@@ -94,6 +94,10 @@ export const fonts = {
     fontSize: moderateScale(24),
     fontFamily: R.fonts.san_semi_bold,
   },
+  italic12: {
+    fontSize: moderateScale(12),
+    fontFamily: R.fonts.san_light_italic,
+  },
   // light12: {
   //   fontSize: moderateScale(12),
   //   fontFamily: R.fonts.san_light

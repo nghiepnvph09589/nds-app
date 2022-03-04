@@ -1,57 +1,108 @@
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
+import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
+import { PHONE_REGEX, SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import { fonts } from '@app/theme'
+import { Formik } from 'formik'
 import React from 'react'
 import {
   Dimensions,
   ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native'
-import { Input } from 'react-native-elements'
+import { isIphoneX } from 'react-native-iphone-x-helper'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import * as Yup from 'yup'
 const { height, width } = Dimensions.get('window')
 
 const LoginScreen = () => {
+  const LoginSchema = Yup.object().shape({
+    phone: Yup.string()
+      .matches(PHONE_REGEX, R.strings().validatePhone)
+      .min(10, R.strings().validatePhone)
+      .max(11, R.strings().validatePhone)
+      .required(R.strings().phone_blank),
+  })
+  const _onSubmit = () => {
+    NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN_STEP_2)
+  }
   return (
-    <KeyboardAvoidingView
-      style={styles.v_keyboard}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      //behavior={'padding'}
-      //keyboardVerticalOffset={-1000}
-    >
+    <View style={styles.v_keyboard}>
       <ImageBackground
         resizeMode="cover"
         style={styles.img_background}
         source={R.images.img_login}
       >
-        <ScrollView
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps="always"
           showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
+          enableOnAndroid={true}
         >
-          <FstImage
-            style={styles.img_red_cross}
-            source={R.images.img_red_cross}
-          />
-          <View style={styles.v_container}>
-            <Text style={styles.txt_login}>{R.strings().login}</Text>
-            <Text style={styles.txt_note}>
-              Nhập số điện thoại của bạn để tiếp tục
-            </Text>
-            <Text>alo</Text>
-          </View>
-        </ScrollView>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
+            <FstImage
+              style={styles.img_red_cross}
+              source={R.images.img_red_cross}
+            />
+            <View style={styles.v_container}>
+              <Text style={styles.txt_login}>{R.strings().login}</Text>
+              <Text style={styles.txt_note}>{R.strings().note_phone}</Text>
+              <Formik
+                initialValues={{ phone: '' }}
+                onSubmit={_onSubmit}
+                validationSchema={LoginSchema}
+              >
+                {({
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  setSubmitting,
+                  values,
+                  errors,
+                  touched,
+                }) => (
+                  <>
+                    <RNTextInput
+                      returnKeyType={'done'}
+                      containerStyle={styles.v_input}
+                      placeholder={R.strings().phone}
+                      leftIcon={R.images.ic_phone}
+                      onChangeText={handleChange('phone')}
+                      onBlur={handleBlur('phone')}
+                      onSubmitEditing={() => setSubmitting(true)}
+                      value={values.phone}
+                      errorMessage={errors.phone}
+                      touched={touched.phone}
+                    />
+                    <RNButton
+                      icon
+                      onPress={handleSubmit}
+                      style={styles.v_button}
+                      title={R.strings().next}
+                    />
+                  </>
+                )}
+              </Formik>
+            </View>
+          </ScrollView>
+        </KeyboardAwareScrollView>
       </ImageBackground>
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  v_input: {
+    marginTop: 40,
+    marginBottom: 44,
+  },
   v_keyboard: {
     flex: 1,
     backgroundColor: 'white',
@@ -60,7 +111,7 @@ const styles = StyleSheet.create({
   img_red_cross: {
     width: 156,
     aspectRatio: 1,
-    marginTop: 51,
+    marginTop: isIphoneX() ? 51 : 20,
     alignSelf: 'center',
   },
   v_container: {
@@ -71,113 +122,25 @@ const styles = StyleSheet.create({
     marginTop: 27,
     alignSelf: 'center',
     borderRadius: 10,
+    paddingHorizontal: 15,
+    marginBottom: 40,
   },
   txt_note: {
     ...fonts.regular16,
     color: '#FFB7B7',
-    marginTop: 34,
+    marginTop: 37,
     marginHorizontal: 42,
     textAlign: 'center',
   },
   txt_login: {
     ...fonts.semi_bold24,
     color: 'white',
-    marginTop: 25,
+    marginTop: 36,
     textAlign: 'center',
   },
-  // v_scroll: {
-  //   backgroundColor: 'white',
-  //   flex: 1,
-  // },
-  // img_bg: {
-  //   width: '100%',
-  //   height: height / 2.4,
-  // },
-  // ic_back: {
-  //   position: 'absolute',
-  //   width: 40,
-  //   height: 40,
-  //   top: isIphoneX() ? getStatusBarHeight() + 20 : getStatusBarHeight(),
-  //   left: 25,
-  // },
-  // root_view: {
-  //   paddingHorizontal: 30,
-  //   borderWidth: 0,
-  //   justifyContent: 'center',
-  //   // borderRadius: 1,
-  //   flex: 1,
-  //   borderTopLeftRadius: 30,
-  //   borderTopRightRadius: 30,
-  //   shadowOffset: {
-  //     height: 0,
-  //     width: 0,
-  //   },
-  //   marginHorizontal: 0,
-  //   shadowRadius: 0,
-  //   marginTop: -60,
-  // },
-  // ic_check: {
-  //   width: 18,
-  //   height: 18,
-  // },
-  // v_container: {
-  //   paddingVertical: 40,
-  // },
-  // img_logo: {
-  //   height: 45,
-  //   width: 133,
-  //   alignSelf: 'center',
-  // },
-  // txt_title: {
-  //   marginVertical: 24,
-  //   fontFamily: R.fonts.san_regular,
-  //   fontSize: 15,
-  //   alignSelf: 'center',
-  // },
-  // containerChk: {
-  //   flex: 1,
-  //   backgroundColor: 'white',
-  //   borderWidth: 0,
-  //   marginLeft: 0,
-  //   padding: 0,
-  //   //  / paddingBottom: 15,
-  // },
-  // text: {
-  //   fontSize: 14,
-  //   fontFamily: R.fonts.san_regular,
-  //   fontWeight: '400',
-  //   color: colors.label,
-  // },
-  // txt_forgot_pass: {
-  //   color: colors.colorDefault.text,
-  //   fontSize: 14,
-  //   fontFamily: R.fonts.san_regular,
-  //   justifyContent: 'flex-end',
-  //   alignSelf: 'flex-end',
-  // },
-  // v_forgot_pass: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   marginBottom: 40,
-  // },
-  // v_register: {
-  //   flexDirection: 'row',
-  //   marginTop: -60,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   marginBottom: 15,
-  // },
-  // txt_question: {
-  //   fontFamily: R.fonts.san_regular,
-  //   fontSize: 15,
-  //   color: 'black',
-  // },
-  // txt_register: {
-  //   fontFamily: R.fonts.san_regular,
-  //   fontSize: 16,
-  //   color: colors.primary,
-  //   marginLeft: 5,
-  // },
+  v_button: {
+    marginBottom: isIphoneX() ? 40 : 60,
+  },
 })
 
 export default LoginScreen

@@ -1,3 +1,4 @@
+import { LegacyRef } from 'react'
 import {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
@@ -5,15 +6,18 @@ import {
   StyleProp,
   TextInputFocusEventData,
   TextInputSubmitEditingEventData,
+  TextStyle,
   ViewStyle,
 } from 'react-native'
+import { Source } from 'react-native-fast-image'
 
-export interface RNInputProps {
+export interface RNInputProps<T> {
+  containerStyle?: StyleProp<ViewStyle>
   value?: string
-  ref?: any
+  ref?: LegacyRef<T>
   placeholder?: string
-  inputStyle?: StyleProp<ViewStyle>
-  leftIcon?: any
+  inputStyle?: StyleProp<TextStyle>
+  leftIcon?: number | Source
   rightIcon?: any
   label?: string
   style?: any
@@ -23,12 +27,13 @@ export interface RNInputProps {
   returnKeyType?: ReturnKeyTypeOptions
   secureTextEntry?: boolean
   keyboardType?: KeyboardTypeOptions
-  errorMeg?: any
+  errorMessage?: string
   autoFocus?: boolean
+  touched?: boolean
   maxLength?: number
-  disabled?: boolean
+  editable?: boolean
   onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
-  onChangeText?: (text: string) => void
+  onChangeText?: ((text: string) => void) | undefined
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
   onRight?: () => void
   inputContainerStyle?: StyleProp<ViewStyle>
@@ -36,7 +41,7 @@ export interface RNInputProps {
     e: NativeSyntheticEvent<TextInputSubmitEditingEventData>
   ) => void
   placeholderColor?: any
-  errorStyle?: any
+  errorStyle?: StyleProp<TextStyle>
   tinColorRightIcon?: any
   tinColorLeftIcon?: any
   isPlaceholderRequire?: boolean

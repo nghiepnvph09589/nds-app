@@ -1,5 +1,5 @@
 import R from '@app/assets/R'
-import RNButton from '@app/components/RNButton'
+import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { SCREEN_ROUTER } from '@app/constant/Constant'

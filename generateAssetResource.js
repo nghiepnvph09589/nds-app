@@ -4,7 +4,7 @@ var Hjson = require('hjson')
 
 function genStringResource() {
   try {
-    const data = fs.readFileSync('./app/i18n/locales/en.ts', 'utf8')
+    const data = fs.readFileSync('./app/i18n/locales/vi.ts', 'utf8')
     const json = Hjson.parse(
       data.replace('export default', '').replace(';', '')
     )
