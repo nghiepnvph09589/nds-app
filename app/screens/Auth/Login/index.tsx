@@ -43,8 +43,6 @@ const LoginScreen = () => {
             <Text style={styles.txt_note}>
               Nhập số điện thoại của bạn để tiếp tục
             </Text>
-
-            <RNTextInput />
           </View>
         </ScrollView>
       </ImageBackground>

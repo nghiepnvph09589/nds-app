@@ -1,9 +1,8 @@
 import {
-  StackActions,
   CommonActions,
+  StackActions,
   StackActionType,
 } from '@react-navigation/core'
-import reactotron from 'reactotron-react-native'
 
 let _navigator: {
   dispatch: (arg0: CommonActions.Action | StackActionType) => void

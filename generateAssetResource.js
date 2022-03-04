@@ -49,8 +49,10 @@ function genImageResource() {
       './app/assets/imagesAsset.ts',
       `const images = {
     ${fileName.map(iconNane => {
+      // eslint-disable-next-line no-undef
       path = `
     ${iconNane.replace('.png', '')}: require("./images/${iconNane}")`
+      // eslint-disable-next-line no-undef
       return path
     })}
     }
