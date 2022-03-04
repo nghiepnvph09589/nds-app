@@ -27,10 +27,12 @@ const images = {
   img_error: require('./images/img_error.png'),
   img_example_product: require('./images/img_example_product.png'),
   img_hand_over_example: require('./images/img_hand_over_example.png'),
+  img_login: require('./images/img_login.png'),
   img_logo: require('./images/img_logo.png'),
   img_product_no_complete: require('./images/img_product_no_complete.png'),
   img_project_completed: require('./images/img_project_completed.png'),
   img_project_home: require('./images/img_project_home.png'),
+  img_red_cross: require('./images/img_red_cross.png'),
   img_vietbuiltding_banner: require('./images/img_vietbuiltding_banner.png'),
 }
 export default images

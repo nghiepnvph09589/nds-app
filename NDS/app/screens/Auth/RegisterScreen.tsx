@@ -2,22 +2,20 @@ import R from '@app/assets/R'
 import RNButton from '@app/components/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
+import { SCREEN_ROUTER } from '@app/constant/Constant'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { colors } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
 import React, { memo, useRef, useState } from 'react'
 import isEqual from 'react-fast-compare'
 import {
-  Alert,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   TextInput,
 } from 'react-native'
-import { connect } from 'react-redux'
-import AuthApi from './api/AuthApi'
 import { useDispatch } from 'react-redux'
-import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import { SCREEN_ROUTER } from '@app/constant/Constant'
+import AuthApi from './api/AuthApi'
 
 const RegisterScreenComponent = () => {
   const dispatch = useDispatch()
@@ -220,9 +218,7 @@ const RegisterScreenComponent = () => {
               value={confirmPassword}
               placeholder={R.strings().input_confirm_password}
               keyboardType="default"
-              onChangeText={confirmPassword => {
-                setConfirmPassword(confirmPassword)
-              }}
+              onChangeText={setConfirmPassword}
               placeholderTextColor={colors.colorDefault.placeHolder}
               isRequire
               valueType="password"
@@ -268,8 +264,4 @@ const styles = StyleSheet.create({
 
 const RegisterScreen = memo(RegisterScreenComponent, isEqual)
 
-const mapStateToProps = (state: any) => ({})
-
-const mapDispatchToProps = {}
-
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen)
+export default RegisterScreen

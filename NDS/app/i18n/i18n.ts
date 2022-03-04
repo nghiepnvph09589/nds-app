@@ -9,6 +9,6 @@ I18n.translations = {
   en,
 }
 // I18n.defaultLocale = "vi";
-I18n.locale = 'en'
+I18n.locale = 'vi'
 
 export default I18n

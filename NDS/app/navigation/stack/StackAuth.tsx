@@ -1,7 +1,7 @@
 import { SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
 import ChangePassWordScreen from '@app/screens/Auth/ChangePassWordScreen'
 import ForgotPassword from '@app/screens/Auth/ForgotPasswordScreen'
-import LoginScreen from '@app/screens/Auth/LoginScreen'
+import LoginScreen from '@app/screens/Auth/Login'
 import OtpScreen from '@app/screens/Auth/OtpScreen'
 import RegisterScreen from '@app/screens/Auth/RegisterScreen'
 import { createStackNavigator } from '@react-navigation/stack'
