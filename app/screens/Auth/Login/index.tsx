@@ -2,8 +2,13 @@ import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
-import { PHONE_REGEX, SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
+import {
+  PHONE_REGEX,
+  SCREEN_ROUTER,
+  SCREEN_ROUTER_AUTH,
+} from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { fonts } from '@app/theme'
 import { Formik } from 'formik'
 import React from 'react'
@@ -14,13 +19,16 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
 } from 'react-native'
-import { isIphoneX } from 'react-native-iphone-x-helper'
+import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
-const { height, width } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const LoginScreen = () => {
+  const dispatch = useDispatch()
   const LoginSchema = Yup.object().shape({
     phone: Yup.string()
       .matches(PHONE_REGEX, R.strings().validatePhone)
@@ -43,62 +51,88 @@ const LoginScreen = () => {
           showsVerticalScrollIndicator={false}
           enableOnAndroid={true}
         >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
-          >
-            <FstImage
-              style={styles.img_red_cross}
-              source={R.images.img_red_cross}
-            />
-            <View style={styles.v_container}>
-              <Text style={styles.txt_login}>{R.strings().login}</Text>
-              <Text style={styles.txt_note}>{R.strings().note_phone}</Text>
-              <Formik
-                initialValues={{ phone: '' }}
-                onSubmit={_onSubmit}
-                validationSchema={LoginSchema}
-              >
-                {({
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  setSubmitting,
-                  values,
-                  errors,
-                  touched,
-                }) => (
-                  <>
-                    <RNTextInput
-                      returnKeyType={'done'}
-                      containerStyle={styles.v_input}
-                      placeholder={R.strings().phone}
-                      leftIcon={R.images.ic_phone}
-                      onChangeText={handleChange('phone')}
-                      onBlur={handleBlur('phone')}
-                      onSubmitEditing={() => setSubmitting(true)}
-                      value={values.phone}
-                      errorMessage={errors.phone}
-                      touched={touched.phone}
-                    />
-                    <RNButton
-                      icon
-                      onPress={handleSubmit}
-                      style={styles.v_button}
-                      title={R.strings().next}
-                    />
-                  </>
-                )}
-              </Formik>
-            </View>
-          </ScrollView>
+          <FstImage
+            style={styles.img_red_cross}
+            source={R.images.img_red_cross}
+          />
+          <View style={styles.v_container}>
+            <Text style={styles.txt_login}>{R.strings().login}</Text>
+            <Text style={styles.txt_note}>{R.strings().note_phone}</Text>
+            <Formik
+              initialValues={{ phone: '' }}
+              onSubmit={_onSubmit}
+              validationSchema={LoginSchema}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                setSubmitting,
+                values,
+                errors,
+                touched,
+              }) => (
+                <>
+                  <RNTextInput
+                    returnKeyType={'done'}
+                    containerStyle={styles.v_input}
+                    placeholder={R.strings().phone}
+                    leftIcon={R.images.ic_phone}
+                    onChangeText={handleChange('phone')}
+                    onBlur={handleBlur('phone')}
+                    onSubmitEditing={() => setSubmitting(true)}
+                    value={values.phone}
+                    errorMessage={errors.phone}
+                    touched={touched.phone}
+                  />
+                  <RNButton
+                    icon
+                    onPress={handleSubmit}
+                    style={styles.v_button}
+                    title={R.strings().next}
+                  />
+                  <TouchableOpacity
+                    onPress={() =>
+                      NavigationUtil.navigate(SCREEN_ROUTER_AUTH.REGISTER)
+                    }
+                  >
+                    <Text>Đăng ký</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </Formik>
+          </View>
         </KeyboardAwareScrollView>
+        <TouchableOpacity
+          style={styles.v_back}
+          onPress={() => {
+            dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+          }}
+          children={
+            <FstImage
+              source={R.images.img_back}
+              style={styles.ic_back}
+              resizeMode="contain"
+            />
+          }
+        />
       </ImageBackground>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  ic_back: {
+    width: 40,
+    height: 40,
+  },
+  v_back: {
+    position: 'absolute',
+    width: 40,
+    height: 40,
+    top: isIphoneX() ? getStatusBarHeight() + 20 : getStatusBarHeight() + 10,
+    left: 15,
+  },
   v_input: {
     marginTop: 40,
     marginBottom: 44,
@@ -107,7 +141,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  img_background: { width: width, height: height },
+  img_background: { width: '100%', height: '100%' },
   img_red_cross: {
     width: 156,
     aspectRatio: 1,
@@ -139,7 +173,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   v_button: {
-    marginBottom: isIphoneX() ? 40 : 60,
+    marginBottom: 40,
   },
 })
 

@@ -2,8 +2,9 @@ import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
-import { SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
+import { SCREEN_ROUTER, SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { fonts } from '@app/theme'
 import { Formik } from 'formik'
 import React from 'react'
@@ -15,19 +16,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { isIphoneX } from 'react-native-iphone-x-helper'
+import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
-const { height, width } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const LoginStep2 = () => {
+  const dispatch = useDispatch()
   const LoginSchema = Yup.object().shape({
     password: Yup.string()
       .min(6, R.strings().validatePassword)
       .max(25, R.strings().validatePassword)
       .required(R.strings().password_blank),
   })
-  const _onSubmit = () => {}
+  const _onSubmit = () => {
+    dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+  }
   return (
     <View style={styles.v_keyboard}>
       <ImageBackground
@@ -96,12 +101,36 @@ const LoginStep2 = () => {
             </Formik>
           </View>
         </KeyboardAwareScrollView>
+        <TouchableOpacity
+          style={styles.v_back}
+          onPress={() => {
+            NavigationUtil.goBack()
+          }}
+          children={
+            <FstImage
+              source={R.images.img_back}
+              style={styles.ic_back}
+              resizeMode="contain"
+            />
+          }
+        />
       </ImageBackground>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  ic_back: {
+    width: 40,
+    height: 40,
+  },
+  v_back: {
+    position: 'absolute',
+    width: 40,
+    height: 40,
+    top: isIphoneX() ? getStatusBarHeight() + 20 : getStatusBarHeight() + 10,
+    left: 15,
+  },
   v_input: {
     marginTop: 24,
     marginBottom: 19,
@@ -110,7 +139,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  img_background: { width: width, height: height },
+  img_background: { width: '100%', height: '100%' },
   img_red_cross: {
     width: 156,
     aspectRatio: 1,
@@ -142,7 +171,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   v_button: {
-    marginBottom: isIphoneX() ? 40 : 60,
+    marginBottom: 40,
   },
   txt_forgot_pass: {
     ...fonts.regular16,

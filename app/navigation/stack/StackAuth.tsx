@@ -4,7 +4,7 @@ import ForgetPassword from '@app/screens/Auth/FogetPassword'
 import ForgetPasswordStep2 from '@app/screens/Auth/FogetPassword/ForgetPasswordStep2'
 import LoginScreen from '@app/screens/Auth/Login'
 import LoginStep2 from '@app/screens/Auth/Login/LoginStep2'
-import RegisterScreen from '@app/screens/Auth/RegisterScreen'
+import Register from '@app/screens/Auth/Register'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 
@@ -21,7 +21,7 @@ const Stack = createStackNavigator()
 const mainScreen = {
   [LOGIN]: LoginScreen,
   [LOGIN_STEP_2]: LoginStep2,
-  [REGISTER]: RegisterScreen,
+  [REGISTER]: Register,
   [FORGET_PASSWORD]: ForgetPassword,
   [FORGET_PASSWORD_STEP_2]: ForgetPasswordStep2,
   [CHANGE_PASSWORD]: ChangePassWordScreen,

@@ -35,7 +35,7 @@ export const DebounceButton = React.memo(
       onPress && onPress()
     }
 
-    const onPressAction = debounce(debouncedOnPress, 300, {
+    const onPressAction = debounce(debouncedOnPress, 500, {
       leading: true,
       trailing: false,
     })

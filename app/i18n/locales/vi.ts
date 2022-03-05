@@ -58,4 +58,7 @@ export default {
   send_back: 'Gửi lại',
   note_change_pass: 'Vui lòng đặt lại mật khẩu mới cho tài khoản của bạn',
   confirm_password_not_success: 'Xác nhận mật khẩu chưa chính xác',
+  address: 'Địa chỉ',
+  name_blank: 'Họ tên đang để trống',
+  address_blank: 'Địa chỉ của bạn đang để trống',
 }

@@ -69,6 +69,9 @@ function strings() {
     confirm_password_not_success: I18n.t('confirm_password_not_success', {
       defaultValue: '',
     }),
+    address: I18n.t('address', { defaultValue: '' }),
+    name_blank: I18n.t('name_blank', { defaultValue: '' }),
+    address_blank: I18n.t('address_blank', { defaultValue: '' }),
   }
 }
 export default strings
