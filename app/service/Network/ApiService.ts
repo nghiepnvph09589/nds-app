@@ -5,8 +5,8 @@ import { ResponseType } from '@app/service/Network/model/ApiResponse'
 import store from '@app/store'
 import { showMessages } from '@app/utils/AlertHelper'
 import AsyncStoreService from '../AsyncStorage/AsyncStorageService'
-// import NavigationUtil from '@app/navigation/NavigationUtil';
-const BASE_URL_DEV = 'https://foodlive.tech'
+
+const BASE_URL_DEV = 'https://dev.ndsapi.winds.vn'
 
 const createAPI = () => {
   const APIInstant = require('axios').default.create()
@@ -28,7 +28,6 @@ const createAPI = () => {
 
       const data = await error?.response?.data
       if (data && data.code === API_STATUS.UNAUTHORIZED) {
-        // showMessages(R.strings().notification, R.strings().re_login)
         AsyncStoreService.putToken('').then(() => {
           store.dispatch({
             type: 'switch/navigateSwitch',

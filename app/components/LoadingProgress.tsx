@@ -10,13 +10,6 @@ export default class LoadingProgress extends Component {
       <View style={styles.container}>
         <View style={styles.containerLoading}>
           <BarIndicator color={colors.primary} />
-          <Text
-            style={{
-              color: colors.text.primary,
-            }}
-          >
-            {R.strings().loading_progress}
-          </Text>
         </View>
       </View>
     )

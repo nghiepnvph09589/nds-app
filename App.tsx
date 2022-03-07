@@ -3,10 +3,12 @@ import AppContainer from './AppContainer'
 import store from '@app/store'
 import { Provider } from 'react-redux'
 import codePush from 'react-native-code-push'
+import { RNAlert } from '@app/components/RNAlert/RNAlert'
 const App = () => {
   return (
     <Provider store={store}>
       <AppContainer />
+      <RNAlert />
     </Provider>
   )
 }

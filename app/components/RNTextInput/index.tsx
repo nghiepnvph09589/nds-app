@@ -22,7 +22,6 @@ const InputComponent = (props: RNInputProps<any>) => {
     autoFocus,
     value,
     touched,
-    isRequire,
     inputStyle,
     returnKeyType,
     onSubmitEditing,

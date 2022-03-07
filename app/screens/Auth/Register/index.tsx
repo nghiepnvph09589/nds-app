@@ -8,6 +8,7 @@ import { EMAIL_REGEX, SCREEN_ROUTER } from '@app/constant/Constant'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { colors, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
+import { showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { memo, useState } from 'react'
 import isEqual from 'react-fast-compare'
@@ -148,6 +149,16 @@ const Avatar = ({ onPress, url }: AvatarProps) => {
       ) {
         return
       }
+      showLoading()
+      const formData = new FormData()
+      formData.append('image', {
+        uri:
+          Platform.OS === 'ios'
+            ? result.assets[0].uri.replace('file://', '')
+            : result.assets[0].uri,
+        name: result.assets[0].fileName,
+        type: result.assets[0].type,
+      })
       onPress(
         Platform.OS === 'ios' ? result.assets[0].uri : result.assets[0].uri
       )

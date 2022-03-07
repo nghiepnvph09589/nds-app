@@ -1,5 +1,6 @@
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
+import LoadingProgress from '@app/components/LoadingProgress'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import {
@@ -11,23 +12,24 @@ import NavigationUtil from '@app/navigation/NavigationUtil'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { fonts } from '@app/theme'
 import { Formik } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Dimensions,
   ImageBackground,
-  ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
+  View,
 } from 'react-native'
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
+import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
+import LoginApi from './api/LoginApi'
 const { width } = Dimensions.get('window')
 
 const LoginScreen = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const dispatch = useDispatch()
   const LoginSchema = Yup.object().shape({
     phone: Yup.string()
@@ -36,88 +38,102 @@ const LoginScreen = () => {
       .max(11, R.strings().validatePhone)
       .required(R.strings().phone_blank),
   })
-  const _onSubmit = () => {
-    NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN_STEP_2)
+  const handleLogin = async (item: { phone: string }) => {
+    try {
+      setIsLoading(true)
+      const res = await LoginApi.checkAccount({ user_name: item.phone })
+      setIsLoading(false)
+      if (res.type === 0) {
+        NavigationUtil.navigate(SCREEN_ROUTER_AUTH.REGISTER)
+      } else if (res.type === 1) {
+        NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN_STEP_2)
+      }
+    } catch (error) {
+      setIsLoading(false)
+    }
   }
   return (
-    <View style={styles.v_keyboard}>
-      <ImageBackground
-        resizeMode="cover"
-        style={styles.img_background}
-        source={R.images.img_login}
-      >
-        <KeyboardAwareScrollView
-          keyboardShouldPersistTaps="always"
-          showsVerticalScrollIndicator={false}
-          enableOnAndroid={true}
+    <>
+      <View style={styles.v_keyboard}>
+        <ImageBackground
+          resizeMode="cover"
+          style={styles.img_background}
+          source={R.images.img_login}
         >
-          <FstImage
-            style={styles.img_red_cross}
-            source={R.images.img_red_cross}
-          />
-          <View style={styles.v_container}>
-            <Text style={styles.txt_login}>{R.strings().login}</Text>
-            <Text style={styles.txt_note}>{R.strings().note_phone}</Text>
-            <Formik
-              initialValues={{ phone: '' }}
-              onSubmit={_onSubmit}
-              validationSchema={LoginSchema}
-            >
-              {({
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                setSubmitting,
-                values,
-                errors,
-                touched,
-              }) => (
-                <>
-                  <RNTextInput
-                    returnKeyType={'done'}
-                    containerStyle={styles.v_input}
-                    placeholder={R.strings().phone}
-                    leftIcon={R.images.ic_phone}
-                    onChangeText={handleChange('phone')}
-                    onBlur={handleBlur('phone')}
-                    onSubmitEditing={() => setSubmitting(true)}
-                    value={values.phone}
-                    errorMessage={errors.phone}
-                    touched={touched.phone}
-                  />
-                  <RNButton
-                    icon
-                    onPress={handleSubmit}
-                    style={styles.v_button}
-                    title={R.strings().next}
-                  />
-                  <TouchableOpacity
+          <KeyboardAwareScrollView
+            keyboardShouldPersistTaps="always"
+            showsVerticalScrollIndicator={false}
+            enableOnAndroid={true}
+          >
+            <FstImage
+              style={styles.img_red_cross}
+              source={R.images.img_red_cross}
+            />
+            <View style={styles.v_container}>
+              <Text style={styles.txt_login}>{R.strings().login}</Text>
+              <Text style={styles.txt_note}>{R.strings().note_phone}</Text>
+              <Formik
+                initialValues={{ phone: '' }}
+                onSubmit={handleLogin}
+                validationSchema={LoginSchema}
+              >
+                {({
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  setSubmitting,
+                  values,
+                  errors,
+                  touched,
+                }) => (
+                  <>
+                    <RNTextInput
+                      returnKeyType={'done'}
+                      containerStyle={styles.v_input}
+                      placeholder={R.strings().phone}
+                      leftIcon={R.images.ic_phone}
+                      onChangeText={handleChange('phone')}
+                      onBlur={handleBlur('phone')}
+                      onSubmitEditing={() => setSubmitting(true)}
+                      value={values.phone}
+                      errorMessage={errors.phone}
+                      touched={touched.phone}
+                    />
+                    <RNButton
+                      icon
+                      onPress={handleSubmit}
+                      style={styles.v_button}
+                      title={R.strings().next}
+                    />
+                    {/* <TouchableOpacity
                     onPress={() =>
                       NavigationUtil.navigate(SCREEN_ROUTER_AUTH.REGISTER)
                     }
                   >
                     <Text>Đăng ký</Text>
-                  </TouchableOpacity>
-                </>
-              )}
-            </Formik>
-          </View>
-        </KeyboardAwareScrollView>
-        <TouchableOpacity
-          style={styles.v_back}
-          onPress={() => {
-            dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
-          }}
-          children={
-            <FstImage
-              source={R.images.img_back}
-              style={styles.ic_back}
-              resizeMode="contain"
-            />
-          }
-        />
-      </ImageBackground>
-    </View>
+                  </TouchableOpacity> */}
+                  </>
+                )}
+              </Formik>
+            </View>
+          </KeyboardAwareScrollView>
+          <TouchableOpacity
+            style={styles.v_back}
+            onPress={() => {
+              dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+            }}
+            children={
+              <FstImage
+                source={R.images.img_back}
+                style={styles.ic_back}
+                resizeMode="contain"
+              />
+            }
+          />
+        </ImageBackground>
+      </View>
+      {isLoading && <LoadingProgress />}
+    </>
   )
 }
 

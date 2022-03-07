@@ -8,3 +8,7 @@ export interface LoginPayload {
   phone: string
   password: string
 }
+
+export interface CheckAccountPayload {
+  user_name: string
+}

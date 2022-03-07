@@ -10,7 +10,6 @@ import React, { memo, useMemo } from 'react'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Block } from '../Block/Block'
 import Error from '../Error/Error'
-import Loading from '../Loading'
 import LoadingProgress from '../LoadingProgress'
 import RNHeader from '../RNHeader'
 import { ScreenWrapperProps } from './ScreenWrapper.props'
@@ -233,7 +232,6 @@ function ScreenWrapperComponent(props: ScreenWrapperProps) {
   } = props
   const renderBody = () => {
     const { isLoading, isError, reload } = props
-    if (isLoading) return <Loading />
     if (isError)
       return (
         <Error

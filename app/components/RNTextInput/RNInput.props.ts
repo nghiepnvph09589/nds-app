@@ -18,9 +18,8 @@ export interface RNInputProps<T> {
   placeholder?: string
   inputStyle?: StyleProp<TextStyle>
   leftIcon?: number | Source
-  rightIcon?: any
+  rightIcon?: number | Source
   label?: string
-  style?: any
   isRequite?: boolean
   borderBottomColor?: any
   rightText?: string | undefined
@@ -42,8 +41,6 @@ export interface RNInputProps<T> {
   ) => void
   placeholderColor?: any
   errorStyle?: StyleProp<TextStyle>
-  tinColorRightIcon?: any
-  tinColorLeftIcon?: any
   isPlaceholderRequire?: boolean
   isFocused?: any
   colorValue?: any
