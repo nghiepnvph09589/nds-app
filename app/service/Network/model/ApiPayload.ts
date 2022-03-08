@@ -1,11 +1,12 @@
 export interface RegisterPayload {
+  email: string
+  name: string
+  address: string
   phone: string
-  password: string
-  last_name: string
-  first_name: string
+  profile_picture_url: string
 }
 export interface LoginPayload {
-  phone: string
+  user_name: string
   password: string
 }
 

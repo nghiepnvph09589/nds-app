@@ -5,7 +5,9 @@ import RNTextInput from '@app/components/RNTextInput'
 import { SCREEN_ROUTER, SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { fonts } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React from 'react'
 import {
@@ -20,9 +22,14 @@ import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
+import LoginApi from '../api/LoginApi'
 const { width } = Dimensions.get('window')
 
-const LoginStep2 = () => {
+interface LoginProps {
+  route: { params: { phone: string } }
+}
+
+const LoginStep2 = (props: LoginProps) => {
   const dispatch = useDispatch()
   const LoginSchema = Yup.object().shape({
     password: Yup.string()
@@ -30,8 +37,19 @@ const LoginStep2 = () => {
       .max(25, R.strings().validatePassword)
       .required(R.strings().password_blank),
   })
-  const _onSubmit = () => {
-    dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+  const handleLogin = async (item: { password: string }) => {
+    try {
+      showLoading()
+      const res = await LoginApi.login({
+        user_name: props.route.params.phone,
+        password: item.password,
+      })
+      await AsyncStorageService.putToken(res?.data?.token)
+      hideLoading()
+      dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+    } catch (error) {
+      hideLoading()
+    }
   }
   return (
     <View style={styles.v_keyboard}>
@@ -54,7 +72,7 @@ const LoginStep2 = () => {
             <Text style={styles.txt_note}>{R.strings().password_note}</Text>
             <Formik
               initialValues={{ password: '' }}
-              onSubmit={_onSubmit}
+              onSubmit={handleLogin}
               validationSchema={LoginSchema}
             >
               {({
@@ -100,20 +118,20 @@ const LoginStep2 = () => {
               )}
             </Formik>
           </View>
+          <TouchableOpacity
+            style={styles.v_back}
+            onPress={() => {
+              NavigationUtil.goBack()
+            }}
+            children={
+              <FstImage
+                source={R.images.ic_exit}
+                style={styles.ic_back}
+                resizeMode="contain"
+              />
+            }
+          />
         </KeyboardAwareScrollView>
-        <TouchableOpacity
-          style={styles.v_back}
-          onPress={() => {
-            NavigationUtil.goBack()
-          }}
-          children={
-            <FstImage
-              source={R.images.img_back}
-              style={styles.ic_back}
-              resizeMode="contain"
-            />
-          }
-        />
       </ImageBackground>
     </View>
   )
@@ -125,11 +143,8 @@ const styles = StyleSheet.create({
     height: 40,
   },
   v_back: {
-    position: 'absolute',
-    width: 40,
-    height: 40,
-    top: isIphoneX() ? getStatusBarHeight() + 20 : getStatusBarHeight() + 10,
-    left: 15,
+    alignSelf: 'center',
+    marginBottom: 40,
   },
   v_input: {
     marginTop: 24,
@@ -155,7 +170,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     paddingHorizontal: 15,
-    marginBottom: 40,
+    marginBottom: 24,
   },
   txt_note: {
     ...fonts.regular16,

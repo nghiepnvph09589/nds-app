@@ -12,6 +12,7 @@ const images = {
   ic_chevron_right: require('./images/ic_chevron_right.png'),
   ic_email: require('./images/ic_email.png'),
   ic_example_category: require('./images/ic_example_category.png'),
+  ic_exit: require('./images/ic_exit.png'),
   ic_eye: require('./images/ic_eye.png'),
   ic_eye_hide: require('./images/ic_eye_hide.png'),
   ic_home: require('./images/ic_home.png'),

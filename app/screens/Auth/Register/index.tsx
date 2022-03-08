@@ -6,20 +6,29 @@ import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import reactotron from '@app/config/ReactotronConfig'
 import { EMAIL_REGEX, SCREEN_ROUTER } from '@app/constant/Constant'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { colors, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
-import { showLoading } from '@app/utils/LoadingProgressRef'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
-import React, { memo, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import isEqual from 'react-fast-compare'
 import { Platform, StyleSheet, TouchableOpacity } from 'react-native'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
-const ForgetPasswordScreenComponent = () => {
+import RegisterApi from './api/RegisterApi'
+import Avatar from './components/Avatar'
+
+interface ForgetPassProps {
+  route: { params: { phone: string } }
+}
+
+const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
   const dispatch = useDispatch()
   const [profileImage, setProfileImage] = useState<string>('')
+  const filename = useRef<string>('')
   const RegisterSchema = Yup.object().shape({
     name: Yup.string().required(R.strings().name_blank),
     email: Yup.string()
@@ -27,17 +36,36 @@ const ForgetPasswordScreenComponent = () => {
       .required(R.strings().email_blank),
     address: Yup.string().required(R.strings().address_blank),
   })
-  const _onSubmit = () => {
+  const handleRegister = async (item: {
+    email: string
+    name: string
+    address: string
+  }) => {
     if (!profileImage) {
-      showMessages(R.strings().notification, 'Vui lòng cập nhật ảnh đại diện')
+      showMessages(R.strings().notification, R.strings().please_update_avatar)
       return
     }
-    dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+    showLoading()
+    try {
+      const payload = {
+        email: item.email,
+        name: item.name,
+        address: item.address,
+        phone: props.route.params.phone,
+        profile_picture_url: filename.current,
+      }
+      const res = await RegisterApi.register(payload)
+      await AsyncStorageService.putToken(res?.data?.token)
+      hideLoading()
+      dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+    } catch (error) {
+      hideLoading()
+    }
   }
   return (
     <ScreenWrapper
+      scroll
       back
-      unsafe
       color={colors.text}
       backgroundHeader="white"
       forceInset={['left']}
@@ -47,17 +75,17 @@ const ForgetPasswordScreenComponent = () => {
           keyboardShouldPersistTaps="always"
           style={styles.v_keyboard}
           enableOnAndroid={true}
-          //enableAutomaticScroll={false}
         >
           <Avatar
-            onPress={(url: string) => {
+            onPress={(url: string, fileName: string) => {
               setProfileImage(url)
+              filename.current = fileName
             }}
             url={profileImage}
           />
           <Formik
             initialValues={{ name: '', email: '', address: '' }}
-            onSubmit={_onSubmit}
+            onSubmit={handleRegister}
             validationSchema={RegisterSchema}
           >
             {({
@@ -125,69 +153,6 @@ const ForgetPasswordScreenComponent = () => {
     />
   )
 }
-
-interface AvatarProps {
-  onPress: (url: string) => void
-  url: string
-}
-
-const Avatar = ({ onPress, url }: AvatarProps) => {
-  const selectImagePress = async () => {
-    try {
-      const result = await launchImageLibrary({
-        mediaType: 'photo',
-        selectionLimit: 1,
-        maxWidth: 800,
-        maxHeight: 800,
-      })
-      reactotron.logImportant!(result)
-
-      if (
-        result.didCancel ||
-        !result.assets?.length ||
-        typeof result.assets[0].uri === 'undefined'
-      ) {
-        return
-      }
-      showLoading()
-      const formData = new FormData()
-      formData.append('image', {
-        uri:
-          Platform.OS === 'ios'
-            ? result.assets[0].uri.replace('file://', '')
-            : result.assets[0].uri,
-        name: result.assets[0].fileName,
-        type: result.assets[0].type,
-      })
-      onPress(
-        Platform.OS === 'ios' ? result.assets[0].uri : result.assets[0].uri
-      )
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  return (
-    <TouchableOpacity onPress={selectImagePress}>
-      <FstImage
-        source={url ? { uri: url } : R.images.img_avatar}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={[styleAvatar.avatar, { borderRadius: url ? 100 / 2 : 0 }]}
-        resizeMode="cover"
-      />
-    </TouchableOpacity>
-  )
-}
-// borderRadius: url ? 100 / 2 : 0,
-const styleAvatar = StyleSheet.create({
-  avatar: {
-    width: 100,
-    height: 100,
-    alignSelf: 'center',
-    marginBottom: 44,
-    marginTop: 40,
-  },
-})
 
 const styles = StyleSheet.create({
   v_keyboard: {

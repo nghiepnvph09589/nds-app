@@ -10,6 +10,7 @@ import {
 } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { fonts } from '@app/theme'
 import { Formik } from 'formik'
 import React, { useState } from 'react'
@@ -42,11 +43,28 @@ const LoginScreen = () => {
     try {
       setIsLoading(true)
       const res = await LoginApi.checkAccount({ user_name: item.phone })
-      setIsLoading(false)
       if (res.type === 0) {
-        NavigationUtil.navigate(SCREEN_ROUTER_AUTH.REGISTER)
+        setIsLoading(false)
+        NavigationUtil.navigate(SCREEN_ROUTER_AUTH.REGISTER, {
+          phone: item.phone,
+        })
       } else if (res.type === 1) {
-        NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN_STEP_2)
+        try {
+          const res = await LoginApi.login({
+            user_name: item.phone,
+            password: item.phone,
+          })
+          setIsLoading(false)
+          await AsyncStorageService.putToken(res?.data?.token)
+          dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+        } catch (error) {
+          setIsLoading(false)
+        }
+      } else if (res.type === 2) {
+        setIsLoading(false)
+        NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN_STEP_2, {
+          phone: item.phone,
+        })
       }
     } catch (error) {
       setIsLoading(false)
@@ -105,31 +123,24 @@ const LoginScreen = () => {
                       style={styles.v_button}
                       title={R.strings().next}
                     />
-                    {/* <TouchableOpacity
-                    onPress={() =>
-                      NavigationUtil.navigate(SCREEN_ROUTER_AUTH.REGISTER)
-                    }
-                  >
-                    <Text>Đăng ký</Text>
-                  </TouchableOpacity> */}
                   </>
                 )}
               </Formik>
             </View>
+            <TouchableOpacity
+              style={styles.v_back}
+              onPress={() => {
+                dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+              }}
+              children={
+                <FstImage
+                  source={R.images.ic_exit}
+                  style={styles.ic_back}
+                  resizeMode="contain"
+                />
+              }
+            />
           </KeyboardAwareScrollView>
-          <TouchableOpacity
-            style={styles.v_back}
-            onPress={() => {
-              dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
-            }}
-            children={
-              <FstImage
-                source={R.images.img_back}
-                style={styles.ic_back}
-                resizeMode="contain"
-              />
-            }
-          />
         </ImageBackground>
       </View>
       {isLoading && <LoadingProgress />}
@@ -143,11 +154,8 @@ const styles = StyleSheet.create({
     height: 40,
   },
   v_back: {
-    position: 'absolute',
-    width: 40,
-    height: 40,
-    top: isIphoneX() ? getStatusBarHeight() + 20 : getStatusBarHeight() + 10,
-    left: 15,
+    alignSelf: 'center',
+    marginBottom: 40,
   },
   v_input: {
     marginTop: 40,
@@ -173,7 +181,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     paddingHorizontal: 15,
-    marginBottom: 40,
+    marginBottom: 24,
   },
   txt_note: {
     ...fonts.regular16,

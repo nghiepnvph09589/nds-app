@@ -61,4 +61,5 @@ export default {
   address: 'Địa chỉ',
   name_blank: 'Họ tên đang để trống',
   address_blank: 'Địa chỉ của bạn đang để trống',
+  please_update_avatar: 'Vui lòng cập nhật ảnh đại diện',
 }
