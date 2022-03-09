@@ -53,7 +53,7 @@ export default {
     'Vui lòng nhập email bạn đã đăng ký. Hệ thống sẽ gửi mật khẩu về email của bạn',
   email_blank: 'Email của bạn đang để trống',
   note_pass: 'Nhập mật khẩu được gửi về mail của bạn để đăng nhập',
-  password_blank: 'Mật khẩu của bạn đan để trống',
+  password_blank: 'Mật khẩu của bạn đang để trống',
   question_email: 'Bạn chưa nhận được mail?',
   send_back: 'Gửi lại',
   note_change_pass: 'Vui lòng đặt lại mật khẩu mới cho tài khoản của bạn',
@@ -63,4 +63,9 @@ export default {
   address_blank: 'Địa chỉ của bạn đang để trống',
   please_update_avatar: 'Vui lòng cập nhật ảnh đại diện',
   category: 'Danh mục',
+  edit_user_info: 'Chỉnh sửa thông tin cá nhân',
+  support_list: 'Danh sách ủng hộ',
+  contact: 'Liên hệ',
+  terms: 'Điều khoản sủ dụng',
+  logout: 'Đăng xuất',
 }

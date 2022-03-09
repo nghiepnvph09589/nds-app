@@ -127,7 +127,7 @@ export default class RNHeader extends Component<Props> {
 
 const styles = StyleSheet.create({
   leftComp: {
-    marginTop: -20,
+    marginTop: Platform.OS !== 'ios' ? -15 : -20,
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 5,

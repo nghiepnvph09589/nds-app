@@ -74,6 +74,11 @@ function strings() {
     address_blank: I18n.t('address_blank', { defaultValue: '' }),
     please_update_avatar: I18n.t('please_update_avatar', { defaultValue: '' }),
     category: I18n.t('category', { defaultValue: '' }),
+    edit_user_info: I18n.t('edit_user_info', { defaultValue: '' }),
+    support_list: I18n.t('support_list', { defaultValue: '' }),
+    contact: I18n.t('contact', { defaultValue: '' }),
+    terms: I18n.t('terms', { defaultValue: '' }),
+    logout: I18n.t('logout', { defaultValue: '' }),
   }
 }
 export default strings

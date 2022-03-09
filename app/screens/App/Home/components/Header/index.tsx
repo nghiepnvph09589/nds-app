@@ -1,4 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native'
 import React from 'react'
 import { colors, fonts } from '@app/theme'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
@@ -33,7 +39,12 @@ const styles = StyleSheet.create({
   },
   v_header: {
     backgroundColor: colors.primary,
-    paddingTop: isIphoneX() ? getStatusBarHeight() + 20 : 16,
+    paddingTop:
+      Platform.OS == 'ios'
+        ? getStatusBarHeight() + 18
+        : isIphoneX()
+        ? getStatusBarHeight() + 20
+        : 16,
     paddingHorizontal: 15,
     paddingBottom: 25,
     borderBottomLeftRadius: 20,

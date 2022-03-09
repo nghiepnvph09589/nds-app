@@ -10,7 +10,7 @@ import {
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
-import { fonts } from '@app/theme'
+import { colors, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React from 'react'
@@ -21,6 +21,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StatusBar,
 } from 'react-native'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -56,88 +57,91 @@ const LoginStep2 = (props: LoginProps) => {
     }
   }
   return (
-    <View style={styles.v_keyboard}>
-      <ImageBackground
-        resizeMode="cover"
-        style={styles.img_background}
-        source={R.images.img_login}
-      >
-        <KeyboardAwareScrollView
-          keyboardShouldPersistTaps="always"
-          showsVerticalScrollIndicator={false}
-          enableOnAndroid={true}
+    <>
+      <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
+      <View style={styles.v_keyboard}>
+        <ImageBackground
+          resizeMode="cover"
+          style={styles.img_background}
+          source={R.images.img_login}
         >
-          <FstImage
-            style={styles.img_red_cross}
-            source={R.images.img_red_cross}
-          />
-          <View style={styles.v_container}>
-            <Text style={styles.txt_login}>{R.strings().login}</Text>
-            <Text style={styles.txt_note}>{R.strings().password_note}</Text>
-            <Formik
-              initialValues={{ password: '' }}
-              onSubmit={handleLogin}
-              validationSchema={LoginSchema}
-            >
-              {({
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                setSubmitting,
-                values,
-                errors,
-                touched,
-              }) => (
-                <>
-                  <RNTextInput
-                    returnKeyType={'done'}
-                    containerStyle={styles.v_input}
-                    placeholder={R.strings().password}
-                    leftIcon={R.images.ic_lock}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    onSubmitEditing={() => setSubmitting(true)}
-                    value={values.password}
-                    errorMessage={errors.password}
-                    touched={touched.password}
-                    secureTextEntry={true}
-                  />
-                  <TouchableOpacity
-                    onPress={() => {
-                      NavigationUtil.navigate(
-                        SCREEN_ROUTER_AUTH.FORGET_PASSWORD
-                      )
-                    }}
-                  >
-                    <Text style={styles.txt_forgot_pass}>
-                      {R.strings().forgot_password}
-                    </Text>
-                  </TouchableOpacity>
-                  <RNButton
-                    onPress={handleSubmit}
-                    style={styles.v_button}
-                    title={R.strings().login}
-                  />
-                </>
-              )}
-            </Formik>
-          </View>
-          <TouchableOpacity
-            style={styles.v_back}
-            onPress={() => {
-              NavigationUtil.goBack()
-            }}
-            children={
-              <FstImage
-                source={R.images.ic_exit}
-                style={styles.ic_back}
-                resizeMode="contain"
-              />
-            }
-          />
-        </KeyboardAwareScrollView>
-      </ImageBackground>
-    </View>
+          <KeyboardAwareScrollView
+            keyboardShouldPersistTaps="always"
+            showsVerticalScrollIndicator={false}
+            enableOnAndroid={true}
+          >
+            <FstImage
+              style={styles.img_red_cross}
+              source={R.images.img_red_cross}
+            />
+            <View style={styles.v_container}>
+              <Text style={styles.txt_login}>{R.strings().login}</Text>
+              <Text style={styles.txt_note}>{R.strings().password_note}</Text>
+              <Formik
+                initialValues={{ password: '' }}
+                onSubmit={handleLogin}
+                validationSchema={LoginSchema}
+              >
+                {({
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  setSubmitting,
+                  values,
+                  errors,
+                  touched,
+                }) => (
+                  <>
+                    <RNTextInput
+                      returnKeyType={'done'}
+                      containerStyle={styles.v_input}
+                      placeholder={R.strings().password}
+                      leftIcon={R.images.ic_lock}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      onSubmitEditing={() => setSubmitting(true)}
+                      value={values.password}
+                      errorMessage={errors.password}
+                      touched={touched.password}
+                      secureTextEntry={true}
+                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        NavigationUtil.navigate(
+                          SCREEN_ROUTER_AUTH.FORGET_PASSWORD
+                        )
+                      }}
+                    >
+                      <Text style={styles.txt_forgot_pass}>
+                        {R.strings().forgot_password}
+                      </Text>
+                    </TouchableOpacity>
+                    <RNButton
+                      onPress={handleSubmit}
+                      style={styles.v_button}
+                      title={R.strings().login}
+                    />
+                  </>
+                )}
+              </Formik>
+            </View>
+            <TouchableOpacity
+              style={styles.v_back}
+              onPress={() => {
+                NavigationUtil.goBack()
+              }}
+              children={
+                <FstImage
+                  source={R.images.ic_exit}
+                  style={styles.ic_back}
+                  resizeMode="contain"
+                />
+              }
+            />
+          </KeyboardAwareScrollView>
+        </ImageBackground>
+      </View>
+    </>
   )
 }
 

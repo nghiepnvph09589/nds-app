@@ -11,7 +11,8 @@ import {
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
-import { fonts } from '@app/theme'
+import { colors, fonts } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { useState } from 'react'
 import {
@@ -21,8 +22,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StatusBar,
 } from 'react-native'
-import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
+import { isIphoneX } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
@@ -30,7 +32,6 @@ import LoginApi from './api/LoginApi'
 const { width } = Dimensions.get('window')
 
 const LoginScreen = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const dispatch = useDispatch()
   const LoginSchema = Yup.object().shape({
     phone: Yup.string()
@@ -41,10 +42,10 @@ const LoginScreen = () => {
   })
   const handleLogin = async (item: { phone: string }) => {
     try {
-      setIsLoading(true)
+      showLoading()
       const res = await LoginApi.checkAccount({ user_name: item.phone })
       if (res.type === 0) {
-        setIsLoading(false)
+        hideLoading()
         NavigationUtil.navigate(SCREEN_ROUTER_AUTH.REGISTER, {
           phone: item.phone,
         })
@@ -54,24 +55,25 @@ const LoginScreen = () => {
             user_name: item.phone,
             password: item.phone,
           })
-          setIsLoading(false)
+          hideLoading()
           await AsyncStorageService.putToken(res?.data?.token)
           dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
         } catch (error) {
-          setIsLoading(false)
+          hideLoading()
         }
       } else if (res.type === 2) {
-        setIsLoading(false)
+        hideLoading()
         NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN_STEP_2, {
           phone: item.phone,
         })
       }
     } catch (error) {
-      setIsLoading(false)
+      hideLoading()
     }
   }
   return (
     <>
+      <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
       <View style={styles.v_keyboard}>
         <ImageBackground
           resizeMode="cover"
@@ -143,7 +145,6 @@ const LoginScreen = () => {
           </KeyboardAwareScrollView>
         </ImageBackground>
       </View>
-      {isLoading && <LoadingProgress />}
     </>
   )
 }
