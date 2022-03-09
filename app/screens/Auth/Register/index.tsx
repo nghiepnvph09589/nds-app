@@ -1,9 +1,7 @@
 import R from '@app/assets/R'
-import FstImage from '@app/components/FstImage'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import reactotron from '@app/config/ReactotronConfig'
 import { EMAIL_REGEX, SCREEN_ROUTER } from '@app/constant/Constant'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
@@ -13,8 +11,7 @@ import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { memo, useRef, useState } from 'react'
 import isEqual from 'react-fast-compare'
-import { Platform, StyleSheet, TouchableOpacity } from 'react-native'
-import { launchImageLibrary } from 'react-native-image-picker'
+import { StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
@@ -64,7 +61,6 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
   }
   return (
     <ScreenWrapper
-      scroll
       back
       color={colors.text}
       backgroundHeader="white"

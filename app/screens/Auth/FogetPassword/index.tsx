@@ -5,12 +5,14 @@ import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { EMAIL_REGEX, SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, fonts } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { memo } from 'react'
 import isEqual from 'react-fast-compare'
 import { StyleSheet, Text } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Yup from 'yup'
+import ForgetPasswordApi from './api/ForgetPasswordApi'
 
 const ForgetPasswordScreenComponent = () => {
   const ForgetPasswordSchema = Yup.object().shape({
@@ -18,13 +20,21 @@ const ForgetPasswordScreenComponent = () => {
       .matches(EMAIL_REGEX, R.strings().validateEmail)
       .required(R.strings().email_blank),
   })
-  const _onSubmit = () => {
-    NavigationUtil.navigate(SCREEN_ROUTER_AUTH.FORGET_PASSWORD_STEP_2)
+  const handleForgetPass = async (item: { email: string }) => {
+    try {
+      showLoading()
+      await ForgetPasswordApi.forgetPass({ email: item.email })
+      hideLoading()
+      NavigationUtil.navigate(SCREEN_ROUTER_AUTH.FORGET_PASSWORD_STEP_2, {
+        email: item.email,
+      })
+    } catch (error) {
+      hideLoading()
+    }
   }
   return (
     <ScreenWrapper
       back
-      unsafe
       color={colors.text}
       backgroundHeader="white"
       forceInset={['left']}
@@ -33,12 +43,11 @@ const ForgetPasswordScreenComponent = () => {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="always"
           style={styles.v_keyboard}
-          enableAutomaticScroll={false}
         >
           <Text style={styles.v_note} children={R.strings().note_email} />
           <Formik
             initialValues={{ email: '' }}
-            onSubmit={_onSubmit}
+            onSubmit={handleForgetPass}
             validationSchema={ForgetPasswordSchema}
           >
             {({

@@ -2,45 +2,60 @@ import R from '@app/assets/R'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
+import { PASSWORD_REGEX, SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { memo } from 'react'
 import isEqual from 'react-fast-compare'
 import { StyleSheet, Text } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Yup from 'yup'
+import ChangePassApi from './api/ChangePassApi'
 
-const ChangePasswordComponent = () => {
+interface ChangePassProps {
+  route: { params: { user_id: string } }
+}
+
+const ChangePasswordComponent = (props: ChangePassProps) => {
   const ChangePasswordSchema = Yup.object().shape({
     password: Yup.string()
-      .min(6, R.strings().validatePassword)
-      .max(25, R.strings().validatePassword)
+      .trim()
+      .matches(PASSWORD_REGEX, R.strings().validatePassword)
       .required(R.strings().password_blank),
     confirmPassword: Yup.string()
-      .min(6, R.strings().validatePassword)
-      .max(25, R.strings().validatePassword)
+      .trim()
+      .matches(PASSWORD_REGEX, R.strings().validatePassword)
       .required(R.strings().password_blank),
   })
-  const _onSubmit = (dataInput: {
+  const _onSubmit = async (item: {
     password: string
     confirmPassword: string
   }) => {
-    if (dataInput.password !== dataInput.confirmPassword) {
+    if (item.password !== item.confirmPassword) {
       showMessages(
         R.strings().notification,
         R.strings().confirm_password_not_success
       )
       return
     }
-    NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN)
+    try {
+      showLoading()
+      await ChangePassApi.changePass({
+        user_id: props.route.params.user_id,
+        new_password: item.password,
+      })
+      hideLoading()
+      NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN)
+    } catch (error) {
+      hideLoading()
+    }
   }
   return (
     <ScreenWrapper
       back
-      unsafe
       color={colors.text}
       backgroundHeader="white"
       forceInset={['left']}
@@ -49,7 +64,7 @@ const ChangePasswordComponent = () => {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="always"
           style={styles.v_keyboard}
-          enableAutomaticScroll={false}
+          enableOnAndroid={true}
         >
           <Text style={styles.v_note} children={R.strings().note_change_pass} />
           <Formik

@@ -5,6 +5,7 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
+  View,
 } from 'react-native'
 import React, { memo, useMemo } from 'react'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -64,10 +65,10 @@ function ScreenWithoutScrolling(props: ScreenWrapperProps) {
   const Wrapper = unsafe ? Block : SafeAreaView
 
   return (
-    <KeyboardAvoidingView
+    <View
       style={[styles.outer]}
-      behavior={isIos ? 'padding' : undefined}
-      keyboardVerticalOffset={0}
+      // behavior={isIos ? 'padding' : undefined}
+      // keyboardVerticalOffset={0}
     >
       {!unsafe &&
         (!forceInset || (forceInset && forceInset.includes('top'))) &&
@@ -118,7 +119,7 @@ function ScreenWithoutScrolling(props: ScreenWrapperProps) {
       >
         {children}
       </Wrapper>
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 
@@ -148,10 +149,10 @@ function ScreenWithScrolling(props: ScreenWrapperProps) {
 
   const Wrapper = unsafe ? Block : SafeAreaView
   return (
-    <KeyboardAvoidingView
+    <View
       style={[styles.root]}
-      behavior={isIos ? 'padding' : undefined}
-      keyboardVerticalOffset={0}
+      // behavior={isIos ? 'padding' : undefined}
+      // keyboardVerticalOffset={0}
     >
       {!unsafe &&
         (!forceInset || (forceInset && forceInset.includes('top'))) &&
@@ -212,7 +213,7 @@ function ScreenWithScrolling(props: ScreenWrapperProps) {
           </ScrollView>
         </Block>
       </Wrapper>
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 

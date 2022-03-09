@@ -4,7 +4,7 @@ export const colors = {
   primary: '#D9251B',
   backgroundColor: '#E5E5E5',
   placeHolder: '#8898A7',
-  text: '#373E50',
+  text: '#262626',
   border: '#D0DBEA',
   white: '#ffffff',
   black: '#000000',

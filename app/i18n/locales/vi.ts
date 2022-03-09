@@ -27,7 +27,7 @@ export default {
   input_referral_code: 'Nhập số điện thoại giới thiệu',
   validatePhone: 'Số điện thoại sai định dạng',
   validateEmail: 'Email sai định dạng',
-  validatePassword: 'Mật khẩu tối thiểu 6 ký tự và tối đa 25 ký tự',
+  validatePassword: 'Mật khẩu sai định dạng (8 đến 25 ký tự)',
   you_are_business: 'Bạn là doanh nghiệp',
   company_name: 'Tên công ty',
   input_company_name: 'Nhập tên công ty',
@@ -62,4 +62,5 @@ export default {
   name_blank: 'Họ tên đang để trống',
   address_blank: 'Địa chỉ của bạn đang để trống',
   please_update_avatar: 'Vui lòng cập nhật ảnh đại diện',
+  category: 'Danh mục',
 }

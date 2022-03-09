@@ -2,7 +2,11 @@ import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
-import { SCREEN_ROUTER, SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
+import {
+  PASSWORD_REGEX,
+  SCREEN_ROUTER,
+  SCREEN_ROUTER_AUTH,
+} from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
@@ -18,7 +22,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper'
+import { isIphoneX } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
@@ -33,8 +37,8 @@ const LoginStep2 = (props: LoginProps) => {
   const dispatch = useDispatch()
   const LoginSchema = Yup.object().shape({
     password: Yup.string()
-      .min(6, R.strings().validatePassword)
-      .max(25, R.strings().validatePassword)
+      .trim()
+      .matches(PASSWORD_REGEX, R.strings().validatePassword)
       .required(R.strings().password_blank),
   })
   const handleLogin = async (item: { password: string }) => {

@@ -13,3 +13,14 @@ export interface LoginPayload {
 export interface CheckAccountPayload {
   user_name: string
 }
+export interface ForgetPassPayload {
+  email: string
+}
+export interface ValidatePassPayload {
+  email: string
+  password: string
+}
+export interface ChangePassPayload {
+  user_id: string
+  new_password: string
+}

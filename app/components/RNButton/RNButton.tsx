@@ -49,7 +49,7 @@ export default class RNButton extends Component<Props> {
 const styles = StyleSheet.create({
   v_container: {
     borderRadius: 16,
-    backgroundColor: '#EA384D',
+    backgroundColor: colors.primary,
     paddingVertical: 13,
   },
   text: {

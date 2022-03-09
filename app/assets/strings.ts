@@ -73,6 +73,7 @@ function strings() {
     name_blank: I18n.t('name_blank', { defaultValue: '' }),
     address_blank: I18n.t('address_blank', { defaultValue: '' }),
     please_update_avatar: I18n.t('please_update_avatar', { defaultValue: '' }),
+    category: I18n.t('category', { defaultValue: '' }),
   }
 }
 export default strings

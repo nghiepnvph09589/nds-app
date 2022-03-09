@@ -63,7 +63,7 @@ const PHONE_REGEX =
 
 const EMAIL_REGEX =
   /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
-
+const PASSWORD_REGEX = /^.{8,25}$/
 export {
   DEFAULT_PARAMS,
   SCREEN_ROUTER,
@@ -73,4 +73,5 @@ export {
   API_STATUS,
   PHONE_REGEX,
   EMAIL_REGEX,
+  PASSWORD_REGEX,
 }
