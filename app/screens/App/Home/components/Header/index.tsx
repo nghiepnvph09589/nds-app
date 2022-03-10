@@ -10,18 +10,42 @@ import { colors, fonts } from '@app/theme'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
+import { useDispatch } from 'react-redux'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import { SCREEN_ROUTER } from '@app/constant/Constant'
 
-const Header = () => {
+interface HeaderProps {
+  avatar: string
+  name: string
+}
+
+const Header = (props: HeaderProps) => {
+  const { avatar, name } = props
+  const dispatch = useDispatch()
   return (
     <View style={styles.v_container}>
       <View style={styles.v_header}>
         <View style={styles.v_row}>
-          <FstImage
-            resizeMode="contain"
-            style={styles.icon}
-            source={R.images.img_avatar2}
-          />
-          <Text style={styles.txt_name}>Tree Poo</Text>
+          {!!avatar && (
+            <FstImage
+              resizeMode="cover"
+              style={styles.icon}
+              source={{ uri: avatar }}
+            />
+          )}
+          <TouchableOpacity
+            onPress={() => {
+              if (!name) {
+                dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
+              }
+            }}
+            style={styles.v_name}
+          >
+            <Text style={styles.txt_name}>
+              {!!name ? name : `${R.strings().login}`}
+            </Text>
+          </TouchableOpacity>
+
           <TouchableOpacity>
             <FstImage style={styles.icon} source={R.images.ic_support} />
           </TouchableOpacity>
@@ -57,11 +81,14 @@ const styles = StyleSheet.create({
   icon: {
     width: 36,
     height: 36,
+    borderRadius: 36 / 2,
+  },
+  v_name: {
+    flex: 1,
+    marginLeft: 16,
   },
   txt_name: {
     ...fonts.semi_bold16,
     color: 'white',
-    marginLeft: 16,
-    flex: 1,
   },
 })

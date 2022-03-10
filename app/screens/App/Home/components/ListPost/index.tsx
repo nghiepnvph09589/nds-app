@@ -6,7 +6,19 @@ import CategoryAndAddress from './components/CategoryAndAddress'
 
 const ListPost = () => {
   const renderItem = useCallback(({ item }: { item: any }) => {
-    return <Text>alo</Text>
+    return (
+      <View
+        style={{
+          backgroundColor: 'white',
+          marginTop: 8,
+          paddingTop: 18,
+          paddingBottom: 12,
+          paddingHorizontal: 15,
+        }}
+      >
+        <Text>alo</Text>
+      </View>
+    )
   }, [])
   const keyExtractor = useCallback(item => `${item.id}`, [])
   return (
@@ -19,7 +31,6 @@ const ListPost = () => {
       }
       onRefresh={() => {}}
       refreshing={false}
-      //contentContainerStyle={styles.v_listProduct}
       data={['alo']}
       renderItem={renderItem}
       keyExtractor={keyExtractor}

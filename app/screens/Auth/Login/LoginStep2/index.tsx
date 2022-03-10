@@ -13,7 +13,7 @@ import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { colors, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
   Dimensions,
   ImageBackground,
@@ -22,6 +22,7 @@ import {
   TouchableOpacity,
   View,
   StatusBar,
+  Keyboard,
 } from 'react-native'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -42,6 +43,17 @@ const LoginStep2 = (props: LoginProps) => {
       .matches(PASSWORD_REGEX, R.strings().validatePassword)
       .required(R.strings().password_blank),
   })
+  const scrollRef = useRef<KeyboardAwareScrollView>(null)
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
+    }
+  }, [])
+  const keyboardDidShow = (listener: KeyboardEvent) => {
+    scrollRef.current?.scrollToEnd(true)
+  }
   const handleLogin = async (item: { password: string }) => {
     try {
       showLoading()
@@ -66,6 +78,7 @@ const LoginStep2 = (props: LoginProps) => {
           source={R.images.img_login}
         >
           <KeyboardAwareScrollView
+            ref={scrollRef}
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
             enableOnAndroid={true}

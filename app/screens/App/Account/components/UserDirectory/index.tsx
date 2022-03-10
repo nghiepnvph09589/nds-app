@@ -6,6 +6,7 @@ import React from 'react'
 import { Platform, ScrollView, StyleSheet } from 'react-native'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 import { useDispatch } from 'react-redux'
+import { logout } from '../../slices/AccountSlice'
 import Directory from './components/Directory'
 
 const UserDirectory = () => {
@@ -13,6 +14,7 @@ const UserDirectory = () => {
 
   const handleLogout = async () => {
     await AsyncStorageService.putToken('')
+    dispatch(logout())
     dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
   }
   return (
@@ -40,7 +42,7 @@ const UserDirectory = () => {
         source1={R.images.ic_change_pass}
         label2={R.strings().logout}
         source2={R.images.ic_logout}
-        style={styles.v_maring_bottom}
+        style={styles.v_margin_bottom}
       />
     </ScrollView>
   )
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     paddingHorizontal: 12,
   },
-  v_maring_bottom: {
+  v_margin_bottom: {
     marginBottom: 100,
   },
 })

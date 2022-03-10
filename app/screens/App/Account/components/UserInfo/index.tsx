@@ -5,15 +5,29 @@ import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 import FstImage from '@app/components/FstImage'
 import { fonts } from '@app/theme'
 
-const UserInfo = () => {
+interface UserInfoProps {
+  avatar: string
+  name: string
+}
+
+const UserInfo = (props: UserInfoProps) => {
+  const { avatar, name } = props
   return (
     <ImageBackground
       style={styles.v_image}
       source={R.images.img_background_header}
     >
       <View style={styles.v_content}>
-        <FstImage style={styles.avatar} source={R.images.img_avatar2} />
-        <Text style={styles.txt_name}>Tree Poo</Text>
+        {!!avatar && (
+          <FstImage
+            resizeMode="cover"
+            style={styles.avatar}
+            source={{ uri: avatar }}
+          />
+        )}
+        <Text style={styles.txt_name}>
+          {!!name ? name : R.strings().not_update}
+        </Text>
       </View>
     </ImageBackground>
   )
@@ -40,6 +54,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 50,
     height: 50,
+    borderRadius: 50 / 2,
   },
   txt_name: {
     ...fonts.semi_bold16,

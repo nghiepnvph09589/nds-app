@@ -68,4 +68,5 @@ export default {
   contact: 'Liên hệ',
   terms: 'Điều khoản sủ dụng',
   logout: 'Đăng xuất',
+  not_update: 'Chưa cập nhật',
 }

@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   v_button: {
     marginHorizontal: 33,
-    marginTop: 32,
+    marginTop: 62,
     marginBottom: 50,
   },
   txt_error: {

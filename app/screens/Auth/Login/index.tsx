@@ -1,6 +1,5 @@
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
-import LoadingProgress from '@app/components/LoadingProgress'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import {
@@ -14,15 +13,17 @@ import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { colors, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
+  Alert,
   Dimensions,
   ImageBackground,
+  Keyboard,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StatusBar,
 } from 'react-native'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -33,6 +34,7 @@ const { width } = Dimensions.get('window')
 
 const LoginScreen = () => {
   const dispatch = useDispatch()
+  const scrollRef = useRef<KeyboardAwareScrollView>(null)
   const LoginSchema = Yup.object().shape({
     phone: Yup.string()
       .matches(PHONE_REGEX, R.strings().validatePhone)
@@ -40,6 +42,16 @@ const LoginScreen = () => {
       .max(11, R.strings().validatePhone)
       .required(R.strings().phone_blank),
   })
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
+    }
+  }, [])
+
+  const keyboardDidShow = (listener: KeyboardEvent) => {
+    scrollRef.current?.scrollToEnd(true)
+  }
   const handleLogin = async (item: { phone: string }) => {
     try {
       showLoading()
@@ -81,8 +93,10 @@ const LoginScreen = () => {
           source={R.images.img_login}
         >
           <KeyboardAwareScrollView
+            ref={scrollRef}
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
+            scrollsToTop
             enableOnAndroid={true}
           >
             <FstImage

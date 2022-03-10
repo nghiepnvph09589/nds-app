@@ -79,6 +79,7 @@ function strings() {
     contact: I18n.t('contact', { defaultValue: '' }),
     terms: I18n.t('terms', { defaultValue: '' }),
     logout: I18n.t('logout', { defaultValue: '' }),
+    not_update: I18n.t('not_update', { defaultValue: '' }),
   }
 }
 export default strings
