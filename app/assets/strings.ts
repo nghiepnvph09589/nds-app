@@ -80,6 +80,7 @@ function strings() {
     terms: I18n.t('terms', { defaultValue: '' }),
     logout: I18n.t('logout', { defaultValue: '' }),
     not_update: I18n.t('not_update', { defaultValue: '' }),
+    see_more: I18n.t('see_more', { defaultValue: '' }),
   }
 }
 export default strings

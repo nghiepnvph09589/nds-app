@@ -69,4 +69,5 @@ export default {
   terms: 'Điều khoản sủ dụng',
   logout: 'Đăng xuất',
   not_update: 'Chưa cập nhật',
+  see_more: 'Xem thêm',
 }
