@@ -18,13 +18,12 @@ const UserInfo = (props: UserInfoProps) => {
       source={R.images.img_background_header}
     >
       <View style={styles.v_content}>
-        {!!avatar && (
-          <FstImage
-            resizeMode="cover"
-            style={styles.avatar}
-            source={{ uri: avatar }}
-          />
-        )}
+        <FstImage
+          resizeMode="cover"
+          style={styles.avatar}
+          source={!!avatar ? { uri: avatar } : R.images.ic_avatar_default}
+        />
+
         <Text style={styles.txt_name}>
           {!!name ? name : R.strings().not_update}
         </Text>

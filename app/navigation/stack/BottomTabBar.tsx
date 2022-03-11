@@ -7,6 +7,7 @@ import {
 } from '@app/constant/Constant'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import Account from '@app/screens/App/Account'
+import CreatePost from '@app/screens/App/CreatePost'
 import Home from '@app/screens/App/Home'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
@@ -25,7 +26,6 @@ import FastImage from 'react-native-fast-image'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 import { useDispatch } from 'react-redux'
 import reactotron from 'reactotron-react-native'
-import StackBottomBar from './StackBottomBar'
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
@@ -35,7 +35,6 @@ export const TAB_BAR = {
   [HOME]: {
     name: MAIN_TAB.HOME,
     icon: R.images.ic_home,
-    icon_focus: R.images.ic_home_focus,
     route: Home,
     title: R.strings().home,
   },
@@ -48,7 +47,7 @@ export const TAB_BAR = {
   [CREATE_POST]: {
     name: MAIN_TAB.CREATE_POST,
     icon: R.images.ic_create_post,
-    route: ProductScreen,
+    route: CreatePost,
     title: 'QR Code',
   },
   [NOTIFICATION]: {

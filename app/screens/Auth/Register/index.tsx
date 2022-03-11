@@ -38,10 +38,6 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
     name: string
     address: string
   }) => {
-    if (!profileImage) {
-      showMessages(R.strings().notification, R.strings().please_update_avatar)
-      return
-    }
     showLoading()
     try {
       const payload = {

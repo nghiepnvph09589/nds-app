@@ -96,7 +96,6 @@ const LoginScreen = () => {
             ref={scrollRef}
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
-            scrollsToTop
             enableOnAndroid={true}
           >
             <FstImage
@@ -122,7 +121,7 @@ const LoginScreen = () => {
                 }) => (
                   <>
                     <RNTextInput
-                      returnKeyType={'done'}
+                      //returnKeyType={'done'}
                       containerStyle={styles.v_input}
                       placeholder={R.strings().phone}
                       leftIcon={R.images.ic_phone}
@@ -132,6 +131,7 @@ const LoginScreen = () => {
                       value={values.phone}
                       errorMessage={errors.phone}
                       touched={touched.phone}
+                      keyboardType="number-pad"
                     />
                     <RNButton
                       icon

@@ -83,12 +83,12 @@ export default class RNHeader extends Component<Props> {
         containerStyle={{
           backgroundColor: backgroundHeader || theme.colors.primary,
           borderBottomColor: borderBottomHeader || theme.colors.primary,
-          height:
-            Platform.OS !== 'ios'
-              ? undefined
-              : numberLine === 2
-              ? getStatusBarHeight() + (!isIphoneX() ? 65 : 85)
-              : getStatusBarHeight() + (!isIphoneX() ? 65 : 65),
+          // height:
+          //   Platform.OS !== 'ios'
+          //     ? undefined
+          //     : numberLine === 2
+          //     ? getStatusBarHeight() + (!isIphoneX() ? 65 : 85)
+          //     : getStatusBarHeight() + (!isIphoneX() ? 65 : 65),
         }}
         leftComponent={
           <>

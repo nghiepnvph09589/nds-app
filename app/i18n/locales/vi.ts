@@ -72,4 +72,9 @@ export default {
   see_more: 'Xem thêm',
   support: 'Ủng hộ',
   number_support: 'Lượt ủng hộ',
+  create_post: 'Thêm tin nhân đạo',
+  image: 'Ảnh/ Video',
+  location: 'Địa điểm',
+  offer: 'Đề xuất địa chỉ nhân đạo',
+  post: 'Đăng',
 }

@@ -83,6 +83,11 @@ function strings() {
     see_more: I18n.t('see_more', { defaultValue: '' }),
     support: I18n.t('support', { defaultValue: '' }),
     number_support: I18n.t('number_support', { defaultValue: '' }),
+    create_post: I18n.t('create_post', { defaultValue: '' }),
+    image: I18n.t('image', { defaultValue: '' }),
+    location: I18n.t('location', { defaultValue: '' }),
+    offer: I18n.t('offer', { defaultValue: '' }),
+    post: I18n.t('post', { defaultValue: '' }),
   }
 }
 export default strings

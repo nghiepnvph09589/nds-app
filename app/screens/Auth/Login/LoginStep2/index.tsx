@@ -106,7 +106,6 @@ const LoginStep2 = (props: LoginProps) => {
                 }) => (
                   <>
                     <RNTextInput
-                      returnKeyType={'done'}
                       containerStyle={styles.v_input}
                       placeholder={R.strings().password}
                       leftIcon={R.images.ic_lock}
