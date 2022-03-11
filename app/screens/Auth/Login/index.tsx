@@ -15,7 +15,6 @@ import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { useEffect, useRef } from 'react'
 import {
-  Alert,
   Dimensions,
   ImageBackground,
   Keyboard,
@@ -49,7 +48,7 @@ const LoginScreen = () => {
     }
   }, [])
 
-  const keyboardDidShow = (listener: KeyboardEvent) => {
+  const keyboardDidShow = () => {
     scrollRef.current?.scrollToEnd(true)
   }
   const handleLogin = async (item: { phone: string }) => {
@@ -63,6 +62,7 @@ const LoginScreen = () => {
         })
       } else if (res.type === 1) {
         try {
+          // eslint-disable-next-line no-shadow
           const res = await LoginApi.login({
             user_name: item.phone,
             password: item.phone,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   v_input: {
-    marginTop: 40,
+    marginTop: 39,
     marginBottom: 44,
   },
   v_keyboard: {

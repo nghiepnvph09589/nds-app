@@ -51,7 +51,7 @@ const LoginStep2 = (props: LoginProps) => {
       Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
     }
   }, [])
-  const keyboardDidShow = (listener: KeyboardEvent) => {
+  const keyboardDidShow = () => {
     scrollRef.current?.scrollToEnd(true)
   }
   const handleLogin = async (item: { password: string }) => {

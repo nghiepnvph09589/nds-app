@@ -1,19 +1,10 @@
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native'
 import React, { useCallback } from 'react'
-import Banner from './components/Banner'
+import { FlatList, StyleSheet, View } from 'react-native'
 import { DataBanner } from '../../mockup'
+import Banner from './components/Banner'
 import CategoryAndAddress from './components/CategoryAndAddress'
-import FstImage from '@app/components/FstImage'
-import R from '@app/assets/R'
-import { colors, fonts } from '@app/theme'
-import InfoPost from './components/InfoPost'
 import ContentPost from './components/ContentPost'
+import InfoPost from './components/InfoPost'
 
 interface ListPost {
   data: any
@@ -38,7 +29,7 @@ const ListPost = (props: ListPost) => {
           <CategoryAndAddress />
         </>
       }
-      contentContainerStyle={{ paddingBottom: 20 }}
+      contentContainerStyle={styles.v_list}
       onRefresh={() => {}}
       refreshing={false}
       data={data}
@@ -59,5 +50,8 @@ const styles = StyleSheet.create({
     paddingTop: 18,
     paddingBottom: 12,
     paddingHorizontal: 15,
+  },
+  v_list: {
+    paddingBottom: 20,
   },
 })
