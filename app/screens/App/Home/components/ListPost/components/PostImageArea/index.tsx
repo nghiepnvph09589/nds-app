@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import R from '@app/assets/R'
-import FstImage from '@app/components/FstImage'
-import { colors, dimensions, fonts, styleView } from '@app/theme'
+import ImageModal from '@app/components/ImageModal'
+import { dimensions, styleView } from '@app/theme'
 import React from 'react'
-import { Text, View, ViewStyle } from 'react-native'
+import { View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import useMediaData, { MEDIA_TYPE } from './hooks'
 
@@ -20,11 +20,12 @@ const PostImageArea = (props: Props) => {
   let { dataMedia } = useMediaData(
     data.map((item: { media_url: any }) => item.media_url)
   )
+
   const count = dataMedia?.length
 
-  if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
-    dataMedia.splice(0, 1)
-  }
+  // if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
+  //   dataMedia.splice(0, 1)
+  // }
 
   //   const [thumbnailVideo, setThumbnailVideo] = useState<string>()
   //   const [isLoadingThumb, setIsLoadingThumb] = useState<boolean>(true)
@@ -34,6 +35,7 @@ const PostImageArea = (props: Props) => {
   //       setIsLoadingThumb(true)
   //       const thumbnail = await createThumbnail({
   //         url: dataMedia[0]?.url,
+
   //         format: 'jpeg',
   //         timeStamp: 0,
   //       })
@@ -59,21 +61,17 @@ const PostImageArea = (props: Props) => {
       //   )
       return (
         <View style={style}>
-          <FstImage
-            style={{ width: '100%', height: '100%', borderRadius: 5 }}
-            source={{ uri: dataMedia[1]?.url }}
-            resizeMode={'cover'}
-          />
           <View
             style={{
               position: 'absolute',
               width: '100%',
               height: '100%',
               ...styleView.centerItem,
+              backgroundColor: 'black',
             }}
           >
             <FastImage
-              style={{ width: 50, height: 50, borderRadius: 5 }}
+              style={{ width: 42, height: 42 }}
               source={R.images.ic_play}
             />
           </View>
@@ -82,10 +80,19 @@ const PostImageArea = (props: Props) => {
     } else
       return (
         <View style={style}>
-          <FstImage
-            style={{ width: '100%', height: '100%', borderRadius: 5 }}
-            source={{ uri: dataMedia[0]?.url }}
+          {/* <FstImage
+            style={{ width: '100%', aspectRatio: 1 }}
+            //source={{ uri: dataMedia[0]?.url }}
+            source={R.images.img_login}
             resizeMode={'cover'}
+          /> */}
+          <ImageModal
+            url={{ uri: dataMedia[0]?.url }}
+            style={{ width: '100%', aspectRatio: 1 }}
+            urls={dataMedia.map((value: { url: string }) => ({
+              uri: value?.url,
+            }))}
+            currentIndex={0}
           />
         </View>
       )
@@ -102,41 +109,48 @@ const PostImageArea = (props: Props) => {
                 height: 229 * RATIO,
                 borderRadius: 5 * RATIO,
               }}
-              source={R.images.img_default}
+              source={R.images.img_login}
             />
           </View>
         )
       case 1:
         return renderFisrtImage({
-          width: 345 * RATIO,
-          height: 229 * RATIO,
-          borderRadius: 5 * RATIO,
+          marginTop: 12,
+          // width: 345 * RATIO,
+          // height: 229 * RATIO,
+          // borderRadius: 5 * RATIO,
         })
       case 2:
         return (
-          <View
-            style={{ flex: 1, ...styleView.rowItemBetween, aspectRatio: 1.5 }}
-          >
+          <View style={{ flex: 1, ...styleView.rowItemBetween, marginTop: 8 }}>
             {renderFisrtImage({
               width: 171 * RATIO,
               height: '100%',
-              borderRadius: 5,
             })}
             <View
-              style={{ width: ACTUAL_WIDTH * 0.495 }}
+              style={{ width: ACTUAL_WIDTH * 0.497 }}
               children={
-                <FstImage
-                  style={{ width: '100%', height: '100%', borderRadius: 5 }}
-                  source={{ uri: dataMedia[1]?.url }}
-                  resizeMode={'cover'}
+                <ImageModal
+                  url={{ uri: dataMedia[1]?.url }}
+                  urls={dataMedia.map((value: { url: string }) => ({
+                    uri: value?.url,
+                  }))}
+                  currentIndex={1}
+                  style={{ width: '100%', height: '100%' }}
                 />
+                // <FstImage
+                //   style={{ width: '100%', height: '100%' }}
+                //   source={{ uri: dataMedia[1]?.url }}
+                //   // source={R.images.img_login}
+                //   resizeMode={'cover'}
+                // />
               }
             />
           </View>
         )
       case 3:
         return (
-          <View style={{ flex: 1, ...styleView.rowItemBetween }}>
+          <View style={{ flex: 1, ...styleView.rowItemBetween, marginTop: 8 }}>
             {renderFisrtImage({ width: 229 * RATIO })}
             <View
               style={{
@@ -149,11 +163,21 @@ const PostImageArea = (props: Props) => {
               <View
                 style={{ width: '100%', height: 113 * RATIO }}
                 children={
-                  <FstImage
-                    style={{ width: '100%', height: '100%', borderRadius: 5 }}
-                    source={{ uri: dataMedia[1]?.url }}
-                    resizeMode={'cover'}
+                  <ImageModal
+                    url={{ uri: dataMedia[1]?.url }}
+                    urls={dataMedia.map((value: { url: string }) => ({
+                      uri: value?.url,
+                    }))}
+                    currentIndex={1}
+                    style={{ width: '100%', height: '100%' }}
                   />
+
+                  // <FstImage
+                  //   style={{ width: '100%', height: '100%' }}
+                  //   //source={R.images.img_login}
+                  //   source={{ uri: dataMedia[1]?.url }}
+                  //   resizeMode={'cover'}
+                  // />
                 }
               />
               <View
@@ -163,11 +187,20 @@ const PostImageArea = (props: Props) => {
                   marginTop: 3 * RATIO,
                 }}
                 children={
-                  <FstImage
-                    style={{ width: '100%', height: '100%', borderRadius: 5 }}
-                    source={{ uri: dataMedia[2]?.url }}
-                    resizeMode={'cover'}
+                  <ImageModal
+                    url={{ uri: dataMedia[2]?.url }}
+                    urls={dataMedia.map((value: { url: string }) => ({
+                      uri: value?.url,
+                    }))}
+                    currentIndex={2}
+                    style={{ width: '100%', height: '100%' }}
                   />
+                  // <FstImage
+                  //   style={{ width: '100%', height: '100%' }}
+                  //   //source={R.images.img_login}
+                  //   source={{ uri: dataMedia[2]?.url }}
+                  //   resizeMode={'cover'}
+                  // />
                 }
               />
             </View>
@@ -175,7 +208,13 @@ const PostImageArea = (props: Props) => {
         )
       default:
         return (
-          <View style={{ ...styleView.rowItemBetween, height: 229 * RATIO }}>
+          <View
+            style={{
+              flex: 1,
+              ...styleView.rowItemBetween,
+              marginTop: 8,
+            }}
+          >
             {renderFisrtImage({ width: 229 * RATIO })}
             <View
               style={{
@@ -188,11 +227,20 @@ const PostImageArea = (props: Props) => {
               <View
                 style={{ width: '100%', height: 113 * RATIO }}
                 children={
-                  <FstImage
-                    style={{ width: '100%', height: '100%', borderRadius: 5 }}
-                    source={{ uri: dataMedia[1]?.url }}
-                    resizeMode={'cover'}
+                  <ImageModal
+                    url={{ uri: dataMedia[1]?.url }}
+                    urls={dataMedia.map((value: { url: string }) => ({
+                      uri: value?.url,
+                    }))}
+                    currentIndex={1}
+                    style={{ width: '100%', height: '100%' }}
                   />
+                  // <FstImage
+                  //   style={{ width: '100%', height: '100%' }}
+                  //   // source={R.images.img_login}
+                  //   source={{ uri: dataMedia[1]?.url }}
+                  //   resizeMode={'cover'}
+                  // />
                 }
               />
               <View
@@ -202,14 +250,24 @@ const PostImageArea = (props: Props) => {
                   marginTop: 3 * RATIO,
                 }}
                 children={
-                  <FstImage
-                    style={{ width: '100%', height: '100%', borderRadius: 5 }}
-                    source={{ uri: dataMedia[2]?.url }}
-                    resizeMode={'cover'}
+                  <ImageModal
+                    url={{ uri: dataMedia[2]?.url }}
+                    urls={dataMedia.map((value: { url: string }) => ({
+                      uri: value?.url,
+                    }))}
+                    currentIndex={2}
+                    style={{ width: '100%', height: '100%' }}
+                    count={count - 2}
                   />
+                  // <FstImage
+                  //   style={{ width: '100%', height: '100%' }}
+                  //   //source={R.images.img_login}
+                  //   source={{ uri: dataMedia[2]?.url }}
+                  //   resizeMode={'cover'}
+                  // />
                 }
               />
-              <View
+              {/* <View
                 style={{
                   ...styleView.centerItem,
                   width: '100%',
@@ -217,15 +275,14 @@ const PostImageArea = (props: Props) => {
                   backgroundColor: 'rgba(0,0,0,.4)',
                   position: 'absolute',
                   bottom: 0,
-                  borderRadius: 5,
                 }}
                 children={
                   <Text
                     style={{ ...fonts.regular24, color: colors.white }}
-                    children={`+${count - 3}`}
+                    children={`+${count - 2}`}
                   />
                 }
-              />
+              /> */}
             </View>
           </View>
         )

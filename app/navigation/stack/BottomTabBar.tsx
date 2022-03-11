@@ -1,6 +1,15 @@
 import R from '@app/assets/R'
-import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import FstImage from '@app/components/FstImage'
+import {
+  MAIN_TAB,
+  SCREEN_ROUTER,
+  SCREEN_ROUTER_APP,
+} from '@app/constant/Constant'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import Account from '@app/screens/App/Account'
+import Home from '@app/screens/App/Home'
+import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
+import ProductScreen from '@app/screens/App/Product/ProductScreen'
 import { colors } from '@app/theme'
 import { showConfirm } from '@app/utils/AlertHelper'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -11,56 +20,88 @@ import {
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { getBottomSpace } from 'react-native-iphone-x-helper'
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 import { useDispatch } from 'react-redux'
 import reactotron from 'reactotron-react-native'
 import StackBottomBar from './StackBottomBar'
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
-const {
-  ic_home,
-  ic_product,
-  ic_cart,
-  ic_profile,
-  ic_profile_focus,
-  ic_home_focus,
-  ic_cart_focus,
-} = R.images
 
-const { HOME, PRODUCT, CART, USER } = SCREEN_ROUTER_APP
+const { HOME, LOCATION, USER, CREATE_POST, NOTIFICATION } = SCREEN_ROUTER_APP
 
-const tabBarIcon = {
-  [HOME]: ic_home,
-  [PRODUCT]: ic_product,
-  [CART]: ic_cart,
-  [USER]: ic_profile,
-}
-
-const tabBarIconFocus = {
-  [HOME]: ic_home_focus,
-  [PRODUCT]: ic_home_focus,
-  [CART]: ic_cart_focus,
-  [USER]: ic_profile_focus,
-}
-
-const tabBarLabel = {
-  [HOME]: R.strings().home,
-  [PRODUCT]: R.strings().product,
-  [CART]: R.strings().cart,
-  [USER]: R.strings().account,
-}
-
-const styles = StyleSheet.create({
-  tab_bar_icon: {
-    width: 20,
-    height: 20,
+export const TAB_BAR = {
+  [HOME]: {
+    name: MAIN_TAB.HOME,
+    icon: R.images.ic_home,
+    icon_focus: R.images.ic_home_focus,
+    route: Home,
+    title: R.strings().home,
   },
-  txtLabel: {
-    fontSize: 20,
+  [LOCATION]: {
+    name: MAIN_TAB.LOCATION,
+    icon: R.images.ic_location3,
+    route: ProductScreen,
+    title: R.strings().product,
   },
-})
+  [CREATE_POST]: {
+    name: MAIN_TAB.CREATE_POST,
+    icon: R.images.ic_create_post,
+    route: ProductScreen,
+    title: 'QR Code',
+  },
+  [NOTIFICATION]: {
+    name: MAIN_TAB.NOTIFICATION,
+    icon: R.images.ic_noti,
+    route: NotificationScreen,
+    title: R.strings().notification,
+  },
+  [USER]: {
+    name: MAIN_TAB.USER,
+    icon: R.images.ic_user2,
+    route: Account,
+    title: R.strings().account,
+  },
+}
+
+const isNotCreatPost = (title: string) => {
+  return title !== TAB_BAR.CREATE_POST.title
+}
+
+const RenderTabBarIcon = ({
+  focused,
+  route,
+}: {
+  focused?: boolean
+  route?: any
+}) => {
+  const tintColor = focused ? colors.primary : '#ADB5BD'
+  return (
+    <>
+      {isNotCreatPost(TAB_BAR[route.name].title) ? (
+        <FastImage
+          style={styles.img_icon}
+          tintColor={tintColor}
+          source={TAB_BAR[route.name].icon}
+          resizeMode={'contain'}
+        />
+      ) : (
+        <View style={styles.v_qrCode}>
+          <FstImage
+            resizeMode="contain"
+            style={styles.image}
+            source={R.images.ic_create_post}
+          />
+        </View>
+      )}
+    </>
+  )
+}
+
+const renderTabBarLabel = (focused: boolean, route: any) => {
+  return <></>
+}
 
 const MainTab = (route: any) => {
   const dispatch = useDispatch()
@@ -75,43 +116,17 @@ const MainTab = (route: any) => {
       tabBar={props => (
         <BottomTabBar
           {...props}
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{
-            height: 60 + getBottomSpace(),
+            height: isIphoneX() ? getBottomSpace() + 55 : 63,
           }}
         />
       )}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
-          const sizeIcon = focused ? 25 : 22
-          return (
-            <FastImage
-              tintColor={focused ? '#FE724C' : ''}
-              style={{ width: sizeIcon, height: sizeIcon }}
-              source={
-                focused ? tabBarIconFocus[route.name] : tabBarIcon[route.name]
-              }
-              resizeMode={'contain'}
-            />
-          )
+          return <RenderTabBarIcon focused={focused} route={route} />
         },
-        tabBarLabel: ({ focused }) => {
-          const color = focused ? colors.primary : colors.focus
-          return (
-            <></>
-            // <Text
-            //   style={[
-            //     styles.txtLabel,
-            //     {
-            //       color: color,
-            //       fontSize: 12,
-            //     },
-            //   ]}
-            //   numberOfLines={1}
-            // >
-            //   {tabBarLabel[route.name]}
-            // </Text>
-          )
-        },
+        tabBarLabel: ({ focused }) => renderTabBarLabel(focused, route),
         tabBarButton: props => {
           return (
             <TouchableOpacity
@@ -135,8 +150,12 @@ const MainTab = (route: any) => {
         },
       })}
     >
-      {Object.keys(StackBottomBar).map((elem, index) => (
-        <Tab.Screen key={index} name={elem} component={StackBottomBar[elem]} />
+      {Object.keys(TAB_BAR).map((item, index) => (
+        <Tab.Screen
+          key={index}
+          name={TAB_BAR[item].name}
+          component={TAB_BAR[item].route}
+        />
       ))}
     </Tab.Navigator>
   )
@@ -151,3 +170,29 @@ export const StackMainScreen = () => (
     }
   />
 )
+const styles = StyleSheet.create({
+  img_icon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
+  v_qrCode: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 38,
+    height: 38,
+    borderRadius: 38 / 2,
+    shadowColor: colors.primary,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 2.41,
+    elevation: 2,
+  },
+  image: {
+    width: 36,
+    height: 36,
+  },
+})

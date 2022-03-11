@@ -81,6 +81,8 @@ function strings() {
     logout: I18n.t('logout', { defaultValue: '' }),
     not_update: I18n.t('not_update', { defaultValue: '' }),
     see_more: I18n.t('see_more', { defaultValue: '' }),
+    support: I18n.t('support', { defaultValue: '' }),
+    number_support: I18n.t('number_support', { defaultValue: '' }),
   }
 }
 export default strings

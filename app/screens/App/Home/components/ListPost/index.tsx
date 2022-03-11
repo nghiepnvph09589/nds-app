@@ -5,6 +5,8 @@ import Banner from './components/Banner'
 import CategoryAndAddress from './components/CategoryAndAddress'
 import ContentPost from './components/ContentPost'
 import InfoPost from './components/InfoPost'
+import PostImageArea from './components/PostImageArea'
+import Support from './components/Support'
 
 interface ListPost {
   data: any
@@ -17,6 +19,8 @@ const ListPost = (props: ListPost) => {
       <View style={styles.v_item}>
         <InfoPost name={item.name} address={item.address} />
         <ContentPost content={item.content_post} />
+        <PostImageArea data={item.dataImage} />
+        <Support />
       </View>
     )
   }, [])

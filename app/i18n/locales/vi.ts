@@ -70,4 +70,6 @@ export default {
   logout: 'Đăng xuất',
   not_update: 'Chưa cập nhật',
   see_more: 'Xem thêm',
+  support: 'Ủng hộ',
+  number_support: 'Lượt ủng hộ',
 }
