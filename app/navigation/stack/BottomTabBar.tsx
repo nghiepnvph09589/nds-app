@@ -1,31 +1,34 @@
-import R from '@app/assets/R'
-import FstImage from '@app/components/FstImage'
+import {
+  BottomTabBar,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs'
 import {
   MAIN_TAB,
   SCREEN_ROUTER,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
-import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
+
 import Account from '@app/screens/App/Account'
+import AsyncStorage from '@react-native-community/async-storage'
 import CreatePost from '@app/screens/App/CreatePost'
+import FastImage from 'react-native-fast-image'
+import FstImage from '@app/components/FstImage'
 import Home from '@app/screens/App/Home'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
-import { colors } from '@app/theme'
-import { showConfirm } from '@app/utils/AlertHelper'
-import AsyncStorage from '@react-native-community/async-storage'
-import {
-  BottomTabBar,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs'
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import R from '@app/assets/R'
 import React from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import FastImage from 'react-native-fast-image'
-import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
-import { useDispatch } from 'react-redux'
+import { colors } from '@app/theme'
+import { createStackNavigator } from '@react-navigation/stack'
+import { dimension } from '@app/constant/Theme'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import reactotron from 'reactotron-react-native'
+import { showConfirm } from '@app/utils/AlertHelper'
+import { useDispatch } from 'react-redux'
+
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
@@ -102,6 +105,14 @@ const renderTabBarLabel = (focused: boolean, route: any) => {
   return <></>
 }
 
+const renderTabBar = (props: any) => {
+  return (
+    <View style={styles.tab_bar_ctn}>
+      <BottomTabBar {...props} style={styles.bottom_tab} />
+    </View>
+  )
+}
+
 const MainTab = (route: any) => {
   const dispatch = useDispatch()
   const routeName = getFocusedRouteNameFromRoute(route)
@@ -110,17 +121,34 @@ const MainTab = (route: any) => {
     <Tab.Navigator
       tabBarOptions={{
         keyboardHidesTabBar: false,
-        tabStyle: { flexDirection: 'column' },
+        tabStyle: {
+          flexDirection: 'column',
+          borderTopLeftRadius: 28,
+          borderTopRightRadius: 28,
+        },
       }}
-      tabBar={props => (
-        <BottomTabBar
-          {...props}
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={{
-            height: isIphoneX() ? getBottomSpace() + 55 : 63,
-          }}
-        />
-      )}
+      tabBar={
+        (props: any) => renderTabBar(props)
+        //   (
+        //   <BottomTabBar
+        //     {...props}
+        //     // eslint-disable-next-line react-native/no-inline-styles
+        //     style={{
+        //       height: isIphoneX() ? getBottomSpace() + 55 : 63,
+        //       shadowColor: 'rgba(124, 124, 124, 0.1)',
+        //       shadowOffset: {
+        //         width: 0,
+        //         height: 105,
+        //       },
+        //       shadowOpacity: 0.2,
+        //       shadowRadius: 11.95,
+        //       backgroundColor: '#FFFFFF',
+        //       borderTopLeftRadius: 28,
+        //       borderTopRightRadius: 28,
+        //     }}
+        //   />
+        // )
+      }
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           return <RenderTabBarIcon focused={focused} route={route} />
@@ -193,5 +221,32 @@ const styles = StyleSheet.create({
   image: {
     width: 36,
     height: 36,
+  },
+  tab_bar_ctn: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    backgroundColor: '#ffffff',
+    height: isIphoneX() ? getBottomSpace() + 55 : 63,
+    width: dimension.width,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 12.35,
+    elevation: 19,
+  },
+  bottom_tab: {
+    height: isIphoneX() ? getBottomSpace() + 55 : 63,
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    borderTopColor: 'transparent',
+    borderColor: 'transparent',
+    elevation: 0,
   },
 })

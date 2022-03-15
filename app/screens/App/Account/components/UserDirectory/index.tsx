@@ -1,13 +1,15 @@
-import R from '@app/assets/R'
-import { SCREEN_ROUTER } from '@app/constant/Constant'
-import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
-import React from 'react'
 import { Platform, ScrollView, StyleSheet } from 'react-native'
+import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
-import { useDispatch } from 'react-redux'
-import { logout } from '../../slices/AccountSlice'
+
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import Directory from './components/Directory'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import R from '@app/assets/R'
+import React from 'react'
+import { logout } from '../../slices/AccountSlice'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import { useDispatch } from 'react-redux'
 
 const UserDirectory = () => {
   const dispatch = useDispatch()
@@ -20,23 +22,33 @@ const UserDirectory = () => {
   return (
     <ScrollView style={styles.v_container}>
       <Directory
-        onPress1={() => {}}
-        onPress2={() => {}}
+        onPress1={() => {
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_ACCOUNT)
+        }}
+        onPress2={() => {
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_SUPPORT)
+        }}
         label1={R.strings().edit_user_info}
         source1={R.images.ic_edit_user}
         label2={R.strings().support_list}
         source2={R.images.ic_list2}
       />
       <Directory
-        onPress1={() => {}}
-        onPress2={() => {}}
+        onPress1={() => {
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.CONTACT)
+        }}
+        onPress2={() => {
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.TERMS)
+        }}
         label1={R.strings().contact}
         source1={R.images.ic_contact}
         label2={R.strings().terms}
         source2={R.images.ic_terms}
       />
       <Directory
-        onPress1={() => {}}
+        onPress1={() => {
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.CHANGE_PASS)
+        }}
         onPress2={handleLogout}
         label1={R.strings().change_password}
         source1={R.images.ic_change_pass}
@@ -56,10 +68,10 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios' && isIphoneX()
         ? -25
         : Platform.OS === 'ios' && !isIphoneX()
-        ? -35
-        : Platform.OS !== 'ios' && isIphoneX()
-        ? -30
-        : -30 - getStatusBarHeight(),
+          ? -35
+          : Platform.OS !== 'ios' && isIphoneX()
+            ? -30
+            : -30 - getStatusBarHeight(),
     backgroundColor: '#FAFAFA',
     paddingTop: 24,
     paddingHorizontal: 12,

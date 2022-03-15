@@ -88,6 +88,12 @@ function strings() {
     location: I18n.t('location', { defaultValue: '' }),
     offer: I18n.t('offer', { defaultValue: '' }),
     post: I18n.t('post', { defaultValue: '' }),
+    update_account: I18n.t('update_account', { defaultValue: '' }),
+    re_password_fail: I18n.t('re_password_fail', { defaultValue: '' }),
+    placeholder_current_password: I18n.t('placeholder_current_password', {
+      defaultValue: '',
+    }),
+    placeholder_new_pass: I18n.t('placeholder_new_pass', { defaultValue: '' }),
   }
 }
 export default strings
