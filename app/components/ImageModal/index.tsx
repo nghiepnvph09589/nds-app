@@ -28,6 +28,8 @@ interface ImageModalProps {
   currentIndex?: number
   resizeMode?: ResizeMode
   count?: number
+  isContainVideo?: boolean
+  urlVideo?: any
 }
 
 const ImageModal = ({
@@ -37,6 +39,8 @@ const ImageModal = ({
   onPress,
   currentIndex = 0,
   count,
+  isContainVideo,
+  urlVideo,
   resizeMode = 'cover',
 }: ImageModalProps) => {
   const { width } = dimensions
@@ -82,8 +86,9 @@ const ImageModal = ({
         swipeDirection={'down'}
         onSwipeCancel={() => setIsVisible(false)}
         style={{
-          backgroundColor: 'transparent',
+          backgroundColor: 'red',
           marginHorizontal: 0, // This is the important style you need to set
+          margin: 0,
           // alignItems: undefined,
           // justifyContent: undefined,
         }}
@@ -95,7 +100,7 @@ const ImageModal = ({
           swipeDownThreshold={200}
           onSwipeDown={() => setIsVisible(false)}
           enablePreload
-          loadingRender={() => <ActivityIndicator size={'large'} />}
+          //loadingRender={() => <ActivityIndicator size={'large'} />}
           backgroundColor="#00000012"
           menuContext={null}
           renderIndicator={(vCurrentIndex, allSize) => {
@@ -116,6 +121,7 @@ const ImageModal = ({
                   alignSelf: 'center',
                   justifyContent: 'center',
                   marginTop: getOffset().top + 20,
+                  backgroundColor: 'yellow',
                 }}
               >
                 <Text style={{ color: 'white', ...fonts.semi_bold16 }}>
@@ -127,26 +133,44 @@ const ImageModal = ({
           renderImage={props => (
             <>
               {indexCurrent === 1 ? (
-                <Video
-                  controls
-                  //ref={videoRef}
-                  paused={videoPause}
-                  //onLoad={onVideoLoad}
-                  source={{
-                    uri: props.source.uri,
-                  }}
-                  style={{
-                    width: dimensions.width,
-                    aspectRatio: 1,
-                    alignSelf: 'center',
-                    //backgroundColor: 'red',
-                    // position: 'absolute',
-                    // top: 10,
-                    // left: 0,
-                    // right: 0,
-                  }}
-                />
+                <View style={{ backgroundColor: 'yellow', flex: 1 }}>
+                  <Text>alo</Text>
+                  {/* <Video
+                    controls
+                    //ref={videoRef}
+                    //paused={videoPause}
+                    //onLoad={onVideoLoad}
+                    source={{
+                      uri: 'https://dev.ndsapi.winds.vn/uploads/video/video_5fac1a28306f4ddfb03f389c2f2de1d8.mp4',
+                    }}
+                    style={{
+                      width: dimensions.width,
+                      aspectRatio: 1,
+                      alignSelf: 'center',
+                      backgroundColor: 'red',
+                    }}
+                  /> */}
+                </View>
               ) : (
+                // <Video
+                //   controls
+                //   //ref={videoRef}
+                //   paused={videoPause}
+                //   //onLoad={onVideoLoad}
+                //   source={{
+                //     uri: props.source.uri,
+                //   }}
+                //   style={{
+                //     width: dimensions.width,
+                //     aspectRatio: 1,
+                //     alignSelf: 'center',
+                //     //backgroundColor: 'red',
+                //     // position: 'absolute',
+                //     // top: 10,
+                //     // left: 0,
+                //     // right: 0,
+                //   }}
+                // />
                 <FstImage
                   resizeMode="contain"
                   style={{

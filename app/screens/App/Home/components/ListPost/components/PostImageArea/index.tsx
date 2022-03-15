@@ -23,9 +23,10 @@ const PostImageArea = (props: Props) => {
 
   const count = dataMedia?.length
 
-  // if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
-  //   dataMedia.splice(0, 1)
-  // }
+  if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
+    dataMedia.splice(0, 1)
+    //dataMedia.un
+  }
 
   //   const [thumbnailVideo, setThumbnailVideo] = useState<string>()
   //   const [isLoadingThumb, setIsLoadingThumb] = useState<boolean>(true)
