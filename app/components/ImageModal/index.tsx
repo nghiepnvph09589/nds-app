@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import R from '@app/assets/R'
-import { colors, dimensions, fonts, styleView } from '@app/theme'
+import { dimensions, fonts } from '@app/theme'
 import { getOffset } from '@app/utils/Responsive'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   ActivityIndicator,
   StyleProp,
@@ -15,6 +15,8 @@ import FastImage, { ResizeMode, Source } from 'react-native-fast-image'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { IImageInfo } from 'react-native-image-zoom-viewer/built/image-viewer.type'
 import Modal from 'react-native-modal'
+import FstImage from '../FstImage'
+import Video from 'react-native-video'
 
 type ImageUrlProps = Source | number
 
@@ -38,7 +40,6 @@ const ImageModal = ({
   resizeMode = 'cover',
 }: ImageModalProps) => {
   const { width } = dimensions
-  const RATIO = width / 375
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const imagesArr: IImageInfo[] = !!urls
     ? !!urls.length
@@ -52,6 +53,8 @@ const ImageModal = ({
         }))
       : [{ url: typeof url !== 'number' ? url.uri : url }]
     : [{ url: typeof url !== 'number' ? url.uri : url }]
+  const [indexCurrent, setIndexCurrent] = useState<number>(currentIndex)
+  const [videoPause, setVideoPause] = useState<boolean>(false)
 
   return (
     <TouchableOpacity
@@ -70,24 +73,6 @@ const ImageModal = ({
         style={{ width: '100%', height: '100%' }}
         resizeMode={resizeMode}
       />
-      {count && (
-        <View
-          style={{
-            ...styleView.centerItem,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0,0,0,.4)',
-            position: 'absolute',
-            bottom: 0,
-          }}
-          children={
-            <Text
-              style={{ ...fonts.regular24, color: colors.white }}
-              children={`+${count}`}
-            />
-          }
-        />
-      )}
 
       <Modal
         isVisible={isVisible}
@@ -98,9 +83,9 @@ const ImageModal = ({
         onSwipeCancel={() => setIsVisible(false)}
         style={{
           backgroundColor: 'transparent',
-          margin: 0, // This is the important style you need to set
-          alignItems: undefined,
-          justifyContent: undefined,
+          marginHorizontal: 0, // This is the important style you need to set
+          // alignItems: undefined,
+          // justifyContent: undefined,
         }}
       >
         <ImageViewer
@@ -113,8 +98,13 @@ const ImageModal = ({
           loadingRender={() => <ActivityIndicator size={'large'} />}
           backgroundColor="#00000012"
           menuContext={null}
-          renderHeader={() => <View style={{ backgroundColor: 'red' }} />}
           renderIndicator={(vCurrentIndex, allSize) => {
+            if (vCurrentIndex) {
+              setIndexCurrent(vCurrentIndex)
+            }
+            if (vCurrentIndex !== 1) {
+              setVideoPause(true)
+            }
             if (!!allSize && allSize <= 1) {
               return <></>
             }
@@ -134,6 +124,41 @@ const ImageModal = ({
               </View>
             )
           }}
+          renderImage={props => (
+            <>
+              {indexCurrent === 1 ? (
+                <Video
+                  controls
+                  //ref={videoRef}
+                  paused={videoPause}
+                  //onLoad={onVideoLoad}
+                  source={{
+                    uri: props.source.uri,
+                  }}
+                  style={{
+                    width: dimensions.width,
+                    aspectRatio: 1,
+                    alignSelf: 'center',
+                    //backgroundColor: 'red',
+                    // position: 'absolute',
+                    // top: 10,
+                    // left: 0,
+                    // right: 0,
+                  }}
+                />
+              ) : (
+                <FstImage
+                  resizeMode="contain"
+                  style={{
+                    width: props.style.width,
+                    height: props.style.height,
+                    // alignSelf: 'center',
+                  }}
+                  source={{ uri: props.source.uri }}
+                />
+              )}
+            </>
+          )}
         />
       </Modal>
     </TouchableOpacity>

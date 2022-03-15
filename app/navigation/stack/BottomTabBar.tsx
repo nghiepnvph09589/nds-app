@@ -173,7 +173,6 @@ const styles = StyleSheet.create({
   img_icon: {
     width: 24,
     height: 24,
-    resizeMode: 'contain',
   },
   v_qrCode: {
     justifyContent: 'center',

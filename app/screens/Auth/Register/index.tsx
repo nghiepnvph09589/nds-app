@@ -2,11 +2,10 @@ import R from '@app/assets/R'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { EMAIL_REGEX, SCREEN_ROUTER } from '@app/constant/Constant'
+import { EMAIL_REGEX, NAME_REGEX, SCREEN_ROUTER } from '@app/constant/Constant'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { colors, fonts } from '@app/theme'
-import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { memo, useRef, useState } from 'react'
@@ -27,12 +26,17 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
   const [profileImage, setProfileImage] = useState<string>('')
   const filename = useRef<string>('')
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string().required(R.strings().name_blank),
+    name: Yup.string()
+      .trim()
+      .matches(NAME_REGEX, R.strings().validateEmail)
+      .required(R.strings().name_blank),
     email: Yup.string()
-      .matches(EMAIL_REGEX, R.strings().validateEmail)
+      .email(R.strings().validateEmail)
+      // .matches(EMAIL_REGEX, R.strings().validateEmail)
       .required(R.strings().email_blank),
     address: Yup.string().required(R.strings().address_blank),
   })
+
   const handleRegister = async (item: {
     email: string
     name: string
@@ -55,6 +59,7 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
       hideLoading()
     }
   }
+
   return (
     <ScreenWrapper
       back
@@ -103,6 +108,7 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
                   value={values.name}
                   errorMessage={errors.name}
                   touched={touched.name}
+                  maxLength={255}
                 />
                 <RNTextInput
                   containerStyle={styles.v_container_input}

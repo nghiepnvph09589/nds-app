@@ -16,7 +16,6 @@ const ContentPost = (props: ContentPostProps) => {
     useState<number | undefined>(undefined)
 
   const onTextLayout = useCallback(e => {
-    console.log(e.nativeEvent.lines.length)
     if (e.nativeEvent.lines.length > NUM_OF_LINES) {
       setNumberOfLines(NUM_OF_LINES)
       setShowMoreButton(true)
