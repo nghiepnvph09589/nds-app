@@ -52,12 +52,13 @@ export const colors = {
     primary: '#FF4D4F',
     light: '#FFA39E',
   },
-  // text: {
-  //   primary: '#212B36',
-  //   light: '#454F5B',
-  //   lighter: '#637381',
-  //   lightest: '#919EAB',
-  // },
+  textColor: {
+    gray1: '#FFFFFF',
+    primary: '#212B36',
+    light: '#454F5B',
+    lighter: '#637381',
+    lightest: '#919EAB',
+  },
 }
 
 export const ColorDefault = {

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import R from '@app/assets/R'
 import React from 'react'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
