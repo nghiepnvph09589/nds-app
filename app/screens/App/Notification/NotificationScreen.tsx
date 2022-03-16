@@ -21,7 +21,6 @@ const NotificationScreen = () => {
             width: dimension.width,
             aspectRatio: 1,
             alignSelf: 'center',
-            backgroundColor: 'red',
             position: 'absolute',
             //top: 10,
             left: 0,

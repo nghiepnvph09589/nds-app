@@ -7,7 +7,7 @@ import {
   SCREEN_ROUTER,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 
 import Account from '@app/screens/App/Account'
@@ -28,6 +28,7 @@ import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import reactotron from 'reactotron-react-native'
 import { showConfirm } from '@app/utils/AlertHelper'
 import { useDispatch } from 'react-redux'
+import NavigationUtil from '../NavigationUtil'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -127,28 +128,15 @@ const MainTab = (route: any) => {
           borderTopRightRadius: 28,
         },
       }}
-      tabBar={
-        (props: any) => renderTabBar(props)
-        //   (
-        //   <BottomTabBar
-        //     {...props}
-        //     // eslint-disable-next-line react-native/no-inline-styles
-        //     style={{
-        //       height: isIphoneX() ? getBottomSpace() + 55 : 63,
-        //       shadowColor: 'rgba(124, 124, 124, 0.1)',
-        //       shadowOffset: {
-        //         width: 0,
-        //         height: 105,
-        //       },
-        //       shadowOpacity: 0.2,
-        //       shadowRadius: 11.95,
-        //       backgroundColor: '#FFFFFF',
-        //       borderTopLeftRadius: 28,
-        //       borderTopRightRadius: 28,
-        //     }}
-        //   />
-        // )
-      }
+      tabBar={props => (
+        <BottomTabBar
+          {...props}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{
+            height: isIphoneX() ? getBottomSpace() + 55 : 63,
+          }}
+        />
+      )}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           return <RenderTabBarIcon focused={focused} route={route} />
@@ -178,11 +166,23 @@ const MainTab = (route: any) => {
       })}
     >
       {Object.keys(TAB_BAR).map((item, index) => (
-        <Tab.Screen
-          key={index}
-          name={TAB_BAR[item].name}
-          component={TAB_BAR[item].route}
-        />
+        <>
+          {index === 2 ? (
+            <Tab.Screen
+              options={{ tabBarVisible: false }}
+              key={index}
+              name={TAB_BAR[item].name}
+              component={TAB_BAR[item].route}
+            />
+          ) : (
+            <Tab.Screen
+              //options={{ tabBarVisible: false }}
+              key={index}
+              name={TAB_BAR[item].name}
+              component={TAB_BAR[item].route}
+            />
+          )}
+        </>
       ))}
     </Tab.Navigator>
   )

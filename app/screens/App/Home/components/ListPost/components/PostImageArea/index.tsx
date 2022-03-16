@@ -2,7 +2,7 @@
 import R from '@app/assets/R'
 import ImageModal from '@app/components/ImageModal'
 import { dimensions, styleView } from '@app/theme'
-import React from 'react'
+import React, { useRef } from 'react'
 import { View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import useMediaData, { MEDIA_TYPE } from './hooks'
@@ -17,6 +17,7 @@ const RATIO = width / 375
 
 const PostImageArea = (props: Props) => {
   const { data } = props
+  const urlVideo = useRef<string>('')
   let { dataMedia } = useMediaData(
     data.map((item: { media_url: any }) => item.media_url)
   )
@@ -24,69 +25,31 @@ const PostImageArea = (props: Props) => {
   const count = dataMedia?.length
 
   if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
-    dataMedia.splice(0, 1)
-    //dataMedia.un
+    urlVideo.current = dataMedia[0].url
+    if (dataMedia.length !== 1) {
+      dataMedia[0].url = dataMedia[1].url
+    }
   }
-
-  //   const [thumbnailVideo, setThumbnailVideo] = useState<string>()
-  //   const [isLoadingThumb, setIsLoadingThumb] = useState<boolean>(true)
-
-  //   const renderThumbnail = async () => {
-  //     try {
-  //       setIsLoadingThumb(true)
-  //       const thumbnail = await createThumbnail({
-  //         url: dataMedia[0]?.url,
-
-  //         format: 'jpeg',
-  //         timeStamp: 0,
-  //       })
-  //       setThumbnailVideo(thumbnail.path)
-  //     } catch (err) {
-  //       // console.log(err)
-  //     } finally {
-  //       setIsLoadingThumb(false)
-  //     }
-  //   }
-
-  // useEffect(() => {
-  //   dataMedia[0]?.type == MEDIA_TYPE.VIDEO && renderThumbnail()
-  // }, [])
 
   const renderFirstImage = (style?: ViewStyle) => {
     if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
-      // if (isLoadingThumb)
-      //   return (
-      //     <View style={[{ ...styleView.centerItem }, style]}>
-      //       <ActivityIndicator size="small" />
-      //     </View>
-      //   )
       return (
         <View style={style}>
-          <View
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              ...styleView.centerItem,
-              backgroundColor: 'black',
-            }}
-          >
-            <FastImage
-              style={{ width: 42, height: 42 }}
-              source={R.images.ic_play}
-            />
-          </View>
+          <ImageModal
+            url={{ uri: dataMedia[1]?.url }}
+            style={{ width: '100%', aspectRatio: 1 }}
+            urls={dataMedia.map((value: { url: string }) => ({
+              uri: value?.url,
+            }))}
+            currentIndex={0}
+            isContainVideo={true}
+            urlVideo={urlVideo.current}
+          />
         </View>
       )
     } else
       return (
         <View style={style}>
-          {/* <FstImage
-            style={{ width: '100%', aspectRatio: 1 }}
-            //source={{ uri: dataMedia[0]?.url }}
-            source={R.images.img_login}
-            resizeMode={'cover'}
-          /> */}
           <ImageModal
             url={{ uri: dataMedia[0]?.url }}
             style={{ width: '100%', aspectRatio: 1 }}
@@ -94,7 +57,7 @@ const PostImageArea = (props: Props) => {
               uri: value?.url,
             }))}
             currentIndex={0}
-            count={2}
+            urlVideo={urlVideo.current}
           />
         </View>
       )
@@ -139,6 +102,7 @@ const PostImageArea = (props: Props) => {
                   }))}
                   currentIndex={1}
                   style={{ width: '100%', height: '100%' }}
+                  urlVideo={urlVideo.current}
                 />
               }
             />
@@ -166,6 +130,7 @@ const PostImageArea = (props: Props) => {
                     }))}
                     currentIndex={1}
                     style={{ width: '100%', height: '100%' }}
+                    urlVideo={urlVideo.current}
                   />
                 }
               />
@@ -183,6 +148,7 @@ const PostImageArea = (props: Props) => {
                     }))}
                     currentIndex={2}
                     style={{ width: '100%', height: '100%' }}
+                    urlVideo={urlVideo.current}
                   />
                 }
               />
@@ -217,6 +183,7 @@ const PostImageArea = (props: Props) => {
                     }))}
                     currentIndex={1}
                     style={{ width: '100%', height: '100%' }}
+                    urlVideo={urlVideo.current}
                   />
                 }
               />
@@ -235,6 +202,7 @@ const PostImageArea = (props: Props) => {
                     currentIndex={2}
                     style={{ width: '100%', height: '100%' }}
                     count={count - 2}
+                    urlVideo={urlVideo.current}
                   />
                 }
               />

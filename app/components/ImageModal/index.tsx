@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import R from '@app/assets/R'
-import { dimensions, fonts } from '@app/theme'
+import { colors, dimensions, fonts, styleView } from '@app/theme'
 import { getOffset } from '@app/utils/Responsive'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import {
   ActivityIndicator,
   StyleProp,
@@ -15,8 +15,8 @@ import FastImage, { ResizeMode, Source } from 'react-native-fast-image'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { IImageInfo } from 'react-native-image-zoom-viewer/built/image-viewer.type'
 import Modal from 'react-native-modal'
-import FstImage from '../FstImage'
 import Video from 'react-native-video'
+import FstImage from '../FstImage'
 
 type ImageUrlProps = Source | number
 
@@ -45,7 +45,7 @@ const ImageModal = ({
 }: ImageModalProps) => {
   const { width } = dimensions
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  const imagesArr: IImageInfo[] = !!urls
+  let imagesArr: IImageInfo[] = !!urls
     ? !!urls.length
       ? urls.map(item => ({
           url:
@@ -72,11 +72,47 @@ const ImageModal = ({
       ]}
       activeOpacity={1}
     >
-      <FastImage
-        source={url}
-        style={{ width: '100%', height: '100%' }}
-        resizeMode={resizeMode}
-      />
+      {isContainVideo ? (
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'black',
+            ...styleView.centerItem,
+          }}
+        >
+          <FastImage
+            style={{ width: 42, height: 42 }}
+            source={R.images.ic_play}
+          />
+        </View>
+      ) : (
+        <>
+          <FastImage
+            source={url}
+            style={{ width: '100%', height: '100%' }}
+            resizeMode={resizeMode}
+          />
+          {count && (
+            <View
+              style={{
+                ...styleView.centerItem,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(0,0,0,.4)',
+                position: 'absolute',
+                bottom: 0,
+              }}
+              children={
+                <Text
+                  style={{ ...fonts.regular24, color: colors.white }}
+                  children={`+${count}`}
+                />
+              }
+            />
+          )}
+        </>
+      )}
 
       <Modal
         isVisible={isVisible}
@@ -86,104 +122,94 @@ const ImageModal = ({
         swipeDirection={'down'}
         onSwipeCancel={() => setIsVisible(false)}
         style={{
-          backgroundColor: 'red',
           marginHorizontal: 0, // This is the important style you need to set
           margin: 0,
-          // alignItems: undefined,
-          // justifyContent: undefined,
         }}
       >
-        <ImageViewer
-          imageUrls={imagesArr}
-          enableSwipeDown
-          index={currentIndex}
-          swipeDownThreshold={200}
-          onSwipeDown={() => setIsVisible(false)}
-          enablePreload
-          //loadingRender={() => <ActivityIndicator size={'large'} />}
-          backgroundColor="#00000012"
-          menuContext={null}
-          renderIndicator={(vCurrentIndex, allSize) => {
-            if (vCurrentIndex) {
-              setIndexCurrent(vCurrentIndex)
-            }
-            if (vCurrentIndex !== 1) {
-              setVideoPause(true)
-            }
-            if (!!allSize && allSize <= 1) {
-              return <></>
-            }
-            return (
-              <View
-                style={{
-                  position: 'absolute',
-                  zIndex: 9999,
-                  alignSelf: 'center',
-                  justifyContent: 'center',
-                  marginTop: getOffset().top + 20,
-                  backgroundColor: 'yellow',
-                }}
-              >
-                <Text style={{ color: 'white', ...fonts.semi_bold16 }}>
-                  {vCurrentIndex + '/' + allSize}
-                </Text>
-              </View>
-            )
-          }}
-          renderImage={props => (
-            <>
-              {indexCurrent === 1 ? (
-                <View style={{ backgroundColor: 'yellow', flex: 1 }}>
-                  <Text>alo</Text>
-                  {/* <Video
-                    controls
-                    //ref={videoRef}
-                    //paused={videoPause}
-                    //onLoad={onVideoLoad}
-                    source={{
-                      uri: 'https://dev.ndsapi.winds.vn/uploads/video/video_5fac1a28306f4ddfb03f389c2f2de1d8.mp4',
-                    }}
-                    style={{
-                      width: dimensions.width,
-                      aspectRatio: 1,
-                      alignSelf: 'center',
-                      backgroundColor: 'red',
-                    }}
-                  /> */}
-                </View>
-              ) : (
-                // <Video
-                //   controls
-                //   //ref={videoRef}
-                //   paused={videoPause}
-                //   //onLoad={onVideoLoad}
-                //   source={{
-                //     uri: props.source.uri,
-                //   }}
-                //   style={{
-                //     width: dimensions.width,
-                //     aspectRatio: 1,
-                //     alignSelf: 'center',
-                //     //backgroundColor: 'red',
-                //     // position: 'absolute',
-                //     // top: 10,
-                //     // left: 0,
-                //     // right: 0,
-                //   }}
-                // />
-                <FstImage
-                  resizeMode="contain"
+        {imagesArr.length === 1 && isContainVideo ? (
+          <Video
+            controls
+            paused={videoPause}
+            source={{
+              uri: urlVideo,
+            }}
+            style={{
+              width: dimensions.width,
+              aspectRatio: 1,
+              alignSelf: 'center',
+            }}
+          />
+        ) : (
+          <ImageViewer
+            imageUrls={imagesArr}
+            enableSwipeDown
+            index={currentIndex}
+            swipeDownThreshold={200}
+            onSwipeDown={() => setIsVisible(false)}
+            enablePreload
+            loadingRender={() => <ActivityIndicator size={'large'} />}
+            backgroundColor="#00000012"
+            menuContext={null}
+            renderIndicator={(vCurrentIndex, allSize) => {
+              if (vCurrentIndex) {
+                setIndexCurrent(vCurrentIndex)
+              }
+              if (vCurrentIndex !== 1) {
+                setVideoPause(true)
+              } else if (vCurrentIndex === 1) {
+                setVideoPause(false)
+              }
+              if (!!allSize && allSize <= 1) {
+                return <></>
+              }
+              return (
+                <View
                   style={{
-                    width: props.style.width,
-                    height: props.style.height,
-                    // alignSelf: 'center',
+                    position: 'absolute',
+                    zIndex: 9999,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                    marginTop: getOffset().top + 20,
                   }}
-                  source={{ uri: props.source.uri }}
-                />
-              )}
-            </>
-          )}
-        />
+                >
+                  <Text style={{ color: 'white', ...fonts.semi_bold16 }}>
+                    {vCurrentIndex + '/' + allSize}
+                  </Text>
+                </View>
+              )
+            }}
+            renderImage={props => (
+              <>
+                {indexCurrent === 1 && !!urlVideo ? (
+                  <View style={{ flex: 1, width: '100%' }}>
+                    <Video
+                      controls
+                      paused={videoPause}
+                      source={{
+                        uri: urlVideo,
+                      }}
+                      style={{
+                        width: '100%',
+                        aspectRatio: 1,
+                        alignSelf: 'center',
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <FstImage
+                    resizeMode="contain"
+                    style={{
+                      width: props.style.width,
+                      height: props.style.height,
+                      // alignSelf: 'center',
+                    }}
+                    source={{ uri: props.source.uri }}
+                  />
+                )}
+              </>
+            )}
+          />
+        )}
       </Modal>
     </TouchableOpacity>
   )

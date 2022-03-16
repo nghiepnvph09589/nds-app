@@ -13,6 +13,7 @@ const CreatePost = () => {
   const userInfo = useAppSelector(state => state.accountReducer.data)
   return (
     <ScreenWrapper
+      back
       color={colors.text}
       backgroundHeader="white"
       forceInset={['left']}

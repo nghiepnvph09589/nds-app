@@ -24,3 +24,7 @@ export interface ChangePassPayload {
   user_id: string
   new_password: string
 }
+export interface HomePayload {
+  page?: number
+  limit?: number
+}
