@@ -94,6 +94,11 @@ function strings() {
       defaultValue: '',
     }),
     placeholder_new_pass: I18n.t('placeholder_new_pass', { defaultValue: '' }),
+    cmt: I18n.t('cmt', { defaultValue: '' }),
+    date_of_birthday: I18n.t('date_of_birthday', { defaultValue: '' }),
+    sex: I18n.t('sex', { defaultValue: '' }),
+    choose: I18n.t('choose', { defaultValue: '' }),
+    save: I18n.t('save', { defaultValue: '' }),
   }
 }
 export default strings

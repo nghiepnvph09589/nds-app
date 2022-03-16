@@ -81,4 +81,9 @@ export default {
   re_password_fail: 'Mật khẩu chưa trùng khớp',
   placeholder_current_password: 'Nhập mật khẩu hiện tại',
   placeholder_new_pass: 'Nhập mật khẩu mới',
+  cmt: 'Số CMT/CCCD',
+  date_of_birthday: 'Ngày sinh',
+  sex: 'Giới tính',
+  choose: 'Chọn',
+  save: 'Lưu',
 }

@@ -1,12 +1,12 @@
-import ChangePassScreen from '@app/screens/App/Account/ChangePassword'
-import ContactScreen from '@app/screens/App/Account/Contatct'
-import ListSupportScreen from '@app/screens/App/Account/ListSupport'
+import ChangePassScreen from '@app/screens/App/Account/screens/ChangePassword'
+import ContactScreen from '@app/screens/App/Account/screens/Contact'
+import ListSupportScreen from '@app/screens/App/Account/screens/ListSupport'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
 import React from 'react'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
-import TermsScreen from '@app/screens/App/Account/Terms'
-import UpdateAccountScreen from '@app/screens/App/Account/UpdateAccount'
+import TermsScreen from '@app/screens/App/Account/screens/Terms'
+import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
 import { createStackNavigator } from '@react-navigation/stack'
 
 const {
