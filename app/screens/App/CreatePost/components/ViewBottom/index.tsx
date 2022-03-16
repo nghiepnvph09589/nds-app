@@ -1,52 +1,64 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import FstImage from '@app/components/FstImage'
-import R from '@app/assets/R'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, fonts } from '@app/theme'
-import { Source } from 'react-native-fast-image'
+import React from 'react'
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 
-const ViewBottom = () => {
-  return (
-    <View>
-      <ViewRow icon={R.images.ic_image} label={R.strings().image} />
-      <ViewRow icon={R.images.ic_location4} label={R.strings().location} />
-      <ViewRow icon={R.images.ic_package} label={R.strings().offer} />
-    </View>
-  )
+const { width } = Dimensions.get('window')
+
+interface ViewBottomProps {
+  onBack: () => void
+  onNext: () => void
 }
 
-const ViewRow = ({ icon, label }: { icon: number | Source; label: string }) => {
+const ViewBottom = (props: ViewBottomProps) => {
+  const { onBack, onNext } = props
   return (
-    <>
-      <View style={styles.line} />
-      <TouchableOpacity style={styles.v_row}>
-        <FstImage style={styles.icon} source={icon} />
-        <Text style={styles.text}>{label}</Text>
+    <View style={styles.v_container}>
+      <TouchableOpacity style={styles.v_back} onPress={onBack}>
+        <Text style={styles.txt_back}>Quay lại</Text>
       </TouchableOpacity>
-    </>
+      <TouchableOpacity style={styles.v_next} onPress={onNext}>
+        <Text style={styles.txt_next}>Tiếp theo</Text>
+      </TouchableOpacity>
+    </View>
   )
 }
 
 export default ViewBottom
 
 const styles = StyleSheet.create({
-  line: {
-    backgroundColor: '#D0DBEA',
-    height: 2,
-  },
-  v_row: {
+  v_container: {
+    backgroundColor: 'white',
+    paddingTop: 8,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
   },
-  icon: {
-    width: 24,
-    height: 24,
+  v_back: {
+    width: (width - 35) / 2,
+    alignItems: 'center',
+    paddingVertical: 11,
   },
-  text: {
-    ...fonts.semi_bold16,
-    marginLeft: 16,
-    color: colors.text,
+  txt_back: {
+    ...fonts.regular16,
+    color: '#262626',
+  },
+  v_next: {
+    marginLeft: 5,
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    width: (width - 35) / 2,
+    alignItems: 'center',
+    paddingVertical: 11,
+  },
+  txt_next: {
+    ...fonts.regular16,
+    color: 'white',
   },
 })

@@ -40,7 +40,6 @@ const ListPost = (props: ListPost) => {
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       showsVerticalScrollIndicator={false}
-      // ListEmptyComponent={<Empty description={R.strings().list_order_empty} />}
     />
   )
 }

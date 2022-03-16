@@ -1,6 +1,6 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
 import { fonts } from '@app/theme'
+import React from 'react'
+import { StyleSheet, TextInput } from 'react-native'
 
 const InputPost = () => {
   return (
@@ -8,6 +8,7 @@ const InputPost = () => {
       placeholderTextColor={'#8898A7'}
       style={styles.styleInput}
       placeholder="Nhập nội dung chia sẻ..."
+      multiline={true}
     />
   )
 }

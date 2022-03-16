@@ -6820,10 +6820,22 @@ react-native-size-matters@^0.3.1:
   resolved "https://registry.npmjs.org/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz"
   integrity sha512-mKOfBLIBFBcs9br1rlZDvxD5+mAl8Gfr5CounwJtxI6Z82rGrMO+Kgl9EIg3RMVf3G855a85YVqHJL2f5EDRlw==
 
+react-native-step-indicator@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-step-indicator/-/react-native-step-indicator-1.0.3.tgz#d136ec88639485a338c8ce281035aefd9d169f8f"
+  integrity sha512-WwTb6lpJl0T7MV59sus1utoEQuqbuWHq6V0R0iDWmlPRFjM0qirhTNTS5on1+V9Qmc9dsUCT380/mRgDF+U6zw==
+
 react-native-swiper-flatlist@^3.0.16:
   version "3.0.16"
   resolved "https://registry.npmjs.org/react-native-swiper-flatlist/-/react-native-swiper-flatlist-3.0.16.tgz"
   integrity sha512-8Mkh5DnGP7x42GBI870vpiliAdXAJObi8uDdqCjd3cWJBDgVv1xmo3y11CZzqpf6241EyddX0LygSt1Rv61LYg==
+
+react-native-swiper@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.6.0.tgz#59fdbdf95addee49630312f27077622c27776819"
+  integrity sha512-OnkTTZi+9uZUgy0uz1I9oYDhCU3z36lZn+LFsk9FXPRelxb/KeABzvPs3r3SrHWy1aA67KGtSFj0xNK2QD0NJQ==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-vector-icons@^8.1.0:
   version "8.1.0"
