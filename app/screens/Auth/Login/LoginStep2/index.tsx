@@ -45,15 +45,15 @@ const LoginStep2 = (props: LoginProps) => {
   })
   const scrollRef = useRef<KeyboardAwareScrollView>(null)
 
-  useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', keyboardDidShow)
-    return () => {
-      Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
-    }
-  }, [])
-  const keyboardDidShow = () => {
-    scrollRef.current?.scrollToEnd(true)
-  }
+  // useEffect(() => {
+  //   Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+  //   return () => {
+  //     Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
+  //   }
+  // }, [])
+  // const keyboardDidShow = () => {
+  //   scrollRef.current?.scrollToEnd(true)
+  // }
   const handleLogin = async (item: { password: string }) => {
     try {
       showLoading()

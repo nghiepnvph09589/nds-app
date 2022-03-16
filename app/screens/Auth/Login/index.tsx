@@ -41,16 +41,16 @@ const LoginScreen = () => {
       .max(11, R.strings().validatePhone)
       .required(R.strings().phone_blank),
   })
-  useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', keyboardDidShow)
-    return () => {
-      Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
-    }
-  }, [])
+  // useEffect(() => {
+  //   Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+  //   return () => {
+  //     Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
+  //   }
+  // }, [])
 
-  const keyboardDidShow = () => {
-    scrollRef.current?.scrollToEnd(true)
-  }
+  // const keyboardDidShow = () => {
+  //   scrollRef.current?.scrollToEnd(true)
+  // }
   const handleLogin = async (item: { phone: string }) => {
     try {
       showLoading()
@@ -93,7 +93,6 @@ const LoginScreen = () => {
           source={R.images.img_login}
         >
           <KeyboardAwareScrollView
-            ref={scrollRef}
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
             enableOnAndroid={true}

@@ -24,7 +24,6 @@ const images = {
   ic_eye: require('./images/ic_eye.png'),
   ic_eye_hide: require('./images/ic_eye_hide.png'),
   ic_home: require('./images/ic_home.png'),
-  ic_home_focus: require('./images/ic_home_focus.png'),
   ic_image: require('./images/ic_image.png'),
   ic_input_sex: require('./images/ic_input_sex.png'),
   ic_list: require('./images/ic_list.png'),

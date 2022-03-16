@@ -23,9 +23,10 @@ const PostImageArea = (props: Props) => {
 
   const count = dataMedia?.length
 
-  // if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
-  //   dataMedia.splice(0, 1)
-  // }
+  if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
+    dataMedia.splice(0, 1)
+    //dataMedia.un
+  }
 
   //   const [thumbnailVideo, setThumbnailVideo] = useState<string>()
   //   const [isLoadingThumb, setIsLoadingThumb] = useState<boolean>(true)
@@ -51,7 +52,7 @@ const PostImageArea = (props: Props) => {
   //   dataMedia[0]?.type == MEDIA_TYPE.VIDEO && renderThumbnail()
   // }, [])
 
-  const renderFisrtImage = (style?: ViewStyle) => {
+  const renderFirstImage = (style?: ViewStyle) => {
     if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
       // if (isLoadingThumb)
       //   return (
@@ -93,6 +94,7 @@ const PostImageArea = (props: Props) => {
               uri: value?.url,
             }))}
             currentIndex={0}
+            count={2}
           />
         </View>
       )
@@ -114,7 +116,7 @@ const PostImageArea = (props: Props) => {
           </View>
         )
       case 1:
-        return renderFisrtImage({
+        return renderFirstImage({
           marginTop: 12,
           // width: 345 * RATIO,
           // height: 229 * RATIO,
@@ -123,7 +125,7 @@ const PostImageArea = (props: Props) => {
       case 2:
         return (
           <View style={{ flex: 1, ...styleView.rowItemBetween, marginTop: 8 }}>
-            {renderFisrtImage({
+            {renderFirstImage({
               width: 171 * RATIO,
               height: '100%',
             })}
@@ -138,12 +140,6 @@ const PostImageArea = (props: Props) => {
                   currentIndex={1}
                   style={{ width: '100%', height: '100%' }}
                 />
-                // <FstImage
-                //   style={{ width: '100%', height: '100%' }}
-                //   source={{ uri: dataMedia[1]?.url }}
-                //   // source={R.images.img_login}
-                //   resizeMode={'cover'}
-                // />
               }
             />
           </View>
@@ -151,7 +147,7 @@ const PostImageArea = (props: Props) => {
       case 3:
         return (
           <View style={{ flex: 1, ...styleView.rowItemBetween, marginTop: 8 }}>
-            {renderFisrtImage({ width: 229 * RATIO })}
+            {renderFirstImage({ width: 229 * RATIO })}
             <View
               style={{
                 flex: 1,
@@ -171,13 +167,6 @@ const PostImageArea = (props: Props) => {
                     currentIndex={1}
                     style={{ width: '100%', height: '100%' }}
                   />
-
-                  // <FstImage
-                  //   style={{ width: '100%', height: '100%' }}
-                  //   //source={R.images.img_login}
-                  //   source={{ uri: dataMedia[1]?.url }}
-                  //   resizeMode={'cover'}
-                  // />
                 }
               />
               <View
@@ -195,12 +184,6 @@ const PostImageArea = (props: Props) => {
                     currentIndex={2}
                     style={{ width: '100%', height: '100%' }}
                   />
-                  // <FstImage
-                  //   style={{ width: '100%', height: '100%' }}
-                  //   //source={R.images.img_login}
-                  //   source={{ uri: dataMedia[2]?.url }}
-                  //   resizeMode={'cover'}
-                  // />
                 }
               />
             </View>
@@ -215,7 +198,7 @@ const PostImageArea = (props: Props) => {
               marginTop: 8,
             }}
           >
-            {renderFisrtImage({ width: 229 * RATIO })}
+            {renderFirstImage({ width: 229 * RATIO })}
             <View
               style={{
                 flex: 1,
@@ -235,12 +218,6 @@ const PostImageArea = (props: Props) => {
                     currentIndex={1}
                     style={{ width: '100%', height: '100%' }}
                   />
-                  // <FstImage
-                  //   style={{ width: '100%', height: '100%' }}
-                  //   // source={R.images.img_login}
-                  //   source={{ uri: dataMedia[1]?.url }}
-                  //   resizeMode={'cover'}
-                  // />
                 }
               />
               <View
@@ -259,30 +236,8 @@ const PostImageArea = (props: Props) => {
                     style={{ width: '100%', height: '100%' }}
                     count={count - 2}
                   />
-                  // <FstImage
-                  //   style={{ width: '100%', height: '100%' }}
-                  //   //source={R.images.img_login}
-                  //   source={{ uri: dataMedia[2]?.url }}
-                  //   resizeMode={'cover'}
-                  // />
                 }
               />
-              {/* <View
-                style={{
-                  ...styleView.centerItem,
-                  width: '100%',
-                  height: 113 * RATIO,
-                  backgroundColor: 'rgba(0,0,0,.4)',
-                  position: 'absolute',
-                  bottom: 0,
-                }}
-                children={
-                  <Text
-                    style={{ ...fonts.regular24, color: colors.white }}
-                    children={`+${count - 2}`}
-                  />
-                }
-              /> */}
             </View>
           </View>
         )

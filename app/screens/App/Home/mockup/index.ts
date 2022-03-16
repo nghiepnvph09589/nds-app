@@ -56,7 +56,7 @@ export const DataPost = [
     dataImage: [
       {
         media_url:
-          'https://dev.ndsapi.winds.vn/uploads/video/video_3e23d541dce24f9c8d19f22db275b195.mp4',
+          'https://dev.ndsapi.winds.vn/uploads/video/video_5fac1a28306f4ddfb03f389c2f2de1d8.mp4',
       },
       {
         media_url:
