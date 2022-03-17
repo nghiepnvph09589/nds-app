@@ -1,11 +1,5 @@
-import {
-    NativeSyntheticEvent,
-    StyleSheet,
-    TextInputFocusEventData,
-    TextInputSubmitEditingEventData,
-    TouchableOpacity,
-} from 'react-native'
 import React, { useState } from 'react'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { colors, styleView } from '@app/theme'
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
@@ -17,19 +11,9 @@ import { formatShortDate } from '@app/utils/DateUtils'
 const SelectDateBirth = ({
     value,
     onChange,
-    onBlur,
-    errorMessage,
-    touched,
-    onSubmitEditing,
 }: {
-    onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
-    errorMessage?: string
     value?: string
     onChange: (text: any) => void
-    touched?: boolean
-    onSubmitEditing?: (
-        e: NativeSyntheticEvent<TextInputSubmitEditingEventData>
-    ) => void
 }) => {
     const [show, setShow] = useState<boolean>(false)
     return (
@@ -50,10 +34,6 @@ const SelectDateBirth = ({
                 }}
                 value={value}
                 editable={false}
-                onBlur={onBlur}
-                onSubmitEditing={onSubmitEditing}
-                errorMessage={errorMessage}
-                touched={touched}
             />
             <FstImage source={R.images.ic_down} style={stylesDate.right_icon} />
             <DateTimePickerModal
@@ -84,7 +64,7 @@ const stylesDate = StyleSheet.create({
         borderRadius: 16,
         borderWidth: 1,
         borderColor: colors.border,
-        paddingVertical: 3,
+        paddingVertical: 5,
     },
     right_icon: {
         width: 25,

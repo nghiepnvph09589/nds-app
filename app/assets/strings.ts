@@ -102,6 +102,16 @@ function strings() {
     back: I18n.t('back', { defaultValue: '' }),
     recipient: I18n.t('recipient', { defaultValue: '' }),
     input_address: I18n.t('input_address', { defaultValue: '' }),
+    information_supporters: I18n.t('information_supporters', {
+      defaultValue: '',
+    }),
+    subject: I18n.t('subject', { defaultValue: '' }),
+    group_type: I18n.t('group_type', { defaultValue: '' }),
+    need: I18n.t('need', { defaultValue: '' }),
+    male: I18n.t('male', { defaultValue: '' }),
+    female: I18n.t('female', { defaultValue: '' }),
+    personal: I18n.t('personal', { defaultValue: '' }),
+    community: I18n.t('community', { defaultValue: '' }),
   }
 }
 export default strings

@@ -14,14 +14,29 @@ import SelectCalendar from './component/SelectCalendar'
 import SelectSex from './component/SelectSex'
 import { colors } from '@app/theme/colors'
 import { fonts } from '@app/theme'
+import { showMessages } from '@app/utils/AlertHelper'
 
 const UpdateAccountScreen = () => {
 
     const updateSchema = Yup.object().shape({
         name: Yup.string().required(R.strings().name_blank),
-        cmt: Yup.string().matches(/^.{9,12}$/, 'sai').required(R.strings().name_blank),
+        cmt: Yup.string().matches(/^.{9,12}$/, 'Số CMT/CCCD không hợp lệ').required('Số CMT/CCCD đang để trống'),
+        email: Yup.string()
+            .email(R.strings().validateEmail)
+            .required(R.strings().email_blank),
+        address: Yup.string().required(R.strings().address_blank),
     })
-    const onSubmitUpdate = () => { }
+    const onSubmitUpdate = (data: any) => {
+        if (!data?.dateBirth) {
+            showMessages(R.strings().notification, 'Vui lòng chọn ngày sinh')
+            return
+        }
+        if (!data?.sex) {
+            showMessages(R.strings().notification, 'Vui lòng chọn giới tính')
+            return
+        }
+        console.log(data)
+    }
     return (
         <ScreenWrapper
             back
@@ -45,7 +60,7 @@ const UpdateAccountScreen = () => {
                         name: 'Nguyễn Nghiệp',
                         cmt: '',
                         dateBirth: '',
-                        sex: 1,
+                        sex: 0,
                         email: '',
                         address: '',
                     }}
@@ -76,7 +91,22 @@ const UpdateAccountScreen = () => {
                                 errorMessage={errors.phone}
                                 touched={touched.phone}
                                 editable={false}
-                                inputStyle={styles.phone_number}
+                            // inputStyle={styles.phone_number}
+                            />
+                            <RNTextInput
+                                containerStyle={styles.ctn_input_phone}
+                                errorStyle={styles.txt_error}
+                                returnKeyType={'next'}
+                                inputContainerStyle={styles.v_input_phone}
+                                placeholder={R.strings().email}
+                                leftIcon={R.images.ic_email}
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                                onSubmitEditing={() => setSubmitting(true)}
+                                value={values.email}
+                                errorMessage={errors.email}
+                                touched={touched.email}
+                                editable={false}
                             />
                             <RNTextInput
                                 containerStyle={styles.container_input}
@@ -105,6 +135,8 @@ const UpdateAccountScreen = () => {
                                 value={values.cmt}
                                 errorMessage={errors.cmt}
                                 touched={touched.cmt}
+                                keyboardType='number-pad'
+                                maxLength={12}
                             />
                             <SelectCalendar
                                 value={values.dateBirth}
@@ -113,20 +145,6 @@ const UpdateAccountScreen = () => {
                             <SelectSex
                                 value={values.sex}
                                 onSelect={handleChange('sex')}
-                            />
-                            <RNTextInput
-                                containerStyle={styles.container_input}
-                                errorStyle={styles.txt_error}
-                                returnKeyType={'next'}
-                                inputContainerStyle={styles.v_input}
-                                placeholder={R.strings().email}
-                                leftIcon={R.images.ic_email}
-                                onChangeText={handleChange('email')}
-                                onBlur={handleBlur('email')}
-                                onSubmitEditing={() => setSubmitting(true)}
-                                value={values.email}
-                                errorMessage={errors.email}
-                                touched={touched.email}
                             />
 
                             <RNTextInput
@@ -213,3 +231,4 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 })
+
