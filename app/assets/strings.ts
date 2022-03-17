@@ -99,6 +99,16 @@ function strings() {
     sex: I18n.t('sex', { defaultValue: '' }),
     choose: I18n.t('choose', { defaultValue: '' }),
     save: I18n.t('save', { defaultValue: '' }),
+    information_supporters: I18n.t('information_supporters', {
+      defaultValue: '',
+    }),
+    subject: I18n.t('subject', { defaultValue: '' }),
+    group_type: I18n.t('group_type', { defaultValue: '' }),
+    need: I18n.t('need', { defaultValue: '' }),
+    male: I18n.t('male', { defaultValue: '' }),
+    female: I18n.t('female', { defaultValue: '' }),
+    personal: I18n.t('personal', { defaultValue: '' }),
+    community: I18n.t('community', { defaultValue: '' }),
   }
 }
 export default strings

@@ -48,6 +48,7 @@ const images = {
   ic_profile: require('./images/ic_profile.png'),
   ic_profile_focus: require('./images/ic_profile_focus.png'),
   ic_recipient: require('./images/ic_recipient.png'),
+  ic_requite: require('./images/ic_requite.png'),
   ic_search: require('./images/ic_search.png'),
   ic_support: require('./images/ic_support.png'),
   ic_terms: require('./images/ic_terms.png'),

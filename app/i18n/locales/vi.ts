@@ -86,4 +86,12 @@ export default {
   sex: 'Giới tính',
   choose: 'Chọn',
   save: 'Lưu',
+  information_supporters: 'Thông tin người được ủng hộ',
+  subject: 'Đối tượng',
+  group_type: 'Phân nhóm',
+  need: 'Nhu cầu',
+  male: 'Nam',
+  female: 'Nữ',
+  personal: 'Cá nhân',
+  community: 'Cộng đồng',
 }
