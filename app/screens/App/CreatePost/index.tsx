@@ -2,8 +2,8 @@ import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors } from '@app/theme'
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useState } from 'react'
+import { Alert, StyleSheet, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import StepIndicator from 'react-native-step-indicator'
 import Swiper from 'react-native-swiper'
@@ -12,21 +12,25 @@ import CreatPostStep1 from './screens/CreatePostStep1'
 import CreatePostStep2 from './screens/CreatePostStep2'
 import CreatePostStep3 from './screens/CreatePostStep3'
 const CreatePost = () => {
-  const [currentPage, setCurrentPage] = React.useState<number>(0)
+  const [currentPage, setCurrentPage] = useState<number>(0)
   const PAGES = ['Page 1', 'Page 2', 'Page 3']
-  //const userInfo = useAppSelector(state => state.accountReducer.data)
+
   const onStepPress = (position: number) => {
     setCurrentPage(position)
   }
 
   const onBack = () => {
-    if (currentPage === 0) {
-      NavigationUtil.goBack()
-    } else {
-      setCurrentPage(prevState => {
+    setCurrentPage(prevState => {
+      if (prevState === 0) {
+        NavigationUtil.goBack()
+        return 0
+      } else if (!prevState) {
+        return 0
+      } else if (prevState) {
         return prevState - 1
-      })
-    }
+      }
+      return prevState - 1
+    })
   }
 
   const onNext = () => {
@@ -81,9 +85,11 @@ const CreatePost = () => {
   return (
     <ScreenWrapper
       color={colors.text}
+      unsafe
+      back
       backgroundHeader="white"
       forceInset={['left']}
-      titleHeader={'Đăng tin'}
+      titleHeader={R.strings().post}
       children={
         <>
           <View style={styles.v_container}>
@@ -94,13 +100,16 @@ const CreatePost = () => {
                 currentPosition={currentPage}
                 onPress={onStepPress}
                 renderStepIndicator={renderStepIndicator}
-                labels={['Ảnh/video', 'Người nhận', 'Địa điểm']}
+                labels={[
+                  R.strings().image,
+                  R.strings().recipient,
+                  R.strings().location,
+                ]}
               />
             </View>
             <Swiper
               style={styles.v_swiper}
               loop={false}
-              scrollEnabled={false}
               index={currentPage}
               autoplay={false}
               showsButtons={false}
@@ -112,17 +121,34 @@ const CreatePost = () => {
               {PAGES.map((value, index) => (
                 <>
                   {index === 0 ? (
-                    <CreatPostStep1 />
+                    <CreatPostStep1
+                      onBack={() => {
+                        setCurrentPage(0)
+                        NavigationUtil.goBack()
+                      }}
+                      onNext={() => {
+                        setCurrentPage(prevState => {
+                          return prevState + 1
+                        })
+                      }}
+                    />
                   ) : index === 1 ? (
                     <CreatePostStep2 />
                   ) : (
-                    <CreatePostStep3 />
+                    <CreatePostStep3
+                      onBack={() => {
+                        setCurrentPage(prevState => {
+                          return prevState - 1
+                        })
+                      }}
+                      onNext={() => {}}
+                    />
                   )}
                 </>
               ))}
             </Swiper>
           </View>
-          <ViewBottom onBack={onBack} onNext={onNext} />
+          {/* <ViewBottom onBack={onBack} onNext={onNext} /> */}
         </>
       }
     />

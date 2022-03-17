@@ -7,16 +7,17 @@ import { colors, fonts } from '@app/theme'
 interface InfoPost {
   name: string
   address: string
+  avatar: string
 }
 
 const InfoPost = (props: InfoPost) => {
-  const { name, address } = props
+  const { name, address, avatar } = props
   return (
     <View style={styles.v_row}>
       <FstImage
         resizeMode="cover"
         style={styles.avatar}
-        source={R.images.img_avatar3}
+        source={!!avatar ? { uri: avatar } : R.images.img_avatar3}
       />
       <View style={styles.v_info}>
         <Text style={styles.txt_name}>

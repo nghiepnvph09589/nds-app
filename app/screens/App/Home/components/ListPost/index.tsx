@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { DataBanner } from '../../mockup'
+import { ListPostData } from '../../model'
 import Banner from './components/Banner'
 import CategoryAndAddress from './components/CategoryAndAddress'
 import ContentPost from './components/ContentPost'
@@ -8,18 +9,26 @@ import InfoPost from './components/InfoPost'
 import PostImageArea from './components/PostImageArea'
 import Support from './components/Support'
 
-interface ListPost {
-  data: any
+interface ListPostProps {
+  data: ListPostData[]
 }
 
-const ListPost = (props: ListPost) => {
+const ListPost = (props: ListPostProps) => {
   const { data } = props
-  const renderItem = useCallback(({ item }: { item: any }) => {
+  const renderItem = useCallback(({ item }: { item: ListPostData }) => {
     return (
       <View style={styles.v_item}>
-        <InfoPost name={item.name} address={item.address} />
-        <ContentPost content={item.content_post} />
-        <PostImageArea data={item.dataImage} />
+        <InfoPost
+          avatar={
+            item?.profile_picture_url
+              ? item?.profile_picture_url.replace('http://', 'https://')
+              : ''
+          }
+          name={item?.name}
+          address={'Yên Hòa, Cầu Giấy, Hà Nội'}
+        />
+        <ContentPost title={item?.title} content={item.content} />
+        <PostImageArea data={item?.DonateRequestMedia} />
         <Support />
       </View>
     )

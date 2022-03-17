@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import R from '@app/assets/R'
 import ImageModal from '@app/components/ImageModal'
+import { DonateRequestMedia } from '@app/screens/App/Home/model'
 import { dimensions, styleView } from '@app/theme'
 import React, { useRef } from 'react'
 import { View, ViewStyle } from 'react-native'
@@ -8,7 +9,7 @@ import FastImage from 'react-native-fast-image'
 import useMediaData, { MEDIA_TYPE } from './hooks'
 
 interface Props {
-  data: any
+  data: DonateRequestMedia[]
 }
 
 const { width } = dimensions
@@ -19,7 +20,7 @@ const PostImageArea = (props: Props) => {
   const { data } = props
   const urlVideo = useRef<string>('')
   let { dataMedia } = useMediaData(
-    data.map((item: { media_url: any }) => item.media_url)
+    data.map((item: { media_url: string }) => item.media_url)
   )
 
   const count = dataMedia?.length

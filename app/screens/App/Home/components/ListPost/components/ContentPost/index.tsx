@@ -7,10 +7,11 @@ const NUM_OF_LINES = 4
 
 interface ContentPostProps {
   content: string
+  title: string
 }
 
 const ContentPost = (props: ContentPostProps) => {
-  const { content } = props
+  const { content, title } = props
   const [showMoreButton, setShowMoreButton] = useState<boolean>(false)
   const [numberOfLines, setNumberOfLines] =
     useState<number | undefined>(undefined)
@@ -24,6 +25,7 @@ const ContentPost = (props: ContentPostProps) => {
 
   return (
     <View style={styles.v_post}>
+      <Text style={styles.txt_title}>{title}</Text>
       <Text
         onTextLayout={onTextLayout}
         numberOfLines={numberOfLines}
@@ -47,9 +49,14 @@ const styles = StyleSheet.create({
   text: {
     ...fonts.regular16,
     color: colors.text,
+    marginTop: 12,
   },
   see_more: {
     ...fonts.regular16,
     color: '#8C8C8C',
+  },
+  txt_title: {
+    ...fonts.semi_bold16,
+    color: colors.text,
   },
 })

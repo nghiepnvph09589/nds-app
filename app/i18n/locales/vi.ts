@@ -76,7 +76,7 @@ export default {
   image: 'Ảnh/ Video',
   location: 'Địa điểm',
   offer: 'Đề xuất địa chỉ nhân đạo',
-  post: 'Đăng',
+  post: 'Đăng tin',
   update_account: 'Chỉnh sửa thông tin',
   re_password_fail: 'Mật khẩu chưa trùng khớp',
   placeholder_current_password: 'Nhập mật khẩu hiện tại',
@@ -86,4 +86,7 @@ export default {
   sex: 'Giới tính',
   choose: 'Chọn',
   save: 'Lưu',
+  back: 'Quay lại',
+  recipient: 'Người nhận',
+  input_address: 'Nhập vị trí',
 }

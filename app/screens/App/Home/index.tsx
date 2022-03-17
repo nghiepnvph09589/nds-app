@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux'
 import { getDataUserInfo } from '../Account/slices/AccountSlice'
 import Header from './components/Header'
 import ListPost from './components/ListPost'
-import { DataPost } from './mockup'
 import { getDataHome } from './slice/HomeSlice'
 
 const Home = () => {
@@ -44,7 +43,7 @@ const Home = () => {
         avatar={userInfo.profile_picture_url.replace('http://', 'https://')}
         name={userInfo.name}
       />
-      <ListPost data={DataPost} />
+      <ListPost data={data.listPost} />
     </View>
   )
 }

@@ -99,6 +99,9 @@ function strings() {
     sex: I18n.t('sex', { defaultValue: '' }),
     choose: I18n.t('choose', { defaultValue: '' }),
     save: I18n.t('save', { defaultValue: '' }),
+    back: I18n.t('back', { defaultValue: '' }),
+    recipient: I18n.t('recipient', { defaultValue: '' }),
+    input_address: I18n.t('input_address', { defaultValue: '' }),
   }
 }
 export default strings

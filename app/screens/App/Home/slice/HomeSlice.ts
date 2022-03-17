@@ -1,11 +1,14 @@
 import { HomePayload } from '@app/service/Network/model/ApiPayload'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import HomeApi from '../api/HomeApi'
+import { HomeSlice } from '../model'
 
-const initState = {
+const initState: HomeSlice = {
   isError: false,
   isLoading: false,
-  data: [],
+  data: {
+    listPost: [],
+  },
 }
 
 export const getDataHome = createAsyncThunk(
