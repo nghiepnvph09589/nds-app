@@ -133,7 +133,18 @@ const CreatePost = () => {
                       }}
                     />
                   ) : index === 1 ? (
-                    <CreatePostStep2 />
+                    <CreatePostStep2
+                      onBack={() => {
+                        setCurrentPage(prevState => {
+                          return prevState - 1
+                        })
+                      }}
+                      onNext={() => {
+                        setCurrentPage(prevState => {
+                          return prevState + 1
+                        })
+                      }}
+                    />
                   ) : (
                     <CreatePostStep3
                       onBack={() => {
