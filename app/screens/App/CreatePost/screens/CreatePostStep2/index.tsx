@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   v_input: {
-    paddingVertical: 16,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 16,

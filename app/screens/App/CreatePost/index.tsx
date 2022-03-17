@@ -3,11 +3,10 @@ import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors } from '@app/theme'
 import React, { useState } from 'react'
-import { Alert, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import StepIndicator from 'react-native-step-indicator'
 import Swiper from 'react-native-swiper'
-import ViewBottom from './components/ViewBottom'
 import CreatPostStep1 from './screens/CreatePostStep1'
 import CreatePostStep2 from './screens/CreatePostStep2'
 import CreatePostStep3 from './screens/CreatePostStep3'
@@ -21,24 +20,14 @@ const CreatePost = () => {
 
   const onBack = () => {
     setCurrentPage(prevState => {
-      if (prevState === 0) {
-        NavigationUtil.goBack()
-        return 0
-      } else if (!prevState) {
-        return 0
-      } else if (prevState) {
-        return prevState - 1
-      }
       return prevState - 1
     })
   }
 
   const onNext = () => {
-    if (currentPage !== 2) {
-      setCurrentPage(prevState => {
-        return prevState + 1
-      })
-    }
+    setCurrentPage(prevState => {
+      return prevState + 1
+    })
   }
 
   const getStepIndicatorIconConfig = ({
@@ -86,7 +75,6 @@ const CreatePost = () => {
     <ScreenWrapper
       color={colors.text}
       unsafe
-      back
       backgroundHeader="white"
       forceInset={['left']}
       titleHeader={R.strings().post}
@@ -112,6 +100,7 @@ const CreatePost = () => {
               loop={false}
               index={currentPage}
               autoplay={false}
+              scrollEnabled={false}
               showsButtons={false}
               showsPagination={false}
               onIndexChanged={page => {
@@ -126,34 +115,12 @@ const CreatePost = () => {
                         setCurrentPage(0)
                         NavigationUtil.goBack()
                       }}
-                      onNext={() => {
-                        setCurrentPage(prevState => {
-                          return prevState + 1
-                        })
-                      }}
+                      onNext={onNext}
                     />
                   ) : index === 1 ? (
-                    <CreatePostStep2
-                      onBack={() => {
-                        setCurrentPage(prevState => {
-                          return prevState - 1
-                        })
-                      }}
-                      onNext={() => {
-                        setCurrentPage(prevState => {
-                          return prevState + 1
-                        })
-                      }}
-                    />
+                    <CreatePostStep2 onBack={onBack} onNext={onNext} />
                   ) : (
-                    <CreatePostStep3
-                      onBack={() => {
-                        setCurrentPage(prevState => {
-                          return prevState - 1
-                        })
-                      }}
-                      onNext={() => {}}
-                    />
+                    <CreatePostStep3 onBack={onBack} onNext={() => {}} />
                   )}
                 </>
               ))}

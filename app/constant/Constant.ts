@@ -59,6 +59,10 @@ const SCREEN_ROUTER = {
   AUTH: 'AUTH',
   MAIN: 'MAIN',
 }
+const MEDIA_TYPE = {
+  IMAGE: 1,
+  VIDEO: 2,
+}
 
 export const ROOT_STACK = {
   MAIN_APP: 'MAIN_APP',
@@ -93,4 +97,5 @@ export {
   NAME_REGEX,
   PASSWORD_REGEX,
   MAIN_TAB,
+  MEDIA_TYPE,
 }
