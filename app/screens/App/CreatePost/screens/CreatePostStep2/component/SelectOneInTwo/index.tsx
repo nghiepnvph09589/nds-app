@@ -54,7 +54,7 @@ const stylesOr = StyleSheet.create({
   btn_select: {
     ...styleView.rowItem,
     borderWidth: 1,
-    width: (dimensions.width - 55) / 2,
+    width: (dimensions.width - 45) / 2,
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 15,
