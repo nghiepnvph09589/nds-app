@@ -28,7 +28,10 @@ const ListPost = (props: ListPostProps) => {
           address={'Yên Hòa, Cầu Giấy, Hà Nội'}
         />
         <ContentPost title={item?.title} content={item.content} />
-        <PostImageArea data={item?.DonateRequestMedia} />
+        {item?.DonateRequestMedia.length > 0 && (
+          <PostImageArea data={item?.DonateRequestMedia} />
+        )}
+
         <Support />
       </View>
     )

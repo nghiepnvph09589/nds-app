@@ -39,6 +39,15 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
       hideLoading()
     }
   }
+  const handleSentBack = async () => {
+    try {
+      showLoading()
+      await ForgetPasswordApi.forgetPass({ email: props.route.params.email })
+      hideLoading()
+    } catch (error) {
+      hideLoading()
+    }
+  }
   return (
     <ScreenWrapper
       back
@@ -84,7 +93,7 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
                 />
                 <Text style={styles.txt_question}>
                   {R.strings().question_email}{' '}
-                  <Text style={styles.txt_send_back}>
+                  <Text onPress={handleSentBack} style={styles.txt_send_back}>
                     {R.strings().send_back}
                   </Text>
                 </Text>

@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import { colors, fonts } from '@app/theme'
 
 import R from '@app/assets/R'
+import RNTextInput from '@app/components/RNTextInput'
+import SelectAddress from './components/SelectAddress'
 import SelectProvince from './components/SelectProvince'
 import ViewBottom from '../../components/ViewBottom'
 
@@ -23,6 +25,7 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
   useEffect(() => {
     console.log(province, district, ward)
   }, [province, district, ward])
+  const [address, setAddress] = useState<string>('')
   return (
     <>
       <View style={styles.v_container}>
@@ -34,6 +37,15 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
           onDistrict={setDistrict}
           onWard={setWard}
         />
+        <RNTextInput
+          containerStyle={styles.v_container_input}
+          returnKeyType={'done'}
+          inputContainerStyle={styles.v_input}
+          placeholder={R.strings().address_detail}
+          onChangeText={setAddress}
+          value={address}
+        />
+        <SelectAddress />
       </View>
       <ViewBottom onBack={onBack} onNext={onNext} />
     </>
@@ -53,5 +65,12 @@ const styles = StyleSheet.create({
   txt_input_address: {
     ...fonts.semi_bold16,
     color: colors.text,
+  },
+  v_container_input: { marginTop: 20 },
+  v_input: {
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 16,
+    paddingVertical: 14,
   },
 })

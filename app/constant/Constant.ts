@@ -1,11 +1,7 @@
 const SCREEN_ROUTER_APP = {
   PRODUCT: 'PRODUCT',
   NOTIFICATION: 'NOTIFICATION',
-  CART: 'CART',
-  PRODUCT_FLASH_SALE: 'PRODUCT_FLASH_SALE',
-  PRODUCT_SELLING: 'PRODUCT_SELLING',
   HOME: 'HOME',
-  ORDER: 'ORDER',
   USER: 'USER',
   CREATE_POST: 'CREATE_POST',
   LOCATION: 'LOCATION',
@@ -14,6 +10,7 @@ const SCREEN_ROUTER_APP = {
   CONTACT: 'CONTACT',
   TERMS: 'TERMS',
   CHANGE_PASS: 'CHANGE_PASS',
+  ADDRESS_MAP: 'ADDRESS_MAP',
 }
 
 const MAIN_TAB = {
@@ -81,7 +78,7 @@ const PHONE_REGEX =
   /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/
 
 const EMAIL_REGEX = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/
-const PASSWORD_REGEX = /^.{8,25}$/
+const PASSWORD_REGEX = /^.{8,20}$/
 
 const NAME_REGEX =
   /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s|_]+$/g

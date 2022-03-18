@@ -6,6 +6,7 @@ import { EMAIL_REGEX, NAME_REGEX, SCREEN_ROUTER } from '@app/constant/Constant'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { colors, fonts } from '@app/theme'
+import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { memo, useRef, useState } from 'react'
@@ -54,7 +55,13 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
       const res = await RegisterApi.register(payload)
       await AsyncStorageService.putToken(res?.data?.token)
       hideLoading()
-      dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+      showMessages(
+        R.strings().notification,
+        'Bạn đã đăng ký tài khoản thành công',
+        () => {
+          dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+        }
+      )
     } catch (error) {
       hideLoading()
     }
@@ -123,6 +130,7 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
                   value={values.email}
                   errorMessage={errors.email}
                   touched={touched.email}
+                  maxLength={255}
                 />
                 <RNTextInput
                   containerStyle={styles.v_container_input}

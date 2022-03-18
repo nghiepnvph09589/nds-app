@@ -73,6 +73,7 @@ const ForgetPasswordScreenComponent = () => {
                   value={values.email}
                   errorMessage={errors.email}
                   touched={touched.email}
+                  maxLength={255}
                 />
                 <RNButton
                   icon

@@ -12,20 +12,34 @@ import CreatePostStep2 from './screens/CreatePostStep2'
 import CreatePostStep3 from './screens/CreatePostStep3'
 const CreatePost = () => {
   const [currentPage, setCurrentPage] = useState<number>(0)
+  const [title, setTitle] = useState<string>(R.strings().post)
   const PAGES = ['Page 1', 'Page 2', 'Page 3']
 
   const onStepPress = (position: number) => {
+    if (position === 0) {
+      setTitle(R.strings().image)
+    } else if (position === 1) {
+      setTitle(R.strings().suggest_address)
+    } else if (position === 2) {
+      setTitle(R.strings().address)
+    }
     setCurrentPage(position)
   }
 
   const onBack = () => {
     setCurrentPage(prevState => {
+      if (prevState === 2) {
+        setTitle(R.strings().suggest_address)
+      } else if (prevState === 1) setTitle(R.strings().post)
       return prevState - 1
     })
   }
 
   const onNext = () => {
     setCurrentPage(prevState => {
+      if (prevState === 0) {
+        setTitle(R.strings().suggest_address)
+      } else if (prevState === 1) setTitle(R.strings().address)
       return prevState + 1
     })
   }
@@ -77,7 +91,7 @@ const CreatePost = () => {
       unsafe
       backgroundHeader="white"
       forceInset={['left']}
-      titleHeader={R.strings().post}
+      titleHeader={title}
       children={
         <>
           <View style={styles.v_container}>
@@ -113,6 +127,7 @@ const CreatePost = () => {
                     <CreatPostStep1
                       onBack={() => {
                         setCurrentPage(0)
+                        setTitle(R.strings().post)
                         NavigationUtil.goBack()
                       }}
                       onNext={onNext}
