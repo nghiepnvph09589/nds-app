@@ -115,7 +115,7 @@ const ChangePasswordComponent = (props: ChangePassProps) => {
                 <RNButton
                   onPress={handleSubmit}
                   style={styles.v_button}
-                  title={R.strings().next}
+                  title={R.strings().confirm}
                 />
               </>
             )}
