@@ -8,7 +8,7 @@ const SelectSubject = ({
     value,
     onChange,
 }: {
-    data: { id: number; title: string }[]
+    data: { id: number; name: string }[]
     value: number[]
     onChange: (arr: number[]) => void
 }) => {
@@ -34,7 +34,7 @@ const SelectSubject = ({
     }
     return (
         <View style={stylesSubject.ctn}>
-            {data.map((item: { id: number; title: string }) => {
+            {data.map((item: { id: number; name: string }) => {
                 return (
                     <TouchableOpacity
                         onPress={() => {
@@ -56,7 +56,7 @@ const SelectSubject = ({
                                     ? colors.primary
                                     : colors.textColor.gray8,
                             }}
-                            children={item.title}
+                            children={item.name}
                         />
                     </TouchableOpacity>
                 )
@@ -71,13 +71,14 @@ const stylesSubject = StyleSheet.create({
     ctn: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        marginTop: 3,
     },
     btn: {
         borderWidth: 1,
         borderRadius: 16,
-        marginTop: 15,
+        marginTop: 16,
         paddingHorizontal: 12,
-        paddingVertical: 15,
+        paddingVertical: 16,
         marginRight: 13,
     },
 })

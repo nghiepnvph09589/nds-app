@@ -10,13 +10,13 @@ const SelectOneInTwo = ({
   value,
   onSelect,
 }: {
-  data: { id: number; title: string }[]
+  data: { id: number; name: string }[]
   value: number
   onSelect: (id: number) => void
 }) => {
   return (
     <View style={stylesOr.ctn}>
-      {data.map((item: { id: number; title: string }) => {
+      {data.map((item: { id: number; name: string }) => {
         return (
           <TouchableOpacity
             style={[
@@ -38,7 +38,7 @@ const SelectOneInTwo = ({
               }
               style={stylesOr.ic}
             />
-            <Text style={stylesOr.txt} children={item?.title} />
+            <Text style={stylesOr.txt} children={item?.name} />
           </TouchableOpacity>
         )
       })}
@@ -57,8 +57,9 @@ const stylesOr = StyleSheet.create({
     width: (dimensions.width - 45) / 2,
     borderRadius: 16,
     paddingHorizontal: 16,
-    paddingVertical: 15,
+    paddingVertical: 13,
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   ic: {
     width: 24,
