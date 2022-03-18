@@ -29,6 +29,9 @@ PODS:
   - libwebp/mux (1.2.1):
     - libwebp/demux
   - libwebp/webp (1.2.1)
+  - Mapbox-iOS-SDK (6.4.1):
+    - MapboxMobileEvents (~> 0.10.12)
+  - MapboxMobileEvents (0.10.14)
   - Permission-Camera (3.3.1):
     - RNPermissions
   - Permission-LocationAccuracy (3.3.1):
@@ -236,6 +239,20 @@ PODS:
     - React
   - react-native-image-picker (4.7.3):
     - React-Core
+  - react-native-mapbox-gl (8.6.0-beta.0):
+    - Mapbox-iOS-SDK (~> 6.1)
+    - React
+    - React-Core
+    - react-native-mapbox-gl/DynamicLibrary (= 8.6.0-beta.0)
+    - react-native-mapbox-gl/StaticLibraryFixer (= 8.6.0-beta.0)
+  - react-native-mapbox-gl/DynamicLibrary (8.6.0-beta.0):
+    - Mapbox-iOS-SDK (~> 6.1)
+    - React
+    - React-Core
+  - react-native-mapbox-gl/StaticLibraryFixer (8.6.0-beta.0):
+    - Mapbox-iOS-SDK (~> 6.1)
+    - React
+    - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-video (5.2.0):
@@ -404,6 +421,7 @@ DEPENDENCIES:
   - react-native-create-thumbnail (from `../node_modules/react-native-create-thumbnail`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-video (from `../node_modules/react-native-video`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -438,6 +456,8 @@ SPEC REPOS:
     - boost-for-react-native
     - JWT
     - libwebp
+    - Mapbox-iOS-SDK
+    - MapboxMobileEvents
     - SDWebImage
     - SDWebImageWebPCoder
     - SSZipArchive
@@ -492,6 +512,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-geolocation-service"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-mapbox-gl:
+    :path: "../node_modules/@react-native-mapbox-gl/maps"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-video:
@@ -558,6 +580,8 @@ SPEC CHECKSUMS:
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
+  Mapbox-iOS-SDK: f870f83cbdc7aa4a74afcee143aafb0dae390c82
+  MapboxMobileEvents: 5a172cc9bbf8ac0e45ba86095cbee685ede248cc
   Permission-Camera: bae27a8503530770c35aadfecbb97ec71823382a
   Permission-LocationAccuracy: 43d7a6b3d736a90168e9fc7117a721ca44722f83
   Permission-LocationAlways: fbf36cbdcabc3101f1168ad1ec45cfc5a6448cc4
@@ -576,6 +600,7 @@ SPEC CHECKSUMS:
   react-native-create-thumbnail: dedcb7cd3d14a4b6cc2026563197242081edb52b
   react-native-geolocation-service: c0efb872258ed9240f1003a70fca9e9757e5c785
   react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
+  react-native-mapbox-gl: f0220458a815eb0d4df6e18d0e6a817c1ea9e236
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-video: a4c2635d0802f983594b7057e1bce8f442f0ad28
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
@@ -608,6 +633,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
 
-PODFILE CHECKSUM: 33f59ce2ddd0c93ddc25bb59a4e3c48afe0b4123
+PODFILE CHECKSUM: efade30c8c6bb2c21b9dc5352ef4a67713feac37
 
 COCOAPODS: 1.11.2

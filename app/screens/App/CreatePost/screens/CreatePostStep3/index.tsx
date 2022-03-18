@@ -32,7 +32,7 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
         />
         <SelectAddress />
       </View>
-      <ViewBottom onBack={onBack} onNext={onNext} />
+      <ViewBottom label={R.strings().post} onBack={onBack} onNext={onNext} />
     </>
   )
 }
