@@ -8,11 +8,7 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
-import {
-  getListDistrict,
-  getListProvince,
-  getListWard,
-} from './api/SelectAddressApi'
+import { getListDistrict, getListProvince, getListWard } from './api'
 
 import Empty from '@app/components/Empty/Empty'
 import FstImage from '@app/components/FstImage'

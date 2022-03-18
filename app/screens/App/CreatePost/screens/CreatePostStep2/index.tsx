@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
-import { needData, subjectData } from './mockup'
+import React, { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { getListSubject, getListTypeGroup } from './api'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import SelectDateBirth from './component/SelectDateBirth'
 import SelectOneInTwo from './component/SelectOneInTwo'
 import SelectSubject from './component/SelectSubject'
+import { Text } from 'react-native-elements'
 import Title from './component/Title'
 import ViewBottom from '../../components/ViewBottom'
 import { colors } from '@app/theme'
@@ -14,24 +16,24 @@ import { colors } from '@app/theme'
 const sexSelect = [
   {
     id: 1,
-    title: R.strings().male,
+    name: R.strings().male,
   },
   {
     id: 2,
-    title: R.strings().female,
+    name: R.strings().female,
   },
 ]
 
-const groupTypeData = [
-  {
-    id: 1,
-    title: R.strings().personal,
-  },
-  {
-    id: 2,
-    title: R.strings().community,
-  },
-]
+// const groupTypeData = [
+//   {
+//     id: 1,
+//     name: R.strings().personal,
+//   },
+//   {
+//     id: 2,
+//     name: R.strings().community,
+//   },
+// ]
 
 interface CreatPostStep2Props {
   onBack: () => void
@@ -39,6 +41,10 @@ interface CreatPostStep2Props {
 }
 const CreatePostStep2 = (props: CreatPostStep2Props) => {
   const { onBack, onNext } = props
+  const [dataTypeGroup, setDataTypeGroup] = useState<any>([])
+  const [dataSubject, setDataSubject] = useState<any>([])
+  const [dataNeed, setDataNeed] = useState<any>([])
+
   const [name, setName] = useState<string>('')
   const [dateBirth, setDateBirth] = useState<string>('')
   const [sex, setSex] = useState<number>(0)
@@ -46,6 +52,54 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
   const [groupType, setGroupType] = useState<number>(0)
   const [subject, setSubject] = useState<number[]>([])
   const [need, setNeed] = useState<number[]>([])
+
+  const getDataTypeGroup = async () => {
+    showLoading()
+    try {
+      const payload = {}
+      const res = await getListTypeGroup(payload)
+      await setDataTypeGroup(res?.data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      hideLoading()
+    }
+  }
+
+  const getDataSubject = async (groupId: number, type: number) => {
+    showLoading()
+    try {
+      const payload = {
+        group_id: groupId,
+        type: type,
+      }
+      const res = await getListSubject(payload)
+      if (type === 1) {
+        setDataSubject(res?.data)
+      } else if (type === 2) {
+        setDataNeed(res?.data)
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      hideLoading()
+    }
+  }
+
+  useEffect(() => {
+    getDataTypeGroup()
+  }, [])
+  useEffect(() => {
+    if (groupType !== 0) {
+      getDataSubject(groupType, 1)
+      getDataSubject(groupType, 2)
+    }
+  }, [groupType])
+  const onOk = () => {
+    console.log(
+      name, dateBirth, sex, phone, groupType, subject, need
+    )
+  }
   return (
     <>
       <ScrollView style={styles.ctn} contentContainerStyle={styles.content_ctn}>
@@ -83,27 +137,34 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
         <View style={styles.mr13}>
           <Title title={R.strings().group_type} />
           <SelectOneInTwo
-            data={groupTypeData}
+            data={dataTypeGroup}
             value={groupType}
             onSelect={setGroupType}
           />
         </View>
-        {groupType === 1 && (
-          <>
+        <>
+          {dataSubject.length !== 0 && (
             <View style={styles.mr15}>
               <Title title={R.strings().subject} />
               <SelectSubject
                 value={subject}
                 onChange={setSubject}
-                data={subjectData}
+                data={dataSubject}
               />
             </View>
+          )}
+          {dataNeed.length !== 0 && (
             <View style={styles.mr15}>
               <Title title={R.strings().need} />
-              <SelectSubject value={need} data={needData} onChange={setNeed} />
+              <SelectSubject value={need} data={dataNeed} onChange={setNeed} />
             </View>
-          </>
-        )}
+          )}
+        </>
+        <TouchableOpacity
+          onPress={onOk}
+        >
+          <Text>ok</Text>
+        </TouchableOpacity>
       </ScrollView>
       <ViewBottom onBack={onBack} onNext={onNext} />
     </>
