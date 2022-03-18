@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 16,
     paddingHorizontal: 20,
-    paddingVertical: 14,
+    paddingVertical: 13,
   },
   placeholder: {
     ...fonts.regular16,
