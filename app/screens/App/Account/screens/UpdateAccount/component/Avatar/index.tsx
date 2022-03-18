@@ -25,7 +25,7 @@ export default Avatar
 const styles = StyleSheet.create({
     v_container: {
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: 5,
     },
     img_avatar: {
         width: width * 0.3,

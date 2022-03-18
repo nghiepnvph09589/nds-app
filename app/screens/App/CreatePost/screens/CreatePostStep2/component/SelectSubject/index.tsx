@@ -71,13 +71,14 @@ const stylesSubject = StyleSheet.create({
     ctn: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        marginTop: 3,
     },
     btn: {
         borderWidth: 1,
         borderRadius: 16,
-        marginTop: 15,
+        marginTop: 16,
         paddingHorizontal: 12,
-        paddingVertical: 15,
+        paddingVertical: 16,
         marginRight: 13,
     },
 })

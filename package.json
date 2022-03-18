@@ -33,6 +33,7 @@
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.1",
+    "native-base": "^2.15.2",
     "react": "17.0.1",
     "react-fast-compare": "^3.2.0",
     "react-moment": "^1.1.1",

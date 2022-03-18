@@ -94,7 +94,7 @@ const UpdateAccountScreen = () => {
                             // inputStyle={styles.phone_number}
                             />
                             <RNTextInput
-                                containerStyle={styles.ctn_input_phone}
+                                containerStyle={styles.container_input}
                                 errorStyle={styles.txt_error}
                                 returnKeyType={'next'}
                                 inputContainerStyle={styles.v_input_phone}
@@ -128,7 +128,7 @@ const UpdateAccountScreen = () => {
                                 returnKeyType={'next'}
                                 inputContainerStyle={styles.v_input}
                                 placeholder={R.strings().cmt}
-                                leftIcon={R.images.ic_user}
+                                leftIcon={R.images.ic_cmt}
                                 onChangeText={handleChange('cmt')}
                                 onBlur={handleBlur('cmt')}
                                 onSubmitEditing={() => setSubmitting(true)}
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         color: '#8898A7',
     },
     ctn_input_phone: {
-        marginTop: 27,
+        marginTop: 22,
     },
     v_input_phone: {
         paddingVertical: 15,
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
         color: colors.textColor.gray1,
     },
     container_input: {
-        marginTop: 27,
+        marginTop: 28,
     },
     txt_error: {
         color: 'red',

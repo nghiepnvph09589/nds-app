@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   mr13: {
-    marginTop: 13,
+    marginTop: 14,
   },
   mr8: {
     marginTop: 8,
