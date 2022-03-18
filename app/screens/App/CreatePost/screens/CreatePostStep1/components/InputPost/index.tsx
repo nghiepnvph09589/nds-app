@@ -17,8 +17,10 @@ export default InputPost
 
 const styles = StyleSheet.create({
   styleInput: {
-    marginTop: 16,
+    paddingTop: 16,
     paddingHorizontal: 15,
     ...fonts.regular16,
+    backgroundColor: 'white',
+    paddingBottom: 44,
   },
 })

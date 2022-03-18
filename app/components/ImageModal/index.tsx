@@ -181,7 +181,9 @@ const ImageModal = ({
             renderImage={props => (
               <>
                 {indexCurrent === 1 && !!urlVideo ? (
-                  <View style={{ flex: 1, width: '100%' }}>
+                  <View
+                    style={{ flex: 1, width: '100%', justifyContent: 'center' }}
+                  >
                     <Video
                       controls
                       paused={videoPause}
@@ -189,7 +191,7 @@ const ImageModal = ({
                         uri: urlVideo,
                       }}
                       style={{
-                        width: '100%',
+                        width: dimensions.width,
                         aspectRatio: 1,
                         alignSelf: 'center',
                       }}

@@ -1,21 +1,31 @@
 import { useAppSelector } from '@app/store'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import ButtonImage from './components/ButtonImage'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import ViewBottom from '../../components/ViewBottom'
+import ImageArea from './components/ImageArea'
 import InfoUser from './components/InfoUser'
 import InputPost from './components/InputPost'
 
-const CreatPostStep1 = () => {
+interface CreatPostStep1Props {
+  onBack: () => void
+  onNext: () => void
+}
+
+const CreatPostStep1 = (props: CreatPostStep1Props) => {
+  const { onBack, onNext } = props
   const userInfo = useAppSelector(state => state.accountReducer.data)
   return (
     <>
-      <View style={styles.v_container}>
-        <InfoUser
-          avatar={userInfo.profile_picture_url.replace('http://', 'https://')}
-        />
-        <InputPost />
-      </View>
-      <ButtonImage />
+      <ScrollView style={styles.v_container}>
+        <View>
+          <InfoUser
+            avatar={userInfo.profile_picture_url.replace('http://', 'https://')}
+          />
+          <InputPost />
+        </View>
+        <ImageArea />
+      </ScrollView>
+      <ViewBottom onBack={onBack} onNext={onNext} />
     </>
   )
 }
@@ -24,8 +34,7 @@ export default CreatPostStep1
 
 const styles = StyleSheet.create({
   v_container: {
-    backgroundColor: 'white',
-    marginTop: 2,
-    paddingBottom: 44,
+    marginTop: 1,
+    flex: 1,
   },
 })

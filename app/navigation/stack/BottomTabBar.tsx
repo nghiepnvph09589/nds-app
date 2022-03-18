@@ -1,34 +1,32 @@
-import {
-  BottomTabBar,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs'
+import R from '@app/assets/R'
+import FstImage from '@app/components/FstImage'
 import {
   MAIN_TAB,
   SCREEN_ROUTER,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
-import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
-
+import { dimension } from '@app/constant/Theme'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import Account from '@app/screens/App/Account'
-import AsyncStorage from '@react-native-community/async-storage'
 import CreatePost from '@app/screens/App/CreatePost'
-import FastImage from 'react-native-fast-image'
-import FstImage from '@app/components/FstImage'
 import Home from '@app/screens/App/Home'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
-import R from '@app/assets/R'
-import React from 'react'
 import { colors } from '@app/theme'
-import { createStackNavigator } from '@react-navigation/stack'
-import { dimension } from '@app/constant/Theme'
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
-import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import reactotron from 'reactotron-react-native'
 import { showConfirm } from '@app/utils/AlertHelper'
+import AsyncStorage from '@react-native-community/async-storage'
+import {
+  BottomTabBar,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import React from 'react'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 import { useDispatch } from 'react-redux'
-import NavigationUtil from '../NavigationUtil'
+import reactotron from 'reactotron-react-native'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -176,7 +174,6 @@ const MainTab = (route: any) => {
             />
           ) : (
             <Tab.Screen
-              //options={{ tabBarVisible: false }}
               key={index}
               name={TAB_BAR[item].name}
               component={TAB_BAR[item].route}

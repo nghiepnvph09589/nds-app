@@ -64,7 +64,7 @@ const stylesDate = StyleSheet.create({
         borderRadius: 16,
         borderWidth: 1,
         borderColor: colors.border,
-        paddingVertical: 4,
+        paddingVertical: 2,
     },
     right_icon: {
         width: 25,

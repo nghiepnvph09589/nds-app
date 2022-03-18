@@ -1,30 +1,33 @@
-import NavigationUtil from '@app/navigation/NavigationUtil'
+import R from '@app/assets/R'
 import { colors, fonts } from '@app/theme'
 import React from 'react'
 import {
   Dimensions,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native'
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 
 const { width } = Dimensions.get('window')
 
 interface ViewBottomProps {
   onBack: () => void
   onNext: () => void
+  label?: string
 }
 
 const ViewBottom = (props: ViewBottomProps) => {
-  const { onBack, onNext } = props
+  const { onBack, onNext, label } = props
   return (
     <View style={styles.v_container}>
       <TouchableOpacity style={styles.v_back} onPress={onBack}>
-        <Text style={styles.txt_back}>Quay lại</Text>
+        <Text style={styles.txt_back}>{R.strings().back}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.v_next} onPress={onNext}>
-        <Text style={styles.txt_next}>Tiếp theo</Text>
+        <Text style={styles.txt_next}>{label ? label : R.strings().next}</Text>
       </TouchableOpacity>
     </View>
   )
@@ -36,9 +39,20 @@ const styles = StyleSheet.create({
   v_container: {
     backgroundColor: 'white',
     paddingTop: 8,
+    paddingBottom:
+      Platform.OS !== 'ios' ? 8 : isIphoneX() ? getBottomSpace() : 10,
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+
+    elevation: 10,
   },
   v_back: {
     width: (width - 35) / 2,

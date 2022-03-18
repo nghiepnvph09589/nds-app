@@ -32,7 +32,7 @@ export default InfoUser
 const styles = StyleSheet.create({
   v_container: {
     flexDirection: 'row',
-
+    backgroundColor: 'white',
     paddingTop: 20,
     paddingHorizontal: 15,
   },

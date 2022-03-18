@@ -222,6 +222,8 @@ PODS:
     - React-jsi (= 0.64.2)
     - React-perflogger (= 0.64.2)
   - React-jsinspector (0.64.2)
+  - react-native-create-thumbnail (1.5.1):
+    - React-Core
   - react-native-image-picker (4.7.3):
     - React-Core
   - react-native-safe-area-context (3.2.0):
@@ -311,6 +313,15 @@ PODS:
     - React-Core
   - RNI18n (2.0.15):
     - React
+  - RNImageCropPicker (0.37.3):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.37.3)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.37.3):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNReanimated (2.1.0):
     - DoubleConversion
     - FBLazyVector
@@ -351,6 +362,7 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.7)
   - SSZipArchive (2.2.3)
+  - TOCropViewController (2.6.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -373,6 +385,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-create-thumbnail (from `../node_modules/react-native-create-thumbnail`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-video (from `../node_modules/react-native-video`)
@@ -395,6 +408,7 @@ DEPENDENCIES:
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNI18n (from `../node_modules/react-native-i18n`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -409,6 +423,7 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - SSZipArchive
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   BVLinearGradient:
@@ -445,6 +460,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-create-thumbnail:
+    :path: "../node_modules/react-native-create-thumbnail"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
@@ -489,6 +506,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNI18n:
     :path: "../node_modules/react-native-i18n"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -520,6 +539,7 @@ SPEC CHECKSUMS:
   React-jsi: 67747b9722f6dab2ffe15b011bcf6b3f2c3f1427
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
+  react-native-create-thumbnail: dedcb7cd3d14a4b6cc2026563197242081edb52b
   react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-video: a4c2635d0802f983594b7057e1bce8f442f0ad28
@@ -542,12 +562,14 @@ SPEC CHECKSUMS:
   RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNI18n: e2f7e76389fcc6e84f2c8733ea89b92502351fd8
+  RNImageCropPicker: 44e2807bc410741f35d4c45b6586aedfe3da39d2
   RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
   RNScreens: c277bfc4b5bb7c2fe977d19635df6f974f95dfd6
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
+  TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
 
 PODFILE CHECKSUM: 0a3b563ccb4a39903096f1b976418c2c820a8a06
