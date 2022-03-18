@@ -73,7 +73,8 @@ export default {
   support: 'Ủng hộ',
   number_support: 'Lượt ủng hộ',
   create_post: 'Thêm tin nhân đạo',
-  image: 'Ảnh/ Video',
+  image: 'Hình ảnh',
+  video: 'Video',
   location: 'Địa điểm',
   offer: 'Đề xuất địa chỉ nhân đạo',
   post: 'Đăng tin',
@@ -97,4 +98,11 @@ export default {
   female: 'Nữ',
   personal: 'Cá nhân',
   community: 'Cộng đồng',
+  note_image: 'Bạn chỉ được chọn tối đa 10 ảnh',
+  note_video: 'Bạn chỉ được chọn tối đa 1 video',
+  address_detail: 'Tên đường, số nhà, tòa nhà',
+  select_address_map: 'Chọn vị trí trên bản đồ',
+  suggest_address: 'Đề xuất địa chỉ',
+  permission_location:
+    'Vui lòng bật quyền Location để sử dụng chức năng bản đồ',
 }

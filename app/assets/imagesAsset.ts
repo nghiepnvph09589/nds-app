@@ -13,6 +13,7 @@ const images = {
   ic_chat_blue: require('./images/ic_chat_blue.png'),
   ic_checked: require('./images/ic_checked.png'),
   ic_chevron_right: require('./images/ic_chevron_right.png'),
+  ic_circle_red: require('./images/ic_circle_red.png'),
   ic_contact: require('./images/ic_contact.png'),
   ic_create_post: require('./images/ic_create_post.png'),
   ic_down: require('./images/ic_down.png'),

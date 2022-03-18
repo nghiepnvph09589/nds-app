@@ -78,7 +78,6 @@ const AppNavigatorComponent = (props: any) => {
     >
       <RootStack.Navigator
         headerMode="none"
-        screenOptions={screenOptions}
         initialRouteName={ROOT_STACK.MAIN_APP}
         children={<>{renderSwitch(props?.switch)}</>}
       />

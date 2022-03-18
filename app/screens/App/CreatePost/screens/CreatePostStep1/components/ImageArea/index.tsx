@@ -120,10 +120,7 @@ const ImageArea = () => {
           hideLoading()
         }
       } else {
-        showMessages(
-          R.strings().notification,
-          'Bạn chỉ được chọn tối đa 1 video'
-        )
+        showMessages(R.strings().notification, R.strings().note_video)
       }
     })
   }
@@ -132,12 +129,12 @@ const ImageArea = () => {
       <View style={styles.v_button}>
         <TouchableOpacity onPress={uploadImage} style={styles.v_row}>
           <FstImage style={styles.icon} source={R.images.ic_image} />
-          <Text style={styles.text}>Hình ảnh</Text>
+          <Text style={styles.text}>{R.strings().image}</Text>
         </TouchableOpacity>
         <View style={styles.v_line} />
         <TouchableOpacity onPress={uploadVideo} style={styles.v_row}>
           <FstImage style={styles.icon} source={R.images.ic_video} />
-          <Text style={styles.text}>Video</Text>
+          <Text style={styles.text}>{R.strings().video}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.v_list_image}>
@@ -183,15 +180,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: 'white',
     width: dimensions.width / 2 - 1,
+    justifyContent: 'center',
   },
   icon: {
     width: 24,
     height: 24,
   },
   text: {
-    ...fonts.semi_bold16,
+    ...fonts.regular16,
     marginLeft: 16,
     color: colors.text,
+    fontWeight: '500',
   },
   v_button: {
     flexDirection: 'row',
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   image: {
-    width: dimensions.width / 3,
+    width: dimensions.width / 4,
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',

@@ -8,6 +8,7 @@ import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
 import { createStackNavigator } from '@react-navigation/stack'
+import AddressMap from '@app/screens/App/CreatePost/screens/AddressMap'
 
 const {
   PRODUCT,
@@ -17,6 +18,7 @@ const {
   CONTACT,
   TERMS,
   CHANGE_PASS,
+  ADDRESS_MAP,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -28,6 +30,7 @@ const mainScreen = {
   [CONTACT]: ContactScreen,
   [TERMS]: TermsScreen,
   [CHANGE_PASS]: ChangePassScreen,
+  [ADDRESS_MAP]: AddressMap,
 }
 
 export const StackAppCustomerScreen = () => {

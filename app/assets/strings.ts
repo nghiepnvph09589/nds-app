@@ -85,6 +85,7 @@ function strings() {
     number_support: I18n.t('number_support', { defaultValue: '' }),
     create_post: I18n.t('create_post', { defaultValue: '' }),
     image: I18n.t('image', { defaultValue: '' }),
+    video: I18n.t('video', { defaultValue: '' }),
     location: I18n.t('location', { defaultValue: '' }),
     offer: I18n.t('offer', { defaultValue: '' }),
     post: I18n.t('post', { defaultValue: '' }),
@@ -112,6 +113,12 @@ function strings() {
     female: I18n.t('female', { defaultValue: '' }),
     personal: I18n.t('personal', { defaultValue: '' }),
     community: I18n.t('community', { defaultValue: '' }),
+    note_image: I18n.t('note_image', { defaultValue: '' }),
+    note_video: I18n.t('note_video', { defaultValue: '' }),
+    address_detail: I18n.t('address_detail', { defaultValue: '' }),
+    select_address_map: I18n.t('select_address_map', { defaultValue: '' }),
+    suggest_address: I18n.t('suggest_address', { defaultValue: '' }),
+    permission_location: I18n.t('permission_location', { defaultValue: '' }),
   }
 }
 export default strings
