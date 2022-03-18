@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   container_input: {
-    marginTop: 15,
+    marginTop: 16,
   },
   txt_error: {
     color: 'red',

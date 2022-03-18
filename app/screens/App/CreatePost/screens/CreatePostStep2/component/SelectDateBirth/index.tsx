@@ -59,12 +59,12 @@ export default SelectDateBirth
 const stylesDate = StyleSheet.create({
     ctn: {
         ...styleView.rowItem,
-        marginTop: 16,
+        marginTop: 17,
         alignItems: 'center',
         borderRadius: 16,
         borderWidth: 1,
         borderColor: colors.border,
-        paddingVertical: 2,
+        paddingVertical: 3,
     },
     right_icon: {
         width: 25,
