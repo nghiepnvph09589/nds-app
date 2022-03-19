@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { colors, styleView } from '@app/theme'
 
@@ -7,6 +7,7 @@ import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import DateUtils from '@app/utils/DateUtils'
+import { useAppSelector } from '@app/store'
 
 const SelectDateBirth = ({
   onChange,
@@ -15,6 +16,14 @@ const SelectDateBirth = ({
 }) => {
   const [show, setShow] = useState<boolean>(false)
   const [dateBirth, setDateBirth] = useState<string>('')
+
+  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+
+  useEffect(() => {
+    if (dataCreatPost.title === '') {
+      setDateBirth('')
+    }
+  }, [dataCreatPost])
   return (
     <TouchableOpacity
       style={stylesDate.ctn}

@@ -1,5 +1,6 @@
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
+import reactotron from '@app/config/ReactotronConfig'
 import { MEDIA_TYPE } from '@app/constant/Constant'
 import CreatePostApi from '@app/screens/App/CreatePost/api/CreatePostApi'
 import { ArrayImage } from '@app/screens/App/CreatePost/model'
@@ -52,6 +53,7 @@ const ImageArea = (props: ImageAreaProps) => {
       mediaType: 'photo',
       multiple: true,
     }).then(async images => {
+      reactotron.log!(images)
       const dataImage = dataImageVideo.filter(
         item => item.type === MEDIA_TYPE.IMAGE
       )
@@ -62,11 +64,11 @@ const ImageArea = (props: ImageAreaProps) => {
           formData.append('image', {
             uri:
               Platform.OS !== 'ios'
-                ? item.sourceURL
+                ? item.path
                 : item.sourceURL
                 ? item.sourceURL.replace('file://', '')
                 : item.sourceURL,
-            name: item.filename,
+            name: Platform.OS !== 'ios' ? item.modificationDate : item.filename,
             type: item.mime,
           })
         })
@@ -99,6 +101,7 @@ const ImageArea = (props: ImageAreaProps) => {
     ImagePicker.openPicker({
       mediaType: 'video',
     }).then(async video => {
+      reactotron.log!(video)
       const dataVideo = dataImageVideo.filter(
         item => item.type === MEDIA_TYPE.VIDEO
       )
@@ -108,11 +111,11 @@ const ImageArea = (props: ImageAreaProps) => {
         formData.append('video', {
           uri:
             Platform.OS !== 'ios'
-              ? video.sourceURL
+              ? video.path
               : video.sourceURL
               ? video.sourceURL.replace('file://', '')
               : video.sourceURL,
-          name: video.filename,
+          name: Platform.OS !== 'ios' ? video.modificationDate : video.filename,
           type: video.mime,
         })
         try {

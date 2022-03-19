@@ -93,6 +93,9 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
           {R.strings().input_address}
         </Text>
         <SelectProvince
+          province={province}
+          district={district}
+          ward={ward}
           onProvince={setProvince}
           onDistrict={setDistrict}
           onWard={setWard}

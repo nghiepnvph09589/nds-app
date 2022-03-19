@@ -51,7 +51,7 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
       showMessages(R.strings().notification, 'Vui lòng nhập chia sẻ')
       return
     }
-    if (!MediaArray.current[0].file_url) {
+    if (!MediaArray?.current[0]?.file_url) {
       showMessages(
         R.strings().notification,
         'Vui lòng cập nhật hình ảnh/ video'
