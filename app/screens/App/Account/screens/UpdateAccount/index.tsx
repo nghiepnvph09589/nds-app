@@ -1,11 +1,20 @@
 import * as Yup from 'yup'
 
+import {
+    Keyboard,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native'
 import React, { useRef, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
+import { API_STATUS } from '@app/constant/Constant'
 import Avatar from './component/Avatar'
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 /* eslint-disable prettier/prettier */
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
@@ -14,10 +23,15 @@ import SelectCalendar from './component/SelectCalendar'
 import SelectSex from './component/SelectSex'
 import { colors } from '@app/theme/colors'
 import { fonts } from '@app/theme'
+import { getDataUserInfo } from '../../slices/AccountSlice'
 import { showMessages } from '@app/utils/AlertHelper'
+import { updateAccount } from './api'
+import { useAppSelector } from '@app/store'
+import { useDispatch } from 'react-redux'
 
 const UpdateAccountScreen = () => {
-
+    const dispatch = useDispatch()
+    const data = useAppSelector(state => state.accountReducer.data)
     const updateSchema = Yup.object().shape({
         name: Yup.string().required(R.strings().name_blank),
         cmt: Yup.string().matches(/^.{9,12}$/, 'Số CMT/CCCD không hợp lệ').required('Số CMT/CCCD đang để trống'),
@@ -28,16 +42,40 @@ const UpdateAccountScreen = () => {
     })
     const [profileImage, setProfileImage] = useState<string>('')
     const filename = useRef<string>('')
-    const onSubmitUpdate = (data: any) => {
-        if (!data?.dateBirth) {
+    const onSubmitUpdate = async (form: any) => {
+        Keyboard.dismiss()
+        if (!form?.dateBirth) {
             showMessages(R.strings().notification, 'Vui lòng chọn ngày sinh')
             return
         }
-        if (!data?.sex) {
+        if (!form?.sex) {
             showMessages(R.strings().notification, 'Vui lòng chọn giới tính')
             return
         }
-        console.log(data)
+        showLoading()
+        try {
+            const payload = {
+                // email: form.email,
+                name: form.name,
+                address: form.address,
+                profile_picture_url: filename.current || undefined,
+            }
+            const res = await updateAccount(payload)
+            if (res.code === API_STATUS.SUCCESS) {
+                await dispatch(getDataUserInfo())
+                hideLoading()
+                showMessages(
+                    R.strings().notification,
+                    'Bạn đã cập nhật tài khoản thành công',
+                    () => {
+                        NavigationUtil.goBack()
+                    }
+                )
+            }
+
+        } catch (error) {
+            hideLoading()
+        }
     }
     return (
         <ScreenWrapper
@@ -54,16 +92,19 @@ const UpdateAccountScreen = () => {
             >
                 <Avatar
                     source={profileImage ? { uri: profileImage } : R.images.img_avatar_default}
-                    onPress={() => { }}
+                    onPress={(url: string, fileName: string) => {
+                        setProfileImage(url)
+                        filename.current = fileName
+                    }}
                 />
                 <Formik
                     initialValues={{
-                        phone: '0987654321',
-                        name: 'Nguyễn Nghiệp',
+                        phone: data?.phone,
+                        name: data?.name,
                         cmt: '',
                         dateBirth: '',
                         sex: 0,
-                        email: '',
+                        email: data?.email,
                         address: '',
                     }}
                     onSubmit={onSubmitUpdate}

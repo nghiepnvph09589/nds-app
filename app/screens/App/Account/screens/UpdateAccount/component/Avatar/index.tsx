@@ -21,7 +21,7 @@ const Avatar = ({
     onPress,
     source,
 }: {
-    onPress: () => void
+    onPress: (url: string, fileName: string) => void
     source: Source | number
 }) => {
     const selectImagePress = async () => {
@@ -73,9 +73,7 @@ const Avatar = ({
                 source={source || R.images.img_avatar_default}
                 style={styles.img_avatar}
             />
-            <TouchableOpacity
-                onPress={selectImagePress}
-                style={styles.btn_edit}>
+            <TouchableOpacity onPress={selectImagePress} style={styles.btn_edit}>
                 <FastImage source={R.images.ic_edit_avatar} style={styles.img_camera} />
             </TouchableOpacity>
         </View>
@@ -91,6 +89,7 @@ const styles = StyleSheet.create({
     img_avatar: {
         width: width * 0.3,
         height: width * 0.3,
+        borderRadius: width * 0.14,
     },
     btn_edit: {
         position: 'absolute',
