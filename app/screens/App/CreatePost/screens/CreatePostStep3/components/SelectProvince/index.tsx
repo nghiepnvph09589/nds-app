@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 import { getListDistrict, getListProvince, getListWard } from './api'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
 import Empty from '@app/components/Empty/Empty'
 import FstImage from '@app/components/FstImage'
@@ -62,14 +63,20 @@ const SelectProvince = ({
   const [ward, setWard] = useState<address>({ id: 0, name: '' })
 
   const getDataProvince = async () => {
+    showLoading()
     try {
       const payload = {}
       const res = await getListProvince(payload)
       await setDataProvince(res?.data)
       await setData(res?.data)
-    } catch (error) { }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      hideLoading()
+    }
   }
   const getDataDistrict = async (id: number) => {
+    showLoading()
     try {
       const payload = {
         province_id: id,
@@ -77,9 +84,14 @@ const SelectProvince = ({
       const res = await getListDistrict(payload)
       await setDataDistrict(res?.data)
       await setData(res?.data)
-    } catch (error) { }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      hideLoading()
+    }
   }
   const getDataWard = async (id: number) => {
+    showLoading()
     try {
       const payload = {
         district_id: id,
@@ -87,7 +99,11 @@ const SelectProvince = ({
       const res = await getListWard(payload)
       await setDataWard(res?.data)
       await setData(res?.data)
-    } catch (error) { }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      hideLoading()
+    }
   }
   const onItemHeader = async (id: number) => {
     if (id === 1) {
@@ -107,6 +123,15 @@ const SelectProvince = ({
       }
       setPage(id)
       setData(dataWard)
+    }
+  }
+  const onRefresh = () => {
+    if (page === 1) {
+      getDataProvince()
+    } else if (page === 2) {
+      getDataDistrict(province.id)
+    } else if (page === 3) {
+      getDataWard(district.id)
     }
   }
   const onItem = async (item: address) => {
@@ -242,8 +267,8 @@ const SelectProvince = ({
           <FlatList
             style={styles.flatlist}
             data={data}
-            // onRefresh={onRefreshData}
-            // refreshing={isLoading}
+            onRefresh={onRefresh}
+            refreshing={false}
             onEndReachedThreshold={0.05}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
