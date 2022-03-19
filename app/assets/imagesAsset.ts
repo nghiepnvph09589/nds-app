@@ -1,4 +1,5 @@
 const images = {
+  ic_annotation: require('./images/ic_annotation.png'),
   ic_arrow_down: require('./images/ic_arrow_down.png'),
   ic_arrow_right: require('./images/ic_arrow_right.png'),
   ic_arrow_right_circle: require('./images/ic_arrow_right_circle.png'),
@@ -13,8 +14,8 @@ const images = {
   ic_chat_blue: require('./images/ic_chat_blue.png'),
   ic_checked: require('./images/ic_checked.png'),
   ic_chevron_right: require('./images/ic_chevron_right.png'),
-  ic_cmt: require('./images/ic_cmt.png'),
   ic_circle_red: require('./images/ic_circle_red.png'),
+  ic_cmt: require('./images/ic_cmt.png'),
   ic_contact: require('./images/ic_contact.png'),
   ic_create_post: require('./images/ic_create_post.png'),
   ic_down: require('./images/ic_down.png'),

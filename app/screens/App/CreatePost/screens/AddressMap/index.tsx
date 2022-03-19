@@ -1,4 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import R from '@app/assets/R'
+import FstImage from '@app/components/FstImage'
 import RNButton from '@app/components/RNButton/RNButton'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { MAP_BOX_STYLE } from '@app/config'
@@ -6,7 +8,7 @@ import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import React, { useCallback, useRef, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 const AddressMap = () => {
   const mapRef = useRef(undefined)
   const cameraRef = useRef(undefined)
@@ -47,6 +49,17 @@ const AddressMap = () => {
               padding={{ paddingBottom: 100 }}
               centerCoordinate={annotationPoint}
             />
+            <MapboxGL.MarkerView id="pointAnno" coordinate={[long, lat]}>
+              <FstImage
+                style={{
+                  width: 30,
+                  height: 30,
+                  //transform: [{ rotate: `${(props.bearing || 0) - 90}deg` }],
+                }}
+                resizeMode="contain"
+                source={R.images.ic_annotation}
+              />
+            </MapboxGL.MarkerView>
           </MapboxGL.MapView>
           <View style={{ backgroundColor: 'white' }}>
             <RNButton
@@ -82,6 +95,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 33,
     height: 45,
     marginTop: 10,
+    marginBottom: 10,
     //marginTop: 32,
   },
 })
