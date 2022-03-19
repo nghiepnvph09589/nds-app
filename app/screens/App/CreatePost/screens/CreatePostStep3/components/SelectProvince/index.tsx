@@ -38,8 +38,18 @@ interface Props {
   onProvince: (value: address) => void
   onDistrict: (value: address) => void
   onWard: (value: address) => void
+  valueProvince: address
+  valueDistrict: address
+  valueWard: address
 }
-const SelectProvince = ({ onProvince, onDistrict, onWard }: Props) => {
+const SelectProvince = ({
+  onProvince,
+  onDistrict,
+  onWard,
+  valueProvince,
+  valueDistrict,
+  valueWard,
+}: Props) => {
   const [show, setShow] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
   const [data, setData] = useState<address[]>([])
@@ -57,7 +67,7 @@ const SelectProvince = ({ onProvince, onDistrict, onWard }: Props) => {
       const res = await getListProvince(payload)
       await setDataProvince(res?.data)
       await setData(res?.data)
-    } catch (error) {}
+    } catch (error) { }
   }
   const getDataDistrict = async (id: number) => {
     try {
@@ -67,7 +77,7 @@ const SelectProvince = ({ onProvince, onDistrict, onWard }: Props) => {
       const res = await getListDistrict(payload)
       await setDataDistrict(res?.data)
       await setData(res?.data)
-    } catch (error) {}
+    } catch (error) { }
   }
   const getDataWard = async (id: number) => {
     try {
@@ -77,7 +87,7 @@ const SelectProvince = ({ onProvince, onDistrict, onWard }: Props) => {
       const res = await getListWard(payload)
       await setDataWard(res?.data)
       await setData(res?.data)
-    } catch (error) {}
+    } catch (error) { }
   }
   const onItemHeader = async (id: number) => {
     if (id === 1) {
@@ -152,18 +162,15 @@ const SelectProvince = ({ onProvince, onDistrict, onWard }: Props) => {
     onWard({ ...ward })
   }
   const onCancel = () => {
-    // setProvince({
-    //   id: 0,
-    //   name: '',
-    // })
-    // setDistrict({
-    //   id: 0,
-    //   name: '',
-    // })
-    // setWard({
-    //   id: 0,
-    //   name: '',
-    // })
+    setProvince({
+      ...valueProvince,
+    })
+    setDistrict({
+      ...valueDistrict,
+    })
+    setWard({
+      ...valueWard,
+    })
     setShow(false)
   }
   const value = () => {
