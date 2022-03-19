@@ -3,10 +3,11 @@ import FstImage from '@app/components/FstImage'
 import { MEDIA_TYPE } from '@app/constant/Constant'
 import CreatePostApi from '@app/screens/App/CreatePost/api/CreatePostApi'
 import { ArrayImage } from '@app/screens/App/CreatePost/model'
+import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Platform,
   StyleSheet,
@@ -24,6 +25,14 @@ interface ImageAreaProps {
 const ImageArea = (props: ImageAreaProps) => {
   const { onPress } = props
   const [dataImageVideo, setDataImageVideo] = useState<ArrayImage[]>([])
+
+  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+
+  useEffect(() => {
+    if (dataCreatPost.media.length === 0) {
+      setDataImageVideo([])
+    }
+  }, [dataCreatPost])
 
   const removeImage = (index: number) => {
     setDataImageVideo(prevState => {

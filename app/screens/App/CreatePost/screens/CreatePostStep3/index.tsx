@@ -67,14 +67,25 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
     dispatch(updateDataCreatePost(payload))
     try {
       showLoading()
-      await CreatePostApi.createPost(dataCreatPost)
+      await CreatePostApi.createPost({ ...dataCreatPost, ...payload })
       dispatch(clearDataCreatePost())
-      NavigationUtil.navigate(SCREEN_ROUTER_APP.HOME)
+      showMessages(
+        R.strings().notification,
+        'Bạn đã đă đăng tin thành công. Tin của bạn sẽ cần được duyệt dể được đăng lên.',
+        () => {
+          setAddress('')
+          setProvince({ id: 0, name: '' })
+          setDistrict({ id: 0, name: '' })
+          setWard({ id: 0, name: '' })
+          onNext()
+        }
+      )
     } catch (error) {
     } finally {
       hideLoading()
     }
   }
+
   return (
     <>
       <View style={styles.v_container}>

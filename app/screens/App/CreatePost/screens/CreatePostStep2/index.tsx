@@ -1,6 +1,7 @@
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import { NAME_REGEX, PHONE_REGEX } from '@app/constant/Constant'
+import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
@@ -56,6 +57,18 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
   const [subject, setSubject] = useState<number[]>([])
   const [need, setNeed] = useState<number[]>([])
 
+  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+
+  useEffect(() => {
+    if (dataCreatPost.title === '') {
+      year_of_birth.current = ''
+      setSex(0)
+      setGroupType(0)
+      setSubject([0])
+      setNeed([0])
+    }
+  }, [dataCreatPost])
+
   const getDataTypeGroup = async () => {
     showLoading()
     try {
@@ -95,6 +108,7 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
   useEffect(() => {
     getDataTypeGroup()
   }, [])
+
   useEffect(() => {
     if (groupType !== 0) {
       getDataSubject(groupType, 1)

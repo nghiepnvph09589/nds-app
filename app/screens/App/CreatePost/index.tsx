@@ -1,5 +1,6 @@
 import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
+import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors } from '@app/theme'
 import React, { useState } from 'react'
@@ -135,7 +136,13 @@ const CreatePost = () => {
                   ) : index === 1 ? (
                     <CreatePostStep2 onBack={onBack} onNext={onNext} />
                   ) : (
-                    <CreatePostStep3 onBack={onBack} onNext={() => {}} />
+                    <CreatePostStep3
+                      onBack={onBack}
+                      onNext={() => {
+                        setCurrentPage(0)
+                        NavigationUtil.navigate(SCREEN_ROUTER_APP.HOME)
+                      }}
+                    />
                   )}
                 </>
               ))}

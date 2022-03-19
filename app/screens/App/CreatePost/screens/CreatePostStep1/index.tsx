@@ -3,7 +3,7 @@ import reactotron from '@app/config/ReactotronConfig'
 import { useAppSelector } from '@app/store'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { useDispatch } from 'react-redux'
 import ViewBottom from '../../components/ViewBottom'
@@ -31,6 +31,16 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
       type: 1,
     },
   ])
+
+  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+
+  useEffect(() => {
+    if (!dataCreatPost.content) {
+      setTitle('')
+      setContent('')
+      MediaArray.current = []
+    }
+  }, [dataCreatPost])
 
   const handleNextStep1 = () => {
     if (!title) {
