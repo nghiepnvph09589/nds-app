@@ -9,8 +9,8 @@ const Account = () => {
   return (
     <View style={styles.v_container}>
       <UserInfo
-        name={userInfo.name}
-        avatar={userInfo.profile_picture_url.replace('http://', 'https://')}
+        name={userInfo?.name}
+        avatar={userInfo?.profile_picture_url.replace('http://', 'https://')}
       />
       <UserDirectory />
     </View>

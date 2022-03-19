@@ -185,7 +185,7 @@ const SelectProvince = ({ onProvince, onDistrict, onWard }: Props) => {
 
   const renderValue = () => {
     if (province.id !== 0 && district.id !== 0 && ward.id !== 0) {
-      return `${province.name}/ ${district.name}/ ${ward.name}`
+      return `${ward.name}, ${district.name}, ${province.name} `
     } else {
       return null
     }

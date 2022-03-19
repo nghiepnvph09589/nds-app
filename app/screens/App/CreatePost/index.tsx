@@ -100,7 +100,7 @@ const CreatePost = () => {
                 stepCount={3}
                 customStyles={secondIndicatorStyles}
                 currentPosition={currentPage}
-                onPress={onStepPress}
+                //onPress={onStepPress}
                 renderStepIndicator={renderStepIndicator}
                 labels={[
                   R.strings().image,

@@ -70,6 +70,8 @@ const isNotCreatPost = (title: string) => {
   return title !== TAB_BAR.CREATE_POST.title
 }
 
+const TabBarNameRequireLogin = [USER, CREATE_POST]
+
 const RenderTabBarIcon = ({
   focused,
   route,
@@ -146,7 +148,7 @@ const MainTab = (route: any) => {
               {...props}
               onPress={async e => {
                 const token = await AsyncStorage.getItem('token')
-                if (route.name === SCREEN_ROUTER_APP.USER && !token) {
+                if (TabBarNameRequireLogin.includes(route.name) && !token) {
                   showConfirm(
                     R.strings().notification,
                     R.strings().please_login,

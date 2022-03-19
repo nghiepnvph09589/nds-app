@@ -17,11 +17,21 @@ import {
 import { createThumbnail } from 'react-native-create-thumbnail'
 import ImagePicker from 'react-native-image-crop-picker'
 
-const ImageArea = () => {
+interface ImageAreaProps {
+  onPress: (mediaArray: ArrayImage[]) => void
+}
+
+const ImageArea = (props: ImageAreaProps) => {
+  const { onPress } = props
   const [dataImageVideo, setDataImageVideo] = useState<ArrayImage[]>([])
 
   const removeImage = (index: number) => {
     setDataImageVideo(prevState => {
+      onPress(
+        prevState
+          .slice(0, index)
+          .concat(prevState.slice(index + 1, prevState.length))
+      )
       return prevState
         .slice(0, index)
         .concat(prevState.slice(index + 1, prevState.length))
@@ -59,6 +69,7 @@ const ImageArea = () => {
             }
           )
           setDataImageVideo(prevState => {
+            onPress(prevState.concat(arrayImage))
             return prevState.concat(arrayImage)
           })
         } catch (error) {
@@ -112,6 +123,7 @@ const ImageArea = () => {
             }
           )
           setDataImageVideo(prevState => {
+            onPress(prevState.concat(arrayVideo))
             return prevState.concat(arrayVideo)
           })
         } catch (error) {

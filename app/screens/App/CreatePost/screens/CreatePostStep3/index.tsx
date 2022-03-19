@@ -7,6 +7,17 @@ import RNTextInput from '@app/components/RNTextInput'
 import SelectAddress from './components/SelectAddress'
 import SelectProvince from './components/SelectProvince'
 import ViewBottom from '../../components/ViewBottom'
+import { useDispatch } from 'react-redux'
+import {
+  clearDataCreatePost,
+  updateDataCreatePost,
+} from '../../slice/CreatePostSlice'
+import { useAppSelector } from '@app/store'
+import { showMessages } from '@app/utils/AlertHelper'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import CreatePostApi from '../../api/CreatePostApi'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 
 interface CreatPostStep3Props {
   onBack: () => void
@@ -17,6 +28,9 @@ interface address {
   name: string
 }
 const CreatePostStep3 = (props: CreatPostStep3Props) => {
+  const { lat, long } = useAppSelector(state => state.locationReducer)
+  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+  const dispatch = useDispatch()
   const { onBack, onNext } = props
   const [province, setProvince] = useState<address>({ id: 0, name: '' })
   const [district, setDistrict] = useState<address>({ id: 0, name: '' })
@@ -26,6 +40,41 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
     console.log(province, district, ward)
   }, [province, district, ward])
   const [address, setAddress] = useState<string>('')
+
+  const onPost = async () => {
+    if (!(province.id !== 0 && district.id !== 0 && ward.id !== 0)) {
+      showMessages(
+        R.strings().notification,
+        'Vui lòng cập nhật Tỉnh/ Thành phố, Quận/Huyện, Phường/Xã'
+      )
+      return
+    }
+    if (!address) {
+      showMessages(
+        R.strings().notification,
+        'Vui lòng cập nhật tên đường, số nhà, tòa nhà'
+      )
+      return
+    }
+    const payload = {
+      province_id: province.id,
+      district_id: district.id,
+      ward_id: ward.id,
+      address,
+      lat: lat,
+      long: long,
+    }
+    dispatch(updateDataCreatePost(payload))
+    try {
+      showLoading()
+      await CreatePostApi.createPost(dataCreatPost)
+      dispatch(clearDataCreatePost())
+      NavigationUtil.navigate(SCREEN_ROUTER_APP.HOME)
+    } catch (error) {
+    } finally {
+      hideLoading()
+    }
+  }
   return (
     <>
       <View style={styles.v_container}>
@@ -47,7 +96,7 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
         />
         <SelectAddress />
       </View>
-      <ViewBottom label={R.strings().post} onBack={onBack} onNext={onNext} />
+      <ViewBottom label={R.strings().post} onBack={onBack} onNext={onPost} />
     </>
   )
 }
