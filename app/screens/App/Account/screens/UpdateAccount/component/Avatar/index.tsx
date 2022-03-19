@@ -1,19 +1,80 @@
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
+import {
+    Dimensions,
+    Platform,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+} from 'react-native'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
-/* eslint-disable prettier/prettier */
 import FastImage from 'react-native-fast-image'
 import R from '@app/assets/R'
 import React from 'react'
+import RegisterApi from '@app/screens/Auth/Register/api/RegisterApi'
 import { Source } from 'react-native-fast-image'
+import { launchImageLibrary } from 'react-native-image-picker'
+import reactotron from '@app/config/ReactotronConfig'
 
 const { width } = Dimensions.get('window')
 
-const Avatar = ({ onPress, source }: { onPress: () => void, source: Source | number }) => {
+const Avatar = ({
+    onPress,
+    source,
+}: {
+    onPress: () => void
+    source: Source | number
+}) => {
+    const selectImagePress = async () => {
+        try {
+            const result = await launchImageLibrary({
+                mediaType: 'photo',
+                selectionLimit: 1,
+                maxWidth: 800,
+                maxHeight: 800,
+            })
+            reactotron.logImportant!(result)
+
+            if (
+                result.didCancel ||
+                !result.assets?.length ||
+                typeof result.assets[0].uri === 'undefined'
+            ) {
+                return
+            }
+            showLoading()
+            const formData = new FormData()
+            formData.append('image', {
+                uri:
+                    Platform.OS === 'ios'
+                        ? result.assets[0].uri.replace('file://', '')
+                        : result.assets[0].uri,
+                name: result.assets[0].fileName,
+                type: result.assets[0].type,
+            })
+            try {
+                const res = await RegisterApi.uploadFile(formData, 1)
+                reactotron.logImportant!(res)
+                onPress(
+                    !!res.data ? res.data.url.replace('http://', 'https://') : '',
+                    !!res.data ? res.data.filename : ''
+                )
+            } catch (error) {
+                console.error(error)
+            } finally {
+                hideLoading()
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
     return (
         <View style={styles.v_container}>
-            <FastImage source={source || R.images.img_avatar_default} style={styles.img_avatar} />
+            <FastImage
+                source={source || R.images.img_avatar_default}
+                style={styles.img_avatar}
+            />
             <TouchableOpacity
-                onPress={onPress}
+                onPress={selectImagePress}
                 style={styles.btn_edit}>
                 <FastImage source={R.images.ic_edit_avatar} style={styles.img_camera} />
             </TouchableOpacity>

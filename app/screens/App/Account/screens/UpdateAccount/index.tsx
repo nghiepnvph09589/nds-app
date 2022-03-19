@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 
+import React, { useRef, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import Avatar from './component/Avatar'
@@ -8,7 +9,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 /* eslint-disable prettier/prettier */
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
-import React from 'react'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import SelectCalendar from './component/SelectCalendar'
 import SelectSex from './component/SelectSex'
@@ -26,6 +26,8 @@ const UpdateAccountScreen = () => {
             .required(R.strings().email_blank),
         address: Yup.string().required(R.strings().address_blank),
     })
+    const [profileImage, setProfileImage] = useState<string>('')
+    const filename = useRef<string>('')
     const onSubmitUpdate = (data: any) => {
         if (!data?.dateBirth) {
             showMessages(R.strings().notification, 'Vui lòng chọn ngày sinh')
@@ -51,7 +53,7 @@ const UpdateAccountScreen = () => {
                 enableOnAndroid={true}
             >
                 <Avatar
-                    source={R.images.img_avatar_default}
+                    source={profileImage ? { uri: profileImage } : R.images.img_avatar_default}
                     onPress={() => { }}
                 />
                 <Formik
