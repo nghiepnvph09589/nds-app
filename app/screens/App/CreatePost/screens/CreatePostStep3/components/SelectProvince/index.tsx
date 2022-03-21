@@ -16,6 +16,7 @@ import FstImage from '@app/components/FstImage'
 import Modal from 'react-native-modal'
 import R from '@app/assets/R'
 import { showMessages } from '@app/utils/AlertHelper'
+import { useAppSelector } from '@app/store'
 
 const tabData = [
   {
@@ -36,34 +37,34 @@ interface address {
   name: string
 }
 interface Props {
-  onProvince: (value: address) => void
-  onDistrict: (value: address) => void
-  onWard: (value: address) => void
-  valueProvince: address
-  valueDistrict: address
-  valueWard: address
+  province: address
+  district: address
+  ward: address
+  onProvince: React.Dispatch<React.SetStateAction<address>>
+  onDistrict: React.Dispatch<React.SetStateAction<address>>
+  onWard: React.Dispatch<React.SetStateAction<address>>
 }
-const SelectProvince = ({
-  onProvince,
-  onDistrict,
-  onWard,
-  valueProvince,
-  valueDistrict,
-  valueWard,
-}: Props) => {
+const SelectProvince = (props: Props) => {
+  const { province, district, ward, onProvince, onDistrict, onWard } = props
   const [show, setShow] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
   const [data, setData] = useState<address[]>([])
   const [dataProvince, setDataProvince] = useState<address[]>([])
   const [dataDistrict, setDataDistrict] = useState<address[]>([])
   const [dataWard, setDataWard] = useState<address[]>([])
-  // const [loading, setLoading] = useState<boolean>(false)
-  const [province, setProvince] = useState<address>({ id: 0, name: '' })
-  const [district, setDistrict] = useState<address>({ id: 0, name: '' })
-  const [ward, setWard] = useState<address>({ id: 0, name: '' })
+
+  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+
+  useEffect(() => {
+    if (dataCreatPost.title === '') {
+      setPage(1)
+      setData(dataProvince)
+      setDataDistrict([])
+      setDataWard([])
+    }
+  }, [dataCreatPost])
 
   const getDataProvince = async () => {
-    showLoading()
     try {
       const payload = {}
       const res = await getListProvince(payload)
@@ -72,11 +73,9 @@ const SelectProvince = ({
     } catch (error) {
       console.error(error)
     } finally {
-      hideLoading()
     }
   }
   const getDataDistrict = async (id: number) => {
-    showLoading()
     try {
       const payload = {
         province_id: id,
@@ -87,11 +86,9 @@ const SelectProvince = ({
     } catch (error) {
       console.error(error)
     } finally {
-      hideLoading()
     }
   }
   const getDataWard = async (id: number) => {
-    showLoading()
     try {
       const payload = {
         district_id: id,
@@ -102,7 +99,6 @@ const SelectProvince = ({
     } catch (error) {
       console.error(error)
     } finally {
-      hideLoading()
     }
   }
   const onItemHeader = async (id: number) => {
@@ -136,33 +132,33 @@ const SelectProvince = ({
   }
   const onItem = async (item: address) => {
     if (page === 1) {
-      setProvince({
+      onProvince({
         id: item.id,
         name: item.name,
       })
-      setDistrict({
+      onDistrict({
         id: 0,
         name: '',
       })
-      setWard({
+      onWard({
         id: 0,
         name: '',
       })
       setPage(2)
       getDataDistrict(item.id)
     } else if (page === 2) {
-      setDistrict({
+      onDistrict({
         id: item.id,
         name: item.name,
       })
-      setWard({
+      onWard({
         id: 0,
         name: '',
       })
       getDataWard(item.id)
       setPage(3)
     } else if (page === 3) {
-      setWard({
+      onWard({
         id: item.id,
         name: item.name,
       })
@@ -187,14 +183,14 @@ const SelectProvince = ({
     onWard({ ...ward })
   }
   const onCancel = () => {
-    setProvince({
-      ...valueProvince,
+    onProvince({
+      ...province,
     })
-    setDistrict({
-      ...valueDistrict,
+    onDistrict({
+      ...district,
     })
-    setWard({
-      ...valueWard,
+    onWard({
+      ...ward,
     })
     setShow(false)
   }
@@ -216,8 +212,8 @@ const SelectProvince = ({
   }, [])
 
   const renderValue = () => {
-    if (province.id !== 0 && district.id !== 0 && ward.id !== 0) {
-      return `${province.name}/ ${district.name}/ ${ward.name}`
+    if (province?.id !== 0 && district?.id !== 0 && ward?.id !== 0) {
+      return `${ward?.name}, ${district?.name}, ${province?.name} `
     } else {
       return null
     }

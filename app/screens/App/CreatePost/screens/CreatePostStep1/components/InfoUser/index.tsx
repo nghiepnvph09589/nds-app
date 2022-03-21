@@ -6,10 +6,12 @@ import { colors, fonts } from '@app/theme'
 
 interface InfoUser {
   avatar: string
+  title: string
+  setTitle: React.Dispatch<React.SetStateAction<string>>
 }
 
 const InfoUser = (props: InfoUser) => {
-  const { avatar } = props
+  const { avatar, title, setTitle } = props
   return (
     <View style={styles.v_container}>
       <FstImage
@@ -22,6 +24,8 @@ const InfoUser = (props: InfoUser) => {
         placeholder="Nhập tiêu đề"
         placeholderTextColor={'#8898A7'}
         multiline={true}
+        value={title}
+        onChangeText={setTitle}
       />
     </View>
   )

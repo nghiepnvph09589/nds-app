@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { colors, styleView } from '@app/theme'
 
@@ -6,16 +6,24 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
-import { formatShortDate } from '@app/utils/DateUtils'
+import DateUtils from '@app/utils/DateUtils'
+import { useAppSelector } from '@app/store'
 
 const SelectDateBirth = ({
-  value,
   onChange,
 }: {
-  value?: string
-  onChange: (text: any) => void
+  onChange: (year: string) => void
 }) => {
   const [show, setShow] = useState<boolean>(false)
+  const [dateBirth, setDateBirth] = useState<string>('')
+
+  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+
+  useEffect(() => {
+    if (dataCreatPost.title === '') {
+      setDateBirth('')
+    }
+  }, [dataCreatPost])
   return (
     <TouchableOpacity
       style={stylesDate.ctn}
@@ -29,10 +37,7 @@ const SelectDateBirth = ({
         inputContainerStyle={stylesDate.v_input_date}
         placeholder={R.strings().date_of_birthday}
         leftIcon={R.images.ic_calendar}
-        onChangeText={(text: string) => {
-          onChange(text)
-        }}
-        value={value}
+        value={dateBirth}
         editable={false}
       />
       <FstImage source={R.images.ic_down} style={stylesDate.right_icon} />
@@ -47,7 +52,8 @@ const SelectDateBirth = ({
         onCancel={() => setShow(false)}
         onConfirm={(date: Date) => {
           setShow(false)
-          onChange(formatShortDate(date))
+          setDateBirth(DateUtils.formatShortDate(date))
+          onChange(DateUtils.formatYear(date))
         }}
       />
     </TouchableOpacity>

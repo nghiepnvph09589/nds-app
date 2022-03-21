@@ -51,6 +51,10 @@
 	<string>$(PRODUCT_NAME) muốn truy cập vị trí hiện tại của bạn để hiện thị trên bản đồ</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) muốn truy cập vị trí hiện tại của bạn để hiện thị trên bản đồ</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) muốn truy cập thư viện ảnh của bạn </string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

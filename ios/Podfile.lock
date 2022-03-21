@@ -559,7 +559,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 2d604da2558559f6f66005905ab65c3d014fb79a
+  FBReactNativeSpec: 1eba22e489531db159b7dfe93c7a2078ef274d7d
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
   Mapbox-iOS-SDK: f870f83cbdc7aa4a74afcee143aafb0dae390c82

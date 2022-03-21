@@ -2,13 +2,21 @@ import { fonts } from '@app/theme'
 import React from 'react'
 import { StyleSheet, TextInput } from 'react-native'
 
-const InputPost = () => {
+interface InputPostProps {
+  content: string
+  setContent: React.Dispatch<React.SetStateAction<string>>
+}
+
+const InputPost = (props: InputPostProps) => {
+  const { content, setContent } = props
   return (
     <TextInput
       placeholderTextColor={'#8898A7'}
       style={styles.styleInput}
       placeholder="Nhập nội dung chia sẻ..."
       multiline={true}
+      value={content}
+      onChangeText={setContent}
     />
   )
 }
@@ -21,6 +29,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     ...fonts.regular16,
     backgroundColor: 'white',
-    paddingBottom: 44,
+    paddingBottom: 100,
   },
 })

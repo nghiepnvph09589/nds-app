@@ -1,12 +1,14 @@
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
+import reactotron from '@app/config/ReactotronConfig'
 import { MEDIA_TYPE } from '@app/constant/Constant'
 import CreatePostApi from '@app/screens/App/CreatePost/api/CreatePostApi'
 import { ArrayImage } from '@app/screens/App/CreatePost/model'
+import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Platform,
   StyleSheet,
@@ -17,11 +19,29 @@ import {
 import { createThumbnail } from 'react-native-create-thumbnail'
 import ImagePicker from 'react-native-image-crop-picker'
 
-const ImageArea = () => {
+interface ImageAreaProps {
+  onPress: (mediaArray: ArrayImage[]) => void
+}
+
+const ImageArea = (props: ImageAreaProps) => {
+  const { onPress } = props
   const [dataImageVideo, setDataImageVideo] = useState<ArrayImage[]>([])
+
+  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+
+  useEffect(() => {
+    if (dataCreatPost.media.length === 0) {
+      setDataImageVideo([])
+    }
+  }, [dataCreatPost])
 
   const removeImage = (index: number) => {
     setDataImageVideo(prevState => {
+      onPress(
+        prevState
+          .slice(0, index)
+          .concat(prevState.slice(index + 1, prevState.length))
+      )
       return prevState
         .slice(0, index)
         .concat(prevState.slice(index + 1, prevState.length))
@@ -33,6 +53,7 @@ const ImageArea = () => {
       mediaType: 'photo',
       multiple: true,
     }).then(async images => {
+      reactotron.log!(images)
       const dataImage = dataImageVideo.filter(
         item => item.type === MEDIA_TYPE.IMAGE
       )
@@ -43,11 +64,11 @@ const ImageArea = () => {
           formData.append('image', {
             uri:
               Platform.OS !== 'ios'
-                ? item.sourceURL
+                ? item.path
                 : item.sourceURL
                 ? item.sourceURL.replace('file://', '')
                 : item.sourceURL,
-            name: item.filename,
+            name: Platform.OS !== 'ios' ? item.modificationDate : item.filename,
             type: item.mime,
           })
         })
@@ -59,6 +80,7 @@ const ImageArea = () => {
             }
           )
           setDataImageVideo(prevState => {
+            onPress(prevState.concat(arrayImage))
             return prevState.concat(arrayImage)
           })
         } catch (error) {
@@ -79,6 +101,7 @@ const ImageArea = () => {
     ImagePicker.openPicker({
       mediaType: 'video',
     }).then(async video => {
+      reactotron.log!(video)
       const dataVideo = dataImageVideo.filter(
         item => item.type === MEDIA_TYPE.VIDEO
       )
@@ -88,11 +111,11 @@ const ImageArea = () => {
         formData.append('video', {
           uri:
             Platform.OS !== 'ios'
-              ? video.sourceURL
+              ? video.path
               : video.sourceURL
               ? video.sourceURL.replace('file://', '')
               : video.sourceURL,
-          name: video.filename,
+          name: Platform.OS !== 'ios' ? video.modificationDate : video.filename,
           type: video.mime,
         })
         try {
@@ -112,6 +135,7 @@ const ImageArea = () => {
             }
           )
           setDataImageVideo(prevState => {
+            onPress(prevState.concat(arrayVideo))
             return prevState.concat(arrayVideo)
           })
         } catch (error) {
