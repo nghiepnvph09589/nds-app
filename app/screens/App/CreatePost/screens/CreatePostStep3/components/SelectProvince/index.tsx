@@ -65,7 +65,6 @@ const SelectProvince = (props: Props) => {
   }, [dataCreatPost])
 
   const getDataProvince = async () => {
-    showLoading()
     try {
       const payload = {}
       const res = await getListProvince(payload)
@@ -74,11 +73,9 @@ const SelectProvince = (props: Props) => {
     } catch (error) {
       console.error(error)
     } finally {
-      hideLoading()
     }
   }
   const getDataDistrict = async (id: number) => {
-    showLoading()
     try {
       const payload = {
         province_id: id,
@@ -89,11 +86,9 @@ const SelectProvince = (props: Props) => {
     } catch (error) {
       console.error(error)
     } finally {
-      hideLoading()
     }
   }
   const getDataWard = async (id: number) => {
-    showLoading()
     try {
       const payload = {
         district_id: id,
@@ -104,7 +99,6 @@ const SelectProvince = (props: Props) => {
     } catch (error) {
       console.error(error)
     } finally {
-      hideLoading()
     }
   }
   const onItemHeader = async (id: number) => {

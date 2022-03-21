@@ -99,9 +99,6 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
           onProvince={setProvince}
           onDistrict={setDistrict}
           onWard={setWard}
-          valueProvince={province}
-          valueDistrict={district}
-          valueWard={ward}
         />
         <RNTextInput
           containerStyle={styles.v_container_input}
