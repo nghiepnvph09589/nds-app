@@ -47,10 +47,6 @@ const UpdateAccountScreen = () => {
     const filename = useRef<string>('')
     const onSubmitUpdate = async (form: any) => {
         Keyboard.dismiss()
-        // if (!form?.dateBirth) {
-        //     showMessages(R.strings().notification, 'Vui lòng chọn ngày sinh')
-        //     return
-        // }
         if (!form?.sex) {
             showMessages(R.strings().notification, 'Vui lòng chọn giới tính')
             return
@@ -80,6 +76,7 @@ const UpdateAccountScreen = () => {
             hideLoading()
         }
     }
+
     return (
         <ScreenWrapper
             back
@@ -91,7 +88,6 @@ const UpdateAccountScreen = () => {
             <KeyboardAwareScrollView
                 keyboardShouldPersistTaps="always"
                 style={styles.v_keyboard}
-                enableOnAndroid={true}
             >
                 <Avatar
                     source={
@@ -183,7 +179,7 @@ const UpdateAccountScreen = () => {
                                 value={values.cmt}
                                 errorMessage={errors.cmt}
                                 touched={touched.cmt}
-                                keyboardType='number-pad'
+                                keyboardType="number-pad"
                                 maxLength={12}
                             />
                             <SelectCalendar
@@ -193,10 +189,7 @@ const UpdateAccountScreen = () => {
                                 touched={touched.dateBirth}
                                 errorStyle={styles.txt_error}
                             />
-                            <SelectSex
-                                value={values.sex}
-                                onSelect={handleChange('sex')}
-                            />
+                            <SelectSex value={values.sex} onSelect={handleChange('sex')} />
 
                             <RNTextInput
                                 containerStyle={styles.container_input}
@@ -212,12 +205,9 @@ const UpdateAccountScreen = () => {
                                 errorMessage={errors.address}
                                 touched={touched.address}
                             />
-                            <TouchableOpacity
-                                onPress={handleSubmit}
-                                style={styles.btn_save}>
+                            <TouchableOpacity onPress={handleSubmit} style={styles.btn_save}>
                                 <Text style={styles.txt_save} children={R.strings().save} />
                             </TouchableOpacity>
-
                         </View>
                     )}
                 </Formik>
@@ -282,4 +272,3 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 })
-

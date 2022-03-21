@@ -2,8 +2,8 @@ import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import reactotron from '@app/config/ReactotronConfig'
 import { MEDIA_TYPE } from '@app/constant/Constant'
-import CreatePostApi from '@app/screens/App/CreatePost/api/CreatePostApi'
-import { ArrayImage } from '@app/screens/App/CreatePost/model'
+import CreatePostApi from '@app/screens/CreatePost/api/CreatePostApi'
+import { ArrayImage } from '@app/screens/CreatePost/model'
 import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
@@ -148,6 +148,7 @@ const ImageArea = (props: ImageAreaProps) => {
       }
     })
   }
+
   return (
     <>
       <View style={styles.v_button}>

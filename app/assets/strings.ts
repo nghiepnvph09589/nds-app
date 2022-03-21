@@ -31,6 +31,7 @@ function strings() {
     input_referral_code: I18n.t('input_referral_code', { defaultValue: '' }),
     validatePhone: I18n.t('validatePhone', { defaultValue: '' }),
     validateEmail: I18n.t('validateEmail', { defaultValue: '' }),
+    validateName: I18n.t('validateName', { defaultValue: '' }),
     validatePassword: I18n.t('validatePassword', { defaultValue: '' }),
     you_are_business: I18n.t('you_are_business', { defaultValue: '' }),
     company_name: I18n.t('company_name', { defaultValue: '' }),

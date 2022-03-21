@@ -27,6 +27,7 @@ export default {
   input_referral_code: 'Nhập số điện thoại giới thiệu',
   validatePhone: 'Số điện thoại sai định dạng',
   validateEmail: 'Email sai định dạng',
+  validateName: 'Họ và tên sai định dạng',
   validatePassword: 'Mật khẩu sai định dạng (8 đến 20 ký tự)',
   you_are_business: 'Bạn là doanh nghiệp',
   company_name: 'Tên công ty',

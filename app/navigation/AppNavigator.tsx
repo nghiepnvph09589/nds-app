@@ -13,6 +13,7 @@ import { StackAuthScreen } from './stack/StackAuth'
 import { StackMainScreen } from './stack/BottomTabBar'
 import { connect } from 'react-redux'
 import isEqual from 'react-fast-compare'
+import { StackCreatPostScreen } from './stack/StackCreatePost'
 
 const RootStack = createStackNavigator()
 const screenOptions = {
@@ -52,6 +53,13 @@ const renderSwitch = (switchApp: string) => {
         <RootStack.Screen
           name={SCREEN_ROUTER.AUTH}
           component={StackAuthScreen}
+        />
+      )
+    case SCREEN_ROUTER.CREATE_POST:
+      return (
+        <RootStack.Screen
+          name={SCREEN_ROUTER.CREATE_POST}
+          component={StackCreatPostScreen}
         />
       )
     case SCREEN_ROUTER.MAIN:

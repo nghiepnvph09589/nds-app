@@ -16,6 +16,7 @@ const InputPost = (props: InputPostProps) => {
       placeholder="Nhập nội dung chia sẻ..."
       multiline={true}
       value={content}
+      returnKeyType="done"
       onChangeText={setContent}
     />
   )

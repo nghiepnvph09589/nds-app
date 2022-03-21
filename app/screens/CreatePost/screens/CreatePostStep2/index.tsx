@@ -185,7 +185,6 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
               keyboardShouldPersistTaps="always"
               style={styles.ctn}
               contentContainerStyle={styles.content_ctn}
-              enableOnAndroid={true}
             >
               <View>
                 <Title title={R.strings().information_supporters} />

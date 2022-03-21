@@ -8,7 +8,7 @@ import {
 import { dimension } from '@app/constant/Theme'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import Account from '@app/screens/App/Account'
-import CreatePost from '@app/screens/App/CreatePost'
+import CreatePost from '@app/screens/CreatePost'
 import Home from '@app/screens/App/Home'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
@@ -156,6 +156,9 @@ const MainTab = (route: any) => {
                       dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
                     }
                   )
+                  return
+                } else if (route.name === SCREEN_ROUTER_APP.CREATE_POST) {
+                  dispatch(navigateSwitch(SCREEN_ROUTER.CREATE_POST))
                   return
                 }
                 if (props.onPress) props.onPress(e)
