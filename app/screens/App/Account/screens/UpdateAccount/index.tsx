@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as Yup from 'yup'
 
 import {
@@ -15,7 +16,6 @@ import Avatar from './component/Avatar'
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import NavigationUtil from '@app/navigation/NavigationUtil'
-/* eslint-disable prettier/prettier */
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
@@ -34,20 +34,23 @@ const UpdateAccountScreen = () => {
     const data = useAppSelector(state => state.accountReducer.data)
     const updateSchema = Yup.object().shape({
         name: Yup.string().required(R.strings().name_blank),
-        cmt: Yup.string().matches(/^.{9,12}$/, 'Số CMT/CCCD không hợp lệ').required('Số CMT/CCCD đang để trống'),
+        cmt: Yup.string()
+            .matches(/^.{9,12}$/, 'Số CMT/CCCD không hợp lệ')
+            .required('Số CMT/CCCD đang để trống'),
         email: Yup.string()
             .email(R.strings().validateEmail)
             .required(R.strings().email_blank),
         address: Yup.string().required(R.strings().address_blank),
+        dateBirth: Yup.string().required('Vui lòng chọn ngày sinh'),
     })
     const [profileImage, setProfileImage] = useState<string>('')
     const filename = useRef<string>('')
     const onSubmitUpdate = async (form: any) => {
         Keyboard.dismiss()
-        if (!form?.dateBirth) {
-            showMessages(R.strings().notification, 'Vui lòng chọn ngày sinh')
-            return
-        }
+        // if (!form?.dateBirth) {
+        //     showMessages(R.strings().notification, 'Vui lòng chọn ngày sinh')
+        //     return
+        // }
         if (!form?.sex) {
             showMessages(R.strings().notification, 'Vui lòng chọn giới tính')
             return
@@ -91,7 +94,9 @@ const UpdateAccountScreen = () => {
                 enableOnAndroid={true}
             >
                 <Avatar
-                    source={profileImage ? { uri: profileImage } : R.images.img_avatar_default}
+                    source={
+                        profileImage ? { uri: profileImage } : R.images.img_avatar_default
+                    }
                     onPress={(url: string, fileName: string) => {
                         setProfileImage(url)
                         filename.current = fileName
@@ -184,6 +189,9 @@ const UpdateAccountScreen = () => {
                             <SelectCalendar
                                 value={values.dateBirth}
                                 onChange={handleChange('dateBirth')}
+                                errorMessage={errors.dateBirth}
+                                touched={touched.dateBirth}
+                                errorStyle={styles.txt_error}
                             />
                             <SelectSex
                                 value={values.sex}

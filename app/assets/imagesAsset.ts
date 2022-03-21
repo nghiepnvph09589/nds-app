@@ -36,6 +36,7 @@ const images = {
   ic_input_sex: require('./images/ic_input_sex.png'),
   ic_list: require('./images/ic_list.png'),
   ic_list2: require('./images/ic_list2.png'),
+  ic_list_post: require('./images/ic_list_post.png'),
   ic_location: require('./images/ic_location.png'),
   ic_location2: require('./images/ic_location2.png'),
   ic_location3: require('./images/ic_location3.png'),
