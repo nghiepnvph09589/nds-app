@@ -1,5 +1,5 @@
 {
-  "name": "rnws",
+  "name": "NDS",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -14,7 +14,9 @@
     "pod": "cd ios && pod install && cd ..",
     "reverse": "adb reverse tcp:9090 tcp:9090; adb reverse tcp:19001 tcp:19001;",
     "li": " node generateAssetResource.js && prettier --write ./app/assets/strings.ts && prettier --write ./app/assets/imagesAsset.ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cpa": "appcenter codepush release-react -a Apps-Windsoft/NDS_Android -d Production",
+    "cpi": "appcenter codepush release-react -a Apps-Windsoft/NDS_IOS -d Production"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
@@ -39,7 +41,7 @@
     "react-fast-compare": "^3.2.0",
     "react-moment": "^1.1.1",
     "react-native": "0.64.2",
-    "react-native-code-push": "^7.0.1",
+    "react-native-code-push": "^7.0.4",
     "react-native-create-thumbnail": "^1.5.1",
     "react-native-elements": "^3.4.1",
     "react-native-fast-image": "^8.3.4",

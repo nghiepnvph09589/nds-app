@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import * as Yup from 'yup'
 
 import { Formik } from 'formik'
