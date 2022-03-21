@@ -1,31 +1,23 @@
 import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { colors } from '@app/theme'
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import StepIndicator from 'react-native-step-indicator'
 import Swiper from 'react-native-swiper'
+import { useDispatch } from 'react-redux'
 import CreatPostStep1 from './screens/CreatePostStep1'
 import CreatePostStep2 from './screens/CreatePostStep2'
 import CreatePostStep3 from './screens/CreatePostStep3'
 const CreatePost = () => {
+  const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [title, setTitle] = useState<string>(R.strings().post)
   const PAGES = ['Page 1', 'Page 2', 'Page 3']
-
-  const onStepPress = (position: number) => {
-    if (position === 0) {
-      setTitle(R.strings().image)
-    } else if (position === 1) {
-      setTitle(R.strings().suggest_address)
-    } else if (position === 2) {
-      setTitle(R.strings().address)
-    }
-    setCurrentPage(position)
-  }
 
   const onBack = () => {
     setCurrentPage(prevState => {
@@ -129,7 +121,7 @@ const CreatePost = () => {
                       onBack={() => {
                         setCurrentPage(0)
                         setTitle(R.strings().post)
-                        NavigationUtil.goBack()
+                        dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
                       }}
                       onNext={onNext}
                     />

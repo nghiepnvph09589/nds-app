@@ -8,7 +8,7 @@ import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
 import { createStackNavigator } from '@react-navigation/stack'
-import AddressMap from '@app/screens/App/CreatePost/screens/AddressMap'
+import AddressMap from '@app/screens/CreatePost/screens/AddressMap'
 
 const {
   PRODUCT,

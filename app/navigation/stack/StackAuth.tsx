@@ -18,7 +18,7 @@ const {
 } = SCREEN_ROUTER_AUTH
 const Stack = createStackNavigator()
 
-const mainScreen = {
+const authScreen = {
   [LOGIN]: LoginScreen,
   [LOGIN_STEP_2]: LoginStep2,
   [REGISTER]: Register,
@@ -31,8 +31,8 @@ export const StackAuthScreen = () => {
   return (
     <>
       <Stack.Navigator headerMode="none">
-        {Object.keys(mainScreen).map((item, index) => (
-          <Stack.Screen key={index} name={item} component={mainScreen[item]} />
+        {Object.keys(authScreen).map((item, index) => (
+          <Stack.Screen key={index} name={item} component={authScreen[item]} />
         ))}
       </Stack.Navigator>
     </>

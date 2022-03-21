@@ -29,7 +29,7 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
       .trim()
-      .matches(NAME_REGEX, R.strings().validateEmail)
+      .matches(NAME_REGEX, R.strings().validateName)
       .required(R.strings().name_blank),
     email: Yup.string()
       .email(R.strings().validateEmail)
