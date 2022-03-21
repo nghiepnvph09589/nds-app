@@ -46,7 +46,7 @@ const ChangePassScreen = () => {
 
             <KeyboardAwareScrollView
                 keyboardShouldPersistTaps="always"
-                // style={styles.v_keyboard}
+                style={styles.v_keyboard}
                 enableOnAndroid={true}
             >
                 <Formik
@@ -140,5 +140,9 @@ const styles = StyleSheet.create({
     v_button: {
         marginHorizontal: 33,
         marginTop: 32,
+    },
+    v_keyboard: {
+        flex: 1,
+        backgroundColor: 'white',
     },
 })
