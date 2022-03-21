@@ -4,7 +4,13 @@ import { useAppSelector } from '@app/store'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import React, { useState, useRef, useEffect } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux'
 import ViewBottom from '../../components/ViewBottom'
 import { ArrayImage } from '../../model'
@@ -70,7 +76,11 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
 
   return (
     <>
-      <ScrollView style={styles.v_container}>
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="always"
+        showsVerticalScrollIndicator={false}
+        style={styles.v_container}
+      >
         <View>
           <InfoUser
             avatar={userInfo?.profile_picture_url.replace(
@@ -87,7 +97,8 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
             MediaArray.current = mediaArray
           }}
         />
-      </ScrollView>
+      </KeyboardAwareScrollView>
+
       <ViewBottom
         onBack={() => {
           onBack()

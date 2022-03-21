@@ -148,6 +148,7 @@ const ImageArea = (props: ImageAreaProps) => {
       }
     })
   }
+
   return (
     <>
       <View style={styles.v_button}>

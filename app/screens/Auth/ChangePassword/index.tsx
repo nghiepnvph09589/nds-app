@@ -64,7 +64,6 @@ const ChangePasswordComponent = (props: ChangePassProps) => {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="always"
           style={styles.v_keyboard}
-          enableOnAndroid={true}
         >
           <Text style={styles.v_note} children={R.strings().note_change_pass} />
           <Formik

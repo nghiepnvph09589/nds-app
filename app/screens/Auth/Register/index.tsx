@@ -2,11 +2,11 @@ import R from '@app/assets/R'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { EMAIL_REGEX, NAME_REGEX, SCREEN_ROUTER } from '@app/constant/Constant'
+import { NAME_REGEX, SCREEN_ROUTER } from '@app/constant/Constant'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { colors, fonts } from '@app/theme'
-import { showConfirm, showMessages } from '@app/utils/AlertHelper'
+import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { memo, useRef, useState } from 'react'
@@ -78,7 +78,6 @@ const ForgetPasswordScreenComponent = (props: ForgetPassProps) => {
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="always"
           style={styles.v_keyboard}
-          enableOnAndroid={true}
         >
           <Avatar
             onPress={(url: string, fileName: string) => {

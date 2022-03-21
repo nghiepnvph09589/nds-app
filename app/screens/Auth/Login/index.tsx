@@ -13,7 +13,7 @@ import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { colors, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
-import React, { useEffect, useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import {
   Dimensions,
   ImageBackground,
@@ -41,16 +41,16 @@ const LoginScreen = () => {
       .max(11, R.strings().validatePhone)
       .required(R.strings().phone_blank),
   })
-  // useEffect(() => {
-  //   Keyboard.addListener('keyboardDidShow', keyboardDidShow)
-  //   return () => {
-  //     Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
-  //   }
-  // }, [])
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
+    }
+  }, [])
 
-  // const keyboardDidShow = () => {
-  //   scrollRef.current?.scrollToEnd(true)
-  // }
+  const keyboardDidShow = () => {
+    scrollRef.current?.scrollToEnd(true)
+  }
   const handleLogin = async (item: { phone: string }) => {
     try {
       showLoading()
@@ -93,9 +93,9 @@ const LoginScreen = () => {
           source={R.images.img_login}
         >
           <KeyboardAwareScrollView
+            ref={scrollRef}
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
-            enableOnAndroid={true}
           >
             <FstImage
               style={styles.img_red_cross}
@@ -120,7 +120,7 @@ const LoginScreen = () => {
                 }) => (
                   <>
                     <RNTextInput
-                      //returnKeyType={'done'}
+                      returnKeyType={'done'}
                       containerStyle={styles.v_input}
                       placeholder={R.strings().phone}
                       leftIcon={R.images.ic_phone}
