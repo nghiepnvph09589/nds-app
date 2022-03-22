@@ -41,10 +41,6 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) muốn truy cập Camera </string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) muốn truy cập thư viện ảnh của bạn </string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) muốn truy cập vị trí hiện tại của bạn để hiện thị trên bản đồ</string>
 	<key>NSLocationAlwaysUsageDescription</key>

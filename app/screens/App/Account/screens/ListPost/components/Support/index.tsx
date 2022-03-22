@@ -1,11 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { colors, fonts } from '@app/theme'
-
-import FstImage from '@app/components/FstImage'
-import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
+import FstImage from '@app/components/FstImage'
+import { colors, fonts } from '@app/theme'
 import React from 'react'
-import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { StyleSheet, Text, View } from 'react-native'
 
 const Support = () => {
   return (
@@ -17,7 +14,7 @@ const Support = () => {
       />
       <Text style={styles.txt_support}>{R.strings().number_support}</Text>
       <Text style={styles.txt_number}>3</Text>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
           NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_SUPPORT)
         }}
@@ -29,7 +26,7 @@ const Support = () => {
           source={R.images.ic_love2}
         />
         <Text style={styles.text}>{R.strings().support}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   )
 }

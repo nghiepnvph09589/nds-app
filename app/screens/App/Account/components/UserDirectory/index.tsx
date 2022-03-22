@@ -34,7 +34,9 @@ const UserDirectory = () => {
         source2={R.images.ic_list2}
         label3={R.strings().list_post}
         source3={R.images.ic_list_post}
-        onPress3={() => { }}
+        onPress3={() => {
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_POST)
+        }}
       />
       <Directory
         onPress1={() => {
@@ -71,10 +73,10 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios' && isIphoneX()
         ? -25
         : Platform.OS === 'ios' && !isIphoneX()
-          ? -35
-          : Platform.OS !== 'ios' && isIphoneX()
-            ? -30
-            : -30 - getStatusBarHeight(),
+        ? -35
+        : Platform.OS !== 'ios' && isIphoneX()
+        ? -30
+        : -30 - getStatusBarHeight(),
     backgroundColor: '#FAFAFA',
     paddingTop: 24,
     paddingHorizontal: 12,

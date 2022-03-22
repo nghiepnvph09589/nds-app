@@ -1,17 +1,3 @@
-import { Source } from 'react-native-fast-image'
-
-export type Banners = {
-  id: number
-  image_url: number | Source
-}
-export type HomeSlice = {
-  isError: boolean
-  isLoading: boolean
-  data: HomeType
-}
-export type HomeType = {
-  listPost: ListPostData[]
-}
 export type ListPostData = {
   id: number
   name: string
