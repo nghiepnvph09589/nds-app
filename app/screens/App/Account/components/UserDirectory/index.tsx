@@ -32,6 +32,9 @@ const UserDirectory = () => {
         source1={R.images.ic_edit_user}
         label2={R.strings().support_list}
         source2={R.images.ic_list2}
+        label3={R.strings().list_post}
+        source3={R.images.ic_list_post}
+        onPress3={() => { }}
       />
       <Directory
         onPress1={() => {

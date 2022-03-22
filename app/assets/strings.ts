@@ -120,6 +120,7 @@ function strings() {
     select_address_map: I18n.t('select_address_map', { defaultValue: '' }),
     suggest_address: I18n.t('suggest_address', { defaultValue: '' }),
     permission_location: I18n.t('permission_location', { defaultValue: '' }),
+    list_post: I18n.t('list_post', { defaultValue: '' }),
   }
 }
 export default strings

@@ -1,8 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import FstImage from '@app/components/FstImage'
-import R from '@app/assets/R'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, fonts } from '@app/theme'
+
+import FstImage from '@app/components/FstImage'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import R from '@app/assets/R'
+import React from 'react'
+import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 
 const Support = () => {
   return (
@@ -14,7 +17,12 @@ const Support = () => {
       />
       <Text style={styles.txt_support}>{R.strings().number_support}</Text>
       <Text style={styles.txt_number}>3</Text>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={() => {
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_SUPPORT)
+        }}
+        style={styles.button}
+      >
         <FstImage
           resizeMode="contain"
           style={styles.icon}
@@ -33,6 +41,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 15,
   },
   icon: {
     width: 24,

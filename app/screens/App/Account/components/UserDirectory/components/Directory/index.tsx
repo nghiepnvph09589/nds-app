@@ -1,29 +1,44 @@
 import {
+  StyleProp,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  StyleProp,
+  View,
   ViewStyle,
 } from 'react-native'
-import React from 'react'
+import { colors, fonts } from '@app/theme'
+
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
-import { colors, fonts } from '@app/theme'
+import React from 'react'
 import { Source } from 'react-native-fast-image'
 
 interface DirectoryProps {
   label1: string
   label2: string
+  label3?: string
   source1: number | Source
   source2: number | Source
+  source3?: number | Source
   onPress1: () => void
   onPress2: () => void
+  onPress3?: () => void
   style?: StyleProp<ViewStyle>
 }
 
 const Directory = (props: DirectoryProps) => {
-  const { label1, label2, source1, source2, onPress1, onPress2, style } = props
+  const {
+    label1,
+    label2,
+    label3,
+    source1,
+    source2,
+    source3,
+    onPress1,
+    onPress2,
+    onPress3,
+    style,
+  } = props
   return (
     <View style={[styles.v_container, style]}>
       <ViewRow onPress={onPress1} label={label1} source={source1} />
@@ -33,6 +48,14 @@ const Directory = (props: DirectoryProps) => {
         source={source2}
         style={styles.v_row2}
       />
+      {source3 && label3 && (
+        <ViewRow
+          onPress={onPress3}
+          label={label3}
+          source={source3}
+          style={styles.v_row2}
+        />
+      )}
     </View>
   )
 }
@@ -46,7 +69,7 @@ const ViewRow = ({
   style?: StyleProp<ViewStyle>
   label: string
   source: number | Source
-  onPress: () => void
+  onPress?: () => void
 }) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.v_row, style]}>

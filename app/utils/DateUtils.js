@@ -1,7 +1,7 @@
 import 'moment/locale/vi'
 
-// import { format } from "date-fns";
 import moment from 'moment'
+
 moment.locale('vi')
 
 // export default {
@@ -71,10 +71,6 @@ export function startOfDay(date) {
   return moment(date).startOf('day')
 }
 
-/**
- * @param {any} date
- * @returns {{start: number, end: number}}
- */
 export function rangeOfDay(date) {
   const mDay = moment(date)
   const startDay = mDay.startOf('day')

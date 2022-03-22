@@ -45,7 +45,7 @@ const ContentPost = (props: ContentPostProps) => {
 export default ContentPost
 
 const styles = StyleSheet.create({
-  v_post: { marginTop: 8 },
+  v_post: { marginTop: 8, paddingHorizontal: 15 },
   text: {
     ...fonts.regular16,
     color: colors.text,
