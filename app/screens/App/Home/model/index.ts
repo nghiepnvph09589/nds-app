@@ -13,7 +13,7 @@ export type HomeType = {
   listPost: ListPostData[]
 }
 export type ListPostData = {
-  id: 15
+  id: number
   name: string
   title: string
   content: string

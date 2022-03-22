@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import R from '@app/assets/R'
 import ImageModal from '@app/components/ImageModal'
 import { DonateRequestMedia } from '@app/screens/App/Home/model'
@@ -13,7 +12,7 @@ interface Props {
 }
 
 const { width } = dimensions
-const ACTUAL_WIDTH = width - 30
+const ACTUAL_WIDTH = width - 2
 const RATIO = width / 375
 
 const PostImageArea = (props: Props) => {
@@ -82,15 +81,12 @@ const PostImageArea = (props: Props) => {
       case 1:
         return renderFirstImage({
           marginTop: 12,
-          // width: 345 * RATIO,
-          // height: 229 * RATIO,
-          // borderRadius: 5 * RATIO,
         })
       case 2:
         return (
           <View style={{ flex: 1, ...styleView.rowItemBetween, marginTop: 8 }}>
             {renderFirstImage({
-              width: 171 * RATIO,
+              width: 187.5 * RATIO,
               height: '100%',
             })}
             <View
@@ -112,17 +108,17 @@ const PostImageArea = (props: Props) => {
       case 3:
         return (
           <View style={{ flex: 1, ...styleView.rowItemBetween, marginTop: 8 }}>
-            {renderFirstImage({ width: 229 * RATIO })}
+            {renderFirstImage({ width: 252 * RATIO })}
             <View
               style={{
                 flex: 1,
                 alignItems: 'flex-end',
                 justifyContent: 'space-between',
-                marginLeft: 3 * RATIO,
+                marginLeft: 2.5 * RATIO,
               }}
             >
               <View
-                style={{ width: '100%', height: 113 * RATIO }}
+                style={{ width: '100%', height: 124.5 * RATIO }}
                 children={
                   <ImageModal
                     url={{ uri: dataMedia[1]?.url }}
@@ -138,8 +134,8 @@ const PostImageArea = (props: Props) => {
               <View
                 style={{
                   width: '100%',
-                  height: 113 * RATIO,
-                  marginTop: 3 * RATIO,
+                  height: 124.5 * RATIO,
+                  marginTop: 2 * RATIO,
                 }}
                 children={
                   <ImageModal
@@ -165,7 +161,7 @@ const PostImageArea = (props: Props) => {
               marginTop: 8,
             }}
           >
-            {renderFirstImage({ width: 229 * RATIO })}
+            {renderFirstImage({ width: 252 * RATIO })}
             <View
               style={{
                 flex: 1,
@@ -175,7 +171,7 @@ const PostImageArea = (props: Props) => {
               }}
             >
               <View
-                style={{ width: '100%', height: 113 * RATIO }}
+                style={{ width: '100%', height: 124.5 * RATIO }}
                 children={
                   <ImageModal
                     url={{ uri: dataMedia[1]?.url }}
@@ -191,7 +187,7 @@ const PostImageArea = (props: Props) => {
               <View
                 style={{
                   width: '100%',
-                  height: 113 * RATIO,
+                  height: 124.5 * RATIO,
                   marginTop: 3 * RATIO,
                 }}
                 children={

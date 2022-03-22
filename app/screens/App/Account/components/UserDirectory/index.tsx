@@ -34,7 +34,9 @@ const UserDirectory = () => {
         source2={R.images.ic_list2}
         label3={R.strings().list_post}
         source3={R.images.ic_list_post}
-        onPress3={() => {}}
+        onPress3={() => {
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_POST)
+        }}
       />
       <Directory
         onPress1={() => {

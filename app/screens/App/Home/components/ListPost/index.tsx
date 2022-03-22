@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingTop: 18,
     paddingBottom: 12,
-    paddingHorizontal: 15,
+    //paddingHorizontal: 15,
   },
   v_list: {
     paddingBottom: 20,

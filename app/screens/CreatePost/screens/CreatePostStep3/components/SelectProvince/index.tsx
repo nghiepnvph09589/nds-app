@@ -53,17 +53,6 @@ const SelectProvince = (props: Props) => {
   const [dataDistrict, setDataDistrict] = useState<address[]>([])
   const [dataWard, setDataWard] = useState<address[]>([])
 
-  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
-
-  useEffect(() => {
-    if (dataCreatPost.title === '') {
-      setPage(1)
-      setData(dataProvince)
-      setDataDistrict([])
-      setDataWard([])
-    }
-  }, [dataCreatPost])
-
   const getDataProvince = async () => {
     try {
       const payload = {}

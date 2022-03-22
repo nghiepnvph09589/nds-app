@@ -1,17 +1,14 @@
 import R from '@app/assets/R'
 import reactotron from '@app/config/ReactotronConfig'
+import { MEDIA_TYPE } from '@app/constant/Constant'
 import { useAppSelector } from '@app/store'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import React, { useState, useRef, useEffect } from 'react'
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-} from 'react-native'
+import React, { useRef, useState } from 'react'
+import { StyleSheet, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux'
+import CreatePostApi from '../../api/CreatePostApi'
 import ViewBottom from '../../components/ViewBottom'
 import { ArrayImage } from '../../model'
 import { updateDataCreatePost } from '../../slice/CreatePostSlice'
@@ -32,23 +29,14 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
   const userInfo = useAppSelector(state => state.accountReducer.data)
   const MediaArray = useRef<ArrayImage[]>([
     {
-      file_name: '',
-      file_url: '',
-      type: 1,
+      uri: '',
+      name: '',
+      type: '',
+      typeMedia: 1,
     },
   ])
 
-  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
-
-  useEffect(() => {
-    if (!dataCreatPost.content) {
-      setTitle('')
-      setContent('')
-      MediaArray.current = []
-    }
-  }, [dataCreatPost])
-
-  const handleNextStep1 = () => {
+  const handleNextStep1 = async () => {
     if (!title) {
       showMessages(R.strings().notification, 'Vui lòng nhập tiêu đề')
       return
@@ -57,7 +45,7 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
       showMessages(R.strings().notification, 'Vui lòng nhập chia sẻ')
       return
     }
-    if (!MediaArray?.current[0]?.file_url) {
+    if (!MediaArray?.current[0]?.uri) {
       showMessages(
         R.strings().notification,
         'Vui lòng cập nhật hình ảnh/ video'
@@ -65,13 +53,44 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
       return
     }
     showLoading()
-    const newMediaArray = MediaArray.current.map((item: ArrayImage) => ({
-      media_url: item.file_url,
-      type: item.type,
-    }))
-    dispatch(updateDataCreatePost({ title, content, media: newMediaArray }))
-    hideLoading()
-    onNext()
+    reactotron.log!(MediaArray)
+    const formData = new FormData()
+    MediaArray.current.forEach(item => {
+      if (item.typeMedia === MEDIA_TYPE.IMAGE) {
+        formData.append('image', {
+          uri: item.uri,
+          name: item.name,
+          type: item.type,
+        })
+      } else if (item.typeMedia === MEDIA_TYPE.VIDEO) {
+        formData.append('video', {
+          uri: item.uri,
+          name: item.name,
+          type: item.type,
+        })
+      }
+    })
+    try {
+      const res = await CreatePostApi.uploadMultiFile(formData)
+      const newMediaArray = res.data.array_image_name
+        .map((item: { file_url: string; file_name: number }) => ({
+          media_url: item.file_url,
+          type: MEDIA_TYPE.IMAGE,
+        }))
+        .concat(
+          res.data.array_video_name.map(
+            (item: { file_url: string; file_name: number }) => ({
+              media_url: item.file_url,
+              type: MEDIA_TYPE.VIDEO,
+            })
+          )
+        )
+      dispatch(updateDataCreatePost({ title, content, media: newMediaArray }))
+      onNext()
+    } catch (error) {
+    } finally {
+      hideLoading()
+    }
   }
 
   return (

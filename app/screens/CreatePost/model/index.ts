@@ -1,8 +1,9 @@
 export type ArrayImage = {
-  file_name: string
-  file_url: string
-  type?: number
   urlThumbnail?: string
+  uri?: string
+  name?: string
+  type?: string
+  typeMedia?: number
 }
 
 export type CreatePostSlice = {

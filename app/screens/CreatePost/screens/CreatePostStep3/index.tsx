@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { colors, fonts } from '@app/theme'
-
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
-import SelectAddress from './components/SelectAddress'
-import SelectProvince from './components/SelectProvince'
-import ViewBottom from '../../components/ViewBottom'
+import { useAppSelector } from '@app/store'
+import { colors, fonts } from '@app/theme'
+import { showMessages } from '@app/utils/AlertHelper'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
+import CreatePostApi from '../../api/CreatePostApi'
+import ViewBottom from '../../components/ViewBottom'
 import {
   clearDataCreatePost,
   updateDataCreatePost,
 } from '../../slice/CreatePostSlice'
-import { useAppSelector } from '@app/store'
-import { showMessages } from '@app/utils/AlertHelper'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import CreatePostApi from '../../api/CreatePostApi'
-import NavigationUtil from '@app/navigation/NavigationUtil'
-import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import SelectAddress from './components/SelectAddress'
+import SelectProvince from './components/SelectProvince'
 
 interface CreatPostStep3Props {
   onBack: () => void
@@ -73,10 +70,6 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
         R.strings().notification,
         'Bạn đã đă đăng tin thành công. Tin của bạn sẽ cần được duyệt dể được đăng lên.',
         () => {
-          setAddress('')
-          setProvince({ id: 0, name: '' })
-          setDistrict({ id: 0, name: '' })
-          setWard({ id: 0, name: '' })
           onNext()
         }
       )

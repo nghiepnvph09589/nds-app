@@ -44,6 +44,7 @@ export default InfoPost
 const styles = StyleSheet.create({
   v_row: {
     flexDirection: 'row',
+    paddingHorizontal: 15,
   },
   avatar: {
     width: 40,

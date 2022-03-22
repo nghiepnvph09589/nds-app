@@ -1,9 +1,10 @@
 import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
-import NavigationUtil from '@app/navigation/NavigationUtil'
+import { SCREEN_ROUTER } from '@app/constant/Constant'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
+import { showConfirm } from '@app/utils/AlertHelper'
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
@@ -13,8 +14,10 @@ import { useDispatch } from 'react-redux'
 import CreatPostStep1 from './screens/CreatePostStep1'
 import CreatePostStep2 from './screens/CreatePostStep2'
 import CreatePostStep3 from './screens/CreatePostStep3'
+import { clearDataCreatePost } from './slice/CreatePostSlice'
 const CreatePost = () => {
   const dispatch = useDispatch()
+  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [title, setTitle] = useState<string>(R.strings().post)
   const PAGES = ['Page 1', 'Page 2', 'Page 3']
@@ -66,6 +69,7 @@ const CreatePost = () => {
     }
     return iconConfig.source
   }
+
   const renderStepIndicator = (params: {
     position: number
     stepStatus: string
@@ -119,9 +123,14 @@ const CreatePost = () => {
                   {index === 0 ? (
                     <CreatPostStep1
                       onBack={() => {
-                        setCurrentPage(0)
-                        setTitle(R.strings().post)
-                        dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+                        showConfirm(
+                          R.strings().notification,
+                          'Bạn chưa hoàn thiện luồng đăng tin. Bạn có chắc chắn muốn quay lại?',
+                          () => {
+                            dispatch(clearDataCreatePost())
+                            dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+                          }
+                        )
                       }}
                       onNext={onNext}
                     />
@@ -131,8 +140,7 @@ const CreatePost = () => {
                     <CreatePostStep3
                       onBack={onBack}
                       onNext={() => {
-                        setCurrentPage(0)
-                        NavigationUtil.navigate(SCREEN_ROUTER_APP.HOME)
+                        dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
                       }}
                     />
                   )}
@@ -140,7 +148,6 @@ const CreatePost = () => {
               ))}
             </Swiper>
           </View>
-          {/* <ViewBottom onBack={onBack} onNext={onNext} /> */}
         </>
       }
     />
