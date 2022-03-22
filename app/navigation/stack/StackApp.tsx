@@ -2,7 +2,9 @@ import AddressMap from '@app/screens/CreatePost/screens/AddressMap'
 import ChangePassScreen from '@app/screens/App/Account/screens/ChangePassword'
 import ContactScreen from '@app/screens/App/Account/screens/Contact'
 import CreateSupportScreen from '@app/screens/App/Home/screens/CreateSupport'
+import ListSupportDetailScreen from '@app/screens/App/Account/screens/ListSuppotDetail'
 import ListSupportScreen from '@app/screens/App/Account/screens/ListSupport'
+import ManageListSupportScreen from '@app/screens/App/Account/screens/ManageListSupport'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
 import React from 'react'
@@ -21,6 +23,8 @@ const {
   CHANGE_PASS,
   ADDRESS_MAP,
   CREATE_SUPPORT,
+  MANAGE_LIST_SUPPORT,
+  LIST_SUPPORT_DETAIL,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -34,6 +38,8 @@ const mainScreen = {
   [CHANGE_PASS]: ChangePassScreen,
   [ADDRESS_MAP]: AddressMap,
   [CREATE_SUPPORT]: CreateSupportScreen,
+  [MANAGE_LIST_SUPPORT]: ManageListSupportScreen,
+  [LIST_SUPPORT_DETAIL]: ListSupportDetailScreen,
 }
 
 export const StackAppCustomerScreen = () => {

@@ -10,7 +10,7 @@ const ListSupportScreen = () => {
             color={colors.text}
             backgroundHeader="white"
             forceInset={['left']}
-            titleHeader={R.strings().support_list}
+            titleHeader={R.strings().supported_list}
         >
 
         </ScreenWrapper>

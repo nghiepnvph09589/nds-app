@@ -121,6 +121,9 @@ function strings() {
     suggest_address: I18n.t('suggest_address', { defaultValue: '' }),
     permission_location: I18n.t('permission_location', { defaultValue: '' }),
     list_post: I18n.t('list_post', { defaultValue: '' }),
+    supported_list: I18n.t('supported_list', { defaultValue: '' }),
+    manage_list_post: I18n.t('manage_list_post', { defaultValue: '' }),
+    manage_list_support: I18n.t('manage_list_support', { defaultValue: '' }),
   }
 }
 export default strings

@@ -65,7 +65,7 @@ export default {
   please_update_avatar: 'Vui lòng cập nhật ảnh đại diện',
   category: 'Danh mục',
   edit_user_info: 'Chỉnh sửa thông tin cá nhân',
-  support_list: 'Danh sách đã ủng hộ',
+  support_list: 'Danh sách ủng hộ',
   contact: 'Liên hệ',
   terms: 'Điều khoản sủ dụng',
   logout: 'Đăng xuất',
@@ -106,5 +106,8 @@ export default {
   suggest_address: 'Đề xuất địa chỉ',
   permission_location:
     'Vui lòng bật quyền Location để sử dụng chức năng bản đồ',
-  list_post: 'Danh sách bài viết',
+  list_post: 'Danh sách tin đăng của tôi',
+  supported_list: 'Danh sách đã ủng hộ',
+  manage_list_post: 'Quản lý danh sách bài viết',
+  manage_list_support: 'Quản lý danh sách ủng hộ',
 }
