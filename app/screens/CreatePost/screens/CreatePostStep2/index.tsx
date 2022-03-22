@@ -29,18 +29,6 @@ const sexSelect = [
     name: R.strings().female,
   },
 ]
-
-// const groupTypeData = [
-//   {
-//     id: 1,
-//     name: R.strings().personal,
-//   },
-//   {
-//     id: 2,
-//     name: R.strings().community,
-//   },
-// ]
-
 interface CreatPostStep2Props {
   onBack: () => void
   onNext: () => void
@@ -56,18 +44,6 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
   const [groupType, setGroupType] = useState<number>(0)
   const [subject, setSubject] = useState<number[]>([])
   const [need, setNeed] = useState<number[]>([])
-
-  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
-
-  useEffect(() => {
-    if (dataCreatPost.title === '') {
-      year_of_birth.current = ''
-      setSex(0)
-      setGroupType(0)
-      setSubject([0])
-      setNeed([0])
-    }
-  }, [dataCreatPost])
 
   const getDataTypeGroup = async () => {
     showLoading()

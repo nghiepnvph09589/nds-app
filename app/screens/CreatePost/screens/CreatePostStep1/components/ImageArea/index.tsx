@@ -2,13 +2,11 @@ import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import reactotron from '@app/config/ReactotronConfig'
 import { MEDIA_TYPE } from '@app/constant/Constant'
-import CreatePostApi from '@app/screens/CreatePost/api/CreatePostApi'
 import { ArrayImage } from '@app/screens/CreatePost/model'
 import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Platform,
   StyleSheet,
@@ -17,7 +15,7 @@ import {
   View,
 } from 'react-native'
 import { createThumbnail } from 'react-native-create-thumbnail'
-import ImagePicker from 'react-native-image-crop-picker'
+import ImagePicker, { Image } from 'react-native-image-crop-picker'
 
 interface ImageAreaProps {
   onPress: (mediaArray: ArrayImage[]) => void
@@ -55,39 +53,26 @@ const ImageArea = (props: ImageAreaProps) => {
     }).then(async images => {
       reactotron.log!(images)
       const dataImage = dataImageVideo.filter(
-        item => item.type === MEDIA_TYPE.IMAGE
+        item => item.typeMedia === MEDIA_TYPE.IMAGE
       )
       if (dataImage.length + images.length <= 10) {
-        showLoading()
-        const formData = new FormData()
-        images.forEach(item => {
-          formData.append('image', {
+        const arrayImage = images.map((item: Image) => {
+          return {
             uri:
               Platform.OS !== 'ios'
                 ? item.path
                 : item.sourceURL
                 ? item.sourceURL.replace('file://', '')
-                : item.sourceURL,
-            name: Platform.OS !== 'ios' ? item.modificationDate : item.filename,
+                : '',
+            typeMedia: MEDIA_TYPE.IMAGE,
             type: item.mime,
-          })
+            name: Platform.OS !== 'ios' ? item.modificationDate : item.filename,
+          }
         })
-        try {
-          const res = await CreatePostApi.uploadMultiFile(formData)
-          const arrayImage = res.data.array_image_name.map(
-            (value: ArrayImage) => {
-              return { ...value, type: MEDIA_TYPE.IMAGE }
-            }
-          )
-          setDataImageVideo(prevState => {
-            onPress(prevState.concat(arrayImage))
-            return prevState.concat(arrayImage)
-          })
-        } catch (error) {
-          console.error(error)
-        } finally {
-          hideLoading()
-        }
+        setDataImageVideo(prevState => {
+          onPress(prevState.concat(arrayImage))
+          return prevState.concat(arrayImage)
+        })
       } else {
         showMessages(
           R.strings().notification,
@@ -103,46 +88,41 @@ const ImageArea = (props: ImageAreaProps) => {
     }).then(async video => {
       reactotron.log!(video)
       const dataVideo = dataImageVideo.filter(
-        item => item.type === MEDIA_TYPE.VIDEO
+        item => item.typeMedia === MEDIA_TYPE.VIDEO
       )
       if (dataVideo.length === 0) {
-        showLoading()
-        const formData = new FormData()
-        formData.append('video', {
-          uri:
-            Platform.OS !== 'ios'
-              ? video.path
-              : video.sourceURL
-              ? video.sourceURL.replace('file://', '')
-              : video.sourceURL,
-          name: Platform.OS !== 'ios' ? video.modificationDate : video.filename,
-          type: video.mime,
-        })
         try {
-          const res = await CreatePostApi.uploadMultiFile(formData)
           const thumbnail = await createThumbnail({
-            url: res.data.array_video_name[0]?.file_url,
+            url:
+              Platform.OS !== 'ios'
+                ? video.path
+                : video.sourceURL
+                ? video.sourceURL.replace('file://', '')
+                : '',
+
             format: 'png',
             timeStamp: 0,
           })
-          const arrayVideo = res.data.array_video_name.map(
-            (value: ArrayImage) => {
-              return {
-                ...value,
-                urlThumbnail: thumbnail.path,
-                type: MEDIA_TYPE.VIDEO,
-              }
-            }
-          )
+          const arrayVideo = [
+            {
+              urlThumbnail: thumbnail.path,
+              uri:
+                Platform.OS !== 'ios'
+                  ? video.path
+                  : video.sourceURL
+                  ? video.sourceURL.replace('file://', '')
+                  : video.sourceURL,
+              typeMedia: MEDIA_TYPE.VIDEO,
+              type: video.mime,
+              name:
+                Platform.OS !== 'ios' ? video.modificationDate : video.filename,
+            },
+          ]
           setDataImageVideo(prevState => {
             onPress(prevState.concat(arrayVideo))
             return prevState.concat(arrayVideo)
           })
-        } catch (error) {
-          console.error(error)
-        } finally {
-          hideLoading()
-        }
+        } catch (error) {}
       } else {
         showMessages(R.strings().notification, R.strings().note_video)
       }
@@ -170,12 +150,12 @@ const ImageArea = (props: ImageAreaProps) => {
                 style={styles.image}
                 source={{
                   uri:
-                    item.type === MEDIA_TYPE.IMAGE
-                      ? item.file_url
+                    item.typeMedia === MEDIA_TYPE.IMAGE
+                      ? item.uri
                       : item.urlThumbnail,
                 }}
               >
-                {item.type === MEDIA_TYPE.VIDEO && (
+                {item.typeMedia === MEDIA_TYPE.VIDEO && (
                   <FstImage style={styles.ic_play} source={R.images.ic_play} />
                 )}
               </FstImage>
