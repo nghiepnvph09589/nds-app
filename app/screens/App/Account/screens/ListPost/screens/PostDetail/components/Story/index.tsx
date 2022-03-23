@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { StyleSheet } from 'react-native'
 import Content from './components/Content'
-import BankInfo from './components/BankInfo'
-import UserInfo from './components/UserInfo'
+import ListSupport from './components/ListSupport'
+import Need from './components/Need'
 import Position from './components/Position'
 import TargetGroup from './components/TargetGroup'
-import Need from './components/Need'
-import ListSupport from './components/ListSupport'
+import UserInfo from './components/UserInfo'
 
 const Story = () => {
   return (

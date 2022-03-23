@@ -125,6 +125,9 @@ function strings() {
     account_number: I18n.t('account_number', { defaultValue: '' }),
     receiver_information: I18n.t('receiver_information', { defaultValue: '' }),
     year_birday: I18n.t('year_birday', { defaultValue: '' }),
+    supported_list: I18n.t('supported_list', { defaultValue: '' }),
+    manage_list_post: I18n.t('manage_list_post', { defaultValue: '' }),
+    manage_list_support: I18n.t('manage_list_support', { defaultValue: '' }),
   }
 }
 export default strings

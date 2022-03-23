@@ -1,15 +1,16 @@
 import * as Yup from 'yup'
 
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { PASSWORD_REGEX } from '@app/constant/Constant'
 import R from '@app/assets/R'
-import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import React from 'react'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { StyleSheet } from 'react-native'
 import { colors } from '@app/theme/colors'
+import { fonts } from '@app/theme'
 
 const ChangePassScreen = () => {
   const ChangePasswordSchema = Yup.object().shape({
@@ -44,7 +45,8 @@ const ChangePassScreen = () => {
     >
       <KeyboardAwareScrollView
         keyboardShouldPersistTaps="always"
-        // style={styles.v_keyboard}
+        style={styles.ctn}
+        contentContainerStyle={styles.content_ctn}
       >
         <Formik
           initialValues={{ oldPass: '', newPass: '', reNewPass: '' }}
@@ -61,56 +63,64 @@ const ChangePassScreen = () => {
             touched,
           }) => (
             <>
-              <RNTextInput
-                containerStyle={styles.v_container_input}
-                errorStyle={styles.txt_error}
-                returnKeyType={'next'}
-                inputContainerStyle={styles.v_input}
-                placeholder={R.strings().placeholder_current_password}
-                leftIcon={R.images.ic_lock}
-                onChangeText={handleChange('oldPass')}
-                onBlur={handleBlur('oldPass')}
-                onSubmitEditing={() => setSubmitting(true)}
-                value={values.oldPass}
-                errorMessage={errors.oldPass}
-                touched={touched.oldPass}
-                secureTextEntry
-              />
-              <RNTextInput
-                containerStyle={styles.v_container_input}
-                errorStyle={styles.txt_error}
-                returnKeyType={'next'}
-                inputContainerStyle={styles.v_input}
-                placeholder={R.strings().placeholder_new_pass}
-                leftIcon={R.images.ic_lock}
-                onChangeText={handleChange('newPass')}
-                onBlur={handleBlur('newPass')}
-                onSubmitEditing={() => setSubmitting(true)}
-                value={values.newPass}
-                errorMessage={errors.newPass}
-                touched={touched.newPass}
-                secureTextEntry
-              />
-              <RNTextInput
-                containerStyle={styles.v_container_input}
-                errorStyle={styles.txt_error}
-                returnKeyType={'done'}
-                inputContainerStyle={styles.v_input}
-                placeholder={R.strings().input_confirm_password}
-                leftIcon={R.images.ic_lock}
-                onChangeText={handleChange('reNewPass')}
-                onBlur={handleBlur('reNewPass')}
-                onSubmitEditing={() => setSubmitting(true)}
-                value={values.reNewPass}
-                errorMessage={errors.reNewPass}
-                touched={touched.reNewPass}
-                secureTextEntry
-              />
-              <RNButton
+              <View>
+                <RNTextInput
+                  containerStyle={styles.v_container_input}
+                  errorStyle={styles.txt_error}
+                  returnKeyType={'next'}
+                  inputContainerStyle={styles.v_input}
+                  placeholder={R.strings().placeholder_current_password}
+                  leftIcon={R.images.ic_lock}
+                  onChangeText={handleChange('oldPass')}
+                  onBlur={handleBlur('oldPass')}
+                  onSubmitEditing={() => setSubmitting(true)}
+                  value={values.oldPass}
+                  errorMessage={errors.oldPass}
+                  touched={touched.oldPass}
+                  secureTextEntry
+                />
+                <RNTextInput
+                  containerStyle={styles.v_container_input}
+                  errorStyle={styles.txt_error}
+                  returnKeyType={'next'}
+                  inputContainerStyle={styles.v_input}
+                  placeholder={R.strings().placeholder_new_pass}
+                  leftIcon={R.images.ic_lock}
+                  onChangeText={handleChange('newPass')}
+                  onBlur={handleBlur('newPass')}
+                  onSubmitEditing={() => setSubmitting(true)}
+                  value={values.newPass}
+                  errorMessage={errors.newPass}
+                  touched={touched.newPass}
+                  secureTextEntry
+                />
+                <RNTextInput
+                  containerStyle={styles.v_container_input}
+                  errorStyle={styles.txt_error}
+                  returnKeyType={'done'}
+                  inputContainerStyle={styles.v_input}
+                  placeholder={R.strings().input_confirm_password}
+                  leftIcon={R.images.ic_lock}
+                  onChangeText={handleChange('reNewPass')}
+                  onBlur={handleBlur('reNewPass')}
+                  onSubmitEditing={() => setSubmitting(true)}
+                  value={values.reNewPass}
+                  errorMessage={errors.reNewPass}
+                  touched={touched.reNewPass}
+                  secureTextEntry
+                />
+              </View>
+              {/* <RNButton
                 onPress={handleSubmit}
                 style={styles.v_button}
                 title={R.strings().confirm}
-              />
+              /> */}
+              <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
+                <Text
+                  style={styles.txt_confirm}
+                  children={R.strings().confirm}
+                />
+              </TouchableOpacity>
             </>
           )}
         </Formik>
@@ -123,19 +133,38 @@ export default ChangePassScreen
 
 const styles = StyleSheet.create({
   v_container_input: {
-    marginHorizontal: 33,
+    marginHorizontal: 15,
     marginTop: 16,
   },
   v_input: {
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 16,
   },
   txt_error: {
     color: 'red',
   },
   v_button: {
-    marginHorizontal: 33,
+    marginHorizontal: 30,
     marginTop: 32,
+  },
+  ctn: {
+    backgroundColor: colors.white,
+    marginTop: 1,
+    flex: 1,
+  },
+  content_ctn: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  btn: {
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    paddingVertical: 11,
+    marginHorizontal: 15,
+    borderRadius: 15,
+  },
+  txt_confirm: {
+    ...fonts.semi_bold16,
+    color: colors.white,
   },
 })

@@ -65,7 +65,7 @@ export default {
   please_update_avatar: 'Vui lòng cập nhật ảnh đại diện',
   category: 'Danh mục',
   edit_user_info: 'Chỉnh sửa thông tin cá nhân',
-  support_list: 'Danh sách đã ủng hộ',
+  support_list: 'Danh sách ủng hộ',
   contact: 'Liên hệ',
   terms: 'Điều khoản sủ dụng',
   logout: 'Đăng xuất',
@@ -111,4 +111,7 @@ export default {
   account_number: 'Số tài khoản',
   receiver_information: 'Thông tin người nhận',
   year_birday: 'Năm sinh',
+  supported_list: 'Danh sách đã ủng hộ',
+  manage_list_post: 'Quản lý danh sách bài viết',
+  manage_list_support: 'Quản lý danh sách ủng hộ',
 }

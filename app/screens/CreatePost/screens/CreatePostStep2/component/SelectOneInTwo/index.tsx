@@ -49,7 +49,7 @@ export default SelectOneInTwo
 const stylesOr = StyleSheet.create({
   ctn: {
     ...styleView.rowItemBetween,
-    marginTop: 17,
+    flexWrap: 'wrap',
   },
   btn_select: {
     ...styleView.rowItem,
@@ -60,6 +60,7 @@ const stylesOr = StyleSheet.create({
     paddingVertical: 13,
     alignItems: 'center',
     flexWrap: 'wrap',
+    marginTop: 17,
   },
   ic: {
     width: 24,
