@@ -107,4 +107,8 @@ export default {
   permission_location:
     'Vui lòng bật quyền Location để sử dụng chức năng bản đồ',
   list_post: 'Danh sách bài viết',
+  account_name: 'Tên tài khoản',
+  account_number: 'Số tài khoản',
+  receiver_information: 'Thông tin người nhận',
+  year_birday: 'Năm sinh',
 }

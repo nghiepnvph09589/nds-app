@@ -117,7 +117,6 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
           }}
         />
       </KeyboardAwareScrollView>
-
       <ViewBottom
         onBack={() => {
           onBack()
