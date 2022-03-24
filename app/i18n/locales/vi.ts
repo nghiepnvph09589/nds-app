@@ -114,4 +114,5 @@ export default {
   supported_list: 'Danh sách đã ủng hộ',
   manage_list_post: 'Quản lý danh sách bài viết',
   manage_list_support: 'Quản lý danh sách ủng hộ',
+  note_messages: 'Lời nhắn',
 }

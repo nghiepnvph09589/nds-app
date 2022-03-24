@@ -1,16 +1,26 @@
 import * as Yup from 'yup'
 
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { API_STATUS, PASSWORD_REGEX } from '@app/constant/Constant'
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { PASSWORD_REGEX } from '@app/constant/Constant'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import React from 'react'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
+import { changePassword } from './api'
 import { colors } from '@app/theme/colors'
 import { fonts } from '@app/theme'
+import { showMessages } from '@app/utils/AlertHelper'
 
 const ChangePassScreen = () => {
   const ChangePasswordSchema = Yup.object().shape({
@@ -28,12 +38,32 @@ const ChangePassScreen = () => {
       .oneOf([Yup.ref('newPass')], R.strings().re_password_fail)
       .required(R.strings().password_blank),
   })
-  const onSubmit = (data: {
+  const onSubmit = async (data: {
     oldPass: string
     newPass: string
     reNewPass: string
   }) => {
-    console.log(data)
+    Keyboard.dismiss()
+    showLoading()
+    try {
+      const payload = {
+        old_password: data?.oldPass,
+        new_password: data?.newPass,
+      }
+      const res = await changePassword(payload)
+      if (res.code === API_STATUS.SUCCESS) {
+        hideLoading()
+        showMessages(
+          R.strings().notification,
+          'Bạn đã cập nhật mật khẩu thành công',
+          () => {
+            NavigationUtil.goBack()
+          }
+        )
+      }
+    } catch (error) {
+      hideLoading()
+    }
   }
   return (
     <ScreenWrapper
@@ -159,7 +189,7 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: colors.primary,
     alignItems: 'center',
-    paddingVertical: 11,
+    paddingVertical: 13,
     marginHorizontal: 15,
     borderRadius: 15,
   },

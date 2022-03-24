@@ -1,5 +1,6 @@
-import { Platform, ScrollView, StyleSheet } from 'react-native'
+import { Platform, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { getDataUserInfo, logout } from '../../slices/AccountSlice'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
@@ -7,7 +8,6 @@ import Directory from './components/Directory'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import React from 'react'
-import { logout } from '../../slices/AccountSlice'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { useDispatch } from 'react-redux'
 
@@ -19,8 +19,16 @@ const UserDirectory = () => {
     dispatch(logout())
     dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
   }
+  const onRefresh = () => {
+    dispatch(getDataUserInfo())
+  }
   return (
-    <ScrollView style={styles.v_container}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={false} onRefresh={onRefresh} />
+      }
+      style={styles.v_container}
+    >
       <Directory
         onPress1={() => {
           NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_ACCOUNT)
