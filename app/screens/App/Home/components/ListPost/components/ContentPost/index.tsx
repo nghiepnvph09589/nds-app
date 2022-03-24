@@ -10,10 +10,11 @@ const NUM_OF_LINES = 4
 interface ContentPostProps {
   content: string
   title: string
+  id: number
 }
 
 const ContentPost = (props: ContentPostProps) => {
-  const { content, title } = props
+  const { content, title, id } = props
   const [showMoreButton, setShowMoreButton] = useState<boolean>(false)
   const [numberOfLines, setNumberOfLines] =
     useState<number | undefined>(undefined)
@@ -28,7 +29,7 @@ const ContentPost = (props: ContentPostProps) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST)
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, { id: id })
       }}
       style={styles.v_post}
     >
