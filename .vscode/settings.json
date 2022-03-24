@@ -2,7 +2,5 @@
   "editor.formatOnSave": true,
   "cSpell.words": [
     "FORGOTPASSWORD"
-  ],
-  "editor.tabSize": 2,
-  "editor.fontSize": 14
+  ]
 }

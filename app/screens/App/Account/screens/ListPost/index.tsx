@@ -10,7 +10,7 @@ import Support from './components/Support'
 import { useAppSelector } from '@app/store'
 
 const ListPost = () => {
-  const { isLoading, data } = useAppSelector(state => state.homeReducer)
+  const { data } = useAppSelector(state => state.homeReducer)
   const renderItem = useCallback(({ item }: { item: ListPostData }) => {
     return (
       <View style={styles.v_item}>
@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingTop: 18,
     paddingBottom: 12,
-    //paddingHorizontal: 15,
   },
   v_list: {
     paddingBottom: 20,

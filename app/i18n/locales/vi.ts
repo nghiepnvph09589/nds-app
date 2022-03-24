@@ -106,7 +106,11 @@ export default {
   suggest_address: 'Đề xuất địa chỉ',
   permission_location:
     'Vui lòng bật quyền Location để sử dụng chức năng bản đồ',
-  list_post: 'Danh sách tin đăng của tôi',
+  list_post: 'Danh sách bài viết',
+  account_name: 'Tên tài khoản',
+  account_number: 'Số tài khoản',
+  receiver_information: 'Thông tin người nhận',
+  year_birday: 'Năm sinh',
   supported_list: 'Danh sách đã ủng hộ',
   manage_list_post: 'Quản lý danh sách bài viết',
   manage_list_support: 'Quản lý danh sách ủng hộ',

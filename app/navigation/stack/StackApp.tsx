@@ -7,6 +7,7 @@ import ListSupportDetailScreen from '@app/screens/App/Support/screens/ListSuppot
 import ListSupportScreen from '@app/screens/App/Account/screens/ListSupport'
 import ManageListSupportScreen from '@app/screens/App/Account/screens/ManageListSupport'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
+import PostDetail from '@app/screens/App/Account/screens/ListPost/screens/PostDetail'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
 import React from 'react'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
@@ -29,6 +30,7 @@ const {
   LIST_SUPPORT_DETAIL,
   LIST_POST,
   SUPPORT_DETAIL,
+  DETAIL_POST,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -46,6 +48,7 @@ const mainScreen = {
   [LIST_SUPPORT_DETAIL]: ListSupportDetailScreen,
   [LIST_POST]: ListPost,
   [SUPPORT_DETAIL]: SupportDetailScreen,
+  [DETAIL_POST]: PostDetail,
 }
 
 export const StackAppCustomerScreen = () => {

@@ -80,11 +80,11 @@ const PostImageArea = (props: Props) => {
         )
       case 1:
         return renderFirstImage({
-          marginTop: 12,
+          //marginTop: 12,
         })
       case 2:
         return (
-          <View style={{ flex: 1, ...styleView.rowItemBetween, marginTop: 8 }}>
+          <View style={{ flex: 1, ...styleView.rowItemBetween }}>
             {renderFirstImage({
               width: 187.5 * RATIO,
               height: '100%',
@@ -107,7 +107,7 @@ const PostImageArea = (props: Props) => {
         )
       case 3:
         return (
-          <View style={{ flex: 1, ...styleView.rowItemBetween, marginTop: 8 }}>
+          <View style={{ flex: 1, ...styleView.rowItemBetween }}>
             {renderFirstImage({ width: 252 * RATIO })}
             <View
               style={{
@@ -158,7 +158,6 @@ const PostImageArea = (props: Props) => {
             style={{
               flex: 1,
               ...styleView.rowItemBetween,
-              marginTop: 8,
             }}
           >
             {renderFirstImage({ width: 252 * RATIO })}
