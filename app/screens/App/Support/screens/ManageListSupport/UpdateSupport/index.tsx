@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { StyleSheet, TextInput, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { colors, fonts } from '@app/theme'
 
 import CharityHouse from './components/CharityHouse'
+import MenuButton from './components/MenuButton'
+import React from 'react'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
+import StatusSupport from './components/StatusSupport'
 
 const UpdateSupportScreen = () => {
-  const [title, setTitle] = useState<string>('')
-  const [content, setContent] = useState<string>('')
   return (
     <ScreenWrapper
       back
@@ -16,10 +16,13 @@ const UpdateSupportScreen = () => {
       forceInset={['left']}
       titleHeader={'Cập nhật ủng hộ'}
       backgroundColor={colors.backgroundColor}
+      style={{ flex: 1 }}
       // scroll
     >
-      <View style={styles.ctn}>
-        {/* <TextInput
+      <ScrollView>
+        <StatusSupport />
+        <View style={styles.ctn}>
+          {/* <TextInput
           onChangeText={text => setTitle(text)}
           value={title}
           multiline
@@ -37,8 +40,10 @@ const UpdateSupportScreen = () => {
           style={styles.input_content}
           placeholderTextColor={'#8898A7'}
         /> */}
-        <CharityHouse />
-      </View>
+          <CharityHouse />
+        </View>
+      </ScrollView>
+      <MenuButton />
     </ScreenWrapper>
   )
 }
@@ -56,10 +61,8 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   ctn: {
-    marginTop: 1,
     backgroundColor: colors.white,
     paddingHorizontal: 15,
-    flex: 1,
   },
   input_content: {
     paddingTop: 12,

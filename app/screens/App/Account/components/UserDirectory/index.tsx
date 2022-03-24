@@ -34,7 +34,7 @@ const UserDirectory = () => {
           NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_ACCOUNT)
         }}
         onPress2={() => {
-          NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_SUPPORT_DETAIL)
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_SUPPORT)
         }}
         label1={R.strings().edit_user_info}
         source1={R.images.ic_edit_user}

@@ -26,7 +26,6 @@ const CharityHouse = () => {
   return (
     <View style={charityHouseStyle.ctn}>
       <Text style={charityHouseStyle.txt_name_v} children={'Nhà hảo tâm'} />
-      <RowDetail name={'Ngày thực hiện'} value={'23/03/2022'} />
       <RowDetail name={'Họ tên'} value={'Trần Dần'} />
       <RowDetail name={'Số điện thoại'} value={'0231239412'} />
       <RowDetail name={'Nội dung'} value={'Mong các cháu chăm chỉ học hành'} />

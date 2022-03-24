@@ -1,4 +1,5 @@
 const images = {
+  ic_accept_support: require('./images/ic_accept_support.png'),
   ic_annotation: require('./images/ic_annotation.png'),
   ic_arrow_down: require('./images/ic_arrow_down.png'),
   ic_arrow_right: require('./images/ic_arrow_right.png'),
@@ -67,6 +68,7 @@ const images = {
   ic_refresh_video: require('./images/ic_refresh_video.png'),
   ic_requite: require('./images/ic_requite.png'),
   ic_search: require('./images/ic_search.png'),
+  ic_status_awaiting: require('./images/ic_status_awaiting.png'),
   ic_support: require('./images/ic_support.png'),
   ic_terms: require('./images/ic_terms.png'),
   ic_ticked: require('./images/ic_ticked.png'),
