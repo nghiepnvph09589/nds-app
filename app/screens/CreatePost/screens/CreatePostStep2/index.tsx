@@ -95,7 +95,7 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
   const Schema = Yup.object().shape({
     name: Yup.string()
       .trim()
-      .matches(NAME_REGEX, R.strings().validateEmail)
+      .matches(NAME_REGEX, R.strings().validateName)
       .required(R.strings().name_blank),
     phone: Yup.string()
       .matches(PHONE_REGEX, R.strings().validatePhone)

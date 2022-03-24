@@ -1,3 +1,4 @@
+import { ROLE } from '@app/constant/Constant'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import AccountApi from '../api/AccountApi'
 import { AccountSlice } from '../model'
@@ -14,6 +15,7 @@ const initState: AccountSlice = {
     status: 1,
     profile_picture_path: '',
     profile_picture_url: '',
+    role: ROLE.CUSTOMER,
   },
 }
 
@@ -36,6 +38,7 @@ const accountSlice = createSlice({
         status: 1,
         profile_picture_path: '',
         profile_picture_url: '',
+        role: ROLE.CUSTOMER,
       }
     },
   },

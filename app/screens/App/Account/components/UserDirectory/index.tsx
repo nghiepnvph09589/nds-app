@@ -2,7 +2,6 @@ import { Platform, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import { getDataUserInfo, logout } from '../../slices/AccountSlice'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
-
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import Directory from './components/Directory'
 import NavigationUtil from '@app/navigation/NavigationUtil'
@@ -10,8 +9,10 @@ import R from '@app/assets/R'
 import React from 'react'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { useDispatch } from 'react-redux'
+import { useAppSelector } from '@app/store'
 
 const UserDirectory = () => {
+  const { data } = useAppSelector(state => state.accountReducer)
   const dispatch = useDispatch()
 
   const handleLogout = async () => {
@@ -29,6 +30,19 @@ const UserDirectory = () => {
       }
       style={styles.v_container}
     >
+      {data.role !== 4 && data.role !== 5 && (
+        <Directory
+          onPress1={() => {}}
+          onPress2={() => {
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_SUPPORT)
+          }}
+          label1={R.strings().manage_list_post}
+          source1={R.images.ic_manage_list_post}
+          label2={R.strings().manage_list_support}
+          source2={R.images.ic_manage_list_support}
+        />
+      )}
+
       <Directory
         onPress1={() => {
           NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_ACCOUNT)
@@ -43,6 +57,7 @@ const UserDirectory = () => {
         label3={R.strings().list_post}
         source3={R.images.ic_list_post}
         onPress3={() => {
+          ;``
           NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_POST)
         }}
       />
@@ -57,16 +72,6 @@ const UserDirectory = () => {
         source1={R.images.ic_contact}
         label2={R.strings().terms}
         source2={R.images.ic_terms}
-      />
-      <Directory
-        onPress1={() => {}}
-        onPress2={() => {
-          NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_SUPPORT)
-        }}
-        label1={R.strings().manage_list_post}
-        source1={R.images.ic_manage_list_post}
-        label2={R.strings().manage_list_support}
-        source2={R.images.ic_manage_list_support}
       />
       <Directory
         onPress1={() => {

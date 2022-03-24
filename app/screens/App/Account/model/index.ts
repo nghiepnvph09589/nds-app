@@ -7,10 +7,11 @@ export type AccountType = {
   status: number
   profile_picture_path: string
   profile_picture_url: string
-  id_card: string
-  birthday: string
-  gender: number
-  address: string
+  id_card?: string
+  birthday?: string
+  gender?: number
+  address?: string
+  role: number
 }
 export type AccountSlice = {
   isError: boolean

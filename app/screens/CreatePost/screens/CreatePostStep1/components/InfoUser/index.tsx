@@ -26,6 +26,7 @@ const InfoUser = (props: InfoUser) => {
         multiline={true}
         value={title}
         onChangeText={setTitle}
+        maxLength={255}
       />
     </View>
   )

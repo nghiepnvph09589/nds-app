@@ -12,9 +12,12 @@ import { getDataHome } from './slice/HomeSlice'
 import Geolocation from 'react-native-geolocation-service'
 import { updateLocation } from '@app/screens/LocationSlice'
 import { PERMISSION_TYPE, Permission } from '@app/utils/AppPermission'
+import Error from '@app/components/Error/Error'
 const Home = () => {
   const dispatch = useDispatch()
-  const { isLoading, data } = useAppSelector(state => state.homeReducer)
+  const { isLoading, data, isError } = useAppSelector(
+    state => state.homeReducer
+  )
   const userInfo = useAppSelector(state => state.accountReducer.data)
   useEffect(() => {
     getDataUser()
@@ -75,6 +78,15 @@ const Home = () => {
   } else {
     hideLoading()
   }
+  if (isError)
+    return (
+      <Error
+        reload={() => {
+          getHome()
+          getDataUser()
+        }}
+      />
+    )
 
   return (
     <View style={styles.v_container}>

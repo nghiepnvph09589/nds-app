@@ -1,4 +1,5 @@
 import Empty from '@app/components/Empty/Empty'
+import Error from '@app/components/Error/Error'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { DEFAULT_PARAMS } from '@app/constant/Constant'
 import { useAppSelector } from '@app/store'
@@ -52,6 +53,7 @@ const ListPost = () => {
   const getData = () => {
     dispatch(getDataListPost(body))
   }
+  if (isError) return <Error reload={getData} />
   const renderItem = useCallback(({ item }: { item: ListPostData }) => {
     return (
       <View style={styles.v_item}>

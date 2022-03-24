@@ -1,4 +1,5 @@
 import R from '@app/assets/R'
+import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
 import { colors, dimensions, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
@@ -25,6 +26,7 @@ interface PostDetailProps {
 
 const PostDetail = (props: PostDetailProps) => {
   const id = props.route.params.id
+  const [isError, setIsError] = useState<boolean>(false)
   const [dataPostDetail, setDataPostDetail] = useState<PostDetailData>({
     id: 0,
     title: '',
@@ -57,12 +59,15 @@ const PostDetail = (props: PostDetailProps) => {
     showLoading()
     try {
       const res = await PostDetailApi.getPostDetail({ id })
+      setIsError(false)
       setDataPostDetail(res.data)
     } catch (error) {
+      setIsError(true)
     } finally {
       hideLoading()
     }
   }
+  if (isError) return <Error reload={getDataPostDetail} />
 
   return (
     <>
