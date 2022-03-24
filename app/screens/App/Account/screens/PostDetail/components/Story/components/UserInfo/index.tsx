@@ -3,25 +3,37 @@ import React from 'react'
 import R from '@app/assets/R'
 import { colors, dimensions, fonts } from '@app/theme'
 
-const UserInfo = () => {
+interface UserInfoProps {
+  name: string
+  gender: number
+  year: number
+  phone: number
+  address: string
+}
+
+const UserInfo = (props: UserInfoProps) => {
+  const { name, gender, year, phone, address } = props
   return (
     <View style={{ marginTop: 20, paddingHorizontal: 15 }}>
       <Text style={{ ...fonts.semi_bold16, marginBottom: 20 }}>
         {R.strings().receiver_information}
       </Text>
-      <Info label={R.strings().full_name} content="Phùng Văn Tân" />
-      <Info label={R.strings().sex} content="Bede" />
-      <Info label={R.strings().year_birday} content={'2001'} />
-      <Info label={R.strings().phone} content={'09872126160'} />
-      <Info
-        label={R.strings().address}
-        content={'299 Trung Kính , Phường Yên Hòa, Cầu Giấy, Thành Phố Hà Nội'}
-      />
+      <Info label={R.strings().full_name} content={name} />
+      <Info label={R.strings().sex} content={gender === 1 ? 'Nam' : 'Nữ'} />
+      <Info label={R.strings().year_birday} content={year} />
+      <Info label={R.strings().phone} content={phone} />
+      <Info label={R.strings().address} content={address} />
     </View>
   )
 }
 
-const Info = ({ label, content }: { label: string; content: string }) => {
+const Info = ({
+  label,
+  content,
+}: {
+  label: string
+  content: string | number
+}) => {
   return (
     <View style={styles.v_container}>
       <View style={styles.v_row}>

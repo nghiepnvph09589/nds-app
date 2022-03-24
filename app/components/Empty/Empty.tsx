@@ -23,13 +23,14 @@ export default class Empty extends Component<EmptyProps> {
         }}
         style={{
           marginTop: marginTop ? marginTop : this.state.marginTop,
+          flex: 1,
           alignItems: 'center',
           backgroundColor: colors.white,
           justifyContent: 'center',
         }}
       >
         <FastImage
-          source={sourceImage || R.images.ic_empty}
+          source={sourceImage || R.images.img_empty}
           style={styles.imageEmpty}
           resizeMode="contain"
         />

@@ -13,7 +13,7 @@ import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
 import { createStackNavigator } from '@react-navigation/stack'
 import ListPost from '@app/screens/App/Account/screens/ListPost'
-import PostDetail from '@app/screens/App/Account/screens/ListPost/screens/PostDetail'
+import PostDetail from '@app/screens/App/Account/screens/PostDetail'
 
 const {
   PRODUCT,

@@ -76,7 +76,7 @@ export const APP_SLICE = {
 
 const DEFAULT_PARAMS = {
   PAGE: 1,
-  LIMIT: 24,
+  LIMIT: 5,
 }
 
 export const CONTACT = {

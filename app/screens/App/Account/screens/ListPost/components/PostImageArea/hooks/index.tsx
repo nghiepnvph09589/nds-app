@@ -15,7 +15,17 @@ export enum MEDIA_TYPE {
   OTHER,
 }
 
-const IMAGE = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'jfif', 'JPG', 'JPEG']
+const IMAGE = [
+  'png',
+  'jpg',
+  'jpeg',
+  'gif',
+  'webp',
+  'jfif',
+  'JPG',
+  'JPEG',
+  'HEIC',
+]
 const VIDEO = ['mp4', 'avi', 'mov']
 
 const useMediaData = (data: any): Payload => {

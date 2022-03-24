@@ -27,7 +27,7 @@ const ListPost = (props: ListPostProps) => {
           name={item?.name}
           address={'Yên Hòa, Cầu Giấy, Hà Nội'}
         />
-        <ContentPost title={item?.title} content={item.content} />
+        <ContentPost id={item.id} title={item?.title} content={item.content} />
         {item?.DonateRequestMedia.length > 0 && (
           <PostImageArea data={item?.DonateRequestMedia} />
         )}

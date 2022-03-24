@@ -6,12 +6,17 @@ import { useAppSelector } from '@app/store'
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 
-const Position = () => {
+interface PositionProps {
+  long: number
+  lat: number
+}
+
+const Position = (props: PositionProps) => {
   const mapRef = useRef(undefined)
   const cameraRef = useRef(undefined)
-  const { lat, long } = useAppSelector(state => state.locationReducer)
+  const { lat, long } = props
   const [annotationPoint, setAnnotationPoint] = useState(
-    long ? [long, lat] : undefined
+    long !== 0 ? [long, lat] : [105.784883, 21.028073]
   )
 
   const defaultCamera = {
