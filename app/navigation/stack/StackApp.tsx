@@ -5,7 +5,7 @@ import CreateSupportScreen from '@app/screens/App/Support/screens/CreateSupport'
 import ListPost from '@app/screens/App/Account/screens/ListPost'
 import ListSupportDetailScreen from '@app/screens/App/Support/screens/ListSuppotDetail'
 import ListSupportScreen from '@app/screens/App/Account/screens/ListSupport'
-import ManageListSupportScreen from '@app/screens/App/Account/screens/ManageListSupport'
+import ManageListSupportScreen from '@app/screens/App/Support/screens/ManageListSupport'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import PostDetail from '@app/screens/App/Account/screens/ListPost/screens/PostDetail'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
@@ -14,6 +14,7 @@ import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import SupportDetailScreen from '@app/screens/App/Support/screens/SupportDetal'
 import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
+import UpdateSupportScreen from '@app/screens/App/Support/screens/UpdateSupport'
 import { createStackNavigator } from '@react-navigation/stack'
 
 const {
@@ -31,6 +32,7 @@ const {
   LIST_POST,
   SUPPORT_DETAIL,
   DETAIL_POST,
+  UPDATE_SUPPORT,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -49,6 +51,7 @@ const mainScreen = {
   [LIST_POST]: ListPost,
   [SUPPORT_DETAIL]: SupportDetailScreen,
   [DETAIL_POST]: PostDetail,
+  [UPDATE_SUPPORT]: UpdateSupportScreen,
 }
 
 export const StackAppCustomerScreen = () => {

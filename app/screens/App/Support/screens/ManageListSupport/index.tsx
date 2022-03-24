@@ -5,20 +5,21 @@ import { dimensions, fonts } from '@app/theme'
 
 import ListSupportComponent from './component/ListSupportComponent'
 import R from '@app/assets/R'
+import { STATUS_SUPPORT } from '@app/constant/Constant'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { colors } from '@app/theme/colors'
 
 const headerComponent = [
   {
-    id: 1,
+    id: STATUS_SUPPORT.WAITING,
     name: 'Chờ phê duyệt',
   },
   {
-    id: 2,
+    id: STATUS_SUPPORT.APPROVE,
     name: 'Đã duyệt',
   },
   {
-    id: 3,
+    id: STATUS_SUPPORT.CANCEL,
     name: 'Từ chối',
   },
 ]
@@ -32,14 +33,14 @@ const ManageListSupportScreen = () => {
       forceInset={['left']}
       titleHeader={R.strings().support_list}
     >
-      <View style={{flex:1}}>
+      <View style={styles.ctn}>
         <Tabs
           page={page}
           tabContainerStyle={styles.tabContainerStyle}
-          tabBarUnderlineStyle={{ height: 0 }}
-          // onChangeTab={(i: number) => {
-          //   setPage(i)
-          // }}
+          tabBarUnderlineStyle={styles.underline}
+          onChangeTab={(i: any) => {
+            setPage(i.i)
+          }}
           renderTabBar={renderTabBar}
         >
           {headerComponent.map(item => {
@@ -52,7 +53,7 @@ const ManageListSupportScreen = () => {
                 activeTextStyle={{ color: colors.primary }}
                 textStyle={[styles.textStyle]}
               >
-                <ListSupportComponent />
+                <ListSupportComponent status={item?.id} />
               </Tab>
             )
           })}
@@ -89,5 +90,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderBottomWidth: 2,
     borderColor: colors.primary,
+  },
+  ctn: {
+    flex: 1,
+  },
+  underline: {
+    height: 0,
   },
 })

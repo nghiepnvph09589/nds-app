@@ -212,10 +212,6 @@ const styles = StyleSheet.create({
     minHeight: 65,
     lineHeight: 25,
   },
-  money: {
-    ...fonts.semi_bold16,
-    color: colors.primary,
-  },
   create_at: {
     ...fonts.regular16,
     color: colors.textColor.gray8,

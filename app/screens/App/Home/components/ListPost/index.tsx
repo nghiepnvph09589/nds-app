@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
-import { DataBanner } from '../../mockup'
-import { ListPostData } from '../../model'
+import React, { useCallback } from 'react'
+
 import Banner from './components/Banner'
 import CategoryAndAddress from './components/CategoryAndAddress'
 import ContentPost from './components/ContentPost'
+import { DataBanner } from '../../mockup'
 import InfoPost from './components/InfoPost'
+import { ListPostData } from '../../model'
 import PostImageArea from './components/PostImageArea'
 import Support from './components/Support'
 
@@ -32,7 +33,7 @@ const ListPost = (props: ListPostProps) => {
           <PostImageArea data={item?.DonateRequestMedia} />
         )}
 
-        <Support />
+        <Support item={item} />
       </View>
     )
   }, [])

@@ -17,6 +17,7 @@ const SCREEN_ROUTER_APP = {
   LIST_POST: 'LIST_POST',
   SUPPORT_DETAIL: 'SUPPORT_DETAIL',
   DETAIL_POST: 'DETAIL_POST',
+  UPDATE_SUPPORT: 'UPDATE_SUPPORT',
 }
 
 const MAIN_TAB = {
@@ -78,6 +79,12 @@ export const APP_SLICE = {
 const DEFAULT_PARAMS = {
   PAGE: 1,
   LIMIT: 24,
+}
+
+export const STATUS_SUPPORT = {
+  WAITING: 1,
+  APPROVE: 2,
+  CANCEL: 0,
 }
 
 export const CONTACT = {
