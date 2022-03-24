@@ -1,47 +1,29 @@
 import * as Yup from 'yup'
 
-import { NAME_REGEX, PHONE_REGEX } from '@app/constant/Constant'
-import React, { useState } from 'react'
+import { API_STATUS, NAME_REGEX, PHONE_REGEX } from '@app/constant/Constant'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, fonts, styleView } from '@app/theme'
+import { createSupport, getListFormSupport } from './api'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 
 import { Formik } from 'formik'
 import FstImage from '@app/components/FstImage'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import SelectForm from './component/SelectForm'
-import { showMessages } from '@app/utils/AlertHelper'
+import { itemFormSupport } from './model'
 
-const dataForm = [
-  {
-    id: 1,
-    name: 'Lương thực, thực phẩm',
-  },
-  {
-    id: 2,
-    name: 'Học bổng',
-  },
-  {
-    id: 3,
-    name: 'Chữa bệnh hiểm nghèo',
-  },
-  {
-    id: 4,
-    name: 'Xây nhà',
-  },
-  {
-    id: 5,
-    name: 'Sinh kế',
-  },
-  {
-    id: 6,
-    name: 'Khác',
-  },
-]
-const CreateSupportScreen = () => {
+interface Props {
+  route: { params: { id: number } }
+}
+const CreateSupportScreen = (props: Props) => {
   const [form, setForm] = useState<number[]>([])
+  const [dataFormSupport, setDataFormSupport] = useState<itemFormSupport[]>([])
   const Schema = Yup.object().shape({
     name: Yup.string()
       .trim()
@@ -56,7 +38,35 @@ const CreateSupportScreen = () => {
       .email(R.strings().validateEmail)
       .required(R.strings().email_blank),
   })
+
+  const getDataFormSupport = async () => {
+    const payload = {
+      page: 1,
+      limit: 20,
+    }
+    showLoading()
+    try {
+      const res = await getListFormSupport(payload)
+      if (res?.code === API_STATUS.SUCCESS) {
+        setDataFormSupport(res?.data)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      hideLoading()
+    }
+  }
   const onSubmit = (value: {
+    name: string
+    phone: string
+    email: string
+    noteMessages: string
+  }) => {
+    showConfirm(R.strings().notification, 'Xác nhận ủng hộ', () => {
+      postSupport(value)
+    })
+  }
+  const postSupport = async (value: {
     name: string
     phone: string
     email: string
@@ -67,14 +77,32 @@ const CreateSupportScreen = () => {
       return
     }
     const payload = {
-      name: value.name,
+      donate_request_id: props?.route?.params?.id,
       phone: value.phone,
+      name: value.name,
+      form_support: form,
       email: value.email,
-      noteMessages: value?.noteMessages,
-      form: form,
+      note: value?.noteMessages,
     }
-    console.log(payload)
+    showLoading()
+    try {
+      const res = await createSupport(payload)
+      if (res?.code === API_STATUS.SUCCESS) {
+        // setDataFormSupport(res?.data)
+        showMessages('Cảm ơn', 'Vui lòng chờ phê duyệt', () => {
+          NavigationUtil.goBack()
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      hideLoading()
+    }
   }
+
+  useEffect(() => {
+    getDataFormSupport()
+  }, [])
   return (
     <ScreenWrapper
       back
@@ -134,6 +162,7 @@ const CreateSupportScreen = () => {
                   errorMessage={errors.phone}
                   touched={touched.phone}
                   keyboardType="number-pad"
+                  maxLength={10}
                 />
                 <RNTextInput
                   containerStyle={styles.container_input}
@@ -167,7 +196,11 @@ const CreateSupportScreen = () => {
                   style={styles.txt_form_support}
                   children={'Hình thức ủng hộ'}
                 />
-                <SelectForm data={dataForm} value={form} onChange={setForm} />
+                <SelectForm
+                  data={dataFormSupport}
+                  value={form}
+                  onChange={setForm}
+                />
               </View>
               <TouchableOpacity
                 onPress={handleSubmit}
@@ -194,11 +227,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginTop: 1,
     padding: 15,
-    flex: 1,
+    // flex: 1,
   },
   content_ctn: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'space-between',
+    paddingBottom: 30,
   },
   container_input: {
     marginTop: 16,
@@ -221,6 +255,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 5,
     bottom: 5,
+    marginTop: 15,
   },
   ic_love: {
     width: 25,

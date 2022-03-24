@@ -2,12 +2,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, fonts } from '@app/theme'
 
 import FstImage from '@app/components/FstImage'
+import { ListPostData } from '@app/screens/App/Home/model'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import React from 'react'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 
-const Support = () => {
+const Support = ({ item }: { item: ListPostData }) => {
   return (
     <View style={styles.v_container}>
       <FstImage
@@ -19,7 +20,9 @@ const Support = () => {
       <Text style={styles.txt_number}>3</Text>
       <TouchableOpacity
         onPress={() => {
-          NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_SUPPORT)
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_SUPPORT, {
+            id: item?.id,
+          })
         }}
         style={styles.button}
       >

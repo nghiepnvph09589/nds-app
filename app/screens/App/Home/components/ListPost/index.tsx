@@ -37,7 +37,8 @@ const ListPost = (props: ListPostProps) => {
         {item?.DonateRequestMedia.length > 0 && (
           <PostImageArea data={item?.DonateRequestMedia} />
         )}
-        <Support />
+
+        <Support item={item} />
       </View>
     )
   }, [])

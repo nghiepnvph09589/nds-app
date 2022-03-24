@@ -34,9 +34,10 @@ const SelectForm = ({
   }
   return (
     <View style={stylesSubject.ctn}>
-      {data.map((item: { id: number; name: string }) => {
+      {data.map((item: { id: number; name: string }, index: number) => {
         return (
           <TouchableOpacity
+            key={`${index}`}
             onPress={() => {
               onSelect(item?.id)
             }}
