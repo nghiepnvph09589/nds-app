@@ -1,16 +1,23 @@
-import { useAppSelector } from '@app/store'
-import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+
+import React from 'react'
 import UserDirectory from './components/UserDirectory'
 import UserInfo from './components/UserInfo'
+import { useAppSelector } from '@app/store'
 
 const Account = () => {
-  const userInfo = useAppSelector(state => state.accountReducer.data)
+  const { data, isLoading } = useAppSelector(state => state.accountReducer)
+  if (isLoading) {
+    showLoading()
+  } else {
+    hideLoading()
+  }
   return (
     <View style={styles.v_container}>
       <UserInfo
-        name={userInfo?.name}
-        avatar={userInfo?.profile_picture_url.replace('http://', 'https://')}
+        name={data?.name}
+        avatar={data?.profile_picture_url.replace('http://', 'https://')}
       />
       <UserDirectory />
     </View>

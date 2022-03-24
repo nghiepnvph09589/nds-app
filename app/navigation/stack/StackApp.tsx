@@ -1,15 +1,16 @@
 import AddressMap from '@app/screens/CreatePost/screens/AddressMap'
 import ChangePassScreen from '@app/screens/App/Account/screens/ChangePassword'
 import ContactScreen from '@app/screens/App/Account/screens/Contact'
-import CreateSupportScreen from '@app/screens/App/Home/screens/CreateSupport'
+import CreateSupportScreen from '@app/screens/App/Support/screens/CreateSupport'
 import ListPost from '@app/screens/App/Account/screens/ListPost'
-import ListSupportDetailScreen from '@app/screens/App/Account/screens/ListSuppotDetail'
+import ListSupportDetailScreen from '@app/screens/App/Support/screens/ListSuppotDetail'
 import ListSupportScreen from '@app/screens/App/Account/screens/ListSupport'
 import ManageListSupportScreen from '@app/screens/App/Account/screens/ManageListSupport'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
 import React from 'react'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import SupportDetailScreen from '@app/screens/App/Support/screens/SupportDetal'
 import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -27,6 +28,7 @@ const {
   MANAGE_LIST_SUPPORT,
   LIST_SUPPORT_DETAIL,
   LIST_POST,
+  SUPPORT_DETAIL,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -43,6 +45,7 @@ const mainScreen = {
   [MANAGE_LIST_SUPPORT]: ManageListSupportScreen,
   [LIST_SUPPORT_DETAIL]: ListSupportDetailScreen,
   [LIST_POST]: ListPost,
+  [SUPPORT_DETAIL]: SupportDetailScreen,
 }
 
 export const StackAppCustomerScreen = () => {

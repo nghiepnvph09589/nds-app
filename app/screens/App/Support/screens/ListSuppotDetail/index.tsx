@@ -1,91 +1,111 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import React, { useState } from 'react'
 import { fonts, styleView } from '@app/theme'
 
+import DateUtils from '@app/utils/DateUtils'
 import Empty from '@app/components/Empty/Empty'
 import FstImage from '@app/components/FstImage'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
+import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { colors } from '@app/theme/colors'
-import { formatPrice } from '@app/utils/Format'
 
 const mockData = [
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
   {
     id: 1,
     soure: R.images.img_post,
     name: 'Nguyễn Minh Quang',
-    content: 'đã tham gia ủng hộ cho',
+    content: '15/02 Trần Dần ủng hộ 2 tỷ đồng cho Gia Đình anh Văn Sĩ Hùng',
     money: 300000,
+    create_at: '2022-03-23T06:50:00.000Z',
   },
 ]
 const ListSupportDetailScreen = () => {
@@ -143,19 +163,22 @@ const ListSupportDetailScreen = () => {
 }
 const _itemOrder = ({ item, index }: { item: any; index: number }) => {
   return (
-    <View key={`${index}`} style={styles.ctn_item}>
+    <TouchableOpacity
+      onPress={() => {
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.SUPPORT_DETAIL)
+      }}
+      key={`${index}`}
+      style={styles.ctn_item}
+    >
       <FstImage source={item?.soure} style={styles.img_item} />
       <View style={styles.detail_item}>
-        <Text children={item.name} style={styles.name} />
-        <View style={{ ...styleView.rowItemBetween }}>
-          <Text style={styles.content} children={item?.content} />
-          <Text
-            style={styles.money}
-            children={formatPrice(item?.money) + ' đ'}
-          />
-        </View>
+        <Text children={item.content} style={styles.content} />
+        <Text
+          style={styles.create_at}
+          children={DateUtils.formatShortDate(item?.create_at)}
+        />
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 export default ListSupportDetailScreen
@@ -175,26 +198,26 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   img_item: {
-    marginVertical: 5,
     marginRight: 15,
-    width: 45,
-    height: 45,
-    borderRadius: 22,
+    width: 72,
+    height: 72,
+    borderRadius: 12,
   },
   detail_item: {
     flex: 1,
-    justifyContent: 'space-between',
-  },
-  name: {
-    ...fonts.semi_bold16,
-    color: colors.textColor.gray9,
   },
   content: {
     ...fonts.regular16,
     color: colors.textColor.gray9,
+    minHeight: 65,
+    lineHeight: 25,
   },
   money: {
     ...fonts.semi_bold16,
     color: colors.primary,
+  },
+  create_at: {
+    ...fonts.regular16,
+    color: colors.textColor.gray8,
   },
 })
