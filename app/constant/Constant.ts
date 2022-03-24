@@ -92,6 +92,14 @@ const PHONE_REGEX =
 const EMAIL_REGEX = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/
 const PASSWORD_REGEX = /^.{8,20}$/
 
+const ROLE = {
+  ADMIN: 1, // admin
+  OFFICER_PROVINCE: 2, // cán bộ địa phương cấp tỉnh
+  OFFICER_DISTRICT: 3, // cán bộ địa phương cấp huyện
+  OFFICER_WARD: 4, // cán bộ địa phương cấp xã
+  CUSTOMER: 5, // khách hàng
+}
+
 const NAME_REGEX =
   /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s|_]+$/g
 export {
@@ -107,4 +115,5 @@ export {
   PASSWORD_REGEX,
   MAIN_TAB,
   MEDIA_TYPE,
+  ROLE,
 }

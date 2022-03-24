@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
+import { useDispatch } from 'react-redux'
 import { DataBanner } from '../../mockup'
 import { ListPostData } from '../../model'
+import { getDataHome } from '../../slice/HomeSlice'
 import Banner from './components/Banner'
 import CategoryAndAddress from './components/CategoryAndAddress'
 import ContentPost from './components/ContentPost'
@@ -14,7 +16,11 @@ interface ListPostProps {
 }
 
 const ListPost = (props: ListPostProps) => {
+  const dispatch = useDispatch()
   const { data } = props
+  const onRefreshData = () => {
+    dispatch(getDataHome({ page: 1 }))
+  }
   const renderItem = useCallback(({ item }: { item: ListPostData }) => {
     return (
       <View style={styles.v_item}>
@@ -31,7 +37,6 @@ const ListPost = (props: ListPostProps) => {
         {item?.DonateRequestMedia.length > 0 && (
           <PostImageArea data={item?.DonateRequestMedia} />
         )}
-
         <Support />
       </View>
     )
@@ -46,7 +51,7 @@ const ListPost = (props: ListPostProps) => {
         </>
       }
       contentContainerStyle={styles.v_list}
-      onRefresh={() => {}}
+      onRefresh={onRefreshData}
       refreshing={false}
       data={data}
       renderItem={renderItem}
