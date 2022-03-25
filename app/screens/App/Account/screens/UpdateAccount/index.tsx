@@ -47,6 +47,10 @@ const UpdateAccountScreen = () => {
   const [profileImage, setProfileImage] = useState<string>(
     data?.profile_picture_path ? data?.profile_picture_url : ''
   )
+  const profileImagePath = data?.profile_picture_path
+    ? data?.profile_picture_url
+    : ''
+
   const onSubmitUpdate = async (form: any) => {
     Keyboard.dismiss()
     if (!form?.sex) {
@@ -56,12 +60,6 @@ const UpdateAccountScreen = () => {
     showLoading()
     try {
       let payload: UpdateAccount = {
-        // name: form.name,
-        // id_card: form?.cmt,
-        // birthday: form?.dateBirth,
-        // gender: form?.sex,
-        // address: form.address,
-        // email: 'string',
         name: form.name,
         phone: data?.phone,
         id_card: form?.cmt,
@@ -69,7 +67,7 @@ const UpdateAccountScreen = () => {
         gender: form.sex,
         address: form.address,
       }
-      if (profileImage !== data?.profile_picture_url) {
+      if (profileImage !== profileImagePath) {
         let formData = new FormData()
         formData.append(`image`, {
           name: `image/${profileImage}`,
@@ -84,7 +82,6 @@ const UpdateAccountScreen = () => {
           }
         }
       }
-      await console.log(payload)
       const res = await updateAccount(payload)
       if (res.code === API_STATUS.SUCCESS) {
         await dispatch(getDataUserInfo())

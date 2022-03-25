@@ -3,7 +3,7 @@ import { colors, fonts, styleView } from '@app/theme'
 
 import React from 'react'
 
-const RowDetail = ({ name, value }: { name: string; value: string }) => {
+const RowDetail = ({ name, value }: { name?: string; value?: string }) => {
   return (
     <View style={stylesRows.ctn_row}>
       <Text style={stylesRows.txt_name} children={name} />
@@ -28,7 +28,7 @@ const stylesRows = StyleSheet.create({
   },
   txt_value: {
     flex: 2,
-    lineHeight: 22,
+    lineHeight: 24,
     ...fonts.regular15,
     color: colors.textColor.gray9,
     textAlign: 'right',

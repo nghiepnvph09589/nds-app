@@ -54,6 +54,7 @@ export const colors = {
   },
   textColor: {
     gray1: '#FFFFFF',
+    gray7: '#69747E',
     gray8: '#595959',
     gray9: '#262626',
     gray10: '#212529',

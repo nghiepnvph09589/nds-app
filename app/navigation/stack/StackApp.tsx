@@ -1,23 +1,24 @@
 import AddressMap from '@app/screens/App/CreatePost/screens/AddressMap'
 import ChangePassScreen from '@app/screens/App/Account/screens/ChangePassword'
 import ContactScreen from '@app/screens/App/Account/screens/Contact'
+import CreatePost from '@app/screens/App/CreatePost'
 import CreateSupportScreen from '@app/screens/App/Support/screens/CreateSupport'
+import DetailSupportManage from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage'
+import EditSupportScreen from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage/screens/EditSupportManage'
 import ListPost from '@app/screens/App/Account/screens/ListPost'
-import ListSupportDetailScreen from '@app/screens/App/Support/screens/ListSuppotDetail'
-import ListSupportScreen from '@app/screens/App/Account/screens/ListSupport'
+import ListSupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDetail'
+import ListSupportScreen from '@app/screens/App/Support/screens/ListSupported'
+import ManageListPost from '@app/screens/App/Account/screens/ManageListPost'
 import ManageListSupportScreen from '@app/screens/App/Support/screens/ManageListSupport'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import PostDetail from '@app/screens/App/Account/screens/PostDetail'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
 import React from 'react'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
-import SupportDetailScreen from '@app/screens/App/Support/screens/ListSuppotDetail/SupportDetal'
+import SupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDetail/SupportDetail'
 import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
-import UpdateSupportScreen from '@app/screens/App/Support/screens/ManageListSupport/UpdateSupport'
 import { createStackNavigator } from '@react-navigation/stack'
-import CreatePost from '@app/screens/App/CreatePost'
-import ManageListPost from '@app/screens/App/Account/screens/ManageListPost'
 
 const {
   PRODUCT,
@@ -35,8 +36,9 @@ const {
   LIST_POST,
   SUPPORT_DETAIL,
   DETAIL_POST,
-  UPDATE_SUPPORT,
+  DETAIL_SUPPORT_MANAGE,
   CREATE_POST,
+  EDIT_SUPPORT_MANAGE,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -55,9 +57,10 @@ const mainScreen = {
   [LIST_POST]: ListPost,
   [SUPPORT_DETAIL]: SupportDetailScreen,
   [DETAIL_POST]: PostDetail,
-  [UPDATE_SUPPORT]: UpdateSupportScreen,
+  [DETAIL_SUPPORT_MANAGE]: DetailSupportManage,
   [CREATE_POST]: CreatePost,
   [MANAGE_LIST_POST]: ManageListPost,
+  [EDIT_SUPPORT_MANAGE]: EditSupportScreen,
 }
 
 export const StackAppCustomerScreen = () => {

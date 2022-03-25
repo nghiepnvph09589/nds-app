@@ -115,7 +115,7 @@ const _itemOrder = ({ item, index }: { item: any; index: number }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_SUPPORT, {
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: item?.id,
         })
       }}

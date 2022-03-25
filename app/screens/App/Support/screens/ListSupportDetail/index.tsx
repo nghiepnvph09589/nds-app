@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
@@ -152,14 +153,14 @@ const ListSupportDetailScreen = (props: Props) => {
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         renderItem={_itemOrder}
-        // ListFooterComponent={
-        //   loadMore ? (
-        //     <ActivityIndicator
-        //       color={colors.primary}
-        //       style={styles.v_load_more}
-        //     />
-        //   ) : null
-        // }
+        ListFooterComponent={
+          loadMore ? (
+            <ActivityIndicator
+              color={colors.primary}
+              style={styles.v_load_more}
+            />
+          ) : null
+        }
         ListEmptyComponent={<Empty description={'Danh sách trống'} />}
       />
     </ScreenWrapper>
