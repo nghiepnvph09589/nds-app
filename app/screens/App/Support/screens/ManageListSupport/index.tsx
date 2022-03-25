@@ -19,6 +19,14 @@ const headerComponent = [
     name: 'Đã duyệt',
   },
   {
+    id: STATUS_SUPPORT.EDIT,
+    name: 'Yêu cầu chỉnh sửa',
+  },
+  {
+    id: STATUS_SUPPORT.SUCCESS,
+    name: 'Hoàn thành',
+  },
+  {
     id: STATUS_SUPPORT.CANCEL,
     name: 'Từ chối',
   },

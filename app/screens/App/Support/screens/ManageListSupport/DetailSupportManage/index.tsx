@@ -1,26 +1,64 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import { colors, fonts } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
+import { API_STATUS } from '@app/constant/Constant'
+import BtnDetailPost from './components/BtnDetailPost'
 import CharityHouse from './components/CharityHouse'
+import Error from '@app/components/Error/Error'
 import MenuButton from './components/MenuButton'
-import React from 'react'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import StatusSupport from './components/StatusSupport'
+import { getDetailSupportManage } from './api'
 
-const UpdateSupportScreen = () => {
+interface Props {
+  route: { params: { id: number } }
+}
+const DetailSupportScreen = (props: Props) => {
+  const [data, setData] = useState<dataSupportDetail>()
+  const [error, setError] = useState<boolean>(false)
+  const getData = async () => {
+    showLoading()
+    const payload = {
+      id: props?.route?.params?.id,
+    }
+    try {
+      const res = await getDetailSupportManage(payload)
+      if (res?.code === API_STATUS.SUCCESS) {
+        setData(res.data)
+        setError(false)
+      }
+      // eslint-disable-next-line no-catch-shadow
+    } catch (error) {
+      setError(true)
+      console.log(error)
+    } finally {
+      hideLoading()
+    }
+  }
+  useEffect(() => {
+    getData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  if (error) return <Error reload={getData} />
   return (
     <ScreenWrapper
       back
       color={colors.text}
       backgroundHeader="white"
       forceInset={['left']}
-      titleHeader={'Cập nhật ủng hộ'}
-      backgroundColor={colors.backgroundColor}
+      titleHeader={'Chi tiết ủng hộ'}
+      backgroundColor={colors.white}
       style={{ flex: 1 }}
       // scroll
     >
-      <ScrollView>
-        <StatusSupport />
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={getData} />
+        }
+      >
+        <StatusSupport status={2} />
         <View style={styles.ctn}>
           {/* <TextInput
           onChangeText={text => setTitle(text)}
@@ -40,14 +78,15 @@ const UpdateSupportScreen = () => {
           style={styles.input_content}
           placeholderTextColor={'#8898A7'}
         /> */}
-          <CharityHouse />
+          <CharityHouse data={data} />
+          <BtnDetailPost data={data} />
         </View>
       </ScrollView>
       <MenuButton />
     </ScreenWrapper>
   )
 }
-export default UpdateSupportScreen
+export default DetailSupportScreen
 
 const styles = StyleSheet.create({
   input: {

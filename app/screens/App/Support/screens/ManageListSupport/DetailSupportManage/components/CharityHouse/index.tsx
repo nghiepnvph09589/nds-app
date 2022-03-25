@@ -4,47 +4,31 @@ import { colors, dimensions, fonts } from '@app/theme'
 import React from 'react'
 import RowDetail from '../RowDetail'
 
-const mockData = [
-  {
-    id: 1,
-    name: 'Lương thực, thực phẩm',
-  },
-  {
-    id: 1,
-    name: 'Sinh kế',
-  },
-  {
-    id: 1,
-    name: 'Sinh kế',
-  },
-  {
-    id: 1,
-    name: 'Lương thực, thực phẩm',
-  },
-]
-const CharityHouse = () => {
+const CharityHouse = ({ data }: { data?: dataSupportDetail }) => {
   return (
     <View style={charityHouseStyle.ctn}>
       <Text style={charityHouseStyle.txt_name_v} children={'Nhà hảo tâm'} />
-      <RowDetail name={'Họ tên'} value={'Trần Dần'} />
-      <RowDetail name={'Số điện thoại'} value={'0231239412'} />
-      <RowDetail name={'Nội dung'} value={'Mong các cháu chăm chỉ học hành'} />
+      <RowDetail name={'Họ tên'} value={data?.name} />
+      <RowDetail name={'Số điện thoại'} value={data?.phone} />
+      <RowDetail name={'Nội dung'} value={data?.note} />
       <View style={charityHouseStyle.ctn_list}>
         <Text
           style={charityHouseStyle.txt_form_support}
           children={'Hình thức ủng hộ'}
         />
         <View style={charityHouseStyle.v_list}>
-          {mockData.map((item: any, index: number) => {
-            return (
-              <View key={`${index}`} style={charityHouseStyle.item}>
-                <Text
-                  style={charityHouseStyle.txt_item}
-                  children={item?.name}
-                />
-              </View>
-            )
-          })}
+          {data?.form_support.map(
+            (item: { id: number; name: string }, index: number) => {
+              return (
+                <View key={`${index}`} style={charityHouseStyle.item}>
+                  <Text
+                    style={charityHouseStyle.txt_item}
+                    children={item?.name}
+                  />
+                </View>
+              )
+            }
+          )}
         </View>
       </View>
     </View>
@@ -55,15 +39,15 @@ const charityHouseStyle = StyleSheet.create({
   ctn: {
     borderWidth: 1,
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 20,
     borderColor: colors.border,
     borderRadius: 12,
-    padding: 13,
+    padding: 15,
   },
   txt_name_v: {
     ...fonts.semi_bold16,
     color: colors.textColor.gray10,
-    marginVertical: 5,
+    marginVertical: 10,
   },
   ctn_list: {
     width: dimensions.width - 60,
@@ -85,7 +69,7 @@ const charityHouseStyle = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-    borderColor: colors.border,
+    borderColor: '#ADB5BD',
   },
   txt_item: {
     ...fonts.regular16,

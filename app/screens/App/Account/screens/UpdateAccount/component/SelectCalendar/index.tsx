@@ -56,7 +56,7 @@ const SelectDateBirth = ({
           // onChangeText={(text: string) => {
           //   onChange(text)
           // }}
-          value={DateUtils.formatShortDate(value)}
+          value={value ? DateUtils.formatShortDate(value) : ''}
           editable={false}
           onBlur={onBlur}
           onSubmitEditing={onSubmitEditing}

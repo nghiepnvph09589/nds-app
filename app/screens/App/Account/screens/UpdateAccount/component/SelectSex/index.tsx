@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 
@@ -10,7 +9,7 @@ const SelectSex = ({
   value,
   onSelect,
 }: {
-  value: number
+  value?: number
   onSelect: (id: any) => void
 }) => {
   const sexSelect = [
