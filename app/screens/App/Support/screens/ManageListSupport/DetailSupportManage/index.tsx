@@ -13,7 +13,7 @@ import StatusSupport from './components/StatusSupport'
 import { getDetailSupportManage } from './api'
 
 interface Props {
-  route: { params: { id: number } }
+  route: { params: { id: number; onRefreshData: () => void } }
 }
 const DetailSupportScreen = (props: Props) => {
   const [data, setData] = useState<dataSupportDetail>()
@@ -83,7 +83,10 @@ const DetailSupportScreen = (props: Props) => {
           <BtnDetailPost data={data} />
         </View>
       </ScrollView>
-      <MenuButton id={data?.id} />
+      <MenuButton
+        id={data?.id}
+        onAction={props?.route?.params?.onRefreshData}
+      />
     </ScreenWrapper>
   )
 }

@@ -72,7 +72,7 @@ const VideoComponent = () => {
         ref={playerRef}
         paused={videoPause}
         source={{
-          uri: 'https://v16-webapp.tiktok.com/01355d6a21c1aeabc90777fed5df6587/623c2df8/video/tos/useast2a/tos-useast2a-pve-0037-aiso/d4fc8dab6ff54e6fa62376e74351a57c/?a=1988&br=2922&bt=1461&cd=0%7C0%7C0%7C0&ch=0&cr=0&cs=0&dr=0&ds=2&er=&ft=XOQ9-3LGnz7ThSGgMDXq&l=202203240237590102450431511D030AEA&lr=tiktok_m&mime_type=video_mp4&net=0&pl=0&qs=0&rc=ajs1d2U6ZnE5OjMzZjgzM0ApZTY1Ojk1OGQ8NzNmPGg3NWcza2JicjQwNmVgLS1kL2Nzc2AtXjQwLjI1LzYvMy0zLTM6Yw%3D%3D&vl=&vr=',
+          uri: 'https://v16-webapp.tiktok.com/65bda2e527f25efd417a1aeccd4a6ee5/623dbecc/video/tos/useast2a/tos-useast2a-pve-0037-aiso/66f5f768f284477b943ebbfa10984d20/?a=1988&br=4114&bt=2057&cd=0%7C0%7C0%7C0&ch=0&cr=0&cs=0&dr=0&ds=3&er=&ft=XOQ9-3LGnz7ThVmYJDXq&l=202203250708140102450151460C12F9CD&lr=tiktok_m&mime_type=video_mp4&net=0&pl=0&qs=0&rc=M24zZWU6ZnBzOzMzZjgzM0ApZzY3MzczaTw3NzZoZjZkZmcxL2RucjRncjFgLS1kL2NzczJgYDZjMGMvYTBgYzJgMS46Yw%3D%3D&vl=&vr=',
         }}
         style={styles.backgroundVideo}
         controls

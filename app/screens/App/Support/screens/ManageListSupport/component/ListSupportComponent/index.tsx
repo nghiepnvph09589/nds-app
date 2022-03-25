@@ -94,7 +94,13 @@ const ListSupportComponent = ({ status }: { status: number }) => {
           keyExtractor={(_, index) => `${index}`}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          renderItem={_itemOrder}
+          renderItem={({ item, index }) => (
+            <ItemSupport
+              item={item}
+              index={index}
+              onRefreshData={onRefreshData}
+            />
+          )}
           ListFooterComponent={
             loadMore ? (
               <ActivityIndicator
@@ -111,12 +117,21 @@ const ListSupportComponent = ({ status }: { status: number }) => {
 }
 
 export default ListSupportComponent
-const _itemOrder = ({ item, index }: { item: any; index: number }) => {
+const ItemSupport = ({
+  item,
+  index,
+  onRefreshData,
+}: {
+  item: any
+  index: number
+  onRefreshData: () => void
+}) => {
   return (
     <TouchableOpacity
       onPress={() => {
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: item?.id,
+          onRefreshData: onRefreshData,
         })
       }}
       key={`${index}`}

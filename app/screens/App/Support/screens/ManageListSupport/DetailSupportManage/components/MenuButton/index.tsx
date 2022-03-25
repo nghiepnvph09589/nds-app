@@ -7,13 +7,20 @@ import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 
 import { ChangeStatusSupport } from '../../api'
+import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
 import Modal from 'react-native-modal'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import { useAppSelector } from '@app/store'
 
-const MenuButton = ({ id }: { id?: number }) => {
+const MenuButton = ({
+  id,
+  onAction,
+}: {
+  id?: number
+  onAction: () => void
+}) => {
   const dataUser = useAppSelector(state => state.accountReducer.data)
   const [show, setShow] = useState(false)
   const [error, setError] = useState<boolean>(false)
@@ -24,26 +31,49 @@ const MenuButton = ({ id }: { id?: number }) => {
         ? 'Bạn chắc chắn duyệt ủng hộ này??'
         : 'Bạn chắc chắn gửi yêu cầu phê duyệt này??',
       () => {
-        Accept()
+        changStatus(1, '')
       }
     )
   }
-  const Accept = async () => {
+  const onCancel = () => {
+    showConfirm(
+      R.strings().notification,
+      dataUser?.role === 3
+        ? 'Bạn chắc chắn duyệt ủng hộ này??'
+        : 'Bạn chắc chắn gửi yêu cầu phê duyệt này??',
+      () => {
+        changStatus(0, 'Không phê duyệt')
+      }
+    )
+  }
+  const changStatus = async (status: number, reason: string) => {
     const payload = {
       id: id,
-      params: { reason: '' },
+      params: {
+        status: status === 1 ? undefined : 0,
+        reason: reason,
+      },
     }
     showLoading()
     try {
       const res = await ChangeStatusSupport(payload)
       if (res?.code === API_STATUS.SUCCESS) {
         setError(false)
-        showMessages(
-          R.strings().notification,
-          dataUser?.role === 3
-            ? 'Đã phê duyệt thành công'
-            : 'Đã gửi yêu cầu phê duyệt'
-        )
+        if (status === 0) {
+          showMessages(R.strings().notification, 'Đã từ chối ủng hộ', () => {
+            onAction()
+          })
+        } else {
+          showMessages(
+            R.strings().notification,
+            dataUser?.role === 3
+              ? 'Đã phê duyệt thành công'
+              : 'Đã gửi yêu cầu phê duyệt',
+            () => {
+              onAction()
+            }
+          )
+        }
       }
     } catch (error) {
       setError(true)
@@ -52,6 +82,7 @@ const MenuButton = ({ id }: { id?: number }) => {
       hideLoading()
     }
   }
+  if (error) return <Error reload={() => {}} />
   return (
     <View style={styles.ctn}>
       <TouchableOpacity onPress={onAccept} style={styles.accept}>
@@ -105,7 +136,10 @@ const MenuButton = ({ id }: { id?: number }) => {
               name={'Yêu cầu chỉnh sửa'}
             />
             <RowBtn
-              onPress={() => {}}
+              onPress={() => {
+                setShow(false)
+                onCancel()
+              }}
               source={R.images.ic_cancel_support}
               name={'Từ chối'}
               line
