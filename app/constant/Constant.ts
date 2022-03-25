@@ -64,6 +64,13 @@ const MEDIA_TYPE = {
   VIDEO: 2,
 }
 
+const STATUS_TYPE = {
+  WAIT_CONFIRM: 2, //chờ xác nhận
+  EDIT: 1, //đã xác nhận
+  COMPLETE: 3, //Hoàn thành
+  DENY: 0, //Tùe chối
+}
+
 export const ROOT_STACK = {
   MAIN_APP: 'MAIN_APP',
 }
@@ -118,4 +125,5 @@ export {
   MAIN_TAB,
   MEDIA_TYPE,
   ROLE,
+  STATUS_TYPE,
 }
