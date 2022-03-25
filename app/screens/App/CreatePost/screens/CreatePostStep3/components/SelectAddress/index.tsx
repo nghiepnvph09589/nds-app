@@ -17,7 +17,7 @@ const SelectAddress = () => {
       <FstImage
         resizeMode="contain"
         style={styles.icon}
-        source={R.images.ic_circle_red}
+        source={R.images.ic_location4}
       />
       <Text style={styles.text}>{R.strings().select_address_map}</Text>
       <FstImage

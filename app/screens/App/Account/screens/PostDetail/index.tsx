@@ -6,6 +6,7 @@ import NavigationUtil from '@app/navigation/NavigationUtil'
 import { getDataHome } from '@app/screens/App/Home/slice/HomeSlice'
 import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
+import { showConfirm } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Tab, Tabs } from 'native-base'
 import React, { useEffect, useState } from 'react'
@@ -81,24 +82,30 @@ const PostDetail = (props: PostDetailProps) => {
   }
 
   const handleApprove = async () => {
-    showLoading()
-    try {
-      await PostDetailApi.approvePost({ id })
-      if (userInfo.role === ROLE.OFFICER_PROVINCE) {
-        dispatch(getDataHome({ page: 1 }))
+    showConfirm(
+      R.strings().notification,
+      'Bạn có chắc chắn muốn duyệt tin này',
+      async () => {
+        showLoading()
+        try {
+          await PostDetailApi.approvePost({ id })
+          if (userInfo.role === ROLE.OFFICER_PROVINCE) {
+            dispatch(getDataHome({ page: 1 }))
+          }
+          dispatch(
+            getDataListManagePost({
+              status: 2,
+              limit: DEFAULT_PARAMS.LIMIT,
+              page: DEFAULT_PARAMS.PAGE,
+            })
+          )
+          NavigationUtil.goBack()
+        } catch (error) {
+        } finally {
+          hideLoading()
+        }
       }
-      dispatch(
-        getDataListManagePost({
-          status: 2,
-          limit: DEFAULT_PARAMS.LIMIT,
-          page: DEFAULT_PARAMS.PAGE,
-        })
-      )
-      NavigationUtil.goBack()
-    } catch (error) {
-    } finally {
-      hideLoading()
-    }
+    )
   }
 
   if (isError) return <Error reload={getDataPostDetail} />

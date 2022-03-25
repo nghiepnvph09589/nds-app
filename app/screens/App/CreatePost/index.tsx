@@ -3,10 +3,17 @@ import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import { colors } from '@app/theme'
+import { colors, fonts } from '@app/theme'
 import { showConfirm } from '@app/utils/AlertHelper'
-import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import {
+  Alert,
+  Keyboard,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import StepIndicator from 'react-native-step-indicator'
 import Swiper from 'react-native-swiper'
@@ -21,6 +28,23 @@ const CreatePost = () => {
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [title, setTitle] = useState<string>(R.strings().post)
   const PAGES = ['Page 1', 'Page 2', 'Page 3']
+  const [showCancel, setShowCancel] = useState<boolean>(false)
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+    Keyboard.addListener('keyboardDidHide', keyboardDidHide)
+    return () => {
+      // /setShowCancel(false)
+      Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
+    }
+  }, [])
+
+  const keyboardDidShow = () => {
+    setShowCancel(true)
+  }
+  const keyboardDidHide = () => {
+    setShowCancel(false)
+  }
 
   const onBack = () => {
     setCurrentPage(prevState => {
@@ -86,6 +110,23 @@ const CreatePost = () => {
     <ScreenWrapper
       color={colors.text}
       unsafe
+      rightComponent={
+        showCancel && (
+          <TouchableOpacity
+            onPress={() => {
+              Keyboard.dismiss()
+            }}
+            style={{
+              backgroundColor: colors.primary,
+              paddingHorizontal: 10,
+              paddingVertical: 6,
+              borderRadius: 10,
+            }}
+          >
+            <Text style={{ ...fonts.semi_bold16, color: 'white' }}>Ẩn</Text>
+          </TouchableOpacity>
+        )
+      }
       backgroundHeader="white"
       forceInset={['left']}
       titleHeader={title}

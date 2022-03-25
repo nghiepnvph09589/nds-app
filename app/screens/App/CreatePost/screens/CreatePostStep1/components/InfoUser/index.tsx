@@ -27,6 +27,7 @@ const InfoUser = (props: InfoUser) => {
         value={title}
         onChangeText={setTitle}
         maxLength={255}
+        returnKeyType="done"
       />
     </View>
   )

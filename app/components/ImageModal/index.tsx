@@ -1,10 +1,12 @@
 /* eslint-disable prettier/prettier */
 import R from '@app/assets/R'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 import { getOffset } from '@app/utils/Responsive'
 import React, { useState } from 'react'
 import {
   ActivityIndicator,
+  Platform,
   StyleProp,
   Text,
   TouchableOpacity,
@@ -14,6 +16,7 @@ import {
 import FastImage, { ResizeMode, Source } from 'react-native-fast-image'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { IImageInfo } from 'react-native-image-zoom-viewer/built/image-viewer.type'
+import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Modal from 'react-native-modal'
 import Video from 'react-native-video'
 import FstImage from '../FstImage'
@@ -212,6 +215,21 @@ const ImageModal = ({
             )}
           />
         )}
+        <TouchableOpacity
+          onPress={() => {
+            setIsVisible(false)
+          }}
+          style={{
+            position: 'absolute',
+            top: Platform.OS !== 'ios' ? 100 : getStatusBarHeight() + 80,
+            right: 30,
+          }}
+        >
+          <FstImage
+            style={{ width: 32, height: 32 }}
+            source={R.images.ic_exit}
+          />
+        </TouchableOpacity>
       </Modal>
     </TouchableOpacity>
   )

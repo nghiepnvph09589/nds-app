@@ -68,7 +68,7 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
       dispatch(clearDataCreatePost())
       showMessages(
         R.strings().notification,
-        'Bạn đã đă đăng tin thành công. Tin của bạn sẽ cần được duyệt dể được đăng lên.',
+        'Cảm ơn bạn đã đăng bài. Chúng tôi sẽ gửi lại thông báo khi bài của bạn được phê duyệt.',
         () => {
           onNext()
         }

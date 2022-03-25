@@ -1,5 +1,5 @@
 import { Platform, RefreshControl, ScrollView, StyleSheet } from 'react-native'
-import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { ROLE, SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import { getDataUserInfo, logout } from '../../slices/AccountSlice'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
@@ -30,7 +30,7 @@ const UserDirectory = () => {
       }
       style={styles.v_container}
     >
-      {data?.role !== 4 && data?.role !== 5 && (
+      {data?.role !== ROLE.CUSTOMER && data?.role !== 5 && (
         <Directory
           onPress1={() => {
             NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST)

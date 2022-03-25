@@ -42,7 +42,12 @@ const ContentPost = (props: ContentPostProps) => {
         {content}
       </Text>
       {showMoreButton && (
-        <TouchableOpacity onPress={() => {}} accessibilityRole="button">
+        <TouchableOpacity
+          onPress={() => {
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, { id: id })
+          }}
+          accessibilityRole="button"
+        >
           <Text style={styles.see_more}>{R.strings().see_more}</Text>
         </TouchableOpacity>
       )}

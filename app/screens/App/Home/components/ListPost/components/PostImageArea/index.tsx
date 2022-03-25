@@ -22,6 +22,7 @@ const PostImageArea = (props: Props) => {
   let { dataMedia } = useMediaData(
     data.map((item: { media_url: string }) => item.media_url)
   )
+  reactotron.log()
 
   const count = dataMedia?.length
 
