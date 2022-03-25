@@ -1,19 +1,17 @@
 import { APP_SLICE, ROOT_STACK, SCREEN_ROUTER } from '@app/constant/Constant'
-import React, { memo } from 'react'
-import {
-  StackHeaderInterpolationProps,
-  createStackNavigator,
-} from '@react-navigation/stack'
-
-import { NavigationContainer } from '@react-navigation/native'
-import NavigationUtil from './NavigationUtil'
 import SplashScreen from '@app/screens/SplashScreen'
+import { NavigationContainer } from '@react-navigation/native'
+import {
+  createStackNavigator,
+  StackHeaderInterpolationProps,
+} from '@react-navigation/stack'
+import React, { memo } from 'react'
+import isEqual from 'react-fast-compare'
+import { connect } from 'react-redux'
+import NavigationUtil from './NavigationUtil'
+import { StackMainScreen } from './stack/BottomTabBar'
 import { StackAppCustomerScreen } from './stack/StackApp'
 import { StackAuthScreen } from './stack/StackAuth'
-import { StackMainScreen } from './stack/BottomTabBar'
-import { connect } from 'react-redux'
-import isEqual from 'react-fast-compare'
-import { StackCreatPostScreen } from './stack/StackCreatePost'
 
 const RootStack = createStackNavigator()
 const screenOptions = {
@@ -55,13 +53,7 @@ const renderSwitch = (switchApp: string) => {
           component={StackAuthScreen}
         />
       )
-    case SCREEN_ROUTER.CREATE_POST:
-      return (
-        <RootStack.Screen
-          name={SCREEN_ROUTER.CREATE_POST}
-          component={StackCreatPostScreen}
-        />
-      )
+
     case SCREEN_ROUTER.MAIN:
       return (
         <>

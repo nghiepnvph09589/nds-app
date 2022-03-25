@@ -6,7 +6,7 @@ import {
 
 let _navigator: {
   dispatch: (arg0: CommonActions.Action | StackActionType) => void
-} // eslint-disable-line
+}
 
 function setTopLevelNavigator(navigatorRef: any) {
   _navigator = navigatorRef

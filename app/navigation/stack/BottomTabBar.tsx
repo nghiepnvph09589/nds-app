@@ -8,7 +8,7 @@ import {
 import { dimension } from '@app/constant/Theme'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import Account from '@app/screens/App/Account'
-import CreatePost from '@app/screens/CreatePost'
+import CreatePost from '@app/screens/App/CreatePost'
 import Home from '@app/screens/App/Home'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import ProductScreen from '@app/screens/App/Product/ProductScreen'
@@ -27,11 +27,12 @@ import FastImage from 'react-native-fast-image'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 import { useDispatch } from 'react-redux'
 import reactotron from 'reactotron-react-native'
+import NavigationUtil from '../NavigationUtil'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
-const { HOME, LOCATION, USER, CREATE_POST, NOTIFICATION } = SCREEN_ROUTER_APP
+const { HOME, LOCATION, USER, CREATE_POST, NOTIFICATION } = MAIN_TAB
 
 export const TAB_BAR = {
   [HOME]: {
@@ -102,16 +103,8 @@ const RenderTabBarIcon = ({
   )
 }
 
-const renderTabBarLabel = (focused: boolean, route: any) => {
+const renderTabBarLabel = (_focused: boolean, _route: any) => {
   return <></>
-}
-
-const renderTabBar = (props: any) => {
-  return (
-    <View style={styles.tab_bar_ctn}>
-      <BottomTabBar {...props} style={styles.bottom_tab} />
-    </View>
-  )
 }
 
 const MainTab = (route: any) => {
@@ -137,6 +130,7 @@ const MainTab = (route: any) => {
           }}
         />
       )}
+      // eslint-disable-next-line no-shadow
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           return <RenderTabBarIcon focused={focused} route={route} />
@@ -157,8 +151,9 @@ const MainTab = (route: any) => {
                     }
                   )
                   return
-                } else if (route.name === SCREEN_ROUTER_APP.CREATE_POST) {
-                  dispatch(navigateSwitch(SCREEN_ROUTER.CREATE_POST))
+                } else if (route.name === MAIN_TAB.CREATE_POST) {
+                  NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_POST)
+                  //dispatch(navigateSwitch(SCREEN_ROUTER.CREATE_POST))
                   return
                 }
                 if (props.onPress) props.onPress(e)
@@ -169,22 +164,27 @@ const MainTab = (route: any) => {
       })}
     >
       {Object.keys(TAB_BAR).map((item, index) => (
-        <>
-          {index === 2 ? (
-            <Tab.Screen
-              options={{ tabBarVisible: false }}
-              key={index}
-              name={TAB_BAR[item].name}
-              component={TAB_BAR[item].route}
-            />
-          ) : (
-            <Tab.Screen
-              key={index}
-              name={TAB_BAR[item].name}
-              component={TAB_BAR[item].route}
-            />
-          )}
-        </>
+        <Tab.Screen
+          key={index}
+          name={TAB_BAR[item].name}
+          component={TAB_BAR[item].route}
+        />
+        // <>
+        //   {index === 2 ? (
+        //     <Tab.Screen
+        //       options={{ tabBarVisible: false }}
+        //       key={index}
+        //       name={TAB_BAR[item].name}
+        //       component={TAB_BAR[item].route}
+        //     />
+        //   ) : (
+        //     <Tab.Screen
+        //       key={index}
+        //       name={TAB_BAR[item].name}
+        //       component={TAB_BAR[item].route}
+        //     />
+        //   )}
+        // </>
       ))}
     </Tab.Navigator>
   )

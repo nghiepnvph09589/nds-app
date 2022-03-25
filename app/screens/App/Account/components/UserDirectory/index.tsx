@@ -30,9 +30,11 @@ const UserDirectory = () => {
       }
       style={styles.v_container}
     >
-      {data.role !== 4 && data.role !== 5 && (
+      {data?.role !== 4 && data?.role !== 5 && (
         <Directory
-          onPress1={() => {}}
+          onPress1={() => {
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST)
+          }}
           onPress2={() => {
             NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_SUPPORT)
           }}

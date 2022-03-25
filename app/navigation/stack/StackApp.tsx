@@ -1,4 +1,4 @@
-import AddressMap from '@app/screens/CreatePost/screens/AddressMap'
+import AddressMap from '@app/screens/App/CreatePost/screens/AddressMap'
 import ChangePassScreen from '@app/screens/App/Account/screens/ChangePassword'
 import ContactScreen from '@app/screens/App/Account/screens/Contact'
 import CreateSupportScreen from '@app/screens/App/Support/screens/CreateSupport'
@@ -16,6 +16,8 @@ import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
 import UpdateSupportScreen from '@app/screens/App/Support/screens/ManageListSupport/UpdateSupport'
 import { createStackNavigator } from '@react-navigation/stack'
+import CreatePost from '@app/screens/App/CreatePost'
+import ManageListPost from '@app/screens/App/Account/screens/ManageListPost'
 
 const {
   PRODUCT,
@@ -28,11 +30,13 @@ const {
   ADDRESS_MAP,
   CREATE_SUPPORT,
   MANAGE_LIST_SUPPORT,
+  MANAGE_LIST_POST,
   LIST_SUPPORT_DETAIL,
   LIST_POST,
   SUPPORT_DETAIL,
   DETAIL_POST,
   UPDATE_SUPPORT,
+  CREATE_POST,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -52,6 +56,8 @@ const mainScreen = {
   [SUPPORT_DETAIL]: SupportDetailScreen,
   [DETAIL_POST]: PostDetail,
   [UPDATE_SUPPORT]: UpdateSupportScreen,
+  [CREATE_POST]: CreatePost,
+  [MANAGE_LIST_POST]: ManageListPost,
 }
 
 export const StackAppCustomerScreen = () => {

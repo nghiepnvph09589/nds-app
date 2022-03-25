@@ -1,8 +1,8 @@
 import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { SCREEN_ROUTER } from '@app/constant/Constant'
+import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import { showConfirm } from '@app/utils/AlertHelper'
 import React, { useState } from 'react'
@@ -17,7 +17,7 @@ import CreatePostStep3 from './screens/CreatePostStep3'
 import { clearDataCreatePost } from './slice/CreatePostSlice'
 const CreatePost = () => {
   const dispatch = useDispatch()
-  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [title, setTitle] = useState<string>(R.strings().post)
   const PAGES = ['Page 1', 'Page 2', 'Page 3']
@@ -128,7 +128,7 @@ const CreatePost = () => {
                           'Bạn chưa hoàn thiện luồng đăng tin. Bạn có chắc chắn muốn quay lại?',
                           () => {
                             dispatch(clearDataCreatePost())
-                            dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+                            NavigationUtil.goBack()
                           }
                         )
                       }}
@@ -140,7 +140,7 @@ const CreatePost = () => {
                     <CreatePostStep3
                       onBack={onBack}
                       onNext={() => {
-                        dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
+                        NavigationUtil.navigate(SCREEN_ROUTER_APP.HOME)
                       }}
                     />
                   )}
