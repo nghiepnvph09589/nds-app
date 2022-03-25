@@ -50,6 +50,7 @@ const DetailSupportScreen = (props: Props) => {
       forceInset={['left']}
       titleHeader={'Chi tiết ủng hộ'}
       backgroundColor={colors.white}
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{ flex: 1 }}
       // scroll
     >
@@ -82,7 +83,7 @@ const DetailSupportScreen = (props: Props) => {
           <BtnDetailPost data={data} />
         </View>
       </ScrollView>
-      <MenuButton />
+      <MenuButton id={data?.id} />
     </ScreenWrapper>
   )
 }

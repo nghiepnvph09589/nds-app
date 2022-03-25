@@ -1,19 +1,60 @@
+import { API_STATUS, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import FastImage, { Source } from 'react-native-fast-image'
 import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 
+import { ChangeStatusSupport } from '../../api'
 import FstImage from '@app/components/FstImage'
 import Modal from 'react-native-modal'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
-import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { useAppSelector } from '@app/store'
 
-const MenuButton = () => {
+const MenuButton = ({ id }: { id?: number }) => {
+  const dataUser = useAppSelector(state => state.accountReducer.data)
   const [show, setShow] = useState(false)
+  const [error, setError] = useState<boolean>(false)
+  const onAccept = () => {
+    showConfirm(
+      R.strings().notification,
+      dataUser?.role === 3
+        ? 'Bạn chắc chắn duyệt ủng hộ này??'
+        : 'Bạn chắc chắn gửi yêu cầu phê duyệt này??',
+      () => {
+        Accept()
+      }
+    )
+  }
+  const Accept = async () => {
+    const payload = {
+      id: id,
+      params: { reason: '' },
+    }
+    showLoading()
+    try {
+      const res = await ChangeStatusSupport(payload)
+      if (res?.code === API_STATUS.SUCCESS) {
+        setError(false)
+        showMessages(
+          R.strings().notification,
+          dataUser?.role === 3
+            ? 'Đã phê duyệt thành công'
+            : 'Đã gửi yêu cầu phê duyệt'
+        )
+      }
+    } catch (error) {
+      setError(true)
+      console.log(error)
+    } finally {
+      hideLoading()
+    }
+  }
   return (
     <View style={styles.ctn}>
-      <TouchableOpacity style={styles.accept}>
+      <TouchableOpacity onPress={onAccept} style={styles.accept}>
         <View style={styles.v_content_accept}>
           <FastImage
             tintColor={'white'}
@@ -22,7 +63,7 @@ const MenuButton = () => {
           />
           <Text
             style={{ ...fonts.semi_bold16, color: colors.white }}
-            children={'Phê duyệt'}
+            children={dataUser?.role === 3 ? 'Phê duyệt' : 'Yêu cầu phê duyệt'}
           />
         </View>
       </TouchableOpacity>
