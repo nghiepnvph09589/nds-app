@@ -59,7 +59,7 @@ const DetailSupportScreen = (props: Props) => {
           <RefreshControl refreshing={false} onRefresh={getData} />
         }
       >
-        <StatusSupport status={2} />
+        <StatusSupport status={data?.status} />
         <View style={styles.ctn}>
           {/* <TextInput
           onChangeText={text => setTitle(text)}
