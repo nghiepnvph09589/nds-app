@@ -1,50 +1,37 @@
 import { DEFAULT_PARAMS } from '@app/constant/Constant'
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import ListPostApi from '../api/ListPostApi'
-import { ListPostData } from '../model'
+import ManageListPostApi from '../api/ManageListPostApi'
 
-type ListPostSlice = {
-  isError: boolean
-  isLoading: boolean
-  isLastPage: boolean
-  isLoadMore: boolean
-  data: {
-    listPost: ListPostData[]
-  }
-}
-
-const initState: ListPostSlice = {
+const initState = {
   isError: false,
   isLoading: false,
   isLastPage: false,
   isLoadMore: false,
-  data: {
-    listPost: [],
-  },
+  data: [],
 }
 
-export const getDataListPost = createAsyncThunk(
-  'ListPostSlice',
-  async (payload: { page: number; limit?: number }) => {
-    const res = await ListPostApi.getListPost(payload)
+export const getDataListManagePost = createAsyncThunk(
+  'ManageListPostSlice',
+  async (payload: { page: number; limit?: number; status?: number }) => {
+    const res = await ManageListPostApi.getListManagerPost(payload)
     return res
   }
 )
-const listPostSlice = createSlice({
-  name: 'ListPostSlice',
+const manageListPostSlice = createSlice({
+  name: 'ManageListPostSlice',
   initialState: initState,
   reducers: {},
 
   extraReducers: builder => {
-    builder.addCase(getDataListPost.pending, (state, action) => {
+    builder.addCase(getDataListManagePost.pending, (state, action) => {
       const page = action.meta.arg.page
       state.isLoading = page === DEFAULT_PARAMS.PAGE
       state.isError = false
       state.isLoadMore = page ? page > 1 : false
       state.isLastPage = false
     })
-    builder.addCase(getDataListPost.fulfilled, (state, action) => {
+    builder.addCase(getDataListManagePost.fulfilled, (state, action) => {
       var { page } = action.meta.arg
       const arrayCurrent = action.payload?.data
       var newState = null
@@ -63,7 +50,7 @@ const listPostSlice = createSlice({
           isLoadMore: false,
           isLastPage: false,
           isError: false,
-          data: state.data.listPost.concat(arrayCurrent.listPost),
+          data: state.data.concat(arrayCurrent),
         }
       } else {
         newState = {
@@ -76,12 +63,12 @@ const listPostSlice = createSlice({
       }
       return newState
     })
-    builder.addCase(getDataListPost.rejected, state => {
+    builder.addCase(getDataListManagePost.rejected, state => {
       state.isLoading = false
       state.isError = true
     })
   },
 })
 
-export const {} = listPostSlice.actions
-export default listPostSlice.reducer
+export const {} = manageListPostSlice.actions
+export default manageListPostSlice.reducer

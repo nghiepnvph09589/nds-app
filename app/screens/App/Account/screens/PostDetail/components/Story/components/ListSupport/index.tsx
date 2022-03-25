@@ -25,13 +25,13 @@ const ListSupport = ({ id }: { id: number }) => {
         </View>
         <FstImage style={styles.ic_right} source={R.images.ic_arrow_right} />
       </View>
-      <View style={styles.line} />
+      {/* <View style={styles.line} />
       <View style={styles.v_row}>
         <Text style={styles.text}>Số tiền</Text>
         <Text style={{ ...fonts.semi_bold16, color: colors.primary }}>
           3.000.000
         </Text>
-      </View>
+      </View> */}
     </TouchableOpacity>
   )
 }

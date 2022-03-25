@@ -1,31 +1,43 @@
 import R from '@app/assets/R'
 import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
+import { DEFAULT_PARAMS, ROLE, STATUS_TYPE } from '@app/constant/Constant'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import { getDataHome } from '@app/screens/App/Home/slice/HomeSlice'
+import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Tab, Tabs } from 'native-base'
 import React, { useEffect, useState } from 'react'
 import {
+  Alert,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from 'react-native'
 import { getBottomSpace } from 'react-native-iphone-x-helper'
+import { useDispatch } from 'react-redux'
 import PostImageArea from '../ListPost/components/PostImageArea'
+import { getDataListManagePost } from '../ManageListPost/slice/ManageListPostSlice'
 import PostDetailApi from './api/PostDetailApi'
+import ApproveButton from './components/ApproveButton'
 import BankInfo from './components/BankInfo'
 import ButtonBack from './components/ButtonBack'
 import Story from './components/Story'
+import ViewStatus from './components/ViewStatus'
 import { PostDetailData } from './model'
 
 interface PostDetailProps {
-  route: { params: { id: number } }
+  route: { params: { id: number; status: number; type?: number } }
 }
 
 const PostDetail = (props: PostDetailProps) => {
-  const id = props.route.params.id
+  const dispatch = useDispatch()
+  const userInfo = useAppSelector(state => state.accountReducer).data
+  const { id, status, type } = props.route.params
   const [isError, setIsError] = useState<boolean>(false)
   const [dataPostDetail, setDataPostDetail] = useState<PostDetailData>({
     id: 0,
@@ -67,12 +79,35 @@ const PostDetail = (props: PostDetailProps) => {
       hideLoading()
     }
   }
+
+  const handleApprove = async () => {
+    showLoading()
+    try {
+      await PostDetailApi.approvePost({ id })
+      if (userInfo.role === ROLE.OFFICER_PROVINCE) {
+        dispatch(getDataHome({ page: 1 }))
+      }
+      dispatch(
+        getDataListManagePost({
+          status: 2,
+          limit: DEFAULT_PARAMS.LIMIT,
+          page: DEFAULT_PARAMS.PAGE,
+        })
+      )
+      NavigationUtil.goBack()
+    } catch (error) {
+    } finally {
+      hideLoading()
+    }
+  }
+
   if (isError) return <Error reload={getDataPostDetail} />
 
   return (
     <>
       <ScrollView style={styles.v_container}>
         <PostImageArea data={dataPostDetail.DonateRequestMedia} />
+        {type && <ViewStatus status={status} type={type} />}
         <Tabs
           initialPage={0}
           tabBarUnderlineStyle={styles.lineTab}
@@ -97,10 +132,41 @@ const PostDetail = (props: PostDetailProps) => {
         </Tabs>
       </ScrollView>
       <ButtonBack />
-      <TouchableOpacity style={styles.v_button}>
-        <FstImage style={styles.icon} source={R.images.ic_heart} />
-        <Text style={styles.text}>{R.strings().support}</Text>
-      </TouchableOpacity>
+      {type && type !== STATUS_TYPE.COMPLETE ? (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            position: 'absolute',
+            bottom: Platform.OS !== 'ios' ? 20 : getBottomSpace(),
+            paddingHorizontal: 15,
+          }}
+        >
+          <TouchableOpacity onPress={handleApprove} style={styles.v_button2}>
+            <FstImage style={styles.icon} source={R.images.ic_approve} />
+            <Text style={styles.text}>
+              {userInfo?.role === ROLE.OFFICER_DISTRICT
+                ? ' Yêu cầu phê duyệt'
+                : 'Phê duyệt'}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <FstImage
+              style={{ width: 77, height: 45, marginLeft: 12 }}
+              source={R.images.ic_option}
+            />
+          </TouchableOpacity>
+          {/* <FstImage style={styles.icon} source={R.images.ic_heart} />
+         <Text style={styles.text}>{R.strings().support}</Text> */}
+        </View>
+      ) : !type ? (
+        <TouchableOpacity style={styles.v_button}>
+          <FstImage style={styles.icon} source={R.images.ic_heart} />
+          <Text style={styles.text}>{R.strings().support}</Text>
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
     </>
   )
 }
@@ -111,7 +177,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   v_button: {
-    backgroundColor: colors.primary,
     alignSelf: 'center',
     position: 'absolute',
     bottom: Platform.OS !== 'ios' ? 20 : getBottomSpace(),
@@ -121,6 +186,18 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 12,
     flexDirection: 'row',
+    backgroundColor: colors.primary,
+  },
+  v_button2: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    // /width: dimensions.width - 30,
+    paddingVertical: 12,
+    borderRadius: 12,
+    flexDirection: 'row',
+    backgroundColor: colors.primary,
   },
   icon: {
     height: 24,
