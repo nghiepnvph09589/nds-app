@@ -55,11 +55,12 @@ const DetailSupportScreen = (props: Props) => {
       // scroll
     >
       <ScrollView
+        style={{ paddingBottom: 50 }}
         refreshControl={
           <RefreshControl refreshing={false} onRefresh={getData} />
         }
       >
-        <StatusSupport status={2} />
+        <StatusSupport status={data?.status} />
         <View style={styles.ctn}>
           {/* <TextInput
           onChangeText={text => setTitle(text)}

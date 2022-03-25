@@ -11,4 +11,5 @@ interface dataSupportDetail {
     }[]
     title: string
   }
+  status: number
 }
