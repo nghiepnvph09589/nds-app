@@ -55,6 +55,7 @@ const DetailSupportScreen = (props: Props) => {
       // scroll
     >
       <ScrollView
+        style={{ paddingBottom: 50 }}
         refreshControl={
           <RefreshControl refreshing={false} onRefresh={getData} />
         }

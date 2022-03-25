@@ -6,8 +6,8 @@ import R from '@app/assets/R'
 import React from 'react'
 import { STATUS_SUPPORT } from '@app/constant/Constant'
 
-const StatusSupport = ({ status }: { status: number }) => {
-  const renderStatus = (status: number) => {
+const StatusSupport = ({ status }: { status?: number }) => {
+  const renderStatus = (status?: number) => {
     if (status === STATUS_SUPPORT.CANCEL) {
       return 'Từ chối'
     } else if (status === STATUS_SUPPORT.WAITING) {

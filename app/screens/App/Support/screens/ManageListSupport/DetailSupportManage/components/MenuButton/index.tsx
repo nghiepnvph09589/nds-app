@@ -1,7 +1,13 @@
 import { API_STATUS, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import FastImage, { Source } from 'react-native-fast-image'
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import React, { useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
@@ -12,6 +18,7 @@ import FstImage from '@app/components/FstImage'
 import Modal from 'react-native-modal'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
+import { isIphoneX } from 'react-native-iphone-x-helper'
 import { useAppSelector } from '@app/store'
 
 const MenuButton = ({
@@ -194,6 +201,7 @@ const styles = StyleSheet.create({
   ctn: {
     ...styleView.rowItem,
     paddingHorizontal: 15,
+    marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 0 : 20) : 20,
   },
   accept: {
     ...styleView.rowItem,
