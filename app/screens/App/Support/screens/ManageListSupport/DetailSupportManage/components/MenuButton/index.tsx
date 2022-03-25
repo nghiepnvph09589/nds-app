@@ -134,6 +134,7 @@ const MenuButton = ({
               onPress={() => {}}
               source={R.images.ic_request_edit_support}
               name={'Yêu cầu chỉnh sửa'}
+              line
             />
             <RowBtn
               onPress={() => {
@@ -142,7 +143,6 @@ const MenuButton = ({
               }}
               source={R.images.ic_cancel_support}
               name={'Từ chối'}
-              line
             />
           </View>
           <TouchableOpacity
