@@ -24,9 +24,11 @@ import { useAppSelector } from '@app/store'
 const MenuButton = ({
   id,
   onAction,
+  status,
 }: {
   id?: number
   onAction: () => void
+  status?: number
 }) => {
   const dataUser = useAppSelector(state => state.accountReducer.data)
   const [show, setShow] = useState(false)
@@ -34,7 +36,7 @@ const MenuButton = ({
   const onAccept = () => {
     showConfirm(
       R.strings().notification,
-      dataUser?.role === 3
+      dataUser?.role === 2
         ? 'Bạn chắc chắn duyệt ủng hộ này??'
         : 'Bạn chắc chắn gửi yêu cầu phê duyệt này??',
       () => {
@@ -45,7 +47,7 @@ const MenuButton = ({
   const onCancel = () => {
     showConfirm(
       R.strings().notification,
-      dataUser?.role === 3
+      dataUser?.role === 2
         ? 'Bạn chắc chắn duyệt ủng hộ này??'
         : 'Bạn chắc chắn gửi yêu cầu phê duyệt này??',
       () => {
@@ -73,7 +75,7 @@ const MenuButton = ({
         } else {
           showMessages(
             R.strings().notification,
-            dataUser?.role === 3
+            dataUser?.role === 2
               ? 'Đã phê duyệt thành công'
               : 'Đã gửi yêu cầu phê duyệt',
             () => {
@@ -89,22 +91,40 @@ const MenuButton = ({
       hideLoading()
     }
   }
+  const showButtonUpdateStatus = (status?: number) => {
+    switch (status) {
+      case 1:
+        return (
+          <ApproveButton
+            onPress={onAccept}
+            role={dataUser?.role}
+            status={status}
+          />
+        )
+      case 2:
+        return (
+          <ApproveButton
+            onPress={onAccept}
+            role={dataUser?.role}
+            status={status}
+          />
+        )
+      case 3:
+        return (
+          <UpdateSupportButton
+            onPress={() => {
+              NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_SUPPORT_MANAGE, {
+                id: id,
+              })
+            }}
+          />
+        )
+    }
+  }
   if (error) return <Error reload={() => {}} />
   return (
     <View style={styles.ctn}>
-      <TouchableOpacity onPress={onAccept} style={styles.accept}>
-        <View style={styles.v_content_accept}>
-          <FastImage
-            tintColor={'white'}
-            source={R.images.ic_accept_support}
-            style={styles.ic_accept}
-          />
-          <Text
-            style={{ ...fonts.semi_bold16, color: colors.white }}
-            children={dataUser?.role === 3 ? 'Phê duyệt' : 'Yêu cầu phê duyệt'}
-          />
-        </View>
-      </TouchableOpacity>
+      {showButtonUpdateStatus(status)}
       <TouchableOpacity
         onPress={() => {
           setShow(true)
@@ -119,56 +139,85 @@ const MenuButton = ({
           children={'...'}
         />
       </TouchableOpacity>
-
       <Modal
         onBackdropPress={() => {
           setShow(false)
         }}
         isVisible={show}
       >
-        <View style={styles.v_ctn_modal}>
-          <View style={styles.v_option}>
-            <RowBtn
-              onPress={() => {
-                setShow(false)
-                NavigationUtil.navigate(SCREEN_ROUTER_APP.EDIT_SUPPORT_MANAGE)
-              }}
-              source={R.images.ic_edit_support}
-              name={'Chỉnh sửa'}
-              line
-            />
-            <RowBtn
-              onPress={() => {}}
-              source={R.images.ic_request_edit_support}
-              name={'Yêu cầu chỉnh sửa'}
-              line
-            />
-            <RowBtn
-              onPress={() => {
-                setShow(false)
-                onCancel()
-              }}
-              source={R.images.ic_cancel_support}
-              name={'Từ chối'}
-            />
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              setShow(false)
-            }}
-            style={styles.btn_cancel}
-          >
-            <Text
-              style={{ ...fonts.semi_bold20, color: colors.textColor.gray7 }}
-              children={'Hủy'}
-            />
-          </TouchableOpacity>
-        </View>
+        <ModalOption
+          cancel={() => {
+            setShow(false)
+          }}
+          cancelSupport={() => {
+            setShow(false)
+            onCancel()
+          }}
+          onEdit={() => {
+            setShow(false)
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.EDIT_SUPPORT_MANAGE)
+          }}
+          role={dataUser?.role}
+        />
       </Modal>
     </View>
   )
 }
 
+const ApproveButton = ({
+  onPress,
+  role,
+  status,
+}: {
+  onPress: () => void
+  role: number
+  status: number
+}) => {
+  return (
+    <TouchableOpacity
+      disabled={status === 2 && role === 3}
+      onPress={onPress}
+      style={styles.accept}
+    >
+      <View style={styles.v_content_accept}>
+        <FastImage
+          tintColor={'white'}
+          source={R.images.ic_accept_support}
+          style={styles.ic_accept}
+        />
+        {status === 1 && (
+          <Text
+            style={{ ...fonts.semi_bold16, color: colors.white }}
+            children={role === 2 ? 'Phê duyệt' : 'Yêu cầu phê duyệt'}
+          />
+        )}
+        {status === 2 && (
+          <Text
+            style={{ ...fonts.semi_bold16, color: colors.white }}
+            children={role === 2 ? 'Phê duyệt' : 'Đã yêu cầu phê duyệt'}
+          />
+        )}
+      </View>
+    </TouchableOpacity>
+  )
+}
+const UpdateSupportButton = ({ onPress }: { onPress: () => void }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.accept}>
+      <View style={styles.v_content_accept}>
+        <FastImage
+          tintColor={'white'}
+          source={R.images.ic_accept_support}
+          style={styles.ic_accept}
+        />
+        <Text
+          style={{ ...fonts.semi_bold16, color: colors.white }}
+          children={'Cập nhật ủng hộ'}
+        />
+      </View>
+    </TouchableOpacity>
+  )
+}
 const RowBtn = ({
   onPress,
   name,
@@ -192,6 +241,49 @@ const RowBtn = ({
       <FstImage source={source} style={styles.ic_btn} />
       <Text style={styles.title_btn} children={name} />
     </TouchableOpacity>
+  )
+}
+const ModalOption = ({
+  cancel,
+  cancelSupport,
+  onEdit,
+  role,
+}: {
+  cancelSupport: () => void
+  cancel: () => void
+  onEdit: () => void
+  role: number
+}) => {
+  return (
+    <View style={styles.v_ctn_modal}>
+      <View style={styles.v_option}>
+        <RowBtn
+          onPress={onEdit}
+          source={R.images.ic_edit_support}
+          name={'Chỉnh sửa'}
+          line
+        />
+        {role === 2 && (
+          <RowBtn
+            onPress={() => {}}
+            source={R.images.ic_request_edit_support}
+            name={'Yêu cầu chỉnh sửa'}
+            line
+          />
+        )}
+        <RowBtn
+          onPress={cancelSupport}
+          source={R.images.ic_cancel_support}
+          name={'Từ chối'}
+        />
+      </View>
+      <TouchableOpacity onPress={cancel} style={styles.btn_cancel}>
+        <Text
+          style={{ ...fonts.semi_bold20, color: colors.textColor.gray7 }}
+          children={'Hủy'}
+        />
+      </TouchableOpacity>
+    </View>
   )
 }
 

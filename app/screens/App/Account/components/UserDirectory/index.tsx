@@ -2,14 +2,16 @@ import { Platform, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import { ROLE, SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import { getDataUserInfo, logout } from '../../slices/AccountSlice'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
+
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import Directory from './components/Directory'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import React from 'react'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import { useDispatch } from 'react-redux'
+import { requestLogout } from '../../api/AccountApi'
 import { useAppSelector } from '@app/store'
+import { useDispatch } from 'react-redux'
 
 const UserDirectory = () => {
   const { data } = useAppSelector(state => state.accountReducer)
@@ -17,6 +19,7 @@ const UserDirectory = () => {
 
   const handleLogout = async () => {
     await AsyncStorageService.putToken('')
+    await requestLogout()
     dispatch(logout())
     dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
   }

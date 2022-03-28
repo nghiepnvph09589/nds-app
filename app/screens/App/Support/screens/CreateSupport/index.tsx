@@ -88,8 +88,7 @@ const CreateSupportScreen = (props: Props) => {
     try {
       const res = await createSupport(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        // setDataFormSupport(res?.data)
-        showMessages('Cảm ơn', 'Vui lòng chờ phê duyệt', () => {
+        showMessages('Thông báo', 'Vui lòng chờ phê duyệt', () => {
           NavigationUtil.goBack()
         })
       }
