@@ -22,7 +22,6 @@ const Avatar = (props: AvatarProps) => {
         maxWidth: 800,
         maxHeight: 800,
       })
-      reactotron.logImportant!(result)
 
       if (
         result.didCancel ||
@@ -45,8 +44,8 @@ const Avatar = (props: AvatarProps) => {
         const res = await RegisterApi.uploadFile(formData, 1)
         reactotron.logImportant!(res)
         onPress(
-          !!res.data ? res.data.url.replace('http://', 'https://') : '',
-          !!res.data ? res.data.filename : ''
+          res.data ? res.data.url.replace('http://', 'https://') : '',
+          res.data ? res.data.filename : ''
         )
       } catch (error) {
         console.error(error)

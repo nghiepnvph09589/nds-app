@@ -1,6 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import R from '@app/assets/R'
 import ImageModal from '@app/components/ImageModal'
-import reactotron from '@app/config/ReactotronConfig'
 import { DonateRequestMedia } from '@app/screens/App/Home/model'
 import { dimensions, styleView } from '@app/theme'
 import React, { useRef } from 'react'
@@ -22,7 +22,6 @@ const PostImageArea = (props: Props) => {
   let { dataMedia } = useMediaData(
     data.map((item: { media_url: string }) => item.media_url)
   )
-  reactotron.log()
 
   const count = dataMedia?.length
 

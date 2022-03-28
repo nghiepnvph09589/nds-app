@@ -23,11 +23,10 @@ const InfoUser = (props: InfoUser) => {
         style={styles.text}
         placeholder="Nhập tiêu đề"
         placeholderTextColor={'#8898A7'}
-        multiline={true}
         value={title}
         onChangeText={setTitle}
         maxLength={255}
-        returnKeyType="done"
+        returnKeyType="next"
       />
     </View>
   )
@@ -42,6 +41,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 15,
     alignItems: 'center',
+    paddingBottom: 16,
   },
   image: {
     width: 36,
