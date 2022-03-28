@@ -3,21 +3,24 @@ import React from 'react'
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import { colors, fonts } from '@app/theme'
+import useTime from './hooks'
 
 interface InfoPost {
   name: string
   address: string
   avatar: string
+  time: Date
 }
 
 const InfoPost = (props: InfoPost) => {
-  const { name, address, avatar } = props
+  const { name, address, avatar, time } = props
+
   return (
     <View style={styles.v_row}>
       <FstImage
         resizeMode="cover"
         style={styles.avatar}
-        source={!!avatar ? { uri: avatar } : R.images.img_avatar3}
+        source={avatar ? { uri: avatar } : R.images.img_avatar3}
       />
       <View style={styles.v_info}>
         <Text style={styles.txt_name}>
@@ -26,7 +29,7 @@ const InfoPost = (props: InfoPost) => {
             Tại <Text style={styles.txt_address}>{address}</Text>
           </Text>{' '}
         </Text>
-        <Text style={styles.txt_time}>5 giờ trước</Text>
+        <Text style={styles.txt_time}>{useTime(time)}</Text>
       </View>
       <TouchableOpacity>
         <FstImage

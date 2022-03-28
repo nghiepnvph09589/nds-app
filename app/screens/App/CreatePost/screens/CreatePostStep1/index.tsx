@@ -35,6 +35,7 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
       typeMedia: 1,
     },
   ])
+  const scrollRef = useRef<KeyboardAwareScrollView>(null)
 
   const handleNextStep1 = async () => {
     if (!title) {
@@ -73,14 +74,14 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
     try {
       const res = await CreatePostApi.uploadMultiFile(formData)
       const newMediaArray = res.data.array_image_name
-        .map((item: { file_url: string; file_name: number }) => ({
-          media_url: item.file_url,
+        .map((item: { file_url: string; file_name: string }) => ({
+          media_url: item.file_name,
           type: MEDIA_TYPE.IMAGE,
         }))
         .concat(
           res.data.array_video_name.map(
-            (item: { file_url: string; file_name: number }) => ({
-              media_url: item.file_url,
+            (item: { file_url: string; file_name: string }) => ({
+              media_url: item.file_name,
               type: MEDIA_TYPE.VIDEO,
             })
           )
@@ -96,9 +97,14 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
   return (
     <>
       <KeyboardAwareScrollView
+        ref={scrollRef}
         keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
         style={styles.v_container}
+        enableAutomaticScroll
+        onKeyboardDidShow={(frames: Object) => {
+          console.log(frames)
+        }}
       >
         <View>
           <InfoUser
@@ -132,6 +138,5 @@ export default CreatPostStep1
 const styles = StyleSheet.create({
   v_container: {
     marginTop: 1,
-    flex: 1,
   },
 })

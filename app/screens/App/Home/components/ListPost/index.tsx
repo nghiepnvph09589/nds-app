@@ -32,6 +32,7 @@ const ListPost = (props: ListPostProps) => {
           }
           name={item?.name}
           address={'Yên Hòa, Cầu Giấy, Hà Nội'}
+          time={item?.create_at}
         />
         <ContentPost id={item.id} title={item?.title} content={item.content} />
         {item?.DonateRequestMedia.length > 0 && (

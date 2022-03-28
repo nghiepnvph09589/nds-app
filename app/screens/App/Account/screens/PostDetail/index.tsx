@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import R from '@app/assets/R'
 import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
@@ -11,7 +12,6 @@ import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Tab, Tabs } from 'native-base'
 import React, { useEffect, useState } from 'react'
 import {
-  Alert,
   Platform,
   ScrollView,
   StyleSheet,
@@ -21,10 +21,9 @@ import {
 } from 'react-native'
 import { getBottomSpace } from 'react-native-iphone-x-helper'
 import { useDispatch } from 'react-redux'
-import PostImageArea from '../ListPost/components/PostImageArea'
+import PostImageArea from '../ListPostUser/components/PostImageArea'
 import { getDataListManagePost } from '../ManageListPost/slice/ManageListPostSlice'
 import PostDetailApi from './api/PostDetailApi'
-import ApproveButton from './components/ApproveButton'
 import BankInfo from './components/BankInfo'
 import ButtonBack from './components/ButtonBack'
 import Story from './components/Story'

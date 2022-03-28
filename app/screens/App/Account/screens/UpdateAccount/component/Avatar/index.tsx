@@ -1,3 +1,5 @@
+import R from '@app/assets/R'
+import React from 'react'
 import {
   Dimensions,
   Platform,
@@ -6,11 +8,7 @@ import {
   View,
 } from 'react-native'
 import FastImage, { Source } from 'react-native-fast-image'
-
-import R from '@app/assets/R'
-import React from 'react'
 import { launchImageLibrary } from 'react-native-image-picker'
-import reactotron from '@app/config/ReactotronConfig'
 
 const { width } = Dimensions.get('window')
 
@@ -34,38 +32,8 @@ const Avatar = ({
         Platform.OS === 'android'
           ? firstAsset?.uri
           : firstAsset?.uri.replace('file://', '')
-      reactotron.logImportant!(uri)
+
       onPress(uri)
-      //     )
-      //   if (
-      //     result.didCancel ||
-      //     !result.assets?.length ||
-      //     typeof result.assets[0].uri === 'undefined'
-      //   ) {
-      //     return
-      //   }
-      //   showLoading()
-      //   const formData = new FormData()
-      //   formData.append('image', {
-      //     uri:
-      //       Platform.OS === 'ios'
-      //         ? result.assets[0].uri.replace('file://', '')
-      //         : result.assets[0].uri,
-      //     name: result.assets[0].fileName,
-      //     type: result.assets[0].type,
-      //   })
-      //   try {
-      //     const res = await RegisterApi.uploadFile(formData, 1)
-      //     reactotron.logImportant!(res)
-      //     onPress(
-      //       !!res.data ? res.data.url.replace('http://', 'https://') : '',
-      //       !!res.data ? res.data.filename : ''
-      //     )
-      //   } catch (error) {
-      //     console.error(error)
-      //   } finally {
-      //     hideLoading()
-      //   }
     } catch (error) {
       console.error(error)
     }

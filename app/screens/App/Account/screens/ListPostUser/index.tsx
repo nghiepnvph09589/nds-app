@@ -15,7 +15,7 @@ import Support from './components/Support'
 import { ListPostData } from './model'
 import { getDataListPost } from './slice/ListPostSlice'
 
-const ListPost = () => {
+const ListPostUser = () => {
   const dispatch = useDispatch()
   const { isLoading, isError, data, isLastPage, isLoadMore } = useAppSelector(
     state => state.listPostReducer
@@ -44,20 +44,23 @@ const ListPost = () => {
     }
   }
 
-  if (isLoading) {
-    showLoading()
-  } else {
-    hideLoading()
-  }
-
   const getData = () => {
     dispatch(getDataListPost(body))
   }
   if (isError) return <Error reload={getData} />
+
+  const onRefreshData = () => {
+    setBody({
+      ...body,
+      page: DEFAULT_PARAMS.PAGE,
+    })
+  }
+
   const renderItem = useCallback(({ item }: { item: ListPostData }) => {
     return (
       <View style={styles.v_item}>
         <InfoPost
+          time={item?.create_at}
           avatar={
             item?.profile_picture_url
               ? item?.profile_picture_url.replace('http://', 'https://')
@@ -74,13 +77,15 @@ const ListPost = () => {
       </View>
     )
   }, [])
-  const onRefreshData = () => {
-    setBody({
-      ...body,
-      page: DEFAULT_PARAMS.PAGE,
-    })
+
+  if (isLoading) {
+    showLoading()
+  } else {
+    hideLoading()
   }
+
   const keyExtractor = useCallback(item => `${item.id}`, [])
+
   return (
     <ScreenWrapper
       back
@@ -94,6 +99,7 @@ const ListPost = () => {
         contentContainerStyle={styles.v_list}
         onRefresh={onRefreshData}
         refreshing={false}
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           flex: 1,
           backgroundColor:
@@ -120,7 +126,7 @@ const ListPost = () => {
   )
 }
 
-export default ListPost
+export default ListPostUser
 
 const styles = StyleSheet.create({
   v_item: {

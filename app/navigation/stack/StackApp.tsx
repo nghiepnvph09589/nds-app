@@ -5,7 +5,6 @@ import CreatePost from '@app/screens/App/CreatePost'
 import CreateSupportScreen from '@app/screens/App/Support/screens/CreateSupport'
 import DetailSupportManage from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage'
 import EditSupportScreen from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage/screens/EditSupportManage'
-import ListPost from '@app/screens/App/Account/screens/ListPost'
 import ListSupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDetail'
 import ListSupportScreen from '@app/screens/App/Support/screens/ListSupported'
 import ManageListPost from '@app/screens/App/Account/screens/ManageListPost'
@@ -19,6 +18,7 @@ import SupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDet
 import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
 import { createStackNavigator } from '@react-navigation/stack'
+import ListPostUser from '@app/screens/App/Account/screens/ListPostUser'
 
 const {
   PRODUCT,
@@ -54,7 +54,7 @@ const mainScreen = {
   [CREATE_SUPPORT]: CreateSupportScreen,
   [MANAGE_LIST_SUPPORT]: ManageListSupportScreen,
   [LIST_SUPPORT_DETAIL]: ListSupportDetailScreen,
-  [LIST_POST]: ListPost,
+  [LIST_POST]: ListPostUser,
   [SUPPORT_DETAIL]: SupportDetailScreen,
   [DETAIL_POST]: PostDetail,
   [DETAIL_SUPPORT_MANAGE]: DetailSupportManage,

@@ -38,6 +38,7 @@ const ListManage = (props: ListManageProps) => {
 
   useEffect(() => {
     getData(DEFAULT_PARAMS.PAGE)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   const getData = (page: number) => {
@@ -49,6 +50,7 @@ const ListManage = (props: ListManageProps) => {
     }
     dispatch(getDataListManagePost(payload))
   }
+
   const onRefreshData = () => {
     getData(DEFAULT_PARAMS.PAGE)
   }
@@ -65,57 +67,60 @@ const ListManage = (props: ListManageProps) => {
     }
   }
 
-  const renderItem = useCallback(({ item }: { item: any }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, {
-            id: item.id,
-            type: status,
-            status: item.status,
-          })
-        }}
-        style={styles.v_container}
-      >
-        <View style={styles.v_info}>
-          <FstImage style={styles.icon} source={R.images.ic_user_info} />
-          <View style={styles.v_name_phone}>
-            <Text style={styles.txt_name}>{item?.name}</Text>
-            <Text style={styles.phone}>{item?.phone}</Text>
-          </View>
-          {status === STATUS_TYPE.WAIT_CONFIRM && item.status === 2 && (
-            <View style={styles.view}>
-              <Text style={styles.text}>Huyện đã duyệt</Text>
+  const renderItem = useCallback(
+    ({ item }: { item: any }) => {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, {
+              id: item.id,
+              type: status,
+              status: item.status,
+            })
+          }}
+          style={styles.v_container}
+        >
+          <View style={styles.v_info}>
+            <FstImage style={styles.icon} source={R.images.ic_user_info} />
+            <View style={styles.v_name_phone}>
+              <Text style={styles.txt_name}>{item?.name}</Text>
+              <Text style={styles.phone}>{item?.phone}</Text>
             </View>
-          )}
-          {status === STATUS_TYPE.COMPLETE && (
-            <View style={styles.view}>
-              <Text style={styles.text}>Tỉnh đã duyệt</Text>
-            </View>
-          )}
-        </View>
-        <View style={styles.line} />
-        <View style={styles.v_row}>
-          <FstImage
-            resizeMode="cover"
-            style={styles.image}
-            source={item?.DonateRequestMedia[0]?.media_url}
-          />
-          <View style={styles.v_post}>
-            <Text
-              numberOfLines={2}
-              style={{ ...fonts.semi_bold16, color: colors.text }}
-            >
-              {item?.title}
-            </Text>
-            <Text style={{ ...fonts.regular14, color: '#595959' }}>
-              13/02/2022
-            </Text>
+            {status === STATUS_TYPE.WAIT_CONFIRM && item.status === 2 && (
+              <View style={styles.view}>
+                <Text style={styles.text}>Huyện đã duyệt</Text>
+              </View>
+            )}
+            {status === STATUS_TYPE.COMPLETE && (
+              <View style={styles.view}>
+                <Text style={styles.text}>Tỉnh đã duyệt</Text>
+              </View>
+            )}
           </View>
-        </View>
-      </TouchableOpacity>
-    )
-  }, [])
+          <View style={styles.line} />
+          <View style={styles.v_row}>
+            <FstImage
+              resizeMode="cover"
+              style={styles.image}
+              source={item?.DonateRequestMedia[0]?.media_url}
+            />
+            <View style={styles.v_post}>
+              <Text
+                numberOfLines={2}
+                style={{ ...fonts.semi_bold16, color: colors.text }}
+              >
+                {item?.title}
+              </Text>
+              <Text style={{ ...fonts.regular14, color: '#595959' }}>
+                13/02/2022
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )
+    },
+    [status]
+  )
 
   const keyExtractor = useCallback(item => `${item.id}`, [])
 
@@ -137,6 +142,7 @@ const ListManage = (props: ListManageProps) => {
     <FlatList
       onRefresh={onRefreshData}
       refreshing={false}
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{
         flex: 1,
         backgroundColor: data?.length === 0 ? 'white' : colors.backgroundColor,
