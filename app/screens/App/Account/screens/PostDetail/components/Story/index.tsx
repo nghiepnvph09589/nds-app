@@ -1,14 +1,12 @@
+import reactotron from '@app/config/ReactotronConfig'
+import React from 'react'
 import { DonateCategoryDetails, PostDetailData } from '../../model'
-
 import Content from './components/Content'
 import ListSupport from './components/ListSupport'
 import Need from './components/Need'
 import Position from './components/Position'
-import React from 'react'
-import { StyleSheet } from 'react-native'
 import TargetGroup from './components/TargetGroup'
 import UserInfo from './components/UserInfo'
-import reactotron from '@app/config/ReactotronConfig'
 
 interface StoryProps {
   data: PostDetailData
@@ -19,8 +17,9 @@ const Story = (props: StoryProps) => {
   reactotron.log!(data.DonateCategoryDetails)
   return (
     <>
+      {data.status === 3 && <ListSupport count={0} id={data?.id} />}
+
       <Content title={data.title} content={data.content} />
-      <ListSupport id={data?.id} />
       <UserInfo
         name={data.name}
         gender={data.gender}
@@ -44,5 +43,3 @@ const Story = (props: StoryProps) => {
 }
 
 export default Story
-
-const styles = StyleSheet.create({})

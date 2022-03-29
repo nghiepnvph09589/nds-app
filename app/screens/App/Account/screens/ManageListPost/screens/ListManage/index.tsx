@@ -102,7 +102,7 @@ const ListManage = (props: ListManageProps) => {
             <FstImage
               resizeMode="cover"
               style={styles.image}
-              source={item?.DonateRequestMedia[0]?.media_url}
+              source={{ uri: item?.DonateRequestMedia[0]?.media_url }}
             />
             <View style={styles.v_post}>
               <Text

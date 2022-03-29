@@ -3,7 +3,7 @@ import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, fonts } from '@app/theme'
 import React, { useCallback, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 
 const NUM_OF_LINES = 4
 
@@ -58,7 +58,7 @@ const ContentPost = (props: ContentPostProps) => {
 export default ContentPost
 
 const styles = StyleSheet.create({
-  v_post: { marginTop: 8, paddingHorizontal: 15 },
+  v_post: { marginVertical: 8, paddingHorizontal: 15 },
   text: {
     ...fonts.regular16,
     color: colors.text,

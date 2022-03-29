@@ -7,7 +7,7 @@ import R from '@app/assets/R'
 import React from 'react'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 
-const ListSupport = ({ id }: { id: number }) => {
+const ListSupport = ({ id, count }: { id: number; count: number }) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -17,21 +17,11 @@ const ListSupport = ({ id }: { id: number }) => {
       }}
       style={styles.v_container}
     >
-      <View style={styles.v_row1}>
-        <FstImage style={styles.ic_heart} source={R.images.ic_heart2} />
-        <View style={styles.v_column}>
-          <Text style={styles.txt_list}>Danh sách ủng hộ</Text>
-          <Text style={styles.text}>Lượt ủng hộ 3</Text>
-        </View>
-        <FstImage style={styles.ic_right} source={R.images.ic_arrow_right} />
-      </View>
-      {/* <View style={styles.line} />
-      <View style={styles.v_row}>
-        <Text style={styles.text}>Số tiền</Text>
-        <Text style={{ ...fonts.semi_bold16, color: colors.primary }}>
-          3.000.000
-        </Text>
-      </View> */}
+      <FstImage style={styles.ic_heart} source={R.images.ic_heart2} />
+
+      <Text style={styles.text}>{`Lượt ủng hộ ${count}`}</Text>
+
+      <FstImage style={styles.ic_right} source={R.images.ic_arrow_right} />
     </TouchableOpacity>
   )
 }
@@ -40,12 +30,10 @@ export default ListSupport
 
 const styles = StyleSheet.create({
   v_container: {
-    marginHorizontal: 15,
-    marginTop: 16,
-    borderRadius: 16,
-    borderColor: colors.border,
-    borderWidth: 1,
-    paddingVertical: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    paddingHorizontal: 15,
   },
   line: {
     backgroundColor: colors.border,
@@ -80,6 +68,7 @@ const styles = StyleSheet.create({
     ...fonts.regular16,
     color: colors.text,
     flex: 1,
+    marginLeft: 12,
   },
   ic_right: {
     width: 24,
