@@ -2,6 +2,7 @@ import { API_STATUS, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import {
   ActivityIndicator,
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -85,9 +86,13 @@ const ListSupportComponent = ({ status }: { status: number }) => {
       ) : (
         <FlatList
           style={styles.list}
+          contentContainerStyle={{}}
           refreshing={false}
-          onRefresh={onRefreshData}
-          onEndReachedThreshold={0.05}
+          // onRefresh={onRefreshData}
+          refreshControl={
+            <RefreshControl refreshing={false} onRefresh={onRefreshData} />
+          }
+          onEndReachedThreshold={0.1}
           onMomentumScrollBegin={onMomentumScrollBegin}
           onEndReached={handleLoadMore}
           data={data}
@@ -165,6 +170,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+    backgroundColor: colors.white,
     // width: '100%',
   },
   v_load_more: {
@@ -174,7 +180,8 @@ const styles = StyleSheet.create({
     padding: 15,
     ...styleView.rowItem,
     backgroundColor: colors.white,
-    marginTop: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
   },
   img_item: {
     marginRight: 15,

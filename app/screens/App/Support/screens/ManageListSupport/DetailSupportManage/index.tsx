@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
-import { colors, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
 import { API_STATUS } from '@app/constant/Constant'
@@ -10,6 +9,7 @@ import Error from '@app/components/Error/Error'
 import MenuButton from './components/MenuButton'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import StatusSupport from './components/StatusSupport'
+import { colors } from '@app/theme'
 import { getDetailSupportManage } from './api'
 
 interface Props {
@@ -52,41 +52,26 @@ const DetailSupportScreen = (props: Props) => {
       backgroundColor={colors.white}
       // eslint-disable-next-line react-native/no-inline-styles
       style={{ flex: 1 }}
-      // scroll
     >
       <ScrollView
-        style={{ paddingBottom: 50 }}
+        style={styles.scroll}
         refreshControl={
           <RefreshControl refreshing={false} onRefresh={getData} />
         }
       >
         <StatusSupport status={data?.status} />
         <View style={styles.ctn}>
-          {/* <TextInput
-          onChangeText={text => setTitle(text)}
-          value={title}
-          multiline
-          maxLength={200}
-          placeholder={'Nhâp tiêu để...'}
-          style={styles.input}
-          placeholderTextColor={'#8898A7'}
-        />
-        <TextInput
-          onChangeText={text => setContent(text)}
-          value={content}
-          multiline
-          maxLength={200}
-          placeholder={'Nhâp nội dung...'}
-          style={styles.input_content}
-          placeholderTextColor={'#8898A7'}
-        /> */}
           <CharityHouse data={data} />
           <BtnDetailPost data={data} />
         </View>
       </ScrollView>
       <MenuButton
         id={data?.id}
-        onAction={props?.route?.params?.onRefreshData}
+        onAction={() => {
+          props?.route?.params?.onRefreshData()
+          getData()
+        }}
+        status={data?.status}
       />
     </ScreenWrapper>
   )
@@ -94,29 +79,11 @@ const DetailSupportScreen = (props: Props) => {
 export default DetailSupportScreen
 
 const styles = StyleSheet.create({
-  input: {
-    paddingTop: 12,
-    marginTop: 17,
-    borderWidth: 1,
-    padding: 12,
-    ...fonts.regular16,
-    color: colors.textColor.gray9,
-    borderRadius: 16,
-    borderColor: colors.border,
-  },
   ctn: {
     backgroundColor: colors.white,
     paddingHorizontal: 15,
   },
-  input_content: {
-    paddingTop: 12,
-    marginTop: 17,
-    borderWidth: 1,
-    padding: 12,
-    ...fonts.regular16,
-    color: colors.textColor.gray9,
-    borderRadius: 16,
-    borderColor: colors.border,
-    minHeight: 100,
+  scroll: {
+    paddingBottom: 50,
   },
 })

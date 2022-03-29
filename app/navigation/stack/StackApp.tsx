@@ -17,6 +17,7 @@ import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import SupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDetail/SupportDetail'
 import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
+import UpdateSupportManage from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage/screens/UpdateSupportManage'
 import { createStackNavigator } from '@react-navigation/stack'
 import ListPostUser from '@app/screens/App/Account/screens/ListPostUser'
 
@@ -39,6 +40,7 @@ const {
   DETAIL_SUPPORT_MANAGE,
   CREATE_POST,
   EDIT_SUPPORT_MANAGE,
+  UPDATE_SUPPORT_MANAGE,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -61,6 +63,7 @@ const mainScreen = {
   [CREATE_POST]: CreatePost,
   [MANAGE_LIST_POST]: ManageListPost,
   [EDIT_SUPPORT_MANAGE]: EditSupportScreen,
+  [UPDATE_SUPPORT_MANAGE]: UpdateSupportManage,
 }
 
 export const StackAppCustomerScreen = () => {
