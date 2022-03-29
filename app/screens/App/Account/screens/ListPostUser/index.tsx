@@ -2,16 +2,16 @@ import Empty from '@app/components/Empty/Empty'
 import Error from '@app/components/Error/Error'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { DEFAULT_PARAMS } from '@app/constant/Constant'
+import ContentPost from '@app/screens/App/Home/components/ListPost/components/ContentPost'
+import InfoPost from '@app/screens/App/Home/components/ListPost/components/InfoPost'
+import PostImageArea from '@app/screens/App/Home/components/ListPost/components/PostImageArea'
+import Support from '@app/screens/App/Home/components/ListPost/components/Support'
 import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import ContentPost from './components/ContentPost'
-import InfoPost from './components/InfoPost'
-import PostImageArea from './components/PostImageArea'
-import Support from './components/Support'
 import { ListPostData } from './model'
 import { getDataListPost } from './slice/ListPostSlice'
 
@@ -67,13 +67,13 @@ const ListPostUser = () => {
               : ''
           }
           name={item?.name}
-          address={'Yên Hòa, Cầu Giấy, Hà Nội'}
+          address={`${item?.DFWard?.name}, ${item?.DFDistrict?.name}, ${item?.DFProvince?.name}`}
         />
         <ContentPost title={item?.title} content={item.content} id={item.id} />
         {item?.DonateRequestMedia.length > 0 && (
           <PostImageArea data={item?.DonateRequestMedia} />
         )}
-        <Support />
+        <Support item={item} />
       </View>
     )
   }, [])

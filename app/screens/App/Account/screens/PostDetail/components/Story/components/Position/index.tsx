@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useRef, useState } from 'react'
-import MapboxGL from '@react-native-mapbox-gl/maps'
-import { MAP_BOX_STYLE } from '@app/config'
-import { useAppSelector } from '@app/store'
-import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
+import FstImage from '@app/components/FstImage'
+import { MAP_BOX_STYLE } from '@app/config'
+import MapboxGL from '@react-native-mapbox-gl/maps'
+import React, { useCallback, useRef, useState } from 'react'
+import { StyleSheet, View } from 'react-native'
 
 interface PositionProps {
   long: number
@@ -16,7 +15,7 @@ const Position = (props: PositionProps) => {
   const cameraRef = useRef(undefined)
   const { lat, long } = props
   const [annotationPoint, setAnnotationPoint] = useState(
-    long !== 0 ? [long, lat] : [105.784883, 21.028073]
+    long ? [long, lat] : undefined
   )
 
   const defaultCamera = {

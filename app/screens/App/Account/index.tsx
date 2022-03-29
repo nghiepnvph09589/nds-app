@@ -17,7 +17,11 @@ const Account = () => {
     <View style={styles.v_container}>
       <UserInfo
         name={data?.name}
-        avatar={data?.profile_picture_url.replace('http://', 'https://')}
+        avatar={
+          data?.profile_picture_url
+            ? data?.profile_picture_url.replace('http://', 'https://')
+            : ''
+        }
       />
       <UserDirectory />
     </View>

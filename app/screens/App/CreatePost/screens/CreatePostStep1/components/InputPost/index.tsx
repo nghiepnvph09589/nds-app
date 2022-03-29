@@ -1,12 +1,6 @@
 import { dimensions, fonts } from '@app/theme'
 import React from 'react'
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  TouchableWithoutFeedbackBase,
-  Text,
-} from 'react-native'
+import { StyleSheet, TextInput } from 'react-native'
 
 interface InputPostProps {
   content: string

@@ -1,9 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import R from '@app/assets/R'
 import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
 import { DEFAULT_PARAMS, ROLE, STATUS_TYPE } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
+import PostImageArea from '@app/screens/App/Home/components/ListPost/components/PostImageArea'
 import { getDataHome } from '@app/screens/App/Home/slice/HomeSlice'
 import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
@@ -19,9 +19,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { getBottomSpace } from 'react-native-iphone-x-helper'
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 import { useDispatch } from 'react-redux'
-import PostImageArea from '../ListPostUser/components/PostImageArea'
 import { getDataListManagePost } from '../ManageListPost/slice/ManageListPostSlice'
 import PostDetailApi from './api/PostDetailApi'
 import BankInfo from './components/BankInfo'
@@ -65,6 +64,7 @@ const PostDetail = (props: PostDetailProps) => {
   })
   useEffect(() => {
     getDataPostDetail()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getDataPostDetail = async () => {
@@ -122,15 +122,15 @@ const PostDetail = (props: PostDetailProps) => {
           tabBarTextStyle={styles.txt_tab}
         >
           <Tab
-            activeTabStyle={{ backgroundColor: 'white' }}
-            tabStyle={{ backgroundColor: 'white' }}
+            activeTabStyle={styles.background}
+            tabStyle={styles.background}
             heading={'Câu chuyện'}
           >
             <Story data={dataPostDetail} />
           </Tab>
           <Tab
-            activeTabStyle={{ backgroundColor: 'white' }}
-            tabStyle={{ backgroundColor: 'white' }}
+            activeTabStyle={styles.background}
+            tabStyle={styles.background}
             heading={'Thông tin ủng hộ'}
           >
             <BankInfo data={dataPostDetail} />
@@ -139,15 +139,7 @@ const PostDetail = (props: PostDetailProps) => {
       </ScrollView>
       <ButtonBack />
       {type && type !== STATUS_TYPE.COMPLETE ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            position: 'absolute',
-            bottom: Platform.OS !== 'ios' ? 20 : getBottomSpace(),
-            paddingHorizontal: 15,
-          }}
-        >
+        <View style={styles.v_button3}>
           <TouchableOpacity onPress={handleApprove} style={styles.v_button2}>
             <FstImage style={styles.icon} source={R.images.ic_approve} />
             <Text style={styles.text}>
@@ -157,10 +149,7 @@ const PostDetail = (props: PostDetailProps) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <FstImage
-              style={{ width: 77, height: 45, marginLeft: 12 }}
-              source={R.images.ic_option}
-            />
+            <FstImage style={styles.img_option} source={R.images.ic_option} />
           </TouchableOpacity>
           {/* <FstImage style={styles.icon} source={R.images.ic_heart} />
          <Text style={styles.text}>{R.strings().support}</Text> */}
@@ -220,6 +209,21 @@ const styles = StyleSheet.create({
   },
   txt_tab: {
     ...fonts.semi_bold15,
+  },
+  background: {
+    backgroundColor: 'white',
+  },
+  v_button3: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: Platform.OS !== 'ios' ? 20 : isIphoneX() ? getBottomSpace() : 20,
+    paddingHorizontal: 15,
+  },
+  img_option: {
+    width: 77,
+    height: 45,
+    marginLeft: 12,
   },
 })
 

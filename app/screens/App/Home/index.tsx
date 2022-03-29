@@ -92,7 +92,11 @@ const Home = () => {
     <View style={styles.v_container}>
       <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
       <Header
-        avatar={userInfo?.profile_picture_url.replace('http://', 'https://')}
+        avatar={
+          userInfo?.profile_picture_url
+            ? userInfo?.profile_picture_url.replace('http://', 'https://')
+            : ''
+        }
         name={userInfo?.name}
       />
       <ListPost data={data.listPost} />

@@ -17,7 +17,7 @@ const Support = ({ item }: { item: ListPostData }) => {
         source={R.images.ic_love}
       />
       <Text style={styles.txt_support}>{R.strings().number_support}</Text>
-      <Text style={styles.txt_number}>3</Text>
+      <Text style={styles.txt_number}>{item?.Donates?.length}</Text>
       <TouchableOpacity
         onPress={() => {
           NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_SUPPORT, {

@@ -31,7 +31,7 @@ const ListPost = (props: ListPostProps) => {
               : ''
           }
           name={item?.name}
-          address={'Yên Hòa, Cầu Giấy, Hà Nội'}
+          address={`${item?.DFWard?.name}, ${item?.DFDistrict?.name}, ${item?.DFProvince?.name}`}
           time={item?.create_at}
         />
         <ContentPost id={item.id} title={item?.title} content={item.content} />

@@ -108,10 +108,11 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
       >
         <View>
           <InfoUser
-            avatar={userInfo?.profile_picture_url.replace(
-              'http://',
-              'https://'
-            )}
+            avatar={
+              userInfo?.profile_picture_url
+                ? userInfo?.profile_picture_url.replace('http://', 'https://')
+                : ''
+            }
             title={title}
             setTitle={setTitle}
           />

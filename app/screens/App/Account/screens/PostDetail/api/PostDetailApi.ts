@@ -1,7 +1,7 @@
 import { ApiClient } from '@app/service/Network/ApiService'
 export default {
   getPostDetail: (payload: { id: number }) =>
-    ApiClient.get(`/api/v1/app/donate/detail/${payload.id}`, {
+    ApiClient.get(`/api/v1/app/post/request/${payload.id}`, {
       params: payload,
     }),
   approvePost: (payload: { id: number }) =>
