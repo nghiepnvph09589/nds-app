@@ -10,18 +10,25 @@ import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 import { Formik } from 'formik'
 import FstImage from '@app/components/FstImage'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import SelectForm from './component/SelectForm'
+import { editSupportManage } from './api'
 import { getListFormSupport } from '../../../../CreateSupport/api'
 import { itemFormSupport } from './model'
 
 interface Props {
-  route: { params: { id: number } }
+  route: {
+    params: { id: number; data: dataSupportDetail; onAction: () => void }
+  }
 }
 const EditSupportScreen = (props: Props) => {
-  const [form, setForm] = useState<number[]>([])
+  const formSupport: number[] = props?.route?.params?.data.form_support.map(
+    item => item?.id
+  )
+  const [form, setForm] = useState<number[]>(formSupport || [])
   const [dataFormSupport, setDataFormSupport] = useState<itemFormSupport[]>([])
   const Schema = Yup.object().shape({
     name: Yup.string()
@@ -61,7 +68,7 @@ const EditSupportScreen = (props: Props) => {
     email: string
     noteMessages: string
   }) => {
-    showConfirm(R.strings().notification, 'Xác nhận ủng hộ', () => {
+    showConfirm(R.strings().notification, 'Xác nhận sửa ủng hộ?', () => {
       postSupport(value)
     })
   }
@@ -76,22 +83,25 @@ const EditSupportScreen = (props: Props) => {
       return
     }
     const payload = {
-      donate_request_id: props?.route?.params?.id,
-      phone: value.phone,
-      name: value.name,
-      form_support: form,
-      email: value.email,
-      note: value?.noteMessages,
+      id: props?.route?.params?.id,
+      params: {
+        phone: value.phone,
+        name: value.name,
+        form_support: form,
+        email: value.email,
+        note: value?.noteMessages,
+      },
     }
     showLoading()
     try {
-      // const res = await createSupport(payload)
-      // if (res?.code === API_STATUS.SUCCESS) {
-      //   // setDataFormSupport(res?.data)
-      //   showMessages('Cảm ơn', 'Vui lòng chờ phê duyệt', () => {
-      //     NavigationUtil.goBack()
-      //   })
-      // }
+      const res = await editSupportManage(payload)
+      if (res?.code === API_STATUS.SUCCESS) {
+        // setDataFormSupport(res?.data)
+        showMessages('Thông báo', 'Sửa thành công', () => {
+          props?.route?.params?.onAction()
+          NavigationUtil.goBack()
+        })
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -112,7 +122,12 @@ const EditSupportScreen = (props: Props) => {
       titleHeader={R.strings().support}
     >
       <Formik
-        initialValues={{ name: '', phone: '', email: '', noteMessages: '' }}
+        initialValues={{
+          name: props?.route?.params?.data?.name,
+          phone: props?.route?.params?.data?.phone,
+          email: props?.route?.params?.data?.email,
+          noteMessages: props?.route?.params?.data?.note,
+        }}
         onSubmit={onSubmit}
         validationSchema={Schema}
       >

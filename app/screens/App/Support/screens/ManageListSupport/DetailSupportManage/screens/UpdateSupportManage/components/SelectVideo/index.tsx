@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 
+import FastImage from 'react-native-fast-image'
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import React from 'react'
@@ -29,6 +30,11 @@ const SelectVideo = ({
             <TouchableOpacity onPress={onDelete} style={styles.btn_delete_img}>
               <FstImage style={styles.ic_delete} source={R.images.ic_exit} />
             </TouchableOpacity>
+            <FastImage
+              tintColor={colors.focus}
+              source={R.images.ic_play}
+              style={styles?.ic_play}
+            />
           </View>
         )}
         {video === '' && (
@@ -106,5 +112,12 @@ const styles = StyleSheet.create({
     ...fonts.regular15,
     color: colors.textColor.gray8,
     marginTop: 5,
+  },
+  ic_play: {
+    width: 25,
+    height: 25,
+    position: 'absolute',
+    left: (dimensions.width - 75) / 12,
+    top: (dimensions.width - 75) / 12,
   },
 })

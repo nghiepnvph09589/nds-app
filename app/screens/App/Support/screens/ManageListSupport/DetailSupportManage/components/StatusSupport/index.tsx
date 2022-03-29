@@ -6,16 +6,34 @@ import R from '@app/assets/R'
 import React from 'react'
 import { STATUS_SUPPORT } from '@app/constant/Constant'
 
-const StatusSupport = ({ status }: { status?: number }) => {
+const StatusSupport = ({
+  status,
+  isUpdate,
+}: {
+  status?: number
+  isUpdate?: number
+}) => {
   const renderStatus = (status?: number) => {
     if (status === STATUS_SUPPORT.CANCEL) {
       return 'Từ chối'
     } else if (status === STATUS_SUPPORT.EDIT) {
-      return 'Chờ phê duyệt'
+      if (isUpdate === 1) {
+        return 'Yêu cầu chỉnh sửa'
+      } else {
+        return 'Chờ phê duyệt'
+      }
     } else if (status === STATUS_SUPPORT.WAITING) {
-      return 'Chờ phê duyệt'
+      if (isUpdate === 1) {
+        return 'Yêu cầu chỉnh sửa'
+      } else {
+        return 'Chờ phê duyệt'
+      }
     } else if (status === STATUS_SUPPORT.APPROVE) {
-      return 'Đã duyệt'
+      if (isUpdate === 1) {
+        return 'Yêu cầu chỉnh sửa'
+      } else {
+        return 'Đã duyệt'
+      }
     } else if (status === STATUS_SUPPORT.SUCCESS) {
       return 'Hoàn thành'
     }

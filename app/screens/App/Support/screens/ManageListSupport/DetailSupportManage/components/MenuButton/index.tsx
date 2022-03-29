@@ -1,5 +1,9 @@
-import { API_STATUS, SCREEN_ROUTER_APP } from '@app/constant/Constant'
-import FastImage, { Source } from 'react-native-fast-image'
+import {
+  API_STATUS,
+  ROLE,
+  SCREEN_ROUTER_APP,
+  STATUS_SUPPORT_DETAIL,
+} from '@app/constant/Constant'
 import {
   Platform,
   StyleSheet,
@@ -8,16 +12,19 @@ import {
   View,
 } from 'react-native'
 import React, { useState } from 'react'
-import { colors, dimensions, fonts, styleView } from '@app/theme'
+import { colors, fonts, styleView } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 
+import ApproveButton from './components/Approvebutton'
 import { ChangeStatusSupport } from '../../api'
-import Error from '@app/components/Error/Error'
-import FstImage from '@app/components/FstImage'
 import Modal from 'react-native-modal'
+import ModalOption from './components/ModalOption'
+import ModalReasonCancel from './components/ModalReasonCancel'
+import ModalReasonEdit from './components/ModalReasonEdit'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
+import UpdateSupportButton from './components/UpdateSupportButton'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import { useAppSelector } from '@app/store'
 
@@ -25,18 +32,24 @@ const MenuButton = ({
   id,
   onAction,
   status,
+  data,
+  isUpdate,
 }: {
   id?: number
   onAction: () => void
   status?: number
+  data?: dataSupportDetail
+  isUpdate?: number
 }) => {
   const dataUser = useAppSelector(state => state.accountReducer.data)
-  const [show, setShow] = useState(false)
-  const [error, setError] = useState<boolean>(false)
+  const [show, setShow] = useState<boolean>(false)
+  // const [error, setError] = useState<boolean>(false)
+  const [showCancel, setShowCancel] = useState<boolean>(false)
+  const [showRequest, setShowRequest] = useState<boolean>(false)
   const onAccept = () => {
     showConfirm(
       R.strings().notification,
-      dataUser?.role === 2
+      dataUser?.role === ROLE.OFFICER_PROVINCE
         ? 'Bạn chắc chắn duyệt ủng hộ này??'
         : 'Bạn chắc chắn gửi yêu cầu phê duyệt này??',
       () => {
@@ -44,22 +57,19 @@ const MenuButton = ({
       }
     )
   }
-  const onCancel = () => {
-    showConfirm(
-      R.strings().notification,
-      dataUser?.role === 2
-        ? 'Bạn chắc chắn duyệt ủng hộ này??'
-        : 'Bạn chắc chắn gửi yêu cầu phê duyệt này??',
-      () => {
-        changStatus(0, 'Không phê duyệt')
-      }
-    )
-  }
+  // eslint-disable-next-line no-shadow
   const changStatus = async (status: number, reason: string) => {
-    const payload = {
+    const payload: {
+      id?: number
+      params: {
+        status?: number
+        reason: string
+      }
+    } = {
       id: id,
       params: {
-        status: status === 1 ? undefined : 0,
+        status:
+          status === STATUS_SUPPORT_DETAIL.DISTRICT_ACCEPT ? undefined : 0,
         reason: reason,
       },
     }
@@ -67,33 +77,28 @@ const MenuButton = ({
     try {
       const res = await ChangeStatusSupport(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        setError(false)
-        if (status === 0) {
-          showMessages(R.strings().notification, 'Đã từ chối ủng hộ', () => {
+        // setError(false)
+        showMessages(
+          R.strings().notification,
+          dataUser?.role === ROLE.OFFICER_PROVINCE
+            ? 'Đã phê duyệt thành công'
+            : 'Đã gửi yêu cầu phê duyệt',
+          () => {
             onAction()
-          })
-        } else {
-          showMessages(
-            R.strings().notification,
-            dataUser?.role === 2
-              ? 'Đã phê duyệt thành công'
-              : 'Đã gửi yêu cầu phê duyệt',
-            () => {
-              onAction()
-            }
-          )
-        }
+          }
+        )
       }
     } catch (error) {
-      setError(true)
+      // setError(true)
       console.log(error)
     } finally {
       hideLoading()
     }
   }
+  // eslint-disable-next-line no-shadow
   const showButtonUpdateStatus = (status?: number) => {
     switch (status) {
-      case 1:
+      case STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT:
         return (
           <ApproveButton
             onPress={onAccept}
@@ -101,7 +106,7 @@ const MenuButton = ({
             status={status}
           />
         )
-      case 2:
+      case STATUS_SUPPORT_DETAIL.DISTRICT_ACCEPT:
         return (
           <ApproveButton
             onPress={onAccept}
@@ -109,19 +114,20 @@ const MenuButton = ({
             status={status}
           />
         )
-      case 3:
+      case STATUS_SUPPORT_DETAIL.PROVINCE_ACCEPT:
         return (
           <UpdateSupportButton
             onPress={() => {
               NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_SUPPORT_MANAGE, {
                 id: id,
+                onAction,
               })
             }}
           />
         )
     }
   }
-  if (error) return <Error reload={() => {}} />
+  // if (error) return <Error reload={() => {}} />
   return (
     <View style={styles.ctn}>
       {showButtonUpdateStatus(status)}
@@ -150,139 +156,42 @@ const MenuButton = ({
             setShow(false)
           }}
           cancelSupport={() => {
+            setTimeout(() => {
+              setShowCancel(true)
+            }, 500)
             setShow(false)
-            onCancel()
           }}
           onEdit={() => {
             setShow(false)
-            NavigationUtil.navigate(SCREEN_ROUTER_APP.EDIT_SUPPORT_MANAGE)
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.EDIT_SUPPORT_MANAGE, {
+              id: id,
+              data: data,
+              onAction,
+            })
           }}
           role={dataUser?.role}
+          requestEdit={() => {
+            setTimeout(() => {
+              setShowRequest(true)
+            }, 500)
+            setShow(false)
+          }}
+          status={status}
+          isUpdate={isUpdate}
         />
       </Modal>
-    </View>
-  )
-}
-
-const ApproveButton = ({
-  onPress,
-  role,
-  status,
-}: {
-  onPress: () => void
-  role: number
-  status: number
-}) => {
-  return (
-    <TouchableOpacity
-      disabled={status === 2 && role === 3}
-      onPress={onPress}
-      style={styles.accept}
-    >
-      <View style={styles.v_content_accept}>
-        <FastImage
-          tintColor={'white'}
-          source={R.images.ic_accept_support}
-          style={styles.ic_accept}
-        />
-        {status === 1 && (
-          <Text
-            style={{ ...fonts.semi_bold16, color: colors.white }}
-            children={role === 2 ? 'Phê duyệt' : 'Yêu cầu phê duyệt'}
-          />
-        )}
-        {status === 2 && (
-          <Text
-            style={{ ...fonts.semi_bold16, color: colors.white }}
-            children={role === 2 ? 'Phê duyệt' : 'Đã yêu cầu phê duyệt'}
-          />
-        )}
-      </View>
-    </TouchableOpacity>
-  )
-}
-const UpdateSupportButton = ({ onPress }: { onPress: () => void }) => {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.accept}>
-      <View style={styles.v_content_accept}>
-        <FastImage
-          tintColor={'white'}
-          source={R.images.ic_accept_support}
-          style={styles.ic_accept}
-        />
-        <Text
-          style={{ ...fonts.semi_bold16, color: colors.white }}
-          children={'Cập nhật ủng hộ'}
-        />
-      </View>
-    </TouchableOpacity>
-  )
-}
-const RowBtn = ({
-  onPress,
-  name,
-  source,
-  line,
-}: {
-  onPress: () => void
-  name: string
-  source: Source
-  line?: boolean
-}) => {
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[
-        styles.ctn_row_btn,
-        // eslint-disable-next-line react-native/no-inline-styles
-        line && { borderBottomWidth: 1, borderColor: colors.border },
-      ]}
-    >
-      <FstImage source={source} style={styles.ic_btn} />
-      <Text style={styles.title_btn} children={name} />
-    </TouchableOpacity>
-  )
-}
-const ModalOption = ({
-  cancel,
-  cancelSupport,
-  onEdit,
-  role,
-}: {
-  cancelSupport: () => void
-  cancel: () => void
-  onEdit: () => void
-  role: number
-}) => {
-  return (
-    <View style={styles.v_ctn_modal}>
-      <View style={styles.v_option}>
-        <RowBtn
-          onPress={onEdit}
-          source={R.images.ic_edit_support}
-          name={'Chỉnh sửa'}
-          line
-        />
-        {role === 2 && (
-          <RowBtn
-            onPress={() => {}}
-            source={R.images.ic_request_edit_support}
-            name={'Yêu cầu chỉnh sửa'}
-            line
-          />
-        )}
-        <RowBtn
-          onPress={cancelSupport}
-          source={R.images.ic_cancel_support}
-          name={'Từ chối'}
-        />
-      </View>
-      <TouchableOpacity onPress={cancel} style={styles.btn_cancel}>
-        <Text
-          style={{ ...fonts.semi_bold20, color: colors.textColor.gray7 }}
-          children={'Hủy'}
-        />
-      </TouchableOpacity>
+      <ModalReasonCancel
+        showCancel={showCancel}
+        setShowCancel={setShowCancel}
+        submit={onAction}
+        id={id}
+      />
+      <ModalReasonEdit
+        showRequest={showRequest}
+        setShowRequest={setShowRequest}
+        submit={onAction}
+        id={id}
+      />
     </View>
   )
 }
@@ -295,24 +204,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 0 : 20) : 20,
   },
-  accept: {
-    ...styleView.rowItem,
-    flex: 3,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    marginRight: 15,
-    borderRadius: 16,
-    paddingVertical: 14,
-  },
-  v_content_accept: {
-    ...styleView.rowItem,
-    alignItems: 'center',
-  },
-  ic_accept: {
-    width: 25,
-    height: 25,
-    marginRight: 10,
-  },
   btn_show: {
     ...styleView.rowItem,
     flex: 1,
@@ -321,36 +212,5 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingBottom: 11,
     borderColor: colors.primary,
-  },
-  ctn_row_btn: {
-    ...styleView.rowItem,
-    paddingVertical: 17,
-    alignItems: 'center',
-  },
-  ic_btn: {
-    width: 25,
-    height: 25,
-  },
-  title_btn: {
-    marginLeft: 10,
-    ...fonts.semi_bold16,
-    color: colors.textColor.gray9,
-  },
-  btn_cancel: {
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    marginTop: 15,
-    paddingVertical: 15,
-    borderRadius: 14,
-  },
-  v_ctn_modal: {
-    position: 'absolute',
-    bottom: 15,
-    width: dimensions.width - 40,
-  },
-  v_option: {
-    backgroundColor: colors.white,
-    paddingHorizontal: 15,
-    borderRadius: 14,
   },
 })

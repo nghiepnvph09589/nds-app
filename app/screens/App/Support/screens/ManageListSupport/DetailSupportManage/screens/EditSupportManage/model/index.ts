@@ -4,10 +4,12 @@ export interface itemFormSupport {
 }
 
 export interface EditSupport {
-  donate_request_id: number
-  phone: string
-  name: string
-  form_support: number[]
-  email: string
-  note: string
+  id: number
+  params: {
+    phone: string
+    name: string
+    form_support: number[]
+    email: string
+    note: string
+  }
 }

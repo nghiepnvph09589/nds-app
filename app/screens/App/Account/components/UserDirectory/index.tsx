@@ -10,6 +10,7 @@ import R from '@app/assets/R'
 import React from 'react'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { requestLogout } from '../../api/AccountApi'
+import { showConfirm } from '@app/utils/AlertHelper'
 import { useAppSelector } from '@app/store'
 import { useDispatch } from 'react-redux'
 
@@ -18,10 +19,12 @@ const UserDirectory = () => {
   const dispatch = useDispatch()
 
   const handleLogout = async () => {
-    await AsyncStorageService.putToken('')
-    await requestLogout()
-    dispatch(logout())
-    dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
+    showConfirm(R.strings().notification, 'Đăng xuất tài khoản?', async () => {
+      await AsyncStorageService.putToken('')
+      await requestLogout({})
+      dispatch(logout())
+      dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
+    })
   }
   const onRefresh = () => {
     dispatch(getDataUserInfo())

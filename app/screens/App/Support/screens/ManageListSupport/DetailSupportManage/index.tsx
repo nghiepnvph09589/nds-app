@@ -1,8 +1,9 @@
+import { API_STATUS, STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
 import React, { useEffect, useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
-import { API_STATUS } from '@app/constant/Constant'
+import AfterUpdate from './components/AfterUpdate'
 import BtnDetailPost from './components/BtnDetailPost'
 import CharityHouse from './components/CharityHouse'
 import Error from '@app/components/Error/Error'
@@ -59,20 +60,28 @@ const DetailSupportScreen = (props: Props) => {
           <RefreshControl refreshing={false} onRefresh={getData} />
         }
       >
-        <StatusSupport status={data?.status} />
+        <StatusSupport status={data?.status} isUpdate={data?.is_update} />
         <View style={styles.ctn}>
           <CharityHouse data={data} />
           <BtnDetailPost data={data} />
+          {data?.status === STATUS_SUPPORT_DETAIL.UPDATE_SUPPORT && (
+            <AfterUpdate data={data} />
+          )}
         </View>
       </ScrollView>
-      <MenuButton
-        id={data?.id}
-        onAction={() => {
-          props?.route?.params?.onRefreshData()
-          getData()
-        }}
-        status={data?.status}
-      />
+      {data?.status !== STATUS_SUPPORT_DETAIL.DENY &&
+        data?.status !== STATUS_SUPPORT_DETAIL.UPDATE_SUPPORT && (
+          <MenuButton
+            id={data?.id}
+            onAction={() => {
+              props?.route?.params?.onRefreshData()
+              getData()
+            }}
+            status={data?.status}
+            data={data}
+            isUpdate={data?.is_update}
+          />
+        )}
     </ScreenWrapper>
   )
 }

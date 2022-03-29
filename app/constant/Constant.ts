@@ -114,6 +114,14 @@ const ROLE = {
   CUSTOMER: 5, // khách hàng
 }
 
+export const STATUS_SUPPORT_DETAIL = {
+  DENY: 0, //// Từ chối
+  CUSTOMER_SUPPORT: 1, //// Khách HÀNG / NGƯỜI DÙNG ỦNG HỘ
+  DISTRICT_ACCEPT: 2, //// HUYỆN ỦNG HỘ
+  PROVINCE_ACCEPT: 3, //// TỈNH DUYỆT
+  UPDATE_SUPPORT: 4, // đăng ảnh
+}
+
 const NAME_REGEX =
   /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s|_]+$/g
 export {
