@@ -1,3 +1,5 @@
+import R from '@app/assets/R'
+import FstImage from '@app/components/FstImage'
 import { colors, dimensions, fonts } from '@app/theme'
 import React, { Component } from 'react'
 import {
@@ -10,6 +12,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
+  TouchableOpacity,
 } from 'react-native'
 import Modal from 'react-native-modal'
 
@@ -44,9 +47,6 @@ export default class ModalDeny extends Component<Props> {
           if (onModalHide) onModalHide()
         }}
         isVisible={isVisible}
-        // onBackdropPress={() => {
-        //   if (backdrop) onClose()
-        // }}
         animationIn="fadeIn"
         animationOut="fadeOut"
         animationInTiming={100}
@@ -69,6 +69,16 @@ export default class ModalDeny extends Component<Props> {
                     placeholder="Nhập nội dung yêu cầu chỉnh sửa"
                     textAlignVertical="top"
                   />
+                  <TouchableOpacity
+                    style={{ position: 'absolute', top: 12, right: 12 }}
+                    onPress={onClose}
+                  >
+                    <FstImage
+                      resizeMode="contain"
+                      style={styles.image}
+                      source={R.images.ic_x}
+                    />
+                  </TouchableOpacity>
                 </View>
               }
             />
@@ -80,6 +90,7 @@ export default class ModalDeny extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  image: { width: 24, height: 24 },
   contentStyle: {
     width: dimensions.width - 30,
     backgroundColor: 'white',

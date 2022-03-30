@@ -88,6 +88,7 @@ const images = {
   ic_user2: require('./images/ic_user2.png'),
   ic_user_info: require('./images/ic_user_info.png'),
   ic_video: require('./images/ic_video.png'),
+  ic_x: require('./images/ic_x.png'),
   img_avatar: require('./images/img_avatar.png'),
   img_avatar2: require('./images/img_avatar2.png'),
   img_avatar3: require('./images/img_avatar3.png'),

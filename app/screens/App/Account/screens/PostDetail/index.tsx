@@ -34,7 +34,7 @@ const PostDetail = (props: PostDetailProps) => {
   const { id, status, type } = props.route.params
   const [isError, setIsError] = useState<boolean>(false)
   const ref = React.useRef<ActionSheetRef>(null)
-  const [isVisible, setIsVisible] = useState<boolean>(false)
+  const [isVisible, setIsVisible] = useState<boolean>(true)
   const [isSubmit, setIsSubmit] = useState<boolean>(false)
   const [dataPostDetail, setDataPostDetail] = useState<PostDetailData>({
     id: 0,
@@ -64,7 +64,6 @@ const PostDetail = (props: PostDetailProps) => {
     getDataPostDetail()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  console.log('alo')
 
   const getDataPostDetail = async () => {
     showLoading()
@@ -167,7 +166,9 @@ const PostDetail = (props: PostDetailProps) => {
         ref={ref}
         onPressOption={async (item, index) => {
           if (index === 3) {
-            setIsVisible(true)
+            setTimeout(() => {
+              setIsVisible(!isVisible)
+            }, 1000)
           }
         }}
         textOptionStyle={styles.textOptionStyle}
