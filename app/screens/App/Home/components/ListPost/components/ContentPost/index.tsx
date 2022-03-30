@@ -69,7 +69,8 @@ const styles = StyleSheet.create({
     color: '#8C8C8C',
   },
   txt_title: {
-    ...fonts.semi_bold16,
+    ...fonts.regular16,
+    fontWeight: '500',
     color: colors.text,
   },
 })

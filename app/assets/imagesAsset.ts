@@ -26,6 +26,7 @@ const images = {
   ic_contact_zalo: require('./images/ic_contact_zalo.png'),
   ic_copy: require('./images/ic_copy.png'),
   ic_create_post: require('./images/ic_create_post.png'),
+  ic_credit_card: require('./images/ic_credit_card.png'),
   ic_down: require('./images/ic_down.png'),
   ic_edit_avatar: require('./images/ic_edit_avatar.png'),
   ic_edit_support: require('./images/ic_edit_support.png'),

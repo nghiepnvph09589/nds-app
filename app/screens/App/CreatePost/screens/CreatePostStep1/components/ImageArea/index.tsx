@@ -51,7 +51,7 @@ const ImageArea = (props: ImageAreaProps) => {
       mediaType: 'photo',
       multiple: true,
     }).then(async images => {
-      reactotron.log!(images)
+      console.log(images)
       const dataImage = dataImageVideo.filter(
         item => item.typeMedia === MEDIA_TYPE.IMAGE
       )
@@ -66,7 +66,10 @@ const ImageArea = (props: ImageAreaProps) => {
                 : '',
             typeMedia: MEDIA_TYPE.IMAGE,
             type: item.mime,
-            name: Platform.OS !== 'ios' ? item.modificationDate : item.filename,
+            name:
+              Platform.OS !== 'ios'
+                ? item.path.substring(item.path.lastIndexOf('/') + 1)
+                : item.filename,
           }
         })
         setDataImageVideo(prevState => {
@@ -115,7 +118,9 @@ const ImageArea = (props: ImageAreaProps) => {
               typeMedia: MEDIA_TYPE.VIDEO,
               type: video.mime,
               name:
-                Platform.OS !== 'ios' ? video.modificationDate : video.filename,
+                Platform.OS !== 'ios'
+                  ? video.path.substring(video.path.lastIndexOf('/') + 1)
+                  : video.filename,
             },
           ]
           setDataImageVideo(prevState => {

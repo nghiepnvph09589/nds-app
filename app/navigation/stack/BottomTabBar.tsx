@@ -11,7 +11,6 @@ import Account from '@app/screens/App/Account'
 import CreatePost from '@app/screens/App/CreatePost'
 import Home from '@app/screens/App/Home'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
-import ProductScreen from '@app/screens/App/Product/ProductScreen'
 import { colors } from '@app/theme'
 import { showConfirm } from '@app/utils/AlertHelper'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -44,7 +43,7 @@ export const TAB_BAR = {
   [LOCATION]: {
     name: MAIN_TAB.LOCATION,
     icon: R.images.ic_location3,
-    route: ProductScreen,
+    route: NotificationScreen,
     title: R.strings().product,
   },
   [CREATE_POST]: {

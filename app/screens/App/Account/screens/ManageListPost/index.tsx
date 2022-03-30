@@ -45,7 +45,7 @@ const ManageListPost = () => {
       forceInset={['left']}
       titleHeader={'Quản lý tin đăng'}
       children={
-        <View style={{ flex: 1, backgroundColor: colors.backgroundColor }}>
+        <View style={styles.v_container}>
           <Tabs
             tabContainerStyle={styles.tabContainerStyle}
             tabBarUnderlineStyle={styles.underlineStyle}
@@ -59,9 +59,9 @@ const ManageListPost = () => {
                 <Tab
                   key={item.id}
                   heading={item.name}
-                  activeTabStyle={{ backgroundColor: 'white' }}
+                  activeTabStyle={styles.active_tab}
                   activeTextStyle={{ color: colors.primary }}
-                  tabStyle={{ backgroundColor: 'white' }}
+                  tabStyle={styles.active_tab}
                   textStyle={styles.text_style}
                 >
                   <ListManage status={item?.status} page={page} />
@@ -80,7 +80,7 @@ export default ManageListPost
 const styles = StyleSheet.create({
   v_container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.backgroundColor,
   },
   scroll_tab: {
     height: isIphoneX() ? 44 : 55,
@@ -108,5 +108,8 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     marginVertical: 13,
     borderColor: '#CED4DA',
+  },
+  active_tab: {
+    backgroundColor: 'white',
   },
 })

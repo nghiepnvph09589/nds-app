@@ -12,6 +12,7 @@ const InputPost = (props: InputPostProps) => {
   return (
     <>
       <TextInput
+        textAlignVertical="top"
         placeholderTextColor={'#8898A7'}
         style={styles.styleInput}
         placeholder="Nhập nội dung chia sẻ..."

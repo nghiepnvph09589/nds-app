@@ -1,7 +1,7 @@
 import R from '@app/assets/R'
+import { ActionSheet, ActionSheetRef } from '@app/components/ActionSheet'
 import Error from '@app/components/Error/Error'
-import FstImage from '@app/components/FstImage'
-import { DEFAULT_PARAMS, ROLE, STATUS_TYPE } from '@app/constant/Constant'
+import { DEFAULT_PARAMS, ROLE } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import PostImageArea from '@app/screens/App/Home/components/ListPost/components/PostImageArea'
 import { getDataHome } from '@app/screens/App/Home/slice/HomeSlice'
@@ -11,21 +11,16 @@ import { showConfirm } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Tab, Tabs } from 'native-base'
 import React, { useEffect, useState } from 'react'
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { Platform, ScrollView, StyleSheet } from 'react-native'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 import { useDispatch } from 'react-redux'
 import { getDataListManagePost } from '../ManageListPost/slice/ManageListPostSlice'
 import PostDetailApi from './api/PostDetailApi'
 import BankInfo from './components/BankInfo'
 import ButtonBack from './components/ButtonBack'
+import ModalDeny from './components/ModalDeny'
 import Story from './components/Story'
+import ViewBottom from './components/ViewBottom'
 import ViewStatus from './components/ViewStatus'
 import { PostDetailData } from './model'
 
@@ -38,6 +33,9 @@ const PostDetail = (props: PostDetailProps) => {
   const userInfo = useAppSelector(state => state.accountReducer).data
   const { id, status, type } = props.route.params
   const [isError, setIsError] = useState<boolean>(false)
+  const ref = React.useRef<ActionSheetRef>(null)
+  const [isVisible, setIsVisible] = useState<boolean>(false)
+  const [isSubmit, setIsSubmit] = useState<boolean>(false)
   const [dataPostDetail, setDataPostDetail] = useState<PostDetailData>({
     id: 0,
     title: '',
@@ -66,6 +64,7 @@ const PostDetail = (props: PostDetailProps) => {
     getDataPostDetail()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  console.log('alo')
 
   const getDataPostDetail = async () => {
     showLoading()
@@ -106,12 +105,31 @@ const PostDetail = (props: PostDetailProps) => {
       }
     )
   }
+  const toggleModal = () => {
+    setIsVisible(!isVisible)
+  }
+  const onSubmit = () => {
+    setIsSubmit(true)
+    toggleModal()
+  }
+
+  const onModalHide = () => {
+    if (isSubmit) {
+    }
+  }
 
   if (isError) return <Error reload={getDataPostDetail} />
 
   return (
     <>
       <ScrollView style={styles.v_container}>
+        <ModalDeny
+          title={'Ghi chú'}
+          isVisible={isVisible}
+          onClose={toggleModal}
+          onSubmit={onSubmit}
+          onModalHide={onModalHide}
+        />
         <PostImageArea data={dataPostDetail.DonateRequestMedia} />
         {type && <ViewStatus status={status} type={type} />}
         <Tabs
@@ -138,35 +156,48 @@ const PostDetail = (props: PostDetailProps) => {
         </Tabs>
       </ScrollView>
       <ButtonBack />
-      {type && type !== STATUS_TYPE.COMPLETE ? (
-        <View style={styles.v_button3}>
-          <TouchableOpacity onPress={handleApprove} style={styles.v_button2}>
-            <FstImage style={styles.icon} source={R.images.ic_approve} />
-            <Text style={styles.text}>
-              {userInfo?.role === ROLE.OFFICER_DISTRICT
-                ? ' Yêu cầu phê duyệt'
-                : 'Phê duyệt'}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <FstImage style={styles.img_option} source={R.images.ic_option} />
-          </TouchableOpacity>
-          {/* <FstImage style={styles.icon} source={R.images.ic_heart} />
-         <Text style={styles.text}>{R.strings().support}</Text> */}
-        </View>
-      ) : !type ? (
-        <TouchableOpacity style={styles.v_button}>
-          <FstImage style={styles.icon} source={R.images.ic_heart} />
-          <Text style={styles.text}>{R.strings().support}</Text>
-        </TouchableOpacity>
-      ) : (
-        <></>
-      )}
+      <ViewBottom
+        openOption={() => {
+          ref.current?.show()
+        }}
+        type={type}
+        handleApprove={handleApprove}
+      />
+      <ActionSheet
+        ref={ref}
+        onPressOption={async (item, index) => {
+          if (index === 3) {
+            setIsVisible(true)
+          }
+        }}
+        textOptionStyle={styles.textOptionStyle}
+        //  / optionStyle={styles.optionStyle}
+        option={[
+          { text: 'Chỉnh sửa', id: 0, icon: R.images.ic_edit_support },
+          { text: 'Yêu cầu chỉnh sửa', id: 1, icon: R.images.ic_edit_support },
+          { text: 'Tài khoản ngân hàng', id: 2, icon: R.images.ic_credit_card },
+          { text: 'Từ chối', id: 3, icon: R.images.ic_cancel_support },
+        ]}
+      />
     </>
   )
 }
 
 const styles = StyleSheet.create({
+  optionStyle: {
+    // backgroundColor: 'red',
+    // borderBottomLeftRadius: 30,
+    // borderBottomRightRadius: 30,
+    // paddingVertical: 15,
+    // width: '100%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  textOptionStyle: {
+    ...fonts.regular16,
+    fontWeight: '500',
+    color: colors.text,
+  },
   v_container: {
     flex: 1,
     backgroundColor: 'white',
@@ -188,7 +219,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    // /width: dimensions.width - 30,
     paddingVertical: 12,
     borderRadius: 12,
     flexDirection: 'row',
