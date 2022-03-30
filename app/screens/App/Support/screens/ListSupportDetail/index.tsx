@@ -113,7 +113,6 @@ interface Props {
   route: { params: { id: number } }
 }
 const ListSupportDetailScreen = (props: Props) => {
-  console.log(props.route?.params?.id)
   var onEndReachedCalledDuringMomentum = true
   const [data, setData] = useState([])
   const [page, setPage] = useState<number>(1)

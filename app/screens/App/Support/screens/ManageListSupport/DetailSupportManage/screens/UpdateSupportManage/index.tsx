@@ -15,12 +15,19 @@ import { launchImageLibrary, launchImageLibraryMultiple } from './SelectMedia'
 import CreatePostApi from '@app/screens/App/CreatePost/api/CreatePostApi'
 import InputUpdate from './components/InputUpdate'
 import ListImage from './components/ListImage'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import SelectVideo from './components/SelectVideo'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import reactotron from 'reactotron-react-native'
+import { requestUpdateSupportManage } from './api'
+import { showMessages } from '@app/utils/AlertHelper'
 
-const UpdateSupportManage = () => {
+interface Props {
+  route: { params: { id: number; onAction: () => void } }
+}
+const UpdateSupportManage = (props: Props) => {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
   const [listImage, setListImage] = useState<any[]>([])
@@ -71,7 +78,7 @@ const UpdateSupportManage = () => {
     showLoading()
     const listMedia = listImage.concat([video])
     try {
-      let payload: any = {
+      let params: any = {
         title: title,
         content: content,
       }
@@ -82,13 +89,13 @@ const UpdateSupportManage = () => {
             formData.append('image', {
               uri: item.uri,
               name: item.name,
-              type: item.type,
+              type: 'image/jpeg',
             })
           } else if (item.type === MEDIA_TYPE.VIDEO) {
             formData.append('video', {
               uri: item.uri,
               name: item.name,
-              type: item.type,
+              type: 'video/mp4',
             })
           }
         })
@@ -106,13 +113,24 @@ const UpdateSupportManage = () => {
               type: MEDIA_TYPE.VIDEO,
             })
           )
-          payload = {
-            ...payload,
-            media: arrImage.concat(arrVideo),
+          params = {
+            ...params,
+            array_image: arrImage.concat(arrVideo),
           }
         }
       }
+      const payload = {
+        id: props?.route?.params?.id,
+        params: params,
+      }
       reactotron.log!(payload)
+      const res = await requestUpdateSupportManage(payload)
+      if (res?.code === API_STATUS.SUCCESS) {
+        showMessages(R.strings().notification, 'Cập nhật thành công!!', () => {
+          NavigationUtil.goBack()
+          props?.route?.params?.onAction()
+        })
+      }
     } catch (error) {
       hideLoading()
     } finally {

@@ -19,6 +19,7 @@ const images = {
   ic_checked: require('./images/ic_checked.png'),
   ic_chevron_right: require('./images/ic_chevron_right.png'),
   ic_circle_red: require('./images/ic_circle_red.png'),
+  ic_close: require('./images/ic_close.png'),
   ic_cmt: require('./images/ic_cmt.png'),
   ic_contact: require('./images/ic_contact.png'),
   ic_contact_fb: require('./images/ic_contact_fb.png'),
