@@ -11,12 +11,14 @@ import React, {
 import { Block } from '../Block/Block'
 import Modal from 'react-native-modal'
 import R from '@app/assets/R'
-import { Text } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import { colors } from '@app/theme'
 import { enhance } from '@app/common/handle'
 import equals from 'react-fast-compare'
 import { styles } from './ActionSheet.presets'
 import { Button } from '../Button/Button'
+import FstImage from '../FstImage'
+import { Source } from 'react-native-fast-image'
 
 const ActionSheetComponent = forwardRef((props: ActionSheetProps, ref) => {
   const {
@@ -110,7 +112,7 @@ const ActionSheetComponent = forwardRef((props: ActionSheetProps, ref) => {
             ))}
           {option?.map((item: OptionData, index: number) => {
             return (
-              <Button
+              <TouchableOpacity
                 style={[
                   styles.option,
                   optionStyle,
@@ -122,8 +124,16 @@ const ActionSheetComponent = forwardRef((props: ActionSheetProps, ref) => {
                 onPress={_onPress(item, index)}
                 key={item.text}
               >
+                {item?.icon && (
+                  <FstImage
+                    resizeMode="contain"
+                    style={styles.icon}
+                    source={item?.icon}
+                  />
+                )}
+
                 <Text style={textOption} children={item?.text} />
-              </Button>
+              </TouchableOpacity>
             )
           })}
         </Block>

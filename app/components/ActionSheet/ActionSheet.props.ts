@@ -1,6 +1,7 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 
 import React from 'react'
+import { Source } from 'react-native-fast-image'
 
 export interface OptionData {
   /**
@@ -14,6 +15,7 @@ export interface OptionData {
   itemCallback?: any
 
   id: number
+  icon?: number | Source
 }
 
 export interface ActionSheetProps {

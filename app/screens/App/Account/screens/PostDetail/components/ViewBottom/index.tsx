@@ -14,13 +14,14 @@ import { colors, dimensions, fonts } from '@app/theme'
 import { useAppSelector } from '@app/store'
 
 interface ViewBottomProps {
-  type: number
+  type: number | undefined
   handleApprove: () => void
+  openOption: () => void
 }
 
 const ViewBottom = (props: ViewBottomProps) => {
   const userInfo = useAppSelector(state => state.accountReducer).data
-  const { type, handleApprove } = props
+  const { type, handleApprove, openOption } = props
   return (
     <>
       {type && type !== STATUS_TYPE.COMPLETE ? (
@@ -33,7 +34,7 @@ const ViewBottom = (props: ViewBottomProps) => {
                 : 'Phê duyệt'}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={openOption}>
             <FstImage style={styles.img_option} source={R.images.ic_option} />
           </TouchableOpacity>
           {/* <FstImage style={styles.icon} source={R.images.ic_heart} />

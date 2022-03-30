@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
     marginRight: 25,
   },
   txt_name: {
-    ...fonts.semi_bold14,
+    ...fonts.regular14,
+    fontWeight: '500',
     color: colors.text,
   },
   txt_grey: {
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
   },
   txt_address: {
     ...fonts.regular14,
+    fontWeight: '500',
     color: colors.text,
   },
   txt_time: {

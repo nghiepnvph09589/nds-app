@@ -11,7 +11,6 @@ import ManageListPost from '@app/screens/App/Account/screens/ManageListPost'
 import ManageListSupportScreen from '@app/screens/App/Support/screens/ManageListSupport'
 import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
 import PostDetail from '@app/screens/App/Account/screens/PostDetail'
-import ProductScreen from '@app/screens/App/Product/ProductScreen'
 import React from 'react'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import SupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDetail/SupportDetail'
@@ -45,7 +44,6 @@ const {
 const Stack = createStackNavigator()
 
 const mainScreen = {
-  [PRODUCT]: ProductScreen,
   [NOTIFICATION]: NotificationScreen,
   [UPDATE_ACCOUNT]: UpdateAccountScreen,
   [LIST_SUPPORT]: ListSupportScreen,

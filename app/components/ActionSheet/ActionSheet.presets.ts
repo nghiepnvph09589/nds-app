@@ -28,11 +28,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   option: {
-    backgroundColor: 'transparent',
-    borderTopWidth: 0.7,
-    borderColor: colors.line,
-
-    // marginVertical: 5,
+    borderTopWidth: 1,
+    borderColor: colors.border,
+    width: '100%',
+    flex: 1,
+    paddingVertical: 16,
+    paddingLeft: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   wrapCancel: {
     backgroundColor: '#FFFFFF',
@@ -67,5 +70,10 @@ export const styles = StyleSheet.create({
     height: 1,
     marginTop: '4%',
     backgroundColor: colors.line,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
   },
 })
