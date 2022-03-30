@@ -89,13 +89,13 @@ const UpdateSupportManage = (props: Props) => {
             formData.append('image', {
               uri: item.uri,
               name: item.name,
-              type: item.type,
+              type: 'image/jpeg',
             })
           } else if (item.type === MEDIA_TYPE.VIDEO) {
             formData.append('video', {
               uri: item.uri,
               name: item.name,
-              type: item.type,
+              type: 'video/mp4',
             })
           }
         })
