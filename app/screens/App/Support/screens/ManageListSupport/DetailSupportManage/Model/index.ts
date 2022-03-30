@@ -4,7 +4,9 @@ interface dataSupportDetail {
   phone: string
   note: string
   email: string
+  create_at: string
   is_update: number
+  content: string
   form_support: { id: number; name: string }[]
   DonateRequest: {
     id: number
@@ -15,6 +17,5 @@ interface dataSupportDetail {
   }
   status: number
   title: string
-  content: string
   DonateImages: any[]
 }

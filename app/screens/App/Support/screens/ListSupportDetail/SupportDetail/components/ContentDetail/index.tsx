@@ -3,7 +3,7 @@ import { colors, fonts } from '@app/theme'
 
 import React from 'react'
 
-const ContentDetail = ({ data }: { data: any }) => {
+const ContentDetail = ({ data }: { data?: dataSupportDetail }) => {
   return (
     <View style={styles.head}>
       <Text style={styles.txt_title} children={data?.title} />

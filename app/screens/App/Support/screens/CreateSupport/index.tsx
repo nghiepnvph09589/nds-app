@@ -1,8 +1,14 @@
 import * as Yup from 'yup'
 
 import { API_STATUS, NAME_REGEX, PHONE_REGEX } from '@app/constant/Constant'
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, fonts, styleView } from '@app/theme'
 import { createSupport, getListFormSupport } from './api'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
@@ -37,9 +43,11 @@ const CreateSupportScreen = (props: Props) => {
     email: Yup.string()
       .email(R.strings().validateEmail)
       .required(R.strings().email_blank),
+    noteMessages: Yup.string().required(R.strings().note_blank),
   })
 
   const getDataFormSupport = async () => {
+    Keyboard.dismiss()
     const payload = {
       page: 1,
       limit: 20,

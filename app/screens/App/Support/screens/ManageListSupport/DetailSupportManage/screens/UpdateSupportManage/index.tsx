@@ -74,9 +74,21 @@ const UpdateSupportManage = (props: Props) => {
   }
 
   const onSubmit = async () => {
+    const listMedia = listImage.concat([video])
+    if (title.trim() === '') {
+      showMessages(R.strings().notification, 'Vui lòng nhập tiêu đề')
+      return
+    }
+    if (content.trim() === '') {
+      showMessages(R.strings().notification, 'Vui lòng nhập nội dung')
+      return
+    }
+    if (listMedia.length === 0) {
+      showMessages(R.strings().notification, 'Vui lòng chọn hình ảnh/video')
+      return
+    }
     Keyboard.dismiss()
     showLoading()
-    const listMedia = listImage.concat([video])
     try {
       let params: any = {
         title: title,

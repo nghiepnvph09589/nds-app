@@ -4,16 +4,20 @@ import { colors, dimensions, fonts, styleView } from '@app/theme'
 import FstImage from '@app/components/FstImage'
 import React from 'react'
 
-const ListImage = ({ data }: { data: any }) => {
+const ListImage = ({ data }: { data?: dataSupportDetail }) => {
+  const listImage = data?.DonateImages.filter(item => item?.type === 1).slice(
+    0,
+    4
+  )
   return (
     <View style={styles.ctn}>
       <Text style={styles.title} children={'Hình ảnh thực tế'} />
       <View style={styles.v_image}>
-        {data?.list_image.map((item: any, index: number) => {
+        {listImage?.map((item: { media_url: string }, index: number) => {
           return (
             <FstImage
               key={`${index}`}
-              source={{ uri: item?.url }}
+              source={{ uri: item?.media_url }}
               style={{
                 width: (dimensions.width - 70) / 4,
                 height: (dimensions.width - 70) / 4,

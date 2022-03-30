@@ -20,9 +20,9 @@ const UserDirectory = () => {
 
   const handleLogout = async () => {
     showConfirm(R.strings().notification, 'Đăng xuất tài khoản?', async () => {
-      await AsyncStorageService.putToken('')
       await requestLogout({})
       dispatch(logout())
+      await AsyncStorageService.putToken('')
       dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
     })
   }
