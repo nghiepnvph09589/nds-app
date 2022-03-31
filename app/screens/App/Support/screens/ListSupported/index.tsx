@@ -47,14 +47,14 @@ const ListSupportScreen = () => {
     try {
       const res = await getListSupported(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        if (!res.data?.rows?.length && page > 1) {
+        if (!res.data?.Donates?.length && page > 1) {
           setLastPage(true)
           return
         }
         if (page > 1) {
-          setData(data.concat(res.data?.rows))
+          setData(data.concat(res.data?.Donates))
         } else if (page === 1) {
-          setData(res.data?.rows)
+          setData(res.data?.Donates)
         }
         setError(false)
       }

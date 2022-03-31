@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 
-import FstImage from '@app/components/FstImage'
-import R from '@app/assets/R'
+import RNImageViewer from '@app/components/RNMediaViewer'
 import React from 'react'
 
 const AfterUpdate = ({ data }: { data: dataSupportDetail }) => {
@@ -18,6 +17,9 @@ const AfterUpdate = ({ data }: { data: dataSupportDetail }) => {
         <Text style={styles.content} children={data?.content} />
       </View>
       {listImage.length !== 0 && (
+        <RNImageViewer data={listImage} title={'Hình ảnh thực tế'} />
+      )}
+      {/* {listImage.length !== 0 && (
         <View style={styles.ctn_v_img}>
           <Text
             style={{ ...fonts.regular15, color: colors.textColor.gray8 }}
@@ -35,25 +37,31 @@ const AfterUpdate = ({ data }: { data: dataSupportDetail }) => {
             })}
           </View>
         </View>
-      )}
-      {listVideo.length !== 0 && (
+      )} */}
+      {/* {listVideo.length !== 0 && (
         <View style={styles.ctn_v_img}>
           <Text
             style={{ ...fonts.regular15, color: colors.textColor.gray8 }}
             children={'Video thực tế'}
           />
-          {/* <Video
-          paused={true}
-          source={{ uri: listVideo[0]?.media_url }}
-          style={{
-            width: (dimensions.width - 105) / 4,
-            height: (dimensions.width - 105) / 4,
-          }}
-        /> */}
+          <Video
+            paused={true}
+            source={{
+              uri: 'http://dev.ndsapi.winds.vn/uploads/video/video_08ff608fdc3c4fbf9b6ad8eb9aff28bb.mp4',
+            }}
+            style={{
+              width: (dimensions.width - 105) / 4,
+              height: (dimensions.width - 105) / 4,
+              marginTop: 15,
+            }}
+          />
           <View style={styles.video}>
             <FstImage source={R.images.ic_play} style={styles.ic_play} />
           </View>
         </View>
+      )} */}
+      {listVideo.length !== 0 && (
+        <RNImageViewer data={listVideo} title={'Video thực té'} />
       )}
     </View>
   )

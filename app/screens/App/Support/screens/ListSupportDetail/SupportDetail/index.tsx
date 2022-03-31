@@ -47,7 +47,7 @@ const SupportDetailScreen = (props: Props) => {
       backgroundHeader="white"
       forceInset={['left']}
       titleHeader={'Chi tiết ủng hộ'}
-      backgroundColor={colors.backgroundColor}
+      backgroundColor={colors.white}
       scroll
     >
       <View style={styles.ctn}>
