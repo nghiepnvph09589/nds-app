@@ -1,5 +1,6 @@
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
+import RNButton from '@app/components/RNButton/RNButton'
 import { colors, dimensions, fonts } from '@app/theme'
 import React, { Component } from 'react'
 import {
@@ -19,9 +20,11 @@ import Modal from 'react-native-modal'
 const { width } = Dimensions.get('window')
 
 interface Props {
+  textInput: string
+  setTextInput: React.Dispatch<React.SetStateAction<string>>
   isVisible?: boolean
   backdrop?: boolean
-  onSubmit?: () => void
+  onSubmit: () => void
   onClose?: () => void
   onModalHide?: () => void
   contentView?: React.ReactNode
@@ -29,6 +32,7 @@ interface Props {
   textCancel?: string
   textSubmit?: string
   validSubmit?: boolean
+  typeOption: number
 }
 
 const widthModal = width * 0.87
@@ -39,8 +43,15 @@ export default class ModalDeny extends Component<Props> {
   }
 
   render() {
-    const { contentView, isVisible, backdrop, onClose, onModalHide } =
-      this.props
+    const {
+      textInput,
+      isVisible,
+      setTextInput,
+      onClose,
+      onModalHide,
+      onSubmit,
+      typeOption,
+    } = this.props
     return (
       <Modal
         onModalHide={() => {
@@ -62,17 +73,23 @@ export default class ModalDeny extends Component<Props> {
               onPress={Keyboard.dismiss}
               children={
                 <View style={styles.contentStyle}>
-                  <Text style={styles.textTitle}>Yêu cầu chỉnh sửa</Text>
+                  <Text style={styles.textTitle}>
+                    {typeOption === 1 ? 'Yêu cầu chỉnh sửa' : 'Từ chối'}
+                  </Text>
                   <TextInput
+                    value={textInput}
                     multiline
+                    onChangeText={setTextInput}
                     style={styles.txtInput}
-                    placeholder="Nhập nội dung yêu cầu chỉnh sửa"
+                    placeholder={
+                      typeOption === 1
+                        ? 'Nhập nội dung yêu cầu chỉnh sửa'
+                        : 'Nhập lý do từ chối'
+                    }
                     textAlignVertical="top"
                   />
-                  <TouchableOpacity
-                    style={{ position: 'absolute', top: 12, right: 12 }}
-                    onPress={onClose}
-                  >
+                  <RNButton onPress={onSubmit} title={R.strings().send} />
+                  <TouchableOpacity style={styles.v_x} onPress={onClose}>
                     <FstImage
                       resizeMode="contain"
                       style={styles.image}
@@ -149,7 +166,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 16,
     borderColor: colors.border,
-    height: 200,
+    height: 150,
     ...fonts.regular16,
+    marginBottom: 24,
+  },
+  v_x: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
   },
 })

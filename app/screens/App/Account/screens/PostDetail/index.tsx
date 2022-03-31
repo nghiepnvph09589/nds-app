@@ -34,7 +34,7 @@ const PostDetail = (props: PostDetailProps) => {
   const { id, status, type } = props.route.params
   const [isError, setIsError] = useState<boolean>(false)
   const ref = React.useRef<ActionSheetRef>(null)
-  const [isVisible, setIsVisible] = useState<boolean>(true)
+  const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isSubmit, setIsSubmit] = useState<boolean>(false)
   const [dataPostDetail, setDataPostDetail] = useState<PostDetailData>({
     id: 0,
@@ -60,6 +60,8 @@ const PostDetail = (props: PostDetailProps) => {
     DonateCategoryDetails: [],
     BankInfos: [],
   })
+  const [typeOption, setTypeOption] = useState<number>(1)
+  const [inputText, setInputText] = useState<string>('')
   useEffect(() => {
     getDataPostDetail()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,7 +87,7 @@ const PostDetail = (props: PostDetailProps) => {
       async () => {
         showLoading()
         try {
-          await PostDetailApi.approvePost({ id })
+          await PostDetailApi.approvePost({ id, reason: '' })
           if (userInfo.role === ROLE.OFFICER_PROVINCE) {
             dispatch(getDataHome({ page: 1 }))
           }
@@ -112,8 +114,33 @@ const PostDetail = (props: PostDetailProps) => {
     toggleModal()
   }
 
-  const onModalHide = () => {
+  const onModalHide = async () => {
     if (isSubmit) {
+      showLoading()
+      try {
+        if (typeOption === 1) {
+          await PostDetailApi.requestUpdatePost({
+            id,
+            reason_request: inputText,
+          })
+        } else if (typeOption === 3) {
+          await PostDetailApi.approvePost({
+            id,
+            reason: inputText,
+          })
+        }
+        dispatch(
+          getDataListManagePost({
+            status: 2,
+            limit: DEFAULT_PARAMS.LIMIT,
+            page: DEFAULT_PARAMS.PAGE,
+          })
+        )
+        NavigationUtil.goBack()
+      } catch (error) {
+      } finally {
+        hideLoading()
+      }
     }
   }
 
@@ -123,6 +150,9 @@ const PostDetail = (props: PostDetailProps) => {
     <>
       <ScrollView style={styles.v_container}>
         <ModalDeny
+          typeOption={typeOption}
+          textInput={inputText}
+          setTextInput={setInputText}
           title={'Ghi chú'}
           isVisible={isVisible}
           onClose={toggleModal}
@@ -165,7 +195,14 @@ const PostDetail = (props: PostDetailProps) => {
       <ActionSheet
         ref={ref}
         onPressOption={async (item, index) => {
+          if (index === 1) {
+            setTypeOption(1)
+            setTimeout(() => {
+              setIsVisible(!isVisible)
+            }, 1000)
+          }
           if (index === 3) {
+            setTypeOption(3)
             setTimeout(() => {
               setIsVisible(!isVisible)
             }, 1000)

@@ -14,7 +14,6 @@ interface StoryProps {
 
 const Story = (props: StoryProps) => {
   const { data } = props
-  reactotron.log!(data.DonateCategoryDetails)
   return (
     <>
       {data.status === 3 && <ListSupport count={0} id={data?.id} />}
