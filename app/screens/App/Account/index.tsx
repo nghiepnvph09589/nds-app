@@ -18,7 +18,7 @@ const Account = () => {
       <UserInfo
         name={data?.name}
         avatar={
-          data?.profile_picture_url
+          data?.profile_picture_path
             ? data?.profile_picture_url.replace('http://', 'https://')
             : ''
         }

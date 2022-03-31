@@ -13,7 +13,7 @@ import Video from 'react-native-video'
 import { useNavigation } from '@react-navigation/native'
 
 const VideoComponent = ({ data }: { data?: dataSupportDetail }) => {
-  const listVideo = data?.DonateImages.filter(item => item?.type === 2)
+  const listVideo: any = data?.DonateImages.filter(item => item?.type === 2)
   const [videoPause, setVideoPause] = useState<boolean>(false)
   const playerRef = useRef<Video>(null)
   const [showMediaControl, setShowMediaControl] = useState<boolean>(false)
@@ -121,7 +121,7 @@ const VideoComponent = ({ data }: { data?: dataSupportDetail }) => {
               ref={playerRef}
               paused={videoPause}
               source={{
-                uri: 'https://v16-webapp.tiktok.com/8be04808b25d712c4206d09d560b918a/62447649/video/tos/alisg/tos-alisg-pve-0037/2509741449514d1e899091f0c1aeeb67/?a=1988&br=2202&bt=1101&cd=0%7C0%7C1%7C0&ch=0&cr=0&cs=0&cv=1&dr=0&ds=3&er=&ft=XOQ9-3LGnz7Th0DHzDXq&l=202203300923570102451361031D970AED&lr=tiktok_m&mime_type=video_mp4&net=0&pl=0&qs=0&rc=MzducGg6ZmY3OjMzODgzNEApNmk6ODgzOGVoNzY0NTk8N2dkNWNmcjRnaWBgLS1kLy1zc2A2NDRhL2I2NTQtNjZgLzU6Yw%3D%3D&vl=&vr=',
+                uri: listVideo[0]?.media_url,
               }}
               style={styles.backgroundVideo}
               // controls

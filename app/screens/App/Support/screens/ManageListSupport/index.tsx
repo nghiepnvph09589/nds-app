@@ -40,6 +40,7 @@ const ManageListSupportScreen = () => {
       backgroundHeader="white"
       forceInset={['left']}
       titleHeader={R.strings().support_list}
+      borderBottomHeader={colors.border}
     >
       <View style={styles.ctn}>
         <Tabs

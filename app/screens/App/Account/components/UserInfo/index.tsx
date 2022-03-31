@@ -1,8 +1,9 @@
 import { ImageBackground, Platform, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import R from '@app/assets/R'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
+
 import FstImage from '@app/components/FstImage'
+import R from '@app/assets/R'
+import React from 'react'
 import { fonts } from '@app/theme'
 
 interface UserInfoProps {

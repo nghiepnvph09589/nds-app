@@ -27,7 +27,7 @@ const IMAGE = [
   'HEIC',
   'PNG',
 ]
-const VIDEO = ['mp4', 'avi', 'mov']
+const VIDEO = ['mp4', 'avi', 'mov', 'MP4', 'AVI', 'MOV']
 
 const useMediaData = (data: any): Payload => {
   const fileExtension = (file: string) => {

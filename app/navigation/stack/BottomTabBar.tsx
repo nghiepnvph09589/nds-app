@@ -1,32 +1,33 @@
-import R from '@app/assets/R'
-import FstImage from '@app/components/FstImage'
+import {
+  BottomTabBar,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs'
 import {
   MAIN_TAB,
   SCREEN_ROUTER,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
-import { dimension } from '@app/constant/Theme'
-import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import Account from '@app/screens/App/Account'
-import CreatePost from '@app/screens/App/CreatePost'
-import Home from '@app/screens/App/Home'
-import NotificationScreen from '@app/screens/App/Notification/NotificationScreen'
-import { colors } from '@app/theme'
-import { showConfirm } from '@app/utils/AlertHelper'
-import AsyncStorage from '@react-native-community/async-storage'
-import {
-  BottomTabBar,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs'
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import FastImage from 'react-native-fast-image'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
-import { useDispatch } from 'react-redux'
-import reactotron from 'reactotron-react-native'
+
+import Account from '@app/screens/App/Account'
+import AsyncStorage from '@react-native-community/async-storage'
+import CreatePost from '@app/screens/App/CreatePost'
+import FastImage from 'react-native-fast-image'
+import FstImage from '@app/components/FstImage'
+import Home from '@app/screens/App/Home'
 import NavigationUtil from '../NavigationUtil'
+import NotificationScreen from '@app/screens/App/Notification'
+import R from '@app/assets/R'
+import React from 'react'
+import { colors } from '@app/theme'
+import { createStackNavigator } from '@react-navigation/stack'
+import { dimension } from '@app/constant/Theme'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import reactotron from 'reactotron-react-native'
+import { showConfirm } from '@app/utils/AlertHelper'
+import { useDispatch } from 'react-redux'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()

@@ -53,6 +53,7 @@ const DetailSupportScreen = (props: Props) => {
       backgroundColor={colors.white}
       // eslint-disable-next-line react-native/no-inline-styles
       style={{ flex: 1 }}
+      borderBottomHeader={colors.border}
     >
       <ScrollView
         style={styles.scroll}
