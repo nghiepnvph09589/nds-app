@@ -32,6 +32,7 @@ interface Props {
   textCancel?: string
   textSubmit?: string
   validSubmit?: boolean
+  typeOption: number
 }
 
 const widthModal = width * 0.87
@@ -49,6 +50,7 @@ export default class ModalDeny extends Component<Props> {
       onClose,
       onModalHide,
       onSubmit,
+      typeOption,
     } = this.props
     return (
       <Modal
@@ -71,13 +73,19 @@ export default class ModalDeny extends Component<Props> {
               onPress={Keyboard.dismiss}
               children={
                 <View style={styles.contentStyle}>
-                  <Text style={styles.textTitle}>Yêu cầu chỉnh sửa</Text>
+                  <Text style={styles.textTitle}>
+                    {typeOption === 1 ? 'Yêu cầu chỉnh sửa' : 'Từ chối'}
+                  </Text>
                   <TextInput
                     value={textInput}
                     multiline
                     onChangeText={setTextInput}
                     style={styles.txtInput}
-                    placeholder="Nhập nội dung yêu cầu chỉnh sửa"
+                    placeholder={
+                      typeOption === 1
+                        ? 'Nhập nội dung yêu cầu chỉnh sửa'
+                        : 'Nhập lý do từ chối'
+                    }
                     textAlignVertical="top"
                   />
                   <RNButton onPress={onSubmit} title={R.strings().send} />

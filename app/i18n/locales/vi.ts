@@ -115,4 +115,5 @@ export default {
   manage_list_post: 'Quản lý danh sách bài viết',
   manage_list_support: 'Quản lý danh sách ủng hộ',
   note_messages: 'Lời nhắn',
+  note_blank: 'Lời nhắn đang để trống',
 }

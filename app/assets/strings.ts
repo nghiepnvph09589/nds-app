@@ -129,6 +129,7 @@ function strings() {
     manage_list_post: I18n.t('manage_list_post', { defaultValue: '' }),
     manage_list_support: I18n.t('manage_list_support', { defaultValue: '' }),
     note_messages: I18n.t('note_messages', { defaultValue: '' }),
+    note_blank: I18n.t('note_blank', { defaultValue: '' }),
   }
 }
 export default strings

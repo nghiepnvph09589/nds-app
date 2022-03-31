@@ -3,12 +3,12 @@ import { colors, fonts } from '@app/theme'
 
 import React from 'react'
 
-const FormSupport = ({ data }: { data: any }) => {
+const FormSupport = ({ data }: { data?: dataSupportDetail }) => {
   return (
     <View style={styles.ctn}>
       <Text style={styles.title} children={'Hình thức ủng hộ'} />
       <View style={styles.form}>
-        {data?.formSupport.map((item: any, index: number) => {
+        {data?.form_support.map((item: { name: string }, index: number) => {
           return (
             <View key={`${index}`} style={styles.item}>
               <Text style={styles.txt_item} children={item?.name} />

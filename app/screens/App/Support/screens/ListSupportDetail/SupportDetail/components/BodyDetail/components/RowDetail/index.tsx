@@ -3,7 +3,7 @@ import { colors, fonts, styleView } from '@app/theme'
 
 import React from 'react'
 
-const RowDetail = ({ name, value }: { name: string; value: string }) => {
+const RowDetail = ({ name, value }: { name: string; value?: string }) => {
   return (
     <View style={styles.ctn_row}>
       <Text style={styles.txt_name} children={name} />

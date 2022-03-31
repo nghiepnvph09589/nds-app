@@ -60,6 +60,7 @@ const PostDetail = (props: PostDetailProps) => {
     DonateCategoryDetails: [],
     BankInfos: [],
   })
+  const [typeOption, setTypeOption] = useState<number>(1)
   const [inputText, setInputText] = useState<string>('')
   useEffect(() => {
     getDataPostDetail()
@@ -86,7 +87,7 @@ const PostDetail = (props: PostDetailProps) => {
       async () => {
         showLoading()
         try {
-          await PostDetailApi.approvePost({ id })
+          await PostDetailApi.approvePost({ id, reason: '' })
           if (userInfo.role === ROLE.OFFICER_PROVINCE) {
             dispatch(getDataHome({ page: 1 }))
           }
@@ -117,7 +118,17 @@ const PostDetail = (props: PostDetailProps) => {
     if (isSubmit) {
       showLoading()
       try {
-        await PostDetailApi.requestUpdatePost({ id, reason_request: inputText })
+        if (typeOption === 1) {
+          await PostDetailApi.requestUpdatePost({
+            id,
+            reason_request: inputText,
+          })
+        } else if (typeOption === 3) {
+          await PostDetailApi.approvePost({
+            id,
+            reason: inputText,
+          })
+        }
         dispatch(
           getDataListManagePost({
             status: 2,
@@ -139,6 +150,7 @@ const PostDetail = (props: PostDetailProps) => {
     <>
       <ScrollView style={styles.v_container}>
         <ModalDeny
+          typeOption={typeOption}
           textInput={inputText}
           setTextInput={setInputText}
           title={'Ghi chú'}
@@ -184,6 +196,13 @@ const PostDetail = (props: PostDetailProps) => {
         ref={ref}
         onPressOption={async (item, index) => {
           if (index === 1) {
+            setTypeOption(1)
+            setTimeout(() => {
+              setIsVisible(!isVisible)
+            }, 1000)
+          }
+          if (index === 3) {
+            setTypeOption(3)
             setTimeout(() => {
               setIsVisible(!isVisible)
             }, 1000)

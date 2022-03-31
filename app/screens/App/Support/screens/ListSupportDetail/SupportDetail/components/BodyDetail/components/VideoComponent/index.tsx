@@ -12,7 +12,8 @@ import { TapGestureHandler } from 'react-native-gesture-handler'
 import Video from 'react-native-video'
 import { useNavigation } from '@react-navigation/native'
 
-const VideoComponent = () => {
+const VideoComponent = ({ data }: { data?: dataSupportDetail }) => {
+  const listVideo = data?.DonateImages.filter(item => item?.type === 2)
   const [videoPause, setVideoPause] = useState<boolean>(false)
   const playerRef = useRef<Video>(null)
   const [showMediaControl, setShowMediaControl] = useState<boolean>(false)
@@ -68,28 +69,16 @@ const VideoComponent = () => {
   return (
     <View style={styles.ctn}>
       <Text style={styles.title} children={'Video thực tế'} />
-      <Video
+      {/* <Video
         ref={playerRef}
         paused={videoPause}
         source={{
-          uri: 'https://v16-webapp.tiktok.com/65bda2e527f25efd417a1aeccd4a6ee5/623dbecc/video/tos/useast2a/tos-useast2a-pve-0037-aiso/66f5f768f284477b943ebbfa10984d20/?a=1988&br=4114&bt=2057&cd=0%7C0%7C0%7C0&ch=0&cr=0&cs=0&dr=0&ds=3&er=&ft=XOQ9-3LGnz7ThVmYJDXq&l=202203250708140102450151460C12F9CD&lr=tiktok_m&mime_type=video_mp4&net=0&pl=0&qs=0&rc=M24zZWU6ZnBzOzMzZjgzM0ApZzY3MzczaTw3NzZoZjZkZmcxL2RucjRncjFgLS1kL2NzczJgYDZjMGMvYTBgYzJgMS46Yw%3D%3D&vl=&vr=',
+          uri: 'https://v16-webapp.tiktok.com/8be04808b25d712c4206d09d560b918a/62447649/video/tos/alisg/tos-alisg-pve-0037/2509741449514d1e899091f0c1aeeb67/?a=1988&br=2202&bt=1101&cd=0%7C0%7C1%7C0&ch=0&cr=0&cs=0&cv=1&dr=0&ds=3&er=&ft=XOQ9-3LGnz7Th0DHzDXq&l=202203300923570102451361031D970AED&lr=tiktok_m&mime_type=video_mp4&net=0&pl=0&qs=0&rc=MzducGg6ZmY3OjMzODgzNEApNmk6ODgzOGVoNzY0NTk8N2dkNWNmcjRnaWBgLS1kLy1zc2A2NDRhL2I2NTQtNjZgLzU6Yw%3D%3D&vl=&vr=',
         }}
         style={styles.backgroundVideo}
         controls
         muted={true}
-      />
-      {/* <Text
-        onPress={() => {
-          setVideoPause(!videoPause)
-        }}
-        children={'Play'}
-      />
-      <Text
-        onPress={() => {
-          onRefreshPress()
-        }}
-        children={'refresh'}
-      />
+      /> */}
       <TapGestureHandler
         waitFor={doubleTapRef}
         onActivated={() => toggleControl()}
@@ -132,15 +121,15 @@ const VideoComponent = () => {
               ref={playerRef}
               paused={videoPause}
               source={{
-                uri: 'https://v16-webapp.tiktok.com/559dc4cf62bd5d9500467edc8e2ad6be/623c2724/video/tos/useast2a/tos-useast2a-pve-0037-aiso/d4fc8dab6ff54e6fa62376e74351a57c/?a=1988&br=2922&bt=1461&cd=0%7C0%7C0%7C0&ch=0&cr=0&cs=0&dr=0&ds=2&er=&ft=XOQ9-3LGnz7Th.vgMDXq&l=2022032402085101024500215723012789&lr=tiktok_m&mime_type=video_mp4&net=0&pl=0&qs=0&rc=ajs1d2U6ZnE5OjMzZjgzM0ApZTY1Ojk1OGQ8NzNmPGg3NWcza2JicjQwNmVgLS1kL2Nzc2AtXjQwLjI1LzYvMy0zLTM6Yw%3D%3D&vl=&vr=',
+                uri: 'https://v16-webapp.tiktok.com/8be04808b25d712c4206d09d560b918a/62447649/video/tos/alisg/tos-alisg-pve-0037/2509741449514d1e899091f0c1aeeb67/?a=1988&br=2202&bt=1101&cd=0%7C0%7C1%7C0&ch=0&cr=0&cs=0&cv=1&dr=0&ds=3&er=&ft=XOQ9-3LGnz7Th0DHzDXq&l=202203300923570102451361031D970AED&lr=tiktok_m&mime_type=video_mp4&net=0&pl=0&qs=0&rc=MzducGg6ZmY3OjMzODgzNEApNmk6ODgzOGVoNzY0NTk8N2dkNWNmcjRnaWBgLS1kLy1zc2A2NDRhL2I2NTQtNjZgLzU6Yw%3D%3D&vl=&vr=',
               }}
               style={styles.backgroundVideo}
-              controls
+              // controls
               muted={true}
             />
           </View>
         </TapGestureHandler>
-      </TapGestureHandler> */}
+      </TapGestureHandler>
     </View>
   )
 }
