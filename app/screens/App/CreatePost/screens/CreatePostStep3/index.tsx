@@ -1,5 +1,6 @@
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
+import { ROLE } from '@app/constant/Constant'
 import { useAppSelector } from '@app/store'
 import { colors, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
@@ -27,6 +28,7 @@ interface address {
 const CreatePostStep3 = (props: CreatPostStep3Props) => {
   const { lat, long } = useAppSelector(state => state.locationReducer)
   const dataCreatPost = useAppSelector(state => state.creatPostReducer)
+  const userInfo = useAppSelector(state => state.accountReducer).data
   const dispatch = useDispatch()
   const { onBack, onNext } = props
   const [province, setProvince] = useState<address>({ id: 0, name: '' })
@@ -68,7 +70,9 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
       dispatch(clearDataCreatePost())
       showMessages(
         R.strings().notification,
-        'Cảm ơn bạn đã đăng bài. Chúng tôi sẽ gửi lại thông báo khi bài của bạn được phê duyệt.',
+        userInfo.role === ROLE.OFFICER_DISTRICT
+          ? 'Bạn đã đăng bài thành công'
+          : 'Cảm ơn bạn đã đăng bài. Chúng tôi sẽ gửi lại thông báo khi bài của bạn được phê duyệt.',
         () => {
           onNext()
         }
