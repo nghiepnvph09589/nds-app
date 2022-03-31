@@ -27,14 +27,14 @@ const createAPI = () => {
       if (error.message === 'Network Error') return
 
       const data = await error?.response?.data
-      if (data && data.code === API_STATUS.UNAUTHORIZED) {
+      if (data && data.code === API_STATUS.FORBIDDEN) {
         AsyncStoreService.putToken('').then(() => {
           store.dispatch({
             type: 'switch/navigateSwitch',
             payload: SCREEN_ROUTER.AUTH,
           })
         })
-      } else if (data && data.code !== API_STATUS.UNAUTHORIZED) {
+      } else if (data && data.code !== API_STATUS.FORBIDDEN) {
         showMessages(R.strings().notification, data.message)
       }
       return Promise.reject(error)

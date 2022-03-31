@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     ...fonts.semi_bold16,
     color: 'white',
     alignSelf: 'center',
-    flex: 1,
   },
   icon: {
     width: 24,

@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
 import { colors, fonts } from '@app/theme'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import { DonateCategoryDetails } from '../../../../model'
-import reactotron from '@app/config/ReactotronConfig'
 
 interface NeedProps {
   data: DonateCategoryDetails[]
