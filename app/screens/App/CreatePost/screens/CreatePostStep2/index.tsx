@@ -1,7 +1,6 @@
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import { NAME_REGEX, PHONE_REGEX } from '@app/constant/Constant'
-import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'

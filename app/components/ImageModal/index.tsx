@@ -1,6 +1,5 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
 import R from '@app/assets/R'
-import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 import { getOffset } from '@app/utils/Responsive'
 import React, { useState } from 'react'
@@ -46,10 +45,9 @@ const ImageModal = ({
   urlVideo,
   resizeMode = 'cover',
 }: ImageModalProps) => {
-  const { width } = dimensions
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  let imagesArr: IImageInfo[] = !!urls
-    ? !!urls.length
+  let imagesArr: IImageInfo[] = urls
+    ? urls.length
       ? urls.map(item => ({
           url:
             typeof item === 'number'
@@ -65,7 +63,7 @@ const ImageModal = ({
 
   return (
     <TouchableOpacity
-      onPress={() => (!!onPress ? onPress : setIsVisible(true))}
+      onPress={() => (onPress ? onPress : setIsVisible(true))}
       style={[
         {
           width: dimensions.width,
