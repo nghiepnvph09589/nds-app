@@ -218,7 +218,19 @@ const PostDetail = (props: PostDetailProps) => {
           onModalHide={onModalHide}
         />
         <PostImageArea data={dataPostDetail.DonateRequestMedia} />
-        {type && <ViewStatus status={status} type={type} />}
+        {!(!type && type !== 0) && (
+          <ViewStatus
+            reason={
+              type === 0
+                ? dataPostDetail.reason
+                : type === 1
+                ? dataPostDetail.reason_request
+                : ''
+            }
+            status={status}
+            type={type}
+          />
+        )}
         <Tabs
           initialPage={0}
           tabBarUnderlineStyle={styles.lineTab}

@@ -1,6 +1,6 @@
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
-import { DEFAULT_PARAMS, ROLE } from '@app/constant/Constant'
+import { DEFAULT_PARAMS } from '@app/constant/Constant'
 import { getDataListManagePost } from '@app/screens/App/Account/screens/ManageListPost/slice/ManageListPostSlice'
 import { useAppSelector } from '@app/store'
 import { colors, fonts } from '@app/theme'
@@ -10,7 +10,6 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import UpdatePostApi from '../../api/UpdatePostApi'
-import CreatePostApi from '../../api/UpdatePostApi'
 import ViewBottom from '../../components/ViewBottom'
 import { Media } from '../../model'
 import { clearDataPost, updateDataPost } from '../../slice/UpdatePostSlice'
@@ -82,7 +81,7 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
 
       showMessages(
         R.strings().notification,
-        'Bạn đã đăng bài thành công',
+        'Bạn đã cập nhật bài viết thành công',
         () => {
           dispatch(
             getDataListManagePost({

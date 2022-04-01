@@ -32,12 +32,12 @@ const ImageArea = (props: ImageAreaProps) => {
   useEffect(() => {
     dataImageVideo.forEach(async (item, index) => {
       if (item.type === MEDIA_TYPE.VIDEO) {
-        reactotron.log!(item?.url)
         const thumbnail = await createThumbnail({
-          url: item.url,
+          url: item.url ? item.url : '',
           format: 'png',
           timeStamp: 0,
         })
+
         dataImageVideo[index].urlVideo = thumbnail.path
         setDataImageVideo([...dataImageVideo])
       }

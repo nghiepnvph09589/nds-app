@@ -1,4 +1,3 @@
-import reactotron from '@app/config/ReactotronConfig'
 import React from 'react'
 import { DonateCategoryDetails, PostDetailData } from '../../model'
 import Content from './components/Content'
@@ -18,7 +17,7 @@ const Story = (props: StoryProps) => {
     <>
       {data.status === 3 && <ListSupport count={0} id={data?.id} />}
 
-      <Content title={data.title} content={data.content} />
+      <Content title={data?.title} content={data?.content} />
       <UserInfo
         name={data.name}
         gender={data.gender}

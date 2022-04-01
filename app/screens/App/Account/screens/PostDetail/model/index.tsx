@@ -4,6 +4,7 @@ export type PostDetailData = {
   title: string
   content: string
   address: string
+  reason_request?: string
   address_google: string
   long: number
   lat: number

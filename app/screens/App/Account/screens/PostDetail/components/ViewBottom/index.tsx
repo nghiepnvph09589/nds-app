@@ -1,17 +1,17 @@
+import R from '@app/assets/R'
+import FstImage from '@app/components/FstImage'
+import { ROLE, STATUS_TYPE } from '@app/constant/Constant'
+import { useAppSelector } from '@app/store'
+import { colors, dimensions, fonts } from '@app/theme'
+import React from 'react'
 import {
+  Platform,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  Platform,
+  View,
 } from 'react-native'
-import React from 'react'
-import { ROLE, STATUS_TYPE } from '@app/constant/Constant'
-import FstImage from '@app/components/FstImage'
-import R from '@app/assets/R'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
-import { colors, dimensions, fonts } from '@app/theme'
-import { useAppSelector } from '@app/store'
 
 interface ViewBottomProps {
   type: number | undefined
@@ -22,6 +22,7 @@ interface ViewBottomProps {
 const ViewBottom = (props: ViewBottomProps) => {
   const userInfo = useAppSelector(state => state.accountReducer).data
   const { type, handleApprove, openOption } = props
+
   return (
     <>
       {type && type !== STATUS_TYPE.COMPLETE ? (
@@ -40,7 +41,7 @@ const ViewBottom = (props: ViewBottomProps) => {
           {/* <FstImage style={styles.icon} source={R.images.ic_heart} />
          <Text style={styles.text}>{R.strings().support}</Text> */}
         </View>
-      ) : !type ? (
+      ) : !type && type !== 0 ? (
         <TouchableOpacity style={styles.v_button}>
           <FstImage style={styles.icon} source={R.images.ic_heart} />
           <Text style={styles.text}>{R.strings().support}</Text>
