@@ -42,6 +42,14 @@ const StatusSupport = ({
     <View style={styles.ctn}>
       <FstImage source={R.images.ic_status_awaiting} style={styles.img} />
       <Text style={styles.txt} children={renderStatus(status)} />
+      {status === STATUS_SUPPORT.WAITING && (
+        <View style={styles.district_acc}>
+          <Text
+            style={{ color: colors.primary, ...fonts.regular12 }}
+            children={'Huyện đã duyệt'}
+          />
+        </View>
+      )}
     </View>
   )
 }
@@ -63,5 +71,14 @@ const styles = StyleSheet.create({
   txt: {
     ...fonts.semi_bold16,
     color: colors.primary,
+    flex: 1,
+  },
+  district_acc: {
+    paddingHorizontal: 7,
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingVertical: 3,
+    borderColor: colors.primary,
+    marginRight: 15,
   },
 })

@@ -1,4 +1,5 @@
 import AddressMap from '@app/screens/App/CreatePost/screens/AddressMap'
+import BannerDetailScreen from '@app/screens/App/Home/screens/BannerDetail'
 import ChangePassScreen from '@app/screens/App/Account/screens/ChangePassword'
 import ContactScreen from '@app/screens/App/Account/screens/Contact'
 import CreatePost from '@app/screens/App/CreatePost'
@@ -40,6 +41,7 @@ const {
   CREATE_POST,
   EDIT_SUPPORT_MANAGE,
   UPDATE_SUPPORT_MANAGE,
+  BANNER_DETAIL,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -62,6 +64,7 @@ const mainScreen = {
   [MANAGE_LIST_POST]: ManageListPost,
   [EDIT_SUPPORT_MANAGE]: EditSupportScreen,
   [UPDATE_SUPPORT_MANAGE]: UpdateSupportManage,
+  [BANNER_DETAIL]: BannerDetailScreen,
 }
 
 export const StackAppCustomerScreen = () => {

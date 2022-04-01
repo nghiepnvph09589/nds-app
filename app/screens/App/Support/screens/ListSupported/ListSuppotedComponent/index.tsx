@@ -1,7 +1,8 @@
-import { API_STATUS, SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { API_STATUS, ROLE, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import {
   ActivityIndicator,
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,7 +10,6 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { fonts, styleView } from '@app/theme'
-import { getListSupport, itemListSupportPost } from './model'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
 import DateUtils from '@app/utils/DateUtils'
@@ -17,16 +17,12 @@ import Empty from '@app/components/Empty/Empty'
 import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
 import NavigationUtil from '@app/navigation/NavigationUtil'
-import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { colors } from '@app/theme/colors'
-import { getListSupportDetail } from './api'
+import { getListSupported } from '../api'
 
-interface Props {
-  route: { params: { id: number } }
-}
-const ListSupportDetailScreen = (props: Props) => {
+const ListSupportedComponent = ({ status }: { status: number }) => {
   var onEndReachedCalledDuringMomentum = true
-  const [data, setData] = useState<itemListSupportPost[]>([])
+  const [data, setData] = useState([])
   const [page, setPage] = useState<number>(1)
   const [lastPage, setLastPage] = useState<boolean>(false)
   const [loadMore, setLoadMore] = useState<boolean>(false)
@@ -37,9 +33,10 @@ const ListSupportDetailScreen = (props: Props) => {
   // eslint-disable-next-line no-shadow
   const getData = async (page: number) => {
     setPage(page)
-    const payload: getListSupport = {
-      id: props?.route?.params?.id,
-      params: { page: page, limit: 12 },
+    const payload = {
+      status: status,
+      page: page,
+      limit: 10,
     }
     if (page === 1) {
       showLoading()
@@ -47,16 +44,16 @@ const ListSupportDetailScreen = (props: Props) => {
       setLoadMore(true)
     }
     try {
-      const res = await getListSupportDetail(payload)
+      const res = await getListSupported(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        if (!res.data?.rows?.length && page > 1) {
+        if (!res.data?.Donates?.length && page > 1) {
           setLastPage(true)
           return
         }
         if (page > 1) {
-          setData(data.concat(res.data))
+          setData(data.concat(res.data?.Donates))
         } else if (page === 1) {
-          setData(res.data)
+          setData(res.data?.Donates)
         }
         setError(false)
       }
@@ -70,6 +67,7 @@ const ListSupportDetailScreen = (props: Props) => {
     }
   }
   const onRefreshData = () => {
+    setLastPage(false)
     getData(1)
   }
   const handleLoadMore = () => {
@@ -82,65 +80,82 @@ const ListSupportDetailScreen = (props: Props) => {
     getData(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  if (error) return <Error reload={onRefreshData} />
   return (
-    <ScreenWrapper
-      back
-      color={colors.text}
-      backgroundHeader="white"
-      forceInset={['left']}
-      titleHeader={'Thông tin ủng hộ'}
-      backgroundColor={colors.white}
-      borderBottomHeader={colors.border}
-    >
-      <FlatList
-        style={styles.list}
-        refreshing={false}
-        onRefresh={onRefreshData}
-        onEndReachedThreshold={0.05}
-        onMomentumScrollBegin={onMomentumScrollBegin}
-        onEndReached={handleLoadMore}
-        data={data}
-        keyExtractor={(_, index) => `${index}`}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        renderItem={_itemSupport}
-        ListFooterComponent={
-          loadMore ? (
-            <ActivityIndicator
-              color={colors.primary}
-              style={styles.v_load_more}
+    <View style={styles.container}>
+      {error ? (
+        <Error reload={onRefreshData} />
+      ) : (
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={{}}
+          refreshing={false}
+          // onRefresh={onRefreshData}
+          refreshControl={
+            <RefreshControl refreshing={false} onRefresh={onRefreshData} />
+          }
+          onEndReachedThreshold={0.1}
+          onMomentumScrollBegin={onMomentumScrollBegin}
+          onEndReached={handleLoadMore}
+          data={data}
+          keyExtractor={(_, index) => `${index}`}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item, index }) => (
+            <ItemSupport
+              item={item}
+              index={index}
+              onRefreshData={onRefreshData}
             />
-          ) : null
-        }
-        ListEmptyComponent={<Empty description={'Danh sách trống'} />}
-      />
-    </ScreenWrapper>
+          )}
+          ListFooterComponent={
+            loadMore ? (
+              <ActivityIndicator
+                color={colors.primary}
+                style={styles.v_load_more}
+              />
+            ) : null
+          }
+          ListEmptyComponent={<Empty description={'Danh sách trống'} />}
+        />
+      )}
+    </View>
   )
 }
-const _itemSupport = ({
+export default ListSupportedComponent
+const ItemSupport = ({
   item,
   index,
+  onRefreshData,
 }: {
-  item: itemListSupportPost
+  item: any
   index: number
+  onRefreshData: () => void
 }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        NavigationUtil.navigate(SCREEN_ROUTER_APP.SUPPORT_DETAIL, {
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: item?.id,
+          onRefreshData: onRefreshData,
+          customer: ROLE.CUSTOMER,
         })
       }}
       key={`${index}`}
       style={styles.ctn_item}
     >
       <FstImage
-        source={{ uri: item?.DonateImages[0]?.media_url }}
+        source={{ uri: item?.DonateRequest?.DonateRequestMedia[0]?.media_url }}
         style={styles.img_item}
       />
       <View style={styles.detail_item}>
-        <Text children={item?.title} style={styles.content} />
+        <Text style={styles.content}>
+          {item?.name}{' '}
+          <Text
+            style={styles.txt_item_default}
+            children={'đã yêu cầu ủng hộ cho bài viết '}
+          />
+          {item?.DonateRequest?.title}
+        </Text>
         <Text
           style={styles.create_at}
           children={DateUtils.formatShortDate(item?.create_at)}
@@ -149,11 +164,14 @@ const _itemSupport = ({
     </TouchableOpacity>
   )
 }
-export default ListSupportDetailScreen
-
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.backgroundColor,
+    flex: 1,
+  },
   list: {
     flex: 1,
+    backgroundColor: colors.white,
     // width: '100%',
   },
   v_load_more: {
@@ -163,7 +181,6 @@ const styles = StyleSheet.create({
     padding: 15,
     ...styleView.rowItem,
     backgroundColor: colors.white,
-    marginTop: 1,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
@@ -177,7 +194,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    ...fonts.regular16,
+    ...fonts.semi_bold16,
     color: colors.textColor.gray9,
     minHeight: 65,
     lineHeight: 25,
@@ -185,5 +202,9 @@ const styles = StyleSheet.create({
   create_at: {
     ...fonts.regular16,
     color: colors.textColor.gray8,
+  },
+  txt_item_default: {
+    ...fonts.regular16,
+    color: colors.textColor.gray9,
   },
 })

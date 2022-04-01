@@ -33,13 +33,11 @@ const MenuButton = ({
   onAction,
   status,
   data,
-  isUpdate,
 }: {
   id?: number
   onAction: () => void
   status?: number
   data?: dataSupportDetail
-  isUpdate?: number
 }) => {
   const dataUser = useAppSelector(state => state.accountReducer.data)
   const [show, setShow] = useState<boolean>(false)
@@ -169,7 +167,6 @@ const MenuButton = ({
               onAction,
             })
           }}
-          role={dataUser?.role}
           requestEdit={() => {
             setTimeout(() => {
               setShowRequest(true)
@@ -177,7 +174,6 @@ const MenuButton = ({
             setShow(false)
           }}
           status={status}
-          isUpdate={isUpdate}
         />
       </Modal>
       <ModalReasonCancel

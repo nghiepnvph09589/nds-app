@@ -1,10 +1,11 @@
-import { API_STATUS, STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
+import { API_STATUS, ROLE, STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
 import React, { useEffect, useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
 import AfterUpdate from './components/AfterUpdate'
 import BtnDetailPost from './components/BtnDetailPost'
+import BtnUpdateCustomer from './components/BtnUpdateCustomer'
 import CharityHouse from './components/CharityHouse'
 import Error from '@app/components/Error/Error'
 import MenuButton from './components/MenuButton'
@@ -12,13 +13,15 @@ import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import StatusSupport from './components/StatusSupport'
 import { colors } from '@app/theme'
 import { getDetailSupportManage } from './api'
+import { useAppSelector } from '@app/store'
 
 interface Props {
-  route: { params: { id: number; onRefreshData: () => void } }
+  route: { params: { id: number; onRefreshData: () => void; customer: number } }
 }
 const DetailSupportScreen = (props: Props) => {
   const [data, setData] = useState<dataSupportDetail>()
   const [error, setError] = useState<boolean>(false)
+  const userInfo = useAppSelector(state => state.accountReducer.data)
   const getData = async () => {
     showLoading()
     const payload = {
@@ -56,7 +59,7 @@ const DetailSupportScreen = (props: Props) => {
       borderBottomHeader={colors.border}
     >
       <ScrollView
-        style={styles.scroll}
+        contentContainerStyle={styles.scroll}
         refreshControl={
           <RefreshControl refreshing={false} onRefresh={getData} />
         }
@@ -71,7 +74,9 @@ const DetailSupportScreen = (props: Props) => {
         </View>
       </ScrollView>
       {data?.status !== STATUS_SUPPORT_DETAIL.DENY &&
-        data?.status !== STATUS_SUPPORT_DETAIL.UPDATE_SUPPORT && (
+        data?.status !== STATUS_SUPPORT_DETAIL.UPDATE_SUPPORT &&
+        userInfo.role !== ROLE.OFFICER_WARD &&
+        userInfo.role !== ROLE.CUSTOMER && (
           <MenuButton
             id={data?.id}
             onAction={() => {
@@ -80,9 +85,18 @@ const DetailSupportScreen = (props: Props) => {
             }}
             status={data?.status}
             data={data}
-            isUpdate={data?.is_update}
           />
         )}
+
+      {props.route?.params?.customer && (
+        <BtnUpdateCustomer
+          data={data}
+          onAction={() => {
+            props?.route?.params?.onRefreshData()
+            getData()
+          }}
+        />
+      )}
     </ScreenWrapper>
   )
 }
@@ -94,6 +108,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   scroll: {
-    paddingBottom: 50,
+    paddingBottom: 40,
   },
 })

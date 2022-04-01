@@ -38,7 +38,15 @@ const SelectOneInTwo = ({
               }
               style={stylesOr.ic}
             />
-            <Text style={stylesOr.txt} children={item?.name} />
+            <Text
+              style={[
+                stylesOr.txt,
+                item?.name.length > 14
+                  ? { ...fonts.regular13 }
+                  : { ...fonts.regular16 },
+              ]}
+              children={item?.name}
+            />
           </TouchableOpacity>
         )
       })}
@@ -56,11 +64,12 @@ const stylesOr = StyleSheet.create({
     borderWidth: 1,
     width: (dimensions.width - 45) / 2,
     borderRadius: 16,
-    paddingHorizontal: 16,
+    paddingLeft: 16,
     paddingVertical: 13,
     alignItems: 'center',
     flexWrap: 'wrap',
     marginTop: 17,
+    paddingRight: 14,
   },
   ic: {
     width: 24,
@@ -68,6 +77,5 @@ const stylesOr = StyleSheet.create({
   },
   txt: {
     marginLeft: 10,
-    ...fonts.regular16,
   },
 })

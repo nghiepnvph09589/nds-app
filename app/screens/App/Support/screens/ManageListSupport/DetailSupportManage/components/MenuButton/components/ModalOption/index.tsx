@@ -1,28 +1,24 @@
-import { ROLE, STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import React from 'react'
+import { STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
 import { Source } from 'react-native-fast-image'
 
 const ModalOption = ({
   cancel,
   cancelSupport,
   onEdit,
-  role,
   requestEdit,
   status,
-  isUpdate,
 }: {
   cancelSupport: () => void
   cancel: () => void
   onEdit: () => void
   requestEdit: () => void
-  role: number
   status?: number
-  isUpdate?: number
 }) => {
   return (
     <View style={styles.v_ctn_modal}>
@@ -33,14 +29,12 @@ const ModalOption = ({
           name={'Chỉnh sửa'}
           line
         />
-        {role === ROLE.OFFICER_PROVINCE && isUpdate === 0 && (
-          <RowBtn
-            onPress={requestEdit}
-            source={R.images.ic_request_edit_support}
-            name={'Yêu cầu chỉnh sửa'}
-            line
-          />
-        )}
+        <RowBtn
+          onPress={requestEdit}
+          source={R.images.ic_request_edit_support}
+          name={'Yêu cầu chỉnh sửa'}
+          line
+        />
         {(status === STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT ||
           status === STATUS_SUPPORT_DETAIL.DISTRICT_ACCEPT) && (
           <RowBtn

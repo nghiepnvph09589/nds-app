@@ -1,8 +1,13 @@
 import * as Yup from 'yup'
 
-import { API_STATUS, PASSWORD_REGEX } from '@app/constant/Constant'
+import {
+  API_STATUS,
+  PASSWORD_REGEX,
+  SCREEN_ROUTER,
+} from '@app/constant/Constant'
 import {
   Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,9 +15,9 @@ import {
 } from 'react-native'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import React from 'react'
@@ -20,9 +25,15 @@ import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { changePassword } from './api'
 import { colors } from '@app/theme/colors'
 import { fonts } from '@app/theme'
+import { isIphoneX } from 'react-native-iphone-x-helper'
+import { logout } from '../../slices/AccountSlice'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import { requestLogout } from '../../api/AccountApi'
 import { showMessages } from '@app/utils/AlertHelper'
+import { useDispatch } from 'react-redux'
 
 const ChangePassScreen = () => {
+  const dispatch = useDispatch()
   const ChangePasswordSchema = Yup.object().shape({
     oldPass: Yup.string()
       .trim()
@@ -57,13 +68,20 @@ const ChangePassScreen = () => {
           R.strings().notification,
           'Bạn đã cập nhật mật khẩu thành công',
           () => {
-            NavigationUtil.goBack()
+            // NavigationUtil.goBack()
+            handleLogout()
           }
         )
       }
     } catch (error) {
       hideLoading()
     }
+  }
+  const handleLogout = async () => {
+    await requestLogout({})
+    dispatch(logout())
+    await AsyncStorageService.putToken('')
+    dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
   }
   return (
     <ScreenWrapper
@@ -140,11 +158,6 @@ const ChangePassScreen = () => {
                   secureTextEntry
                 />
               </View>
-              {/* <RNButton
-                onPress={handleSubmit}
-                style={styles.v_button}
-                title={R.strings().confirm}
-              /> */}
               <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
                 <Text
                   style={styles.txt_confirm}
@@ -192,6 +205,7 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     marginHorizontal: 15,
     borderRadius: 15,
+    marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 0 : 20) : 15,
   },
   txt_confirm: {
     ...fonts.semi_bold16,

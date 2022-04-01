@@ -1,9 +1,12 @@
-import FstImage from '@app/components/FstImage'
-import { colors } from '@app/theme'
-import React, { useCallback } from 'react'
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { SwiperFlatList } from 'react-native-swiper-flatlist'
+import React, { useCallback } from 'react'
+
 import { Banners } from '../../../../model'
+import FstImage from '@app/components/FstImage'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { SwiperFlatList } from 'react-native-swiper-flatlist'
+import { colors } from '@app/theme'
 
 const window = Dimensions.get('window')
 const { width } = window
@@ -16,6 +19,9 @@ const Banner = (props: SlideBarProps) => {
     ({ item }: { item: Banners; index: number }) => {
       return (
         <TouchableOpacity
+          onPress={() => {
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.BANNER_DETAIL)
+          }}
           children={
             <FstImage
               source={item?.image_url}

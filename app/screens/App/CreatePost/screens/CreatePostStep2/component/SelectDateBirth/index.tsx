@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
-import { colors, styleView } from '@app/theme'
+import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { colors, fonts, styleView } from '@app/theme'
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import DateUtils from '@app/utils/DateUtils'
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
-import RNTextInput from '@app/components/RNTextInput'
-import DateUtils from '@app/utils/DateUtils'
 
 const SelectDateBirth = ({
   onChange,
@@ -23,7 +22,7 @@ const SelectDateBirth = ({
         setShow(true)
       }}
     >
-      <RNTextInput
+      {/* <RNTextInput
         containerStyle={stylesDate.container_input_date}
         returnKeyType={'next'}
         inputContainerStyle={stylesDate.v_input_date}
@@ -31,7 +30,17 @@ const SelectDateBirth = ({
         leftIcon={R.images.ic_calendar}
         value={dateBirth}
         editable={false}
-      />
+      /> */}
+      <View style={stylesDate.container_input_date}>
+        <FstImage source={R.images.ic_calendar} style={stylesDate.right_icon} />
+        <Text
+          style={{
+            ...fonts.regular16,
+            color: dateBirth ? colors.textColor.gray10 : colors.placeHolder,
+          }}
+          children={dateBirth || R.strings().date_of_birthday}
+        />
+      </View>
       <FstImage source={R.images.ic_down} style={stylesDate.right_icon} />
       <DateTimePickerModal
         locale={'vi'}
@@ -62,7 +71,7 @@ const stylesDate = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: colors.border,
-    paddingVertical: 2,
+    paddingVertical: 13,
   },
   right_icon: {
     width: 25,
@@ -70,7 +79,10 @@ const stylesDate = StyleSheet.create({
     marginRight: 10,
   },
   container_input_date: {
+    ...styleView.rowItem,
+    alignItems: 'center',
     flex: 1,
+    paddingLeft: 15,
   },
   v_input_date: {},
 })
