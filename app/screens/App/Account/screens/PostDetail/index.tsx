@@ -1,10 +1,11 @@
 import R from '@app/assets/R'
 import { ActionSheet, ActionSheetRef } from '@app/components/ActionSheet'
 import Error from '@app/components/Error/Error'
-import { DEFAULT_PARAMS, ROLE } from '@app/constant/Constant'
+import { DEFAULT_PARAMS, ROLE, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import PostImageArea from '@app/screens/App/Home/components/ListPost/components/PostImageArea'
 import { getDataHome } from '@app/screens/App/Home/slice/HomeSlice'
+import { updateDataPost } from '@app/screens/App/UpdatePost/slice/UpdatePostSlice'
 import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
 import { showConfirm } from '@app/utils/AlertHelper'
@@ -22,7 +23,11 @@ import ModalDeny from './components/ModalDeny'
 import Story from './components/Story'
 import ViewBottom from './components/ViewBottom'
 import ViewStatus from './components/ViewStatus'
-import { PostDetailData } from './model'
+import {
+  DonateCategoryDetails,
+  DonateRequestMedia,
+  PostDetailData,
+} from './model'
 
 interface PostDetailProps {
   route: { params: { id: number; status: number; type?: number } }
@@ -59,6 +64,21 @@ const PostDetail = (props: PostDetailProps) => {
     DonateRequestMedia: [],
     DonateCategoryDetails: [],
     BankInfos: [],
+    DFProvince: {
+      id: 0,
+      name: '',
+      value: '',
+    },
+    DFDistrict: {
+      id: 0,
+      name: '',
+      value: '',
+    },
+    DFWard: {
+      id: 0,
+      name: '',
+      value: '',
+    },
   })
   const [typeOption, setTypeOption] = useState<number>(1)
   const [inputText, setInputText] = useState<string>('')
@@ -106,8 +126,46 @@ const PostDetail = (props: PostDetailProps) => {
       }
     )
   }
+
   const toggleModal = () => {
     setIsVisible(!isVisible)
+  }
+
+  const onUpdateDataPostToReducer = () => {
+    const payload = {
+      title: dataPostDetail.title,
+      content: dataPostDetail.content,
+      name: dataPostDetail.name,
+      phone: dataPostDetail.phone,
+      gender: dataPostDetail.gender,
+      year_of_birth: dataPostDetail.year_of_birth,
+      address: dataPostDetail.address,
+      lat: dataPostDetail.lat,
+      long: dataPostDetail.long,
+      group_id: dataPostDetail.group_id,
+      new_category: dataPostDetail.DonateCategoryDetails.map(
+        (item: DonateCategoryDetails) => ({
+          category_id: item.category_id,
+          type: item.type,
+        })
+      ),
+      new_media: dataPostDetail.DonateRequestMedia.map(
+        (item: DonateRequestMedia) => ({
+          media_url: item.media_path,
+          type: item.type,
+          url: item.media_url,
+        })
+      ),
+      province_id: dataPostDetail.province_id,
+      district_id: dataPostDetail.district_id,
+      ward_id: dataPostDetail.ward_id,
+      province_name: dataPostDetail.DFProvince.name,
+      district_name: dataPostDetail.DFDistrict.name,
+      ward_name: dataPostDetail.DFWard ? dataPostDetail.DFWard.name : '',
+      id: dataPostDetail.id,
+    }
+    dispatch(updateDataPost(payload))
+    NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
   }
   const onSubmit = () => {
     setIsSubmit(true)
@@ -200,12 +258,14 @@ const PostDetail = (props: PostDetailProps) => {
             setTimeout(() => {
               setIsVisible(!isVisible)
             }, 1000)
-          }
-          if (index === 3) {
+          } else if (index === 3) {
             setTypeOption(3)
             setTimeout(() => {
               setIsVisible(!isVisible)
             }, 1000)
+          } else if (index === 0) {
+            onUpdateDataPostToReducer()
+            //NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
           }
         }}
         textOptionStyle={styles.textOptionStyle}

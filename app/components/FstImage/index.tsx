@@ -1,20 +1,19 @@
+import R from '@app/assets/R'
+import { colors } from '@app/theme'
 import React, { useMemo, useState } from 'react'
 import {
-  View,
   ActivityIndicator,
-  TouchableOpacity,
   Image,
-  StyleProp,
   ImageStyle,
+  StyleProp,
   StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { colors } from '@app/theme'
-import R from '@app/assets/R'
-import { ImageProps } from './FstImage.props'
-import { enhance } from '@app/common'
-import { Block } from '../Block/Block'
 import { useImmer } from 'use-immer'
+import { Block } from '../Block/Block'
+import { ImageProps } from './FstImage.props'
 
 type ImageState = {
   loaded: boolean
