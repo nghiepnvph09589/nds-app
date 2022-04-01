@@ -66,7 +66,7 @@ export default class ModalDeny extends Component<Props> {
         backdropTransitionOutTiming={100}
       >
         <KeyboardAvoidingView
-          keyboardVerticalOffset={100}
+          keyboardVerticalOffset={150}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           children={
             <TouchableWithoutFeedback

@@ -1,6 +1,7 @@
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import { NAME_REGEX, PHONE_REGEX } from '@app/constant/Constant'
+import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
@@ -11,7 +12,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 import ViewBottom from '../../components/ViewBottom'
-import { updateDataCreatePost } from '../../slice/CreatePostSlice'
+import { Category } from '../../model'
+import { updateDataPost } from '../../slice/UpdatePostSlice'
 import { getListSubject, getListTypeGroup } from './api'
 import SelectDateBirth from './component/SelectDateBirth'
 import SelectOneInTwo from './component/SelectOneInTwo'
@@ -32,15 +34,16 @@ interface CreatPostStep2Props {
   onBack: () => void
   onNext: () => void
 }
-const CreatePostStep2 = (props: CreatPostStep2Props) => {
+const UpdatePostStep2 = (props: CreatPostStep2Props) => {
   const dispatch = useDispatch()
+  const dataPost = useAppSelector(state => state.updatePostReducer)
   const { onBack, onNext } = props
   const [dataTypeGroup, setDataTypeGroup] = useState<any>([])
   const [dataSubject, setDataSubject] = useState<any>([])
   const [dataNeed, setDataNeed] = useState<any>([])
-  const year_of_birth = useRef<string>('')
-  const [sex, setSex] = useState<number>(0)
-  const [groupType, setGroupType] = useState<number>(0)
+  const year_of_birth = useRef<string>(dataPost.year_of_birth)
+  const [sex, setSex] = useState<number>(dataPost.gender)
+  const [groupType, setGroupType] = useState<number>(dataPost.group_id)
   const [subject, setSubject] = useState<number[]>([])
   const [need, setNeed] = useState<number[]>([])
 
@@ -63,14 +66,31 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
         group_id: groupId,
         type: type,
       }
+      const newSubject = dataPost.new_category
+        .filter((item: Category) => item.type === 1)
+        .map(item => {
+          return item.category_id
+        })
+
+      const newNeed = dataPost.new_category
+        .filter((item: Category) => item.type === 2)
+        .map(item => {
+          return item.category_id
+        })
       const res = await getListSubject(payload)
       if (type === 1) {
-        setSubject([])
-        setNeed([])
+        if (groupType === dataPost.group_id) {
+          setSubject(newSubject)
+        } else {
+          setSubject([])
+        }
         setDataSubject(res?.data)
       } else if (type === 2) {
-        setSubject([])
-        setNeed([])
+        if (groupType === dataPost.group_id) {
+          setNeed(newNeed)
+        } else {
+          setNeed([])
+        }
         setDataNeed(res?.data)
       }
     } catch (error) {
@@ -89,6 +109,7 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
       getDataSubject(groupType, 1)
       getDataSubject(groupType, 2)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupType])
 
   const Schema = Yup.object().shape({
@@ -134,15 +155,15 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
       gender: sex,
       year_of_birth: year_of_birth.current,
       group_id: groupType,
-      category: newSubject.concat(newNeed),
+      new_category: newSubject.concat(newNeed),
     }
-    dispatch(updateDataCreatePost(payload))
+    dispatch(updateDataPost(payload))
     onNext()
   }
   return (
     <>
       <Formik
-        initialValues={{ name: '', phone: '' }}
+        initialValues={{ name: dataPost.name, phone: dataPost.phone }}
         onSubmit={onNextStep2}
         validationSchema={Schema}
       >
@@ -180,6 +201,7 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
                     maxLength={255}
                   />
                   <SelectDateBirth
+                    year_of_birth={year_of_birth.current}
                     onChange={(year: string) => (year_of_birth.current = year)}
                   />
                   <SelectOneInTwo
@@ -243,7 +265,7 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
   )
 }
 
-export default CreatePostStep2
+export default UpdatePostStep2
 
 const styles = StyleSheet.create({
   content_ctn: {

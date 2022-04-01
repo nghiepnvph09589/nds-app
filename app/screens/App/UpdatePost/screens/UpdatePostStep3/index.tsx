@@ -1,6 +1,7 @@
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
-import { ROLE } from '@app/constant/Constant'
+import { DEFAULT_PARAMS } from '@app/constant/Constant'
+import { getDataListManagePost } from '@app/screens/App/Account/screens/ManageListPost/slice/ManageListPostSlice'
 import { useAppSelector } from '@app/store'
 import { colors, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
@@ -8,12 +9,10 @@ import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import CreatePostApi from '../../api/CreatePostApi'
+import UpdatePostApi from '../../api/UpdatePostApi'
 import ViewBottom from '../../components/ViewBottom'
-import {
-  clearDataCreatePost,
-  updateDataCreatePost,
-} from '../../slice/CreatePostSlice'
+import { Media } from '../../model'
+import { clearDataPost, updateDataPost } from '../../slice/UpdatePostSlice'
 import SelectAddress from './components/SelectAddress'
 import SelectProvince from './components/SelectProvince'
 
@@ -25,20 +24,28 @@ interface address {
   id: number
   name: string
 }
-const CreatePostStep3 = (props: CreatPostStep3Props) => {
+const UpdatePostStep3 = (props: CreatPostStep3Props) => {
   const { lat, long } = useAppSelector(state => state.locationReducer)
-  const dataCreatPost = useAppSelector(state => state.creatPostReducer)
-  const userInfo = useAppSelector(state => state.accountReducer).data
+  const dataPost = useAppSelector(state => state.updatePostReducer)
   const dispatch = useDispatch()
   const { onBack, onNext } = props
-  const [province, setProvince] = useState<address>({ id: 0, name: '' })
-  const [district, setDistrict] = useState<address>({ id: 0, name: '' })
-  const [ward, setWard] = useState<address>({ id: 0, name: '' })
+  const [province, setProvince] = useState<address>({
+    id: dataPost.province_id,
+    name: dataPost.province_name,
+  })
+  const [district, setDistrict] = useState<address>({
+    id: dataPost.district_id,
+    name: dataPost.district_name,
+  })
+  const [ward, setWard] = useState<address>({
+    id: dataPost.ward_id,
+    name: dataPost.ward_name,
+  })
 
   useEffect(() => {
     console.log(province, district, ward)
   }, [province, district, ward])
-  const [address, setAddress] = useState<string>('')
+  const [address, setAddress] = useState<string>(dataPost.address)
 
   const onPost = async () => {
     if (!(province.id !== 0 && district.id !== 0 && ward.id !== 0)) {
@@ -62,18 +69,27 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
       address,
       lat: lat,
       long: long,
+      new_media: dataPost.new_media.map((item: Media) => {
+        return { media_url: item.media_url, type: item.type }
+      }),
     }
-    dispatch(updateDataCreatePost(payload))
+    dispatch(updateDataPost(payload))
     try {
       showLoading()
-      await CreatePostApi.createPost({ ...dataCreatPost, ...payload })
-      dispatch(clearDataCreatePost())
+      await UpdatePostApi.updatePost({ ...dataPost, ...payload })
+      dispatch(clearDataPost())
+
       showMessages(
         R.strings().notification,
-        userInfo.role === ROLE.OFFICER_DISTRICT
-          ? 'Bạn đã đăng bài thành công'
-          : 'Cảm ơn bạn đã đăng bài. Chúng tôi sẽ gửi lại thông báo khi bài của bạn được phê duyệt.',
+        'Bạn đã cập nhật bài viết thành công',
         () => {
+          dispatch(
+            getDataListManagePost({
+              status: 2,
+              limit: DEFAULT_PARAMS.LIMIT,
+              page: DEFAULT_PARAMS.PAGE,
+            })
+          )
           onNext()
         }
       )
@@ -112,7 +128,7 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
   )
 }
 
-export default CreatePostStep3
+export default UpdatePostStep3
 
 const styles = StyleSheet.create({
   v_container: {

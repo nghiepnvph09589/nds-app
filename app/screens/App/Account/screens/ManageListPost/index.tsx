@@ -1,11 +1,11 @@
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { colors, dimensions, fonts } from '@app/theme'
-import React, { useState } from 'react'
-import { StyleSheet, Text } from 'react-native'
-import { isIphoneX } from 'react-native-iphone-x-helper'
-import { ScrollableTab, Tab, Tabs, View } from 'native-base'
-import ListManage from './screens/ListManage'
 import { STATUS_TYPE } from '@app/constant/Constant'
+import { colors, dimensions, fonts } from '@app/theme'
+import { ScrollableTab, Tab, Tabs, View } from 'native-base'
+import React, { useState } from 'react'
+import { StyleSheet } from 'react-native'
+import { isIphoneX } from 'react-native-iphone-x-helper'
+import ListManage from './screens/ListManage'
 
 const ManageListPost = () => {
   const [page, setPage] = useState<number>(0)
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   underlineStyle: {
-    height: 0,
+    height: 1.5,
     backgroundColor: colors.primary,
     borderRadius: 3,
   },

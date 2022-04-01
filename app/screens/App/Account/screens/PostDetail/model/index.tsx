@@ -4,6 +4,7 @@ export type PostDetailData = {
   title: string
   content: string
   address: string
+  reason_request?: string
   address_google: string
   long: number
   lat: number
@@ -21,6 +22,21 @@ export type PostDetailData = {
   DonateRequestMedia: DonateRequestMedia[]
   DonateCategoryDetails: DonateCategoryDetails[]
   BankInfos: BankInfos[]
+  DFProvince: {
+    id: number
+    name: string
+    value: string
+  }
+  DFDistrict: {
+    id: number
+    name: string
+    value: string
+  }
+  DFWard: {
+    id: number
+    name: string
+    value: string
+  }
 }
 export type BankInfos = {
   id: number
@@ -36,6 +52,7 @@ export type DonateRequestMedia = {
   id: string
   type: string
   media_url: string
+  media_path: string
 }
 export type DonateCategoryDetails = {
   id: number
