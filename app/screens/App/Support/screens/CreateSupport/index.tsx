@@ -107,7 +107,7 @@ const CreateSupportScreen = (props: Props) => {
           'Thông báo',
           'Ủng hộ của bạn đã được gửi. Vui lòng chờ xác nhận',
           () => {
-            NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_SUPPORT)
+            NavigationUtil.replace(SCREEN_ROUTER_APP.LIST_SUPPORT)
           }
         )
         hideLoading()

@@ -1,10 +1,10 @@
+import { ROLE, STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import React from 'react'
-import { STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
 import { Source } from 'react-native-fast-image'
 import { useAppSelector } from '@app/store'
 
@@ -25,7 +25,11 @@ const ModalOption = ({
 }) => {
   const userInfo = useAppSelector(state => state.accountReducer.data)
   const checkBtnCancelSupport = () => {
-    if (userInfo.role === 2 && (status === 1 || status === 2)) {
+    if (
+      userInfo.role === ROLE.OFFICER_PROVINCE &&
+      (status === STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT ||
+        status === STATUS_SUPPORT_DETAIL.DISTRICT_ACCEPT)
+    ) {
       return 1
     } else {
       return 0
@@ -33,13 +37,13 @@ const ModalOption = ({
   }
 
   const checkBtnEdit = () => {
-    if (userInfo.role === 3) {
-      if (status === 1 || status === 2) {
+    if (userInfo.role === ROLE.OFFICER_DISTRICT) {
+      if (status === 1 || status === 2 || data?.is_update === 1) {
         return 1
       } else {
         return 0
       }
-    } else if (userInfo.role === 2) {
+    } else if (userInfo.role === ROLE.OFFICER_PROVINCE) {
       if (status === 1 || status === 2 || status === 3) {
         return 1
       } else {
@@ -48,7 +52,21 @@ const ModalOption = ({
     }
   }
 
-  const checkBtnRequestEdit = () => {}
+  const checkBtnRequestEdit = () => {
+    if (userInfo.role === ROLE.OFFICER_PROVINCE) {
+      if ((status === 1 || status === 2) && data?.is_update === 0) {
+        return 1
+      } else {
+        return 0
+      }
+    } else if (userInfo.role === ROLE.OFFICER_DISTRICT) {
+      if (status === 1 && data?.is_update === 0) {
+        return 1
+      } else {
+        return 0
+      }
+    }
+  }
   return (
     <View style={styles.v_ctn_modal}>
       <View style={styles.v_option}>
@@ -60,7 +78,7 @@ const ModalOption = ({
             line
           />
         )}
-        {1 === 1 && (
+        {checkBtnRequestEdit() === 1 && (
           <RowBtn
             onPress={requestEdit}
             source={R.images.ic_request_edit_support}

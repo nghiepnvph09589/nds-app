@@ -19,7 +19,7 @@ const BodyDetail = ({ data }: { data?: dataSupportDetail }) => {
         />
         <RowDetail name={'Người ủng hộ'} value={data?.name} />
         <RowDetail name={'Số điện thoại'} value={data?.phone} />
-        <RowDetail name={'Nội dung'} value={data?.content} />
+        <RowDetail name={'Nội dung'} value={data?.note} />
         <FormSupport data={data} />
         {/* {listImage?.length !== 0 && <ListImage data={data} />} */}
         {listImage?.length !== 0 && (

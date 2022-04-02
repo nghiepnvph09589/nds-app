@@ -125,8 +125,8 @@ const UpdateAccountScreen = () => {
           initialValues={{
             phone: data?.phone,
             name: data?.name,
-            cmt: data?.id_card,
-            dateBirth: data?.birthday,
+            cmt: data?.id_card ? data?.id_card : '',
+            dateBirth: data?.birthday ? data?.birthday : '',
             sex: data?.gender,
             email: data?.email,
             address: data?.address,
