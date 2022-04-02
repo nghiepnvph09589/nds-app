@@ -74,19 +74,24 @@ const ImageModal = ({
       activeOpacity={1}
     >
       {isContainVideo ? (
-        <View
-          style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'black',
-            ...styleView.centerItem,
-          }}
+        <FstImage
+          style={{ width: '100%', height: '100%' }}
+          source={R.images.img_red_cross}
         >
-          <FastImage
-            style={{ width: 42, height: 42 }}
-            source={R.images.ic_play}
-          />
-        </View>
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              ...styleView.centerItem,
+            }}
+          >
+            <FastImage
+              style={{ width: 42, height: 42 }}
+              source={R.images.ic_play}
+            />
+          </View>
+        </FstImage>
       ) : (
         <>
           <FastImage

@@ -13,7 +13,7 @@ export default {
       `/api/v1/app/post/request-update-post/${payload.id}`,
       _.omit(payload, ['id'])
     ),
-  inactivePost: (payload: { id: number }) =>
+  inactivePost: (payload: { id: number; status: number }) =>
     ApiClient.put(
       `/api/v1/app/post/stop-working/${payload.id}`,
       _.omit(payload, ['id'])

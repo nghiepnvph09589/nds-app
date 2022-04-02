@@ -26,6 +26,8 @@ const Position = (props: PositionProps) => {
     <View style={styles.v_container}>
       <MapboxGL.MapView
         style={styles.map}
+        scrollEnabled={false}
+        logoEnabled={false}
         styleURL={MAP_BOX_STYLE}
         ref={useCallback(r => {
           mapRef.current = r

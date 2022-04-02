@@ -25,12 +25,14 @@ const ViewBottom = (props: ViewBottomProps) => {
 
   return (
     <>
-      {type && type !== STATUS_TYPE.COMPLETE ? (
+      {type && type !== STATUS_TYPE.DENY ? (
         <View style={styles.v_button3}>
           <TouchableOpacity onPress={handleApprove} style={styles.v_button2}>
             <FstImage style={styles.icon} source={R.images.ic_approve} />
             <Text style={styles.text}>
-              {userInfo?.role === ROLE.OFFICER_DISTRICT
+              {type === STATUS_TYPE.COMPLETE
+                ? 'Chỉnh sửa'
+                : userInfo?.role === ROLE.OFFICER_DISTRICT
                 ? ' Yêu cầu phê duyệt'
                 : 'Phê duyệt'}
             </Text>

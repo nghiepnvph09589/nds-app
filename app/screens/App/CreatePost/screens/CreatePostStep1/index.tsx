@@ -109,7 +109,7 @@ const CreatPostStep1 = (props: CreatPostStep1Props) => {
         <View>
           <InfoUser
             avatar={
-              userInfo?.profile_picture_url
+              userInfo?.profile_picture_path
                 ? userInfo?.profile_picture_url.replace('http://', 'https://')
                 : ''
             }

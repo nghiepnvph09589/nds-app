@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 16,
     borderColor: colors.border,
-    borderWidth: 1,
+    borderWidth: 1.5,
     marginBottom: 24,
   },
   txt_label: {

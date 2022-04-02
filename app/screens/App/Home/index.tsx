@@ -93,7 +93,7 @@ const Home = () => {
       <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
       <Header
         avatar={
-          userInfo?.profile_picture_url
+          userInfo?.profile_picture_path
             ? userInfo?.profile_picture_url.replace('http://', 'https://')
             : ''
         }

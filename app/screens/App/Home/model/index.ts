@@ -19,6 +19,7 @@ export type ListPostData = {
   content: string
   create_at: Date
   create_by: string
+  profile_picture_path: string
   profile_picture_url: string
   DonateRequestMedia: DonateRequestMedia[]
   Donates: any[]

@@ -1,29 +1,28 @@
-import AddressMap from '@app/screens/App/CreatePost/screens/AddressMap'
-import BannerDetailScreen from '@app/screens/App/Home/screens/BannerDetail'
+import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import ChangePassScreen from '@app/screens/App/Account/screens/ChangePassword'
 import ContactScreen from '@app/screens/App/Account/screens/Contact'
-import CreatePost from '@app/screens/App/CreatePost'
-import CreateSupportScreen from '@app/screens/App/Support/screens/CreateSupport'
-import DetailSupportManage from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage'
-import EditSupportScreen from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage/screens/EditSupportManage'
+import InfoBank from '@app/screens/App/Account/screens/InfoBank'
 import ListPostUser from '@app/screens/App/Account/screens/ListPostUser'
-import ListSupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDetail'
-import ListSupportScreen from '@app/screens/App/Support/screens/ListSupported'
 import ManageListPost from '@app/screens/App/Account/screens/ManageListPost'
-import ManageListSupportScreen from '@app/screens/App/Support/screens/ManageListSupport'
-import NotificationScreen from '@app/screens/App/Notification'
 import PostDetail from '@app/screens/App/Account/screens/PostDetail'
-import React from 'react'
-import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
-import SupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDetail/SupportDetail'
 import TermsScreen from '@app/screens/App/Account/screens/Terms'
 import UpdateAccountScreen from '@app/screens/App/Account/screens/UpdateAccount'
-import UpdatePost from '@app/screens/App/UpdatePost'
+import CreatePost from '@app/screens/App/CreatePost'
+import AddressMap from '@app/screens/App/CreatePost/screens/AddressMap'
+import BannerDetailScreen from '@app/screens/App/Home/screens/BannerDetail'
+import NotificationScreen from '@app/screens/App/Notification'
+import CreateSupportScreen from '@app/screens/App/Support/screens/CreateSupport'
+import ListSupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDetail'
+import SupportDetailScreen from '@app/screens/App/Support/screens/ListSupportDetail/SupportDetail'
+import ListSupportScreen from '@app/screens/App/Support/screens/ListSupported'
+import ManageListSupportScreen from '@app/screens/App/Support/screens/ManageListSupport'
+import DetailSupportManage from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage'
+import EditSupportScreen from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage/screens/EditSupportManage'
 import UpdateSupportManage from '@app/screens/App/Support/screens/ManageListSupport/DetailSupportManage/screens/UpdateSupportManage'
+import UpdatePost from '@app/screens/App/UpdatePost'
 import { createStackNavigator } from '@react-navigation/stack'
-
+import React from 'react'
 const {
-  PRODUCT,
   NOTIFICATION,
   UPDATE_ACCOUNT,
   LIST_SUPPORT,
@@ -44,6 +43,7 @@ const {
   UPDATE_SUPPORT_MANAGE,
   BANNER_DETAIL,
   UPDATE_POST,
+  BANK_INFO,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -68,6 +68,7 @@ const mainScreen = {
   [UPDATE_SUPPORT_MANAGE]: UpdateSupportManage,
   [BANNER_DETAIL]: BannerDetailScreen,
   [UPDATE_POST]: UpdatePost,
+  [BANK_INFO]: InfoBank,
 }
 
 export const StackAppCustomerScreen = () => {

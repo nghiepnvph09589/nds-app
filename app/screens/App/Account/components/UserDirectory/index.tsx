@@ -36,7 +36,7 @@ const UserDirectory = () => {
       }
       style={styles.v_container}
     >
-      {data?.role !== ROLE.CUSTOMER && data?.role !== 5 && (
+      {data?.role !== ROLE.CUSTOMER && data?.role !== ROLE.OFFICER_WARD && (
         <Directory
           onPress1={() => {
             NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST)
