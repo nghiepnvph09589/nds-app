@@ -25,18 +25,10 @@ const ModalOption = ({
 }) => {
   const userInfo = useAppSelector(state => state.accountReducer.data)
   const checkBtnCancelSupport = () => {
-    if (userInfo.role === 3) {
-      if (status === 1) {
-        return 1
-      } else {
-        return 0
-      }
-    } else if (userInfo.role === 2) {
-      if (status === 1 || status === 2) {
-        return 1
-      } else {
-        return 0
-      }
+    if (userInfo.role === 2 && (status === 1 || status === 2)) {
+      return 1
+    } else {
+      return 0
     }
   }
 
