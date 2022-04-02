@@ -188,7 +188,7 @@ const UpdateSupportManage = (props: Props) => {
       <TouchableOpacity onPress={onSubmit} style={styles.btn_submit}>
         <Text
           style={{ ...fonts.semi_bold16, color: colors.white }}
-          children={'Cập nhật'}
+          children={'Lưu'}
         />
       </TouchableOpacity>
     </ScreenWrapper>

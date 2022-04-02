@@ -76,7 +76,8 @@ const DetailSupportScreen = (props: Props) => {
       {data?.status !== STATUS_SUPPORT_DETAIL.DENY &&
         data?.status !== STATUS_SUPPORT_DETAIL.UPDATE_SUPPORT &&
         userInfo.role !== ROLE.OFFICER_WARD &&
-        userInfo.role !== ROLE.CUSTOMER && (
+        userInfo.role !== ROLE.CUSTOMER &&
+        !props.route?.params?.customer && (
           <MenuButton
             id={data?.id}
             onAction={() => {
@@ -88,15 +89,16 @@ const DetailSupportScreen = (props: Props) => {
           />
         )}
 
-      {props.route?.params?.customer && (
-        <BtnUpdateCustomer
-          data={data}
-          onAction={() => {
-            props?.route?.params?.onRefreshData()
-            getData()
-          }}
-        />
-      )}
+      {props.route?.params?.customer &&
+        data?.status !== STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT && (
+          <BtnUpdateCustomer
+            data={data}
+            onAction={() => {
+              props?.route?.params?.onRefreshData()
+              getData()
+            }}
+          />
+        )}
     </ScreenWrapper>
   )
 }
