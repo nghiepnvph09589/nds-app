@@ -12,6 +12,8 @@ export type AccountType = {
   gender?: number
   address?: string
   role: number
+  donate: number
+  post: number
 }
 export type AccountSlice = {
   isError: boolean

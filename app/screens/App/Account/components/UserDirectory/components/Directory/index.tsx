@@ -23,6 +23,8 @@ interface DirectoryProps {
   onPress1: () => void
   onPress2: () => void
   onPress3?: () => void
+  countPost?: number
+  countDonate?: number
   style?: StyleProp<ViewStyle>
 }
 
@@ -37,12 +39,20 @@ const Directory = (props: DirectoryProps) => {
     onPress1,
     onPress2,
     onPress3,
+    countPost,
+    countDonate,
     style,
   } = props
   return (
     <View style={[styles.v_container, style]}>
-      <ViewRow onPress={onPress1} label={label1} source={source1} />
       <ViewRow
+        count={countPost}
+        onPress={onPress1}
+        label={label1}
+        source={source1}
+      />
+      <ViewRow
+        count={countDonate}
         onPress={onPress2}
         label={label2}
         source={source2}
@@ -65,16 +75,24 @@ const ViewRow = ({
   label,
   source,
   onPress,
+  count,
 }: {
   style?: StyleProp<ViewStyle>
   label: string
   source: number | Source
   onPress?: () => void
+  count?: number
 }) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.v_row, style]}>
       <FstImage resizeMode="contain" style={styles.icon} source={source} />
       <Text style={styles.text}>{label}</Text>
+      {!!count && count !== 0 && (
+        <View style={styles.v_count}>
+          <Text style={styles.count}>{count}</Text>
+        </View>
+      )}
+
       <FstImage
         resizeMode="contain"
         style={styles.icon_arrow}
@@ -112,6 +130,18 @@ const styles = StyleSheet.create({
   },
   v_row2: {
     marginTop: 24,
+  },
+  v_count: {
+    backgroundColor: 'red',
+    width: 20,
+    height: 20,
+    borderRadius: 18 / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  count: {
+    ...fonts.semi_bold12,
+    color: 'white',
   },
 })
 

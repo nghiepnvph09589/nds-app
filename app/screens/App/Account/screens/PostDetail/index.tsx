@@ -1,14 +1,19 @@
 import R from '@app/assets/R'
 import { ActionSheet, ActionSheetRef } from '@app/components/ActionSheet'
 import Error from '@app/components/Error/Error'
-import { DEFAULT_PARAMS, ROLE, SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import {
+  DEFAULT_PARAMS,
+  ROLE,
+  SCREEN_ROUTER_APP,
+  STATUS_TYPE,
+} from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import PostImageArea from '@app/screens/App/Home/components/ListPost/components/PostImageArea'
 import { getDataHome } from '@app/screens/App/Home/slice/HomeSlice'
 import { updateDataPost } from '@app/screens/App/UpdatePost/slice/UpdatePostSlice'
 import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
-import { showConfirm } from '@app/utils/AlertHelper'
+import { showMessages, showConfirm } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Tab, Tabs } from 'native-base'
 import React, { useEffect, useState } from 'react'
@@ -101,30 +106,34 @@ const PostDetail = (props: PostDetailProps) => {
   }
 
   const handleApprove = async () => {
-    showConfirm(
-      R.strings().notification,
-      'Bạn có chắc chắn muốn duyệt tin này',
-      async () => {
-        showLoading()
-        try {
-          await PostDetailApi.approvePost({ id, reason: '' })
-          if (userInfo.role === ROLE.OFFICER_PROVINCE) {
-            dispatch(getDataHome({ page: 1 }))
+    if (type === STATUS_TYPE.COMPLETE) {
+      NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
+    } else {
+      showConfirm(
+        R.strings().notification,
+        'Bạn có chắc chắn muốn duyệt tin này',
+        async () => {
+          showLoading()
+          try {
+            await PostDetailApi.approvePost({ id, reason: '' })
+            if (userInfo.role === ROLE.OFFICER_PROVINCE) {
+              dispatch(getDataHome({ page: 1 }))
+            }
+            dispatch(
+              getDataListManagePost({
+                status: 2,
+                limit: DEFAULT_PARAMS.LIMIT,
+                page: DEFAULT_PARAMS.PAGE,
+              })
+            )
+            NavigationUtil.goBack()
+          } catch (error) {
+          } finally {
+            hideLoading()
           }
-          dispatch(
-            getDataListManagePost({
-              status: 2,
-              limit: DEFAULT_PARAMS.LIMIT,
-              page: DEFAULT_PARAMS.PAGE,
-            })
-          )
-          NavigationUtil.goBack()
-        } catch (error) {
-        } finally {
-          hideLoading()
         }
-      }
-    )
+      )
+    }
   }
 
   const toggleModal = () => {
@@ -220,6 +229,7 @@ const PostDetail = (props: PostDetailProps) => {
         <PostImageArea data={dataPostDetail.DonateRequestMedia} />
         {!(!type && type !== 0) && (
           <ViewStatus
+            id={dataPostDetail.id}
             reason={
               type === 0
                 ? dataPostDetail.reason
@@ -264,20 +274,31 @@ const PostDetail = (props: PostDetailProps) => {
       />
       <ActionSheet
         ref={ref}
-        onPressOption={async (item, index) => {
-          if (index === 1) {
+        onPressOption={async item => {
+          if (item.id === 1) {
             setTypeOption(1)
             setTimeout(() => {
               setIsVisible(!isVisible)
             }, 1000)
-          } else if (index === 3) {
+          } else if (item.id === 3) {
+            if (userInfo.role === ROLE.OFFICER_DISTRICT) {
+              showMessages(
+                R.strings().notification,
+                'Bạn không đủ quyền để thực hiện chức năng này'
+              )
+              return
+            }
             setTypeOption(3)
             setTimeout(() => {
               setIsVisible(!isVisible)
             }, 1000)
-          } else if (index === 0) {
+          } else if (item.id === 0) {
             onUpdateDataPostToReducer()
             //NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
+          } else if (item.id === 2) {
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.BANK_INFO, {
+              data: dataPostDetail,
+            })
           }
         }}
         textOptionStyle={styles.textOptionStyle}
@@ -294,15 +315,7 @@ const PostDetail = (props: PostDetailProps) => {
 }
 
 const styles = StyleSheet.create({
-  optionStyle: {
-    // backgroundColor: 'red',
-    // borderBottomLeftRadius: 30,
-    // borderBottomRightRadius: 30,
-    // paddingVertical: 15,
-    // width: '100%',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
+  optionStyle: {},
   textOptionStyle: {
     ...fonts.regular16,
     fontWeight: '500',

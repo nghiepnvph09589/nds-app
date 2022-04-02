@@ -4,48 +4,66 @@ import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import { colors, fonts } from '@app/theme'
 import { STATUS_TYPE } from '@app/constant/Constant'
+import { showConfirm } from '@app/utils/AlertHelper'
+import PostDetailApi from '../../api/PostDetailApi'
 
 interface ViewStatusProps {
   type: number
   status: number
   reason?: string
+  id: number
 }
 
 const ViewStatus = (props: ViewStatusProps) => {
   const [isEnabled, setIsEnabled] = useState(true)
   const [textStatus, setTextStatus] = useState<string>('Đang hoạt động')
-  const { type, status, reason } = props
+  const { type, status, reason, id } = props
 
-  const toggleSwitch = () =>
-    setIsEnabled(previousState => {
-      if (previousState) {
-        setTextStatus('Ngừng hoạt động')
-      } else if (!previousState) {
-        setTextStatus('Đạng hoạt động')
+  const toggleSwitch = () => {
+    showConfirm(
+      R.strings().notification,
+      isEnabled
+        ? 'Bạn có chắc chắn muốn ẩn bài đăng này'
+        : 'Bạn có chắc chắn muốn hiện bài đăng này',
+      async () => {
+        try {
+          await PostDetailApi.inactivePost({ status: isEnabled ? 0 : 1, id })
+          setIsEnabled(previousState => {
+            if (previousState) {
+              setTextStatus('Ngừng hoạt động')
+            } else if (!previousState) {
+              setTextStatus('Đạng hoạt động')
+            }
+            return !previousState
+          })
+        } catch (error) {}
       }
-      return !previousState
-    })
+    )
+  }
+
   return (
     <>
       <View style={styles.v_container}>
-        <View style={styles.v_row2}>
-          <Text style={styles.status}>Trạng thái</Text>
-          <Text
-            style={[
-              styles.status2,
-              { color: isEnabled ? colors.primary : colors.text },
-            ]}
-          >
-            {textStatus}
-          </Text>
-          <Switch
-            trackColor={{ false: '#767577', true: colors.primary }}
-            thumbColor={'#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
+        {type === STATUS_TYPE.COMPLETE && (
+          <View style={styles.v_row2}>
+            <Text style={styles.status}>Trạng thái</Text>
+            <Text
+              style={[
+                styles.status2,
+                { color: isEnabled ? colors.primary : colors.text },
+              ]}
+            >
+              {textStatus}
+            </Text>
+            <Switch
+              trackColor={{ false: '#767577', true: colors.primary }}
+              thumbColor={'#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
+        )}
         <View style={styles.v_row}>
           <FstImage style={styles.icon} source={R.images.ic_post} />
           <Text style={styles.text}>

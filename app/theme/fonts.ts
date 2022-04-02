@@ -70,6 +70,10 @@ export const fonts = {
   //   fontSize: moderateScale(12),
   //   fontFamily: R.fonts.san_semi_bold
   // },
+  semi_bold12: {
+    fontSize: moderateScale(12),
+    fontFamily: R.fonts.san_semi_bold,
+  },
   semi_bold14: {
     fontSize: moderateScale(14),
     fontFamily: R.fonts.san_semi_bold,

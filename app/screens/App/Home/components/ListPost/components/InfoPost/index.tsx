@@ -53,10 +53,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 40 / 2,
+    marginRight: 16,
   },
   v_info: {
     flex: 1,
-    marginLeft: 16,
     marginRight: 25,
   },
   txt_name: {

@@ -62,7 +62,7 @@ const ListPostUser = () => {
         <InfoPost
           time={item?.create_at}
           avatar={
-            item?.profile_picture_url
+            item?.profile_picture_path
               ? item?.profile_picture_url.replace('http://', 'https://')
               : ''
           }

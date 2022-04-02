@@ -1,48 +1,85 @@
+/* eslint-disable react-native/no-inline-styles */
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
-import { colors, fonts } from '@app/theme'
+import RNButton from '@app/components/RNButton/RNButton'
+import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
+import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { dimension } from '@app/constant/Theme'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import { colors, dimensions, fonts } from '@app/theme'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { PostDetailData } from '../../model'
-
+import { PostDetailData } from '../PostDetail/model'
 interface BankInfoProps {
-  data: PostDetailData
+  route: { params: { data: PostDetailData } }
 }
 
-const BankInfo = (props: BankInfoProps) => {
-  const { data } = props
+const InfoBank = (props: BankInfoProps) => {
+  const { data } = props.route.params
   return (
-    <View style={styles.v_container}>
-      <Bank
-        title="Tài khoản chữ thập đỏ"
-        name={data?.BankInfos[0]?.account_name}
-        number={data?.BankInfos[0]?.account_number}
-        branchName={data?.BankInfos[0]?.branch_name}
-      />
-      <Bank
-        title="Tài khoản người nhận hỗ trợ"
-        name={data?.BankInfos[0]?.account_name}
-        number={data?.BankInfos[0]?.account_number}
-        branchName={data?.BankInfos[0]?.branch_name}
-      />
-    </View>
+    <ScreenWrapper
+      back
+      color={colors.text}
+      backgroundHeader="white"
+      forceInset={['left']}
+      titleHeader={'Tài khoản ngân hàng'}
+      children={
+        <>
+          <View style={styles.v_container}>
+            {data.BankInfos.length > 0 ? (
+              <Bank
+                name={data?.BankInfos[0]?.account_name}
+                number={data?.BankInfos[0]?.account_number}
+                branchName={data?.BankInfos[0]?.branch_name}
+              />
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  backgroundColor: colors.white,
+                  justifyContent: 'center',
+                }}
+              >
+                <FstImage
+                  source={R.images.img_empty}
+                  style={styles.imageEmpty}
+                  resizeMode="contain"
+                />
+                <Text style={styles.textEmpty}>
+                  {'Chưa có tài khoản người nhận nào'}
+                </Text>
+              </View>
+            )}
+          </View>
+          <RNButton
+            style={{ marginHorizontal: 15 }}
+            onPress={() => {
+              NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_BANK)
+            }}
+            title={
+              data.BankInfos.length === 0
+                ? 'Thêm tài khoản ngân hàng'
+                : 'Sửa tài khoản ngân hàng'
+            }
+          />
+        </>
+      }
+    />
   )
 }
 
 const Bank = ({
-  title,
   name,
   number,
   branchName,
 }: {
-  title: string
   name: string
   number: number
   branchName: string
 }) => {
   return (
     <>
-      <Text style={styles.txt_label}>{title}</Text>
       <View style={styles.v_bank}>
         <Text style={styles.txt_bank}>Vietcombank</Text>
         <ViewRow label="Tên tài khoản" content={name} />
@@ -52,6 +89,7 @@ const Bank = ({
     </>
   )
 }
+
 const ViewRow = ({
   label,
   content,
@@ -80,11 +118,20 @@ const ViewRow = ({
     </View>
   )
 }
-
-export default BankInfo
+export default InfoBank
 
 const styles = StyleSheet.create({
+  imageEmpty: {
+    width: dimensions.width / 2,
+    height: dimension.width / 2,
+  },
+  textEmpty: {
+    ...fonts.regular14,
+    color: colors.text,
+    marginTop: 10,
+  },
   v_container: {
+    flex: 1,
     paddingVertical: 15,
     paddingHorizontal: 15,
   },
@@ -126,7 +173,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   v_bank: {
-    marginTop: 15,
     paddingVertical: 20,
     paddingHorizontal: 15,
     borderRadius: 16,

@@ -26,7 +26,7 @@ const ListPost = (props: ListPostProps) => {
       <View style={styles.v_item}>
         <InfoPost
           avatar={
-            item?.profile_picture_url
+            item?.profile_picture_path
               ? item?.profile_picture_url.replace('http://', 'https://')
               : ''
           }
