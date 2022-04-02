@@ -37,7 +37,6 @@ const BodyDetail = ({ data }: { data?: dataSupportDetail }) => {
             data={listVideo}
             title={'Video thực tế'}
             videoStyle={{
-              marginTop: 17,
               width: dimensions.width - 46,
               height: dimensions.width - 46,
             }}

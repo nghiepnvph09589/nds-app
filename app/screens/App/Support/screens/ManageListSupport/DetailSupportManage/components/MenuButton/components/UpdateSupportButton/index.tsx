@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     flex: 3,
     backgroundColor: colors.primary,
     justifyContent: 'center',
-    marginRight: 15,
     borderRadius: 16,
     paddingVertical: 14,
   },

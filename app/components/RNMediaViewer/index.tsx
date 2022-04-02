@@ -13,6 +13,7 @@ import FstImage from '../FstImage'
 import { ImageStyle } from 'react-native-fast-image'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import Modal from 'react-native-modal'
+import R from '@app/assets/R'
 import Video from 'react-native-video'
 import { getOffset } from '@app/utils/Responsive'
 
@@ -84,20 +85,26 @@ const RNImageViewer = ({
                       style={[styles.img_update, styleImage]}
                     />
                   ) : (
-                    <Video
-                      paused={true}
-                      source={{ uri: item?.media_url }}
-                      style={[styles.img_update, videoStyle]}
-                    />
-                  )}
-                  {/* <View style={styles.ic_play}>
-                    {item?.type === 2 && (
-                      <FstImage
-                        source={R.images.ic_play}
-                        style={styles.ic_play}
+                    <View
+                      style={{
+                        backgroundColor: colors?.backgroundColor,
+                        borderRadius: 8,
+                        marginBottom: 16,
+                      }}
+                    >
+                      <Video
+                        paused={true}
+                        source={{ uri: item?.media_url }}
+                        style={[styles.video_item, videoStyle]}
                       />
-                    )}
-                  </View> */}
+                      <View style={[styles.v_ic_play, videoStyle]}>
+                        <FstImage
+                          source={R.images.ic_play}
+                          style={styles.ic_play}
+                        />
+                      </View>
+                    </View>
+                  )}
                 </TouchableOpacity>
               )
             })}
@@ -199,13 +206,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   ic_play: {
-    width: 25,
-    height: 25,
+    width: 40,
+    height: 40,
   },
   video: { flex: 1, width: '100%', justifyContent: 'center' },
   v_ic_play: {
     position: 'absolute',
-    left: (dimensions.width - 78) / 12,
-    top: (dimensions.width - 78) / 12,
+    // backgroundColor: 'red',
+    width: dimensions.width - 60,
+    height: dimensions.width - 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  video_item: {
+    width: dimensions.width - 60,
+    height: dimensions.width - 60,
   },
 })

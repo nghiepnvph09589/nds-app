@@ -281,7 +281,7 @@ const PostDetail = (props: PostDetailProps) => {
               setIsVisible(!isVisible)
             }, 1000)
           } else if (item.id === 3) {
-            if (userInfo.role === ROLE.OFFICER_WARD) {
+            if (userInfo.role === ROLE.OFFICER_DISTRICT) {
               showMessages(
                 R.strings().notification,
                 'Bạn không đủ quyền để thực hiện chức năng này'

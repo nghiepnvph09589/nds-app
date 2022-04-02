@@ -2,6 +2,7 @@ import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import ChangePassScreen from '@app/screens/App/Account/screens/ChangePassword'
 import ContactScreen from '@app/screens/App/Account/screens/Contact'
 import InfoBank from '@app/screens/App/Account/screens/InfoBank'
+import UpdateBank from '@app/screens/App/Account/screens/InfoBank/UpdateBank'
 import ListPostUser from '@app/screens/App/Account/screens/ListPostUser'
 import ManageListPost from '@app/screens/App/Account/screens/ManageListPost'
 import PostDetail from '@app/screens/App/Account/screens/PostDetail'
@@ -44,6 +45,7 @@ const {
   BANNER_DETAIL,
   UPDATE_POST,
   BANK_INFO,
+  UPDATE_BANK,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -69,6 +71,7 @@ const mainScreen = {
   [BANNER_DETAIL]: BannerDetailScreen,
   [UPDATE_POST]: UpdatePost,
   [BANK_INFO]: InfoBank,
+  [UPDATE_BANK]: UpdateBank,
 }
 
 export const StackAppCustomerScreen = () => {

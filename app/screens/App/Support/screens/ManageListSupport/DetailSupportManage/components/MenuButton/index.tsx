@@ -125,24 +125,39 @@ const MenuButton = ({
         )
     }
   }
+  const btnShow = () => {
+    if (dataUser?.role === 3) {
+      if (status === 1) {
+        return 1
+      } else if (status === 2 && data?.is_update === 1) {
+        return 1
+      } else {
+        return 0
+      }
+    } else {
+      return 1
+    }
+  }
   // if (error) return <Error reload={() => {}} />
   return (
     <View style={styles.ctn}>
       {showButtonUpdateStatus(status)}
-      <TouchableOpacity
-        onPress={() => {
-          setShow(true)
-        }}
-        style={styles.btn_show}
-      >
-        <Text
-          style={{
-            ...fonts.semi_bold24,
-            color: colors.primary,
+      {btnShow() === 1 && (
+        <TouchableOpacity
+          onPress={() => {
+            setShow(true)
           }}
-          children={'...'}
-        />
-      </TouchableOpacity>
+          style={styles.btn_show}
+        >
+          <Text
+            style={{
+              ...fonts.semi_bold24,
+              color: colors.primary,
+            }}
+            children={'...'}
+          />
+        </TouchableOpacity>
+      )}
       <Modal
         onBackdropPress={() => {
           setShow(false)
@@ -174,6 +189,7 @@ const MenuButton = ({
             setShow(false)
           }}
           status={status}
+          data={data}
         />
       </Modal>
       <ModalReasonCancel
@@ -208,5 +224,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingBottom: 11,
     borderColor: colors.primary,
+    marginLeft: 15,
   },
 })

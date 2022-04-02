@@ -1,14 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { colors, dimensions, fonts } from '@app/theme'
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
-import { PostDetailData } from '../PostDetail/model'
 import RNButton from '@app/components/RNButton/RNButton'
-import Empty from '@app/components/Empty/Empty'
+import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
+import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import { dimension } from '@app/constant/Theme'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import { colors, dimensions, fonts } from '@app/theme'
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { PostDetailData } from '../PostDetail/model'
 interface BankInfoProps {
   route: { params: { data: PostDetailData } }
 }
@@ -53,7 +54,9 @@ const InfoBank = (props: BankInfoProps) => {
           </View>
           <RNButton
             style={{ marginHorizontal: 15 }}
-            onPress={() => {}}
+            onPress={() => {
+              NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_BANK)
+            }}
             title={
               data.BankInfos.length === 0
                 ? 'Thêm tài khoản ngân hàng'

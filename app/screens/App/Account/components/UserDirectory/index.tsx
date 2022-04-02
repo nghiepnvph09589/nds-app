@@ -48,6 +48,8 @@ const UserDirectory = () => {
           source1={R.images.ic_manage_list_post}
           label2={R.strings().manage_list_support}
           source2={R.images.ic_manage_list_support}
+          countPost={data?.post}
+          countDonate={data?.donate}
         />
       )}
 
@@ -60,7 +62,7 @@ const UserDirectory = () => {
         }}
         label1={R.strings().edit_user_info}
         source1={R.images.ic_edit_user}
-        label2={R.strings().supported_list}
+        label2={'Danh sách ủng hộ của bạn'}
         source2={R.images.ic_list2}
         label3={R.strings().list_post}
         source3={R.images.ic_list_post}

@@ -6,6 +6,7 @@ import R from '@app/assets/R'
 import React from 'react'
 import { STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
 import { Source } from 'react-native-fast-image'
+import { useAppSelector } from '@app/store'
 
 const ModalOption = ({
   cancel,
@@ -13,30 +14,61 @@ const ModalOption = ({
   onEdit,
   requestEdit,
   status,
+  data,
 }: {
   cancelSupport: () => void
   cancel: () => void
   onEdit: () => void
   requestEdit: () => void
   status?: number
+  data?: dataSupportDetail
 }) => {
+  const userInfo = useAppSelector(state => state.accountReducer.data)
+  const checkBtnCancelSupport = () => {
+    if (userInfo.role === 2 && (status === 1 || status === 2)) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+
+  const checkBtnEdit = () => {
+    if (userInfo.role === 3) {
+      if (status === 1 || status === 2) {
+        return 1
+      } else {
+        return 0
+      }
+    } else if (userInfo.role === 2) {
+      if (status === 1 || status === 2 || status === 3) {
+        return 1
+      } else {
+        return 0
+      }
+    }
+  }
+
+  const checkBtnRequestEdit = () => {}
   return (
     <View style={styles.v_ctn_modal}>
       <View style={styles.v_option}>
-        <RowBtn
-          onPress={onEdit}
-          source={R.images.ic_edit_support}
-          name={'Chỉnh sửa'}
-          line
-        />
-        <RowBtn
-          onPress={requestEdit}
-          source={R.images.ic_request_edit_support}
-          name={'Yêu cầu chỉnh sửa'}
-          line
-        />
-        {(status === STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT ||
-          status === STATUS_SUPPORT_DETAIL.DISTRICT_ACCEPT) && (
+        {checkBtnEdit() === 1 && (
+          <RowBtn
+            onPress={onEdit}
+            source={R.images.ic_edit_support}
+            name={'Chỉnh sửa'}
+            line
+          />
+        )}
+        {1 === 1 && (
+          <RowBtn
+            onPress={requestEdit}
+            source={R.images.ic_request_edit_support}
+            name={'Yêu cầu chỉnh sửa'}
+            line
+          />
+        )}
+        {checkBtnCancelSupport() === 1 && (
           <RowBtn
             onPress={cancelSupport}
             source={R.images.ic_cancel_support}
