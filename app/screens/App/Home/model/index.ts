@@ -7,6 +7,8 @@ export type Banners = {
 export type HomeSlice = {
   isError: boolean
   isLoading: boolean
+  isLastPage: boolean
+  isLoadMore: boolean
   data: HomeType
 }
 export type HomeType = {
@@ -23,6 +25,12 @@ export type ListPostData = {
   profile_picture_url: string
   DonateRequestMedia: DonateRequestMedia[]
   Donates: any[]
+  User: {
+    role: number
+    name: string
+    profile_picture_url: string
+    profile_picture_path: string
+  }
   DFProvince: {
     id: number
     name: string

@@ -2,11 +2,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, fonts } from '@app/theme'
 
 import FstImage from '@app/components/FstImage'
-import { ListPostData } from '@app/screens/App/Home/model'
+
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import React from 'react'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { ListPostData } from '@app/screens/App/Home/model'
 
 const Support = ({ item }: { item: ListPostData }) => {
   return (

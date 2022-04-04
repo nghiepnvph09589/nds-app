@@ -1,8 +1,8 @@
 import { DEFAULT_PARAMS } from '@app/constant/Constant'
+import { ListPostData } from '@app/screens/App/Home/model'
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import ListPostApi from '../api/ListPostApi'
-import { ListPostData } from '../model'
 
 type ListPostSlice = {
   isError: boolean
@@ -57,13 +57,15 @@ const listPostSlice = createSlice({
           isError: false,
           data: arrayCurrent,
         }
-      } else if (arrayCurrent.length) {
+      } else if (arrayCurrent.listPost.length) {
         newState = {
           isLoading: false,
           isLoadMore: false,
           isLastPage: false,
           isError: false,
-          data: state.data.listPost.concat(arrayCurrent.listPost),
+          data: {
+            listPost: state.data.listPost.concat(arrayCurrent.listPost),
+          },
         }
       } else {
         newState = {
