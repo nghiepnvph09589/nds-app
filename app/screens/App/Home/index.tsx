@@ -1,27 +1,21 @@
+import { updateLocation } from '@app/screens/LocationSlice'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import { Permission, PERMISSION_TYPE } from '@app/utils/AppPermission'
 import React, { useEffect } from 'react'
 import { StatusBar, StyleSheet, View } from 'react-native'
+import Geolocation from 'react-native-geolocation-service'
 import { useDispatch } from 'react-redux'
 import { getDataUserInfo } from '../Account/slices/AccountSlice'
 import Header from './components/Header'
 import ListPost from './components/ListPost'
-import { getDataHome } from './slice/HomeSlice'
-import Geolocation from 'react-native-geolocation-service'
-import { updateLocation } from '@app/screens/LocationSlice'
-import { PERMISSION_TYPE, Permission } from '@app/utils/AppPermission'
-import Error from '@app/components/Error/Error'
 const Home = () => {
   const dispatch = useDispatch()
-  const { isLoading, data, isError } = useAppSelector(
-    state => state.homeReducer
-  )
+
   const userInfo = useAppSelector(state => state.accountReducer.data)
   useEffect(() => {
     getDataUser()
-    getHome()
     setTimeout(() => {
       requestPermission()
     }, 4000)
@@ -44,10 +38,6 @@ const Home = () => {
     if (token) {
       dispatch(getDataUserInfo())
     }
-  }
-
-  const getHome = async () => {
-    dispatch(getDataHome({ page: 1 }))
   }
 
   const getLocation = async () => {
@@ -73,21 +63,6 @@ const Home = () => {
     )
   }
 
-  if (isLoading) {
-    showLoading()
-  } else {
-    hideLoading()
-  }
-  if (isError)
-    return (
-      <Error
-        reload={() => {
-          getHome()
-          getDataUser()
-        }}
-      />
-    )
-
   return (
     <View style={styles.v_container}>
       <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
@@ -99,7 +74,7 @@ const Home = () => {
         }
         name={userInfo?.name}
       />
-      <ListPost data={data.listPost} />
+      <ListPost />
     </View>
   )
 }

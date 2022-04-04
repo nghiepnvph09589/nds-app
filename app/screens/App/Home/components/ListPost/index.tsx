@@ -1,5 +1,13 @@
-import React, { useCallback } from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
+import Empty from '@app/components/Empty/Empty'
+import Error from '@app/components/Error/Error'
+import { DEFAULT_PARAMS } from '@app/constant/Constant'
+import { getDataUserInfo } from '@app/screens/App/Account/slices/AccountSlice'
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
+import { useAppSelector } from '@app/store'
+import { colors } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { DataBanner } from '../../mockup'
 import { ListPostData } from '../../model'
@@ -11,26 +19,78 @@ import InfoPost from './components/InfoPost'
 import PostImageArea from './components/PostImageArea'
 import Support from './components/Support'
 
-interface ListPostProps {
-  data: ListPostData[]
-}
-
-const ListPost = (props: ListPostProps) => {
+const ListPost = () => {
+  const { isLoading, isError, data, isLastPage, isLoadMore } = useAppSelector(
+    state => state.homeReducer
+  )
+  const [body, setBody] = useState({
+    page: DEFAULT_PARAMS.PAGE,
+    limit: DEFAULT_PARAMS.LIMIT,
+  })
   const dispatch = useDispatch()
-  const { data } = props
-  const onRefreshData = () => {
-    dispatch(getDataHome({ page: 1 }))
+
+  useEffect(() => {
+    getHome()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [body])
+
+  const getHome = () => {
+    dispatch(getDataHome(body))
   }
-  const renderItem = useCallback(({ item }: { item: ListPostData }) => {
+
+  const getDataUser = async () => {
+    const token = await AsyncStorageService.getToken()
+    if (token) {
+      dispatch(getDataUserInfo())
+    }
+  }
+
+  var onEndReachedCalledDuringMomentum = true
+
+  const onMomentumScrollBegin = () => {
+    onEndReachedCalledDuringMomentum = false
+  }
+
+  const handleLoadMore = () => {
+    if (!onEndReachedCalledDuringMomentum && !isLastPage && !isLoadMore) {
+      setBody({
+        ...body,
+        page: body.page + 1,
+      })
+    }
+  }
+
+  const onRefreshData = () => {
+    setBody({
+      ...body,
+      page: DEFAULT_PARAMS.PAGE,
+    })
+  }
+
+  if (isLoading) {
+    showLoading()
+  } else {
+    hideLoading()
+  }
+  if (isError)
+    return (
+      <Error
+        reload={() => {
+          getHome()
+          getDataUser()
+        }}
+      />
+    )
+  const renderItem = ({ item }: { item: ListPostData }) => {
     return (
       <View style={styles.v_item}>
         <InfoPost
           avatar={
-            item?.profile_picture_path
-              ? item?.profile_picture_url.replace('http://', 'https://')
+            item?.User?.profile_picture_path
+              ? item?.User.profile_picture_url.replace('http://', 'https://')
               : ''
           }
-          name={item?.name}
+          name={item?.User?.name}
           address={`${item?.DFWard?.name}, ${item?.DFDistrict?.name}, ${item?.DFProvince?.name}`}
           time={item?.create_at}
         />
@@ -42,8 +102,8 @@ const ListPost = (props: ListPostProps) => {
         <Support item={item} />
       </View>
     )
-  }, [])
-  const keyExtractor = useCallback(item => `${item.id}`, [])
+  }
+  const keyExtractor = (item: ListPostData) => `${item.id}`
   return (
     <FlatList
       ListHeaderComponent={
@@ -55,10 +115,22 @@ const ListPost = (props: ListPostProps) => {
       contentContainerStyle={styles.v_list}
       onRefresh={onRefreshData}
       refreshing={false}
-      data={data}
+      data={data.listPost}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       showsVerticalScrollIndicator={false}
+      onEndReachedThreshold={0.1}
+      onMomentumScrollBegin={onMomentumScrollBegin}
+      onEndReached={handleLoadMore}
+      ListFooterComponent={
+        isLoadMore ? (
+          <ActivityIndicator
+            color={colors.colorDefault.placeHolder}
+            style={styles.v_load_more}
+          />
+        ) : null
+      }
+      ListEmptyComponent={<Empty description={'Danh sách rỗng'} />}
     />
   )
 }
@@ -75,5 +147,8 @@ const styles = StyleSheet.create({
   },
   v_list: {
     paddingBottom: 20,
+  },
+  v_load_more: {
+    marginVertical: 15,
   },
 })

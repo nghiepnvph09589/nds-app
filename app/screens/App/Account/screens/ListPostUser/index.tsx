@@ -6,13 +6,13 @@ import ContentPost from '@app/screens/App/Home/components/ListPost/components/Co
 import InfoPost from '@app/screens/App/Home/components/ListPost/components/InfoPost'
 import PostImageArea from '@app/screens/App/Home/components/ListPost/components/PostImageArea'
 import Support from '@app/screens/App/Home/components/ListPost/components/Support'
+import { ListPostData } from '@app/screens/App/Home/model'
 import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { ListPostData } from './model'
 import { getDataListPost } from './slice/ListPostSlice'
 
 const ListPostUser = () => {
@@ -56,7 +56,7 @@ const ListPostUser = () => {
     })
   }
 
-  const renderItem = useCallback(({ item }: { item: ListPostData }) => {
+  const renderItem = ({ item }: { item: ListPostData }) => {
     return (
       <View style={styles.v_item}>
         <InfoPost
@@ -76,7 +76,7 @@ const ListPostUser = () => {
         <Support item={item} />
       </View>
     )
-  }, [])
+  }
 
   if (isLoading) {
     showLoading()
@@ -84,7 +84,7 @@ const ListPostUser = () => {
     hideLoading()
   }
 
-  const keyExtractor = useCallback(item => `${item.id}`, [])
+  const keyExtractor = (item: ListPostData) => `${item.id}`
 
   return (
     <ScreenWrapper
