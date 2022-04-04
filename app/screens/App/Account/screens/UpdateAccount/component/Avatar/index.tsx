@@ -1,5 +1,3 @@
-import R from '@app/assets/R'
-import React from 'react'
 import {
   Dimensions,
   Platform,
@@ -8,7 +6,18 @@ import {
   View,
 } from 'react-native'
 import FastImage, { Source } from 'react-native-fast-image'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+
+import { API_STATUS } from '@app/constant/Constant'
+import R from '@app/assets/R'
+import React from 'react'
+import RegisterApi from '@app/screens/Auth/Register/api/RegisterApi'
+import { UpdateAccount } from '../../model'
+import { getDataUserInfo } from '@app/screens/App/Account/slices/AccountSlice'
 import { launchImageLibrary } from 'react-native-image-picker'
+import { updateAccount } from '../../api'
+import { useAppSelector } from '@app/store'
+import { useDispatch } from 'react-redux'
 
 const { width } = Dimensions.get('window')
 
@@ -19,7 +28,14 @@ const Avatar = ({
   onPress: (value: string) => void
   source: Source | number
 }) => {
+  const dispatch = useDispatch()
+  const data = useAppSelector(state => state.accountReducer.data)
   const selectImagePress = async () => {
+    showLoading()
+    let payload: UpdateAccount = {
+      phone: data?.phone,
+      name: data?.name,
+    }
     try {
       const result: any = await launchImageLibrary({
         mediaType: 'photo',
@@ -34,8 +50,35 @@ const Avatar = ({
           : firstAsset?.uri.replace('file://', '')
 
       onPress(uri)
+      let formData = new FormData()
+      formData.append(`image`, {
+        name: `image/${uri}`,
+        type: 'image/jpeg',
+        uri: uri,
+      })
+      const resAfterUpload: any = await RegisterApi.uploadFile(formData, 1)
+      if (resAfterUpload.data?.filename) {
+        payload = {
+          ...payload,
+          profile_picture_url: resAfterUpload.data?.filename,
+        }
+      }
+      const res = await updateAccount(payload)
+      if (res.code === API_STATUS.SUCCESS) {
+        await dispatch(getDataUserInfo())
+        hideLoading()
+        // showMessages(
+        //   R.strings().notification,
+        //   'Bạn đã cập nhật tài khoản thành công',
+        //   () => {
+        //     NavigationUtil.goBack()
+        //   }
+        // )
+      }
     } catch (error) {
       console.error(error)
+    } finally {
+      hideLoading()
     }
   }
   return (

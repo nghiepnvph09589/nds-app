@@ -18,4 +18,5 @@ interface dataSupportDetail {
   status: number
   title: string
   DonateImages: any[]
+  end_date?: string
 }

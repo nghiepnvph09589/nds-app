@@ -67,7 +67,8 @@ const DEFAULT_OPTIONS: ImageLibraryOptions & CameraOptions = {
 
 export function launchImageLibraryMultiple(
   options: ImageLibraryOptions,
-  callback?: Callback
+  callback?: Callback,
+  loading?: () => void
 ): Promise<ImagePickerResponse> {
   return new Promise(resolve => {
     NativeModules.ImagePickerManager.launchImageLibrary(
@@ -75,10 +76,16 @@ export function launchImageLibraryMultiple(
       (result: any) => {
         if (result.hasOwnProperty('didCancel') && result.didCancel) {
           console.log('User cancelled image picker')
+          if (loading) {
+            loading()
+          }
         } else if (
           result.hasOwnProperty('errorMessage') &&
           result.errorMessage
         ) {
+          if (loading) {
+            loading()
+          }
           console.log('ImagePicker Error: ', result.errorMessage)
         } else if (result?.assets) {
           let arrayImage = result?.assets?.map((item: any) => {
@@ -91,6 +98,9 @@ export function launchImageLibraryMultiple(
               name: item?.fileName,
             }
           })
+          if (loading) {
+            loading()
+          }
           // reactotron.log(result?.assets)
           if (callback) callback(arrayImage)
           resolve(arrayImage)
@@ -102,7 +112,8 @@ export function launchImageLibraryMultiple(
 
 export function launchImageLibrary(
   options: ImageLibraryOptions,
-  callback?: Callback
+  callback?: Callback,
+  loading?: () => void
 ): Promise<ImagePickerResponse> {
   return new Promise(resolve => {
     NativeModules.ImagePickerManager.launchImageLibrary(
@@ -112,11 +123,17 @@ export function launchImageLibrary(
         // resolve(result)
         if (result.hasOwnProperty('didCancel') && result.didCancel) {
           console.log('User cancelled image picker')
+          if (loading) {
+            loading()
+          }
         } else if (
           result.hasOwnProperty('errorMessage') &&
           result.errorMessage
         ) {
           console.log('ImagePicker Error: ', result.errorMessage)
+          if (loading) {
+            loading()
+          }
         } else if (result?.assets) {
           let firstAsset = result?.assets[0]
           // let uri =
@@ -130,6 +147,9 @@ export function launchImageLibrary(
                 : firstAsset?.uri.replace('file://', ''),
             type: MEDIA_TYPE.VIDEO,
             name: firstAsset?.fileName,
+          }
+          if (loading) {
+            loading()
           }
           // reactotron.log(img)
           if (callback) callback(img)

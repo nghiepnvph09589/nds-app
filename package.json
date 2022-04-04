@@ -57,6 +57,7 @@
     "react-native-linear-gradient": "^2.5.6",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^11.0.0",
+    "react-native-onesignal": "^4.3.7",
     "react-native-permissions": "^3.3.1",
     "react-native-reanimated": "^2.1.0",
     "react-native-rename": "^2.9.0",

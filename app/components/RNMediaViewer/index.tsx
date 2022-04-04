@@ -145,7 +145,10 @@ const RNImageViewer = ({
               {fileExtension(props.source.uri) === 1 ? (
                 <FstImage
                   resizeMode="contain"
-                  style={styles.img}
+                  style={{
+                    width: props.style.width,
+                    height: props.style.height,
+                  }}
                   source={{
                     uri: props.source.uri,
                   }}

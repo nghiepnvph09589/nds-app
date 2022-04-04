@@ -9,5 +9,5 @@ export interface CreateSupport {
   name: string
   form_support: number[]
   email: string
-  note: string
+  note?: string
 }

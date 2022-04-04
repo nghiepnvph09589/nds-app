@@ -1,38 +1,39 @@
-import R from '@app/assets/R'
 import { ActionSheet, ActionSheetRef } from '@app/components/ActionSheet'
-import Error from '@app/components/Error/Error'
 import {
   DEFAULT_PARAMS,
   ROLE,
   SCREEN_ROUTER_APP,
   STATUS_TYPE,
 } from '@app/constant/Constant'
-import NavigationUtil from '@app/navigation/NavigationUtil'
-import PostImageArea from '@app/screens/App/Home/components/ListPost/components/PostImageArea'
-import { getDataHome } from '@app/screens/App/Home/slice/HomeSlice'
-import { updateDataPost } from '@app/screens/App/UpdatePost/slice/UpdatePostSlice'
-import { useAppSelector } from '@app/store'
-import { colors, dimensions, fonts } from '@app/theme'
-import { showMessages, showConfirm } from '@app/utils/AlertHelper'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import { Tab, Tabs } from 'native-base'
-import React, { useEffect, useState } from 'react'
-import { Platform, ScrollView, StyleSheet } from 'react-native'
-import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
-import { useDispatch } from 'react-redux'
-import { getDataListManagePost } from '../ManageListPost/slice/ManageListPostSlice'
-import PostDetailApi from './api/PostDetailApi'
-import BankInfo from './components/BankInfo'
-import ButtonBack from './components/ButtonBack'
-import ModalDeny from './components/ModalDeny'
-import Story from './components/Story'
-import ViewBottom from './components/ViewBottom'
-import ViewStatus from './components/ViewStatus'
 import {
   DonateCategoryDetails,
   DonateRequestMedia,
   PostDetailData,
 } from './model'
+import { Platform, ScrollView, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Tab, Tabs } from 'native-base'
+import { colors, dimensions, fonts } from '@app/theme'
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import { showConfirm, showMessages } from '@app/utils/AlertHelper'
+
+import BankInfo from './components/BankInfo'
+import ButtonBack from './components/ButtonBack'
+import Error from '@app/components/Error/Error'
+import ModalDeny from './components/ModalDeny'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import PostDetailApi from './api/PostDetailApi'
+import PostImageArea from '@app/screens/App/Home/components/ListPost/components/PostImageArea'
+import R from '@app/assets/R'
+import Story from './components/Story'
+import ViewBottom from './components/ViewBottom'
+import ViewStatus from './components/ViewStatus'
+import { getDataHome } from '@app/screens/App/Home/slice/HomeSlice'
+import { getDataListManagePost } from '../ManageListPost/slice/ManageListPostSlice'
+import { updateDataPost } from '@app/screens/App/UpdatePost/slice/UpdatePostSlice'
+import { useAppSelector } from '@app/store'
+import { useDispatch } from 'react-redux'
 
 interface PostDetailProps {
   route: { params: { id: number; status: number; type?: number } }
@@ -271,6 +272,7 @@ const PostDetail = (props: PostDetailProps) => {
         }}
         type={type}
         handleApprove={handleApprove}
+        id={dataPostDetail?.id}
       />
       <ActionSheet
         ref={ref}

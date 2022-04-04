@@ -16,7 +16,7 @@ const UpdateSupportButton = ({ onPress }: { onPress: () => void }) => {
         />
         <Text
           style={{ ...fonts.semi_bold16, color: colors.white }}
-          children={'Cập nhật ủng hộ'}
+          children={'Cập nhật hình ảnh'}
         />
       </View>
     </TouchableOpacity>

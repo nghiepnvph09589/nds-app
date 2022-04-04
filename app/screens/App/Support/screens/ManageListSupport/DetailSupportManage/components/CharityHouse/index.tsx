@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { colors, dimensions, fonts } from '@app/theme'
 
+import DateUtils from '@app/utils/DateUtils'
 import React from 'react'
 import RowDetail from '../RowDetail'
 
@@ -10,7 +11,12 @@ const CharityHouse = ({ data }: { data?: dataSupportDetail }) => {
       <Text style={charityHouseStyle.txt_name_v} children={'Nhà hảo tâm'} />
       <RowDetail name={'Họ tên'} value={data?.name} />
       <RowDetail name={'Số điện thoại'} value={data?.phone} />
-      <RowDetail name={'Nội dung'} value={data?.note} />
+      {data?.end_date && (
+        <RowDetail
+          name={'Ngày thực hiện'}
+          value={DateUtils.formatShortDate(data?.end_date)}
+        />
+      )}
       <View style={charityHouseStyle.ctn_list}>
         <Text
           style={charityHouseStyle.txt_form_support}

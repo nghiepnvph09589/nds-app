@@ -1,7 +1,10 @@
+import * as Yup from 'yup'
+
 import {
   API_STATUS,
-  EMAIL_REGEX,
+  NAME_REGEX,
   PHONE_REGEX,
+  ROLE,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
 import {
@@ -17,6 +20,7 @@ import { createSupport, getListFormSupport } from './api'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 
+import { Formik } from 'formik'
 import FstImage from '@app/components/FstImage'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import NavigationUtil from '@app/navigation/NavigationUtil'
@@ -25,17 +29,31 @@ import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import SelectForm from './component/SelectForm'
 import { itemFormSupport } from './model'
+import { useAppSelector } from '@app/store'
 
 interface Props {
   route: { params: { id: number } }
 }
 const CreateSupportScreen = (props: Props) => {
+  const userInfo = useAppSelector(state => state.accountReducer.data)
   const [form, setForm] = useState<number[]>([])
   const [dataFormSupport, setDataFormSupport] = useState<itemFormSupport[]>([])
-  const [name, setName] = useState<string>('')
-  const [phone, setPhone] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [noteMessages, setNoteMessages] = useState<string>('')
+  const Schema = Yup.object().shape({
+    name: Yup.string()
+      .trim()
+      .matches(NAME_REGEX, R.strings().validateEmail)
+      .required(R.strings().name_blank),
+    phone: Yup.string()
+      .matches(PHONE_REGEX, R.strings().validatePhone)
+      .min(10, R.strings().validatePhone)
+      .max(11, R.strings().validatePhone)
+      .required(R.strings().phone_blank),
+    email: Yup.string()
+      .email(R.strings().validateEmail)
+      .required(R.strings().email_blank),
+    // noteMessages: Yup.string().required(R.strings().note_blank),
+  })
+
   const getDataFormSupport = async () => {
     Keyboard.dismiss()
     const payload = {
@@ -54,63 +72,43 @@ const CreateSupportScreen = (props: Props) => {
       hideLoading()
     }
   }
-  const onSubmit = () => {
-    if (!name.trim()) {
-      showMessages(R.strings().notification, 'Vui lòng nhập họ và tên')
-      return
-    }
-    if (!phone.trim()) {
-      showMessages(R.strings().notification, 'Vui lòng nhập số điện thoại')
-      return
-    }
-    if (!PHONE_REGEX.test(phone)) {
-      showMessages(
-        R.strings().notification,
-        'Số điện thoại không đúng định dạng'
-      )
-      return
-    }
-    if (!email.trim()) {
-      showMessages(R.strings().notification, 'Vui lòng nhập email')
-      return
-    }
-    if (!EMAIL_REGEX.test(email)) {
-      showMessages(R.strings().notification, 'Email không đúng định dạng')
-      return
-    }
-    if (!noteMessages.trim()) {
-      showMessages(R.strings().notification, 'Vui lòng nhập lời nhắn')
-      return
-    }
+  const onSubmit = (value: {
+    name: string
+    phone: string
+    email: string
+    // noteMessages: string
+  }) => {
+    showConfirm(R.strings().notification, 'Xác nhận ủng hộ', () => {
+      postSupport(value)
+    })
+  }
+  const postSupport = async (value: {
+    name: string
+    phone: string
+    email: string
+    // noteMessages: string
+  }) => {
     if (!form.length) {
       showMessages(R.strings().notification, 'Vui lòng chọn hình thức ủng hộ')
       return
     }
-    showConfirm(R.strings().notification, 'Xác nhận ủng hộ', () => {
-      postSupport()
-    })
-  }
-  const postSupport = async () => {
     const payload = {
       donate_request_id: props?.route?.params?.id,
-      phone: phone,
-      name: name,
+      phone: value.phone,
+      name: value.name,
       form_support: form,
-      email: email,
-      note: noteMessages,
+      email: value.email,
+      // note: value?.noteMessages,
     }
-    // showLoading()
+    showLoading()
     try {
       const res = await createSupport(payload)
-      if (res?.status === 1) {
-        showMessages(
-          'Thông báo',
-          'Ủng hộ của bạn đã được gửi. Vui lòng chờ xác nhận',
-          () => {
-            NavigationUtil.replace(SCREEN_ROUTER_APP.LIST_SUPPORT)
-          }
-        )
-        hideLoading()
+      if (res?.code === API_STATUS.SUCCESS) {
+        showMessages('Thông báo', 'Ủng hộ của bạn đã được gửi!!', () => {
+          NavigationUtil.replace(SCREEN_ROUTER_APP.LIST_SUPPORT, {
+            pageProvince: userInfo?.role === ROLE?.OFFICER_PROVINCE ? 1 : 0,
+          })
+        })
       }
     } catch (error) {
       console.log(error)
@@ -130,80 +128,117 @@ const CreateSupportScreen = (props: Props) => {
       backgroundHeader="white"
       forceInset={['left']}
       titleHeader={R.strings().support}
+      borderBottomHeader={colors.border}
     >
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="always"
-        style={styles.ctn}
-        contentContainerStyle={styles.content_ctn}
+      <Formik
+        initialValues={{
+          name: userInfo?.name,
+          phone: userInfo?.phone,
+          email: userInfo?.email,
+          // noteMessages: '',
+        }}
+        onSubmit={onSubmit}
+        validationSchema={Schema}
       >
-        <View>
-          <RNTextInput
-            containerStyle={styles.container_input}
-            errorStyle={styles.txt_error}
-            returnKeyType={'next'}
-            inputContainerStyle={styles.v_input}
-            placeholder={R.strings().full_name}
-            //   leftIcon={R.images.ic_user}
-            onChangeText={setName}
-            // onBlur={handleBlur('name')}
-            // onSubmitEditing={() => setSubmitting(true)}
-            value={name}
-            // errorMessage={errors.name}
-            // touched={touched.name}
-            maxLength={255}
-          />
-          <RNTextInput
-            containerStyle={styles.container_input}
-            errorStyle={styles.txt_error}
-            placeholder={R.strings().phone}
-            inputContainerStyle={styles.v_input}
-            returnKeyType={'next'}
-            //   leftIcon={R.images.ic_phone}
-            onChangeText={setPhone}
-            // onBlur={handleBlur('phone')}
-            // onSubmitEditing={() => setSubmitting(true)}
-            value={phone}
-            // errorMessage={errors.phone}
-            // touched={touched.phone}
-            keyboardType="number-pad"
-            maxLength={10}
-          />
-          <RNTextInput
-            containerStyle={styles.container_input}
-            errorStyle={styles.txt_error}
-            placeholder={R.strings().email}
-            inputContainerStyle={styles.v_input}
-            returnKeyType={'next'}
-            //   leftIcon={R.images.ic_email}
-            onChangeText={setEmail}
-            // onBlur={handleBlur('email')}
-            // onSubmitEditing={() => setSubmitting(true)}
-            value={email}
-            // errorMessage={errors.email}
-            // touched={touched.email}
-          />
-          <RNTextInput
-            containerStyle={styles.container_input}
-            errorStyle={styles.txt_error}
-            placeholder={R.strings().note_messages}
-            inputContainerStyle={styles.v_input}
-            returnKeyType={'next'}
-            //   leftIcon={R.images.ic_email}
-            onChangeText={setNoteMessages}
-            // onBlur={handleBlur('noteMessages')}
-            // onSubmitEditing={() => setSubmitting(true)}
-            value={noteMessages}
-            // errorMessage={errors.noteMessages}
-            // touched={touched.noteMessages}
-          />
-          <Text style={styles.txt_form_support} children={'Hình thức ủng hộ'} />
-          <SelectForm data={dataFormSupport} value={form} onChange={setForm} />
-        </View>
-        <TouchableOpacity onPress={onSubmit} style={styles.btn_submit}>
-          <FstImage source={R.images.ic_love2} style={styles.ic_love} />
-          <Text style={styles.txt_submit} children={R.strings().support} />
-        </TouchableOpacity>
-      </KeyboardAwareScrollView>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          setSubmitting,
+          values,
+          errors,
+          touched,
+        }) => (
+          <>
+            <KeyboardAwareScrollView
+              keyboardShouldPersistTaps="always"
+              style={styles.ctn}
+              contentContainerStyle={styles.content_ctn}
+            >
+              <View>
+                <RNTextInput
+                  containerStyle={styles.container_input}
+                  errorStyle={styles.txt_error}
+                  returnKeyType={'next'}
+                  inputContainerStyle={styles.v_input}
+                  placeholder={R.strings().full_name}
+                  //   leftIcon={R.images.ic_user}
+                  onChangeText={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  onSubmitEditing={() => setSubmitting(true)}
+                  value={values.name}
+                  errorMessage={errors.name}
+                  touched={touched.name}
+                  maxLength={255}
+                />
+                <RNTextInput
+                  containerStyle={styles.container_input}
+                  errorStyle={styles.txt_error}
+                  placeholder={R.strings().phone}
+                  inputContainerStyle={styles.v_input}
+                  returnKeyType={'next'}
+                  //   leftIcon={R.images.ic_phone}
+                  onChangeText={handleChange('phone')}
+                  onBlur={handleBlur('phone')}
+                  onSubmitEditing={() => setSubmitting(true)}
+                  value={values.phone}
+                  errorMessage={errors.phone}
+                  touched={touched.phone}
+                  keyboardType="number-pad"
+                  maxLength={10}
+                />
+                <RNTextInput
+                  containerStyle={styles.container_input}
+                  errorStyle={styles.txt_error}
+                  placeholder={R.strings().email}
+                  inputContainerStyle={styles.v_input}
+                  returnKeyType={'next'}
+                  //   leftIcon={R.images.ic_email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  onSubmitEditing={() => setSubmitting(true)}
+                  value={values.email}
+                  errorMessage={errors.email}
+                  touched={touched.email}
+                />
+                {/* <RNTextInput
+                  containerStyle={styles.container_input}
+                  errorStyle={styles.txt_error}
+                  placeholder={R.strings().note_messages}
+                  inputContainerStyle={styles.v_input}
+                  returnKeyType={'next'}
+                  leftIcon={R.images.ic_email}
+                  onChangeText={handleChange('noteMessages')}
+                  onBlur={handleBlur('noteMessages')}
+                  onSubmitEditing={() => setSubmitting(true)}
+                  value={values.noteMessages}
+                  errorMessage={errors.noteMessages}
+                  touched={touched.noteMessages}
+                /> */}
+                <Text
+                  style={styles.txt_form_support}
+                  children={'Hình thức ủng hộ'}
+                />
+                <SelectForm
+                  data={dataFormSupport}
+                  value={form}
+                  onChange={setForm}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={handleSubmit}
+                style={styles.btn_submit}
+              >
+                <FstImage source={R.images.ic_love2} style={styles.ic_love} />
+                <Text
+                  style={styles.txt_submit}
+                  children={'Gửi yêu cầu ủng hộ'}
+                />
+              </TouchableOpacity>
+            </KeyboardAwareScrollView>
+          </>
+        )}
+      </Formik>
     </ScreenWrapper>
   )
 }

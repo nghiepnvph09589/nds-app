@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 
+import { API_STATUS, NAME_REGEX } from '@app/constant/Constant'
 import {
   Keyboard,
   StyleSheet,
@@ -10,14 +11,12 @@ import {
 import React, { useState } from 'react'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
-import { API_STATUS } from '@app/constant/Constant'
 import Avatar from './component/Avatar'
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
-import RegisterApi from '@app/screens/Auth/Register/api/RegisterApi'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import SelectCalendar from './component/SelectCalendar'
 import SelectSex from './component/SelectSex'
@@ -34,7 +33,10 @@ const UpdateAccountScreen = () => {
   const dispatch = useDispatch()
   const data = useAppSelector(state => state.accountReducer.data)
   const updateSchema = Yup.object().shape({
-    name: Yup.string().required(R.strings().name_blank),
+    name: Yup.string()
+      .trim()
+      .matches(NAME_REGEX, R.strings().validateName)
+      .required(R.strings().name_blank),
     cmt: Yup.string()
       .matches(/^.{9,12}$/, 'Số CMT/CCCD không hợp lệ')
       .required('Số CMT/CCCD đang để trống'),
@@ -47,9 +49,9 @@ const UpdateAccountScreen = () => {
   const [profileImage, setProfileImage] = useState<string>(
     data?.profile_picture_path ? data?.profile_picture_url : ''
   )
-  const profileImagePath = data?.profile_picture_path
-    ? data?.profile_picture_url
-    : ''
+  // const profileImagePath = data?.profile_picture_path
+  //   ? data?.profile_picture_url
+  //   : ''
 
   const onSubmitUpdate = async (form: any) => {
     Keyboard.dismiss()
@@ -67,21 +69,21 @@ const UpdateAccountScreen = () => {
         gender: form.sex,
         address: form.address,
       }
-      if (profileImage !== profileImagePath) {
-        let formData = new FormData()
-        formData.append(`image`, {
-          name: `image/${profileImage}`,
-          type: 'image/jpeg',
-          uri: profileImage,
-        })
-        const resAfterUpload: any = await RegisterApi.uploadFile(formData, 1)
-        if (resAfterUpload.data?.filename) {
-          payload = {
-            ...payload,
-            profile_picture_url: resAfterUpload.data?.filename,
-          }
-        }
-      }
+      // if (profileImage !== profileImagePath) {
+      //   let formData = new FormData()
+      //   formData.append(`image`, {
+      //     name: `image/${profileImage}`,
+      //     type: 'image/jpeg',
+      //     uri: profileImage,
+      //   })
+      //   const resAfterUpload: any = await RegisterApi.uploadFile(formData, 1)
+      //   if (resAfterUpload.data?.filename) {
+      //     payload = {
+      //       ...payload,
+      //       profile_picture_url: resAfterUpload.data?.filename,
+      //     }
+      //   }
+      // }
       const res = await updateAccount(payload)
       if (res.code === API_STATUS.SUCCESS) {
         await dispatch(getDataUserInfo())

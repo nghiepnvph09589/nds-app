@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 
 import FstImage from '@app/components/FstImage'
@@ -9,10 +15,12 @@ const ListImage = ({
   listImage,
   deleteImage,
   selectImage,
+  loading,
 }: {
   listImage: any[]
   deleteImage: (index: number) => void
   selectImage: () => void
+  loading: boolean
 }) => {
   return (
     <View style={styles.ctn}>
@@ -43,11 +51,20 @@ const ListImage = ({
               style={styles.img_upload_img}
             />
             <View style={styles.v_upload}>
-              <FstImage
-                source={R.images.ic_upload_img}
-                style={styles.ic_upload_img}
-              />
-              <Text style={styles.txt_upload} children={'Tải ảnh'} />
+              {loading ? (
+                <ActivityIndicator
+                  color={colors.primary}
+                  style={{ marginTop: 5 }}
+                />
+              ) : (
+                <>
+                  <FstImage
+                    source={R.images.ic_upload_img}
+                    style={styles.ic_upload_img}
+                  />
+                  <Text style={styles.txt_upload} children={'Tải ảnh'} />
+                </>
+              )}
             </View>
           </TouchableOpacity>
         )}
@@ -73,6 +90,9 @@ const styles = StyleSheet.create({
   },
   ctn_img: {
     marginRight: 15,
+    width: (dimensions.width - 75) / 4,
+    height: (dimensions.width - 75) / 4,
+    borderRadius: 8,
   },
   img_support: {
     width: (dimensions.width - 75) / 4,

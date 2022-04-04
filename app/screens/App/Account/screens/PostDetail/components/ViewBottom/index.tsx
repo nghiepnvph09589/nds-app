@@ -1,9 +1,3 @@
-import R from '@app/assets/R'
-import FstImage from '@app/components/FstImage'
-import { ROLE, STATUS_TYPE } from '@app/constant/Constant'
-import { useAppSelector } from '@app/store'
-import { colors, dimensions, fonts } from '@app/theme'
-import React from 'react'
 import {
   Platform,
   StyleSheet,
@@ -11,18 +5,49 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import {
+  ROLE,
+  SCREEN_ROUTER,
+  SCREEN_ROUTER_APP,
+  STATUS_TYPE,
+} from '@app/constant/Constant'
+import { colors, dimensions, fonts } from '@app/theme'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
+
+import AsyncStorage from '@react-native-community/async-storage'
+import FstImage from '@app/components/FstImage'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import R from '@app/assets/R'
+import React from 'react'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import { showConfirm } from '@app/utils/AlertHelper'
+import { useAppSelector } from '@app/store'
+import { useDispatch } from 'react-redux'
 
 interface ViewBottomProps {
   type: number | undefined
   handleApprove: () => void
   openOption: () => void
+  id: number
 }
 
 const ViewBottom = (props: ViewBottomProps) => {
   const userInfo = useAppSelector(state => state.accountReducer).data
-  const { type, handleApprove, openOption } = props
-
+  const { type, handleApprove, openOption, id } = props
+  const dispatch = useDispatch()
+  const onSupport = async () => {
+    const token = await AsyncStorage.getItem('token')
+    if (!token) {
+      showConfirm(R.strings().notification, R.strings().please_login, () => {
+        dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
+      })
+      return
+    } else {
+      NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_SUPPORT, {
+        id: id,
+      })
+    }
+  }
   return (
     <>
       {type && type !== STATUS_TYPE.DENY ? (
@@ -44,7 +69,7 @@ const ViewBottom = (props: ViewBottomProps) => {
          <Text style={styles.text}>{R.strings().support}</Text> */}
         </View>
       ) : !type && type !== 0 ? (
-        <TouchableOpacity style={styles.v_button}>
+        <TouchableOpacity onPress={onSupport} style={styles.v_button}>
           <FstImage style={styles.icon} source={R.images.ic_heart} />
           <Text style={styles.text}>{R.strings().support}</Text>
         </TouchableOpacity>

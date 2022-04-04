@@ -32,7 +32,9 @@ const headerComponent = [
     name: 'Từ chối',
   },
 ]
-const ListSupportScreen = () => {
+const ListSupportScreen = (props: {
+  route: { params: { pageProvince: number } }
+}) => {
   const [page, setPage] = useState<number>(0)
   return (
     <ScreenWrapper
@@ -49,6 +51,7 @@ const ListSupportScreen = () => {
     >
       <View style={styles.ctn}>
         <Tabs
+          initialPage={props?.route?.params?.pageProvince || 0}
           page={page}
           tabContainerStyle={styles.tabContainerStyle}
           tabBarUnderlineStyle={styles.underline}

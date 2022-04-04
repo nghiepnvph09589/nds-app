@@ -1,16 +1,41 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { colors, fonts } from '@app/theme'
 
+import AsyncStorage from '@react-native-community/async-storage'
 import FstImage from '@app/components/FstImage'
 import { ListPostData } from '@app/screens/App/Home/model'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import React from 'react'
-import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import { showConfirm } from '@app/utils/AlertHelper'
+import { useDispatch } from 'react-redux'
 
 const Support = ({ item }: { item: ListPostData }) => {
+  const dispatch = useDispatch()
+  const onSupport = async () => {
+    const token = await AsyncStorage.getItem('token')
+    if (!token) {
+      showConfirm(R.strings().notification, R.strings().please_login, () => {
+        dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
+      })
+      return
+    } else {
+      NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_SUPPORT, {
+        id: item?.id,
+      })
+    }
+  }
   return (
-    <View style={styles.v_container}>
+    <TouchableOpacity
+      onPress={() => {
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_SUPPORT_DETAIL, {
+          id: item?.id,
+        })
+      }}
+      style={styles.v_container}
+    >
       <FstImage
         resizeMode="contain"
         style={styles.icon}
@@ -20,9 +45,7 @@ const Support = ({ item }: { item: ListPostData }) => {
       <Text style={styles.txt_number}>{item?.Donates?.length}</Text>
       <TouchableOpacity
         onPress={() => {
-          NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_SUPPORT, {
-            id: item?.id,
-          })
+          onSupport()
         }}
         style={styles.button}
       >
@@ -33,7 +56,7 @@ const Support = ({ item }: { item: ListPostData }) => {
         />
         <Text style={styles.text}>{R.strings().support}</Text>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   )
 }
 

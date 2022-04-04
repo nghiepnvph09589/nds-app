@@ -32,8 +32,12 @@ const UpdateSupportManage = (props: Props) => {
   const [content, setContent] = useState<string>('')
   const [listImage, setListImage] = useState<any[]>([])
   const [video, setVideo] = useState<any>('')
+  const [loadingImage, setLoadingImage] = useState<boolean>(false)
+  const [loadingVideo, setLoadingVideo] = useState<boolean>(false)
+  const [date, setDate] = useState<any>('')
 
   const selectImage = async () => {
+    setLoadingImage(true)
     try {
       await launchImageLibraryMultiple(
         {
@@ -46,28 +50,40 @@ const UpdateSupportManage = (props: Props) => {
         },
         (res: any) => {
           setListImage(listImage.concat(res))
+        },
+        () => {
+          setLoadingImage(false)
         }
       )
     } catch (error) {
     } finally {
-      hideLoading()
+      setLoadingImage(false)
     }
   }
 
-  const selectVideo = () => {
-    launchImageLibrary(
-      {
-        mediaType: 'video',
-        includeBase64: false,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 1,
-        includeExtra: true,
-      },
-      (res: any) => {
-        setVideo(res)
-      }
-    )
+  const selectVideo = async () => {
+    setLoadingVideo(true)
+    try {
+      await launchImageLibrary(
+        {
+          mediaType: 'video',
+          includeBase64: false,
+          maxHeight: 500,
+          maxWidth: 500,
+          selectionLimit: 1,
+          includeExtra: true,
+        },
+        (res: any) => {
+          setVideo(res)
+        },
+        () => {
+          setLoadingVideo(false)
+        }
+      )
+    } catch (error) {
+    } finally {
+      setLoadingVideo(false)
+    }
   }
   const deleteImage = async (index: number) => {
     let list = listImage
@@ -79,13 +95,17 @@ const UpdateSupportManage = (props: Props) => {
   }
 
   const onSubmit = async () => {
-    const listMedia = listImage.concat([video])
+    const listMedia = listImage.concat(video ? [video] : [])
     if (title.trim() === '') {
       showMessages(R.strings().notification, 'Vui lòng nhập tiêu đề')
       return
     }
     if (content.trim() === '') {
       showMessages(R.strings().notification, 'Vui lòng nhập nội dung')
+      return
+    }
+    if (date.trim() === '') {
+      showMessages(R.strings().notification, 'Vui lòng chọn ngày thực hiện')
       return
     }
     if (listMedia.length === 0) {
@@ -98,6 +118,7 @@ const UpdateSupportManage = (props: Props) => {
       let params: any = {
         title: title,
         content: content,
+        end_date: new Date(date).toISOString(),
       }
       if (listMedia.length !== 0) {
         const formData = new FormData()
@@ -143,7 +164,7 @@ const UpdateSupportManage = (props: Props) => {
       reactotron.log!(payload)
       const res = await requestUpdateSupportManage(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        showMessages(R.strings().notification, 'Cập nhật thành công!!', () => {
+        showMessages(R.strings().notification, 'Cập nhật hoàn thành!', () => {
           NavigationUtil.goBack()
           props?.route?.params?.onAction()
         })
@@ -154,6 +175,7 @@ const UpdateSupportManage = (props: Props) => {
       hideLoading()
     }
   }
+  // if (loading) return <Loading />
   return (
     <ScreenWrapper
       back
@@ -161,7 +183,7 @@ const UpdateSupportManage = (props: Props) => {
       color={colors.text}
       backgroundHeader="white"
       forceInset={['left']}
-      titleHeader={'Cập nhật ủng hộ'}
+      titleHeader={'Cập nhật hình ảnh'}
       borderBottomHeader={colors.border}
       style={styles.ctn}
     >
@@ -176,11 +198,13 @@ const UpdateSupportManage = (props: Props) => {
           content={content}
           setTitle={setTitle}
           setContent={setContent}
+          onChange={setDate}
         />
         <ListImage
           listImage={listImage}
           deleteImage={deleteImage}
           selectImage={selectImage}
+          loading={loadingImage}
         />
         <SelectVideo
           onDelete={() => {
@@ -188,6 +212,7 @@ const UpdateSupportManage = (props: Props) => {
           }}
           video={video}
           selectVideo={selectVideo}
+          loading={loadingVideo}
         />
       </ScrollView>
       <TouchableOpacity onPress={onSubmit} style={styles.btn_submit}>

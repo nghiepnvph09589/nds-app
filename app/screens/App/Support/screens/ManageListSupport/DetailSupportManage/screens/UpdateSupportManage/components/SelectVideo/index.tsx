@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 
 import FastImage from 'react-native-fast-image'
@@ -11,10 +17,12 @@ const SelectVideo = ({
   video,
   onDelete,
   selectVideo,
+  loading,
 }: {
   video: any
   onDelete: () => void
   selectVideo: () => void
+  loading: boolean
 }) => {
   return (
     <View style={styles.ctn}>
@@ -44,11 +52,20 @@ const SelectVideo = ({
               style={styles.img_upload_img}
             />
             <View style={styles.v_upload}>
-              <FstImage
-                source={R.images.ic_upload_img}
-                style={styles.ic_upload_img}
-              />
-              <Text style={styles.txt_upload} children={'Tải Video'} />
+              {loading ? (
+                <ActivityIndicator
+                  color={colors.primary}
+                  style={{ marginTop: 5 }}
+                />
+              ) : (
+                <View style={{ alignItems: 'center' }}>
+                  <FstImage
+                    source={R.images.ic_upload_img}
+                    style={styles.ic_upload_img}
+                  />
+                  <Text style={styles.txt_upload} children={'Tải Video'} />
+                </View>
+              )}
             </View>
           </TouchableOpacity>
         )}
