@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import { SCREEN_ROUTER_APP, STATUS_SUPPORT } from '@app/constant/Constant'
 import { ScrollableTab, Tab, Tabs } from 'native-base'
 import { StyleSheet, View } from 'react-native'
 import { dimensions, fonts } from '@app/theme'
 
 import ListSupportedComponent from './ListSuppotedComponent'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
-import { STATUS_SUPPORT } from '@app/constant/Constant'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { colors } from '@app/theme/colors'
 
@@ -42,6 +43,9 @@ const ListSupportScreen = () => {
       forceInset={['left']}
       titleHeader={R.strings().supported_list}
       borderBottomHeader={colors.border}
+      onPressButtonBack={() => {
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.USER)
+      }}
     >
       <View style={styles.ctn}>
         <Tabs

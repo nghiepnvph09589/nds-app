@@ -33,20 +33,25 @@ const UpdateSupportManage = (props: Props) => {
   const [listImage, setListImage] = useState<any[]>([])
   const [video, setVideo] = useState<any>('')
 
-  const selectImage = () => {
-    launchImageLibraryMultiple(
-      {
-        mediaType: 'photo',
-        includeBase64: false,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 4 - listImage.length,
-        includeExtra: true,
-      },
-      (res: any) => {
-        setListImage(listImage.concat(res))
-      }
-    )
+  const selectImage = async () => {
+    try {
+      await launchImageLibraryMultiple(
+        {
+          mediaType: 'photo',
+          includeBase64: false,
+          maxHeight: 500,
+          maxWidth: 500,
+          selectionLimit: 4 - listImage.length,
+          includeExtra: true,
+        },
+        (res: any) => {
+          setListImage(listImage.concat(res))
+        }
+      )
+    } catch (error) {
+    } finally {
+      hideLoading()
+    }
   }
 
   const selectVideo = () => {
