@@ -22,6 +22,7 @@ import Empty from '@app/components/Empty/Empty'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import Error from '@app/components/Error/Error'
 import NavigationUtil from '@app/navigation/NavigationUtil'
+import DateUtils from '@app/utils/DateUtils'
 
 interface ListManageProps {
   status: number
@@ -41,6 +42,7 @@ const ListManage = (props: ListManageProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
+  // eslint-disable-next-line no-shadow
   const getData = (page: number) => {
     setPageList(page)
     const payload = {
@@ -76,6 +78,7 @@ const ListManage = (props: ListManageProps) => {
               id: item.id,
               type: status,
               status: item.status,
+              endDate: item.end_date,
             })
           }}
           style={styles.v_container}
@@ -111,8 +114,8 @@ const ListManage = (props: ListManageProps) => {
               >
                 {item?.title}
               </Text>
-              <Text style={{ ...fonts.regular14, color: '#595959' }}>
-                13/02/2022
+              <Text style={styles.txt_date}>
+                {DateUtils.formatShortDate(item?.create_at)}
               </Text>
             </View>
           </View>
@@ -231,5 +234,9 @@ const styles = StyleSheet.create({
   },
   v_load_more: {
     marginVertical: 15,
+  },
+  txt_date: {
+    ...fonts.regular14,
+    color: '#595959',
   },
 })

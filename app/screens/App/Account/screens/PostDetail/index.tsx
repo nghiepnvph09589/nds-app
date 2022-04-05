@@ -1,4 +1,6 @@
 import { ActionSheet, ActionSheetRef } from '@app/components/ActionSheet'
+import 'moment/locale/vi'
+import moment from 'moment'
 import {
   DEFAULT_PARAMS,
   ROLE,
@@ -10,14 +12,14 @@ import {
   DonateRequestMedia,
   PostDetailData,
 } from './model'
-import { Platform, ScrollView, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Platform, ScrollView, StyleSheet, Text } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { Tab, Tabs } from 'native-base'
 import { colors, dimensions, fonts } from '@app/theme'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
-
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import BankInfo from './components/BankInfo'
 import ButtonBack from './components/ButtonBack'
 import Error from '@app/components/Error/Error'
@@ -36,13 +38,20 @@ import { useAppSelector } from '@app/store'
 import { useDispatch } from 'react-redux'
 
 interface PostDetailProps {
-  route: { params: { id: number; status: number; type?: number } }
+  route: {
+    params: {
+      id: number
+      status: number
+      type?: number
+      endDate: Date | undefined
+    }
+  }
 }
 
 const PostDetail = (props: PostDetailProps) => {
   const dispatch = useDispatch()
   const userInfo = useAppSelector(state => state.accountReducer).data
-  const { id, status, type } = props.route.params
+  const { id, status, type, endDate } = props.route.params
   const [isError, setIsError] = useState<boolean>(false)
   const ref = React.useRef<ActionSheetRef>(null)
   const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -88,6 +97,9 @@ const PostDetail = (props: PostDetailProps) => {
   })
   const [typeOption, setTypeOption] = useState<number>(1)
   const [inputText, setInputText] = useState<string>('')
+  const [isDatePickerVisible, setDatePickerVisibility] =
+    useState<boolean>(false)
+  const end_date = useRef<Date | undefined>(endDate)
   useEffect(() => {
     getDataPostDetail()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,6 +121,12 @@ const PostDetail = (props: PostDetailProps) => {
   const handleApprove = async () => {
     if (type === STATUS_TYPE.COMPLETE) {
       NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
+    } else if (
+      type === STATUS_TYPE.WAIT_CONFIRM &&
+      userInfo.role === ROLE.OFFICER_DISTRICT &&
+      status === 2
+    ) {
+      NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
     } else {
       showConfirm(
         R.strings().notification,
@@ -116,7 +134,11 @@ const PostDetail = (props: PostDetailProps) => {
         async () => {
           showLoading()
           try {
-            await PostDetailApi.approvePost({ id, reason: '' })
+            await PostDetailApi.approvePost({
+              id,
+              reason: '',
+              end_date: end_date.current,
+            })
             if (userInfo.role === ROLE.OFFICER_PROVINCE) {
               dispatch(getDataHome({ page: 1 }))
             }
@@ -212,6 +234,52 @@ const PostDetail = (props: PostDetailProps) => {
     }
   }
 
+  const showDatePicker = () => {
+    showConfirm(
+      R.strings().notification,
+      'Bạn có chắc chắn muốn duyệt tin này',
+      async () => {
+        setDatePickerVisibility(true)
+      }
+    )
+  }
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false)
+  }
+
+  const handleConfirm = async (date: Date) => {
+    const datePicker = moment(date)
+      .add(2, 'day')
+      .startOf('day')
+      .toISOString()
+      .replace(/T.*/gi, 'T00:00:00.000Z')
+    end_date.current = datePicker
+    hideDatePicker()
+    showLoading()
+    try {
+      await PostDetailApi.approvePost({
+        id,
+        reason: '',
+        end_date: end_date.current,
+      })
+      if (userInfo.role === ROLE.OFFICER_PROVINCE) {
+        dispatch(getDataHome({ page: 1 }))
+      }
+      dispatch(
+        getDataListManagePost({
+          status: 2,
+          limit: DEFAULT_PARAMS.LIMIT,
+          page: DEFAULT_PARAMS.PAGE,
+        })
+      )
+      NavigationUtil.goBack()
+    } catch (error) {
+    } finally {
+      hideLoading()
+    }
+  }
+
   if (isError) return <Error reload={getDataPostDetail} />
 
   return (
@@ -267,11 +335,12 @@ const PostDetail = (props: PostDetailProps) => {
       </ScrollView>
       <ButtonBack />
       <ViewBottom
+        status={dataPostDetail?.status}
         openOption={() => {
           ref.current?.show()
         }}
         type={type}
-        handleApprove={handleApprove}
+        handleApprove={endDate ? handleApprove : showDatePicker}
         id={dataPostDetail?.id}
       />
       <ActionSheet
@@ -311,6 +380,19 @@ const PostDetail = (props: PostDetailProps) => {
           { text: 'Tài khoản ngân hàng', id: 2, icon: R.images.ic_credit_card },
           { text: 'Từ chối', id: 3, icon: R.images.ic_cancel_support },
         ]}
+      />
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        locale="vi"
+        confirmTextIOS="Xác nhận"
+        cancelTextIOS="Hủy"
+        customHeaderIOS={() => (
+          <Text style={styles.txt_date_expire}>Ngày hết hạn đăng tin</Text>
+        )}
+        minimumDate={new Date()}
       />
     </>
   )
@@ -379,6 +461,12 @@ const styles = StyleSheet.create({
     width: 77,
     height: 45,
     marginLeft: 12,
+  },
+  txt_date_expire: {
+    alignSelf: 'center',
+    ...fonts.regular16,
+    fontWeight: '500',
+    marginTop: 20,
   },
 })
 

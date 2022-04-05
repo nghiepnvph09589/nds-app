@@ -3,7 +3,11 @@ import _ from 'lodash'
 export default {
   getPostDetail: (payload: { id: number }) =>
     ApiClient.get(`/api/v1/app/post/request/${payload.id}`, {}),
-  approvePost: (payload: { id: number; reason: string }) =>
+  approvePost: (payload: {
+    id: number
+    reason: string
+    end_date?: Date | undefined
+  }) =>
     ApiClient.put(
       `/api/v1/app/post/status-change-post-donate/${payload.id}`,
       _.omit(payload, ['id'])

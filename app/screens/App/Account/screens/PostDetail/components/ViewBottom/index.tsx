@@ -29,11 +29,12 @@ interface ViewBottomProps {
   handleApprove: () => void
   openOption: () => void
   id: number
+  status: number
 }
 
 const ViewBottom = (props: ViewBottomProps) => {
   const userInfo = useAppSelector(state => state.accountReducer).data
-  const { type, handleApprove, openOption, id } = props
+  const { type, handleApprove, openOption, id, status } = props
   const dispatch = useDispatch()
   const onSupport = async () => {
     const token = await AsyncStorage.getItem('token')
@@ -57,8 +58,10 @@ const ViewBottom = (props: ViewBottomProps) => {
             <Text style={styles.text}>
               {type === STATUS_TYPE.COMPLETE
                 ? 'Chỉnh sửa'
+                : userInfo?.role === ROLE.OFFICER_DISTRICT && status === 2
+                ? 'Chỉnh sửa'
                 : userInfo?.role === ROLE.OFFICER_DISTRICT
-                ? ' Yêu cầu phê duyệt'
+                ? 'Yêu cầu phê duyệt'
                 : 'Phê duyệt'}
             </Text>
           </TouchableOpacity>

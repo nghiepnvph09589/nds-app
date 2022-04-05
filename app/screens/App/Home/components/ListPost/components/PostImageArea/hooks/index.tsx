@@ -27,6 +27,8 @@ const IMAGE = [
   'HEIC',
   'PNG',
   'GIF',
+  'WEBP',
+  'JFIF',
 ]
 const VIDEO = ['mp4', 'avi', 'mov', 'MP4', 'AVI', 'MOV']
 

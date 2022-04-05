@@ -70,7 +70,7 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
       dispatch(clearDataCreatePost())
       showMessages(
         R.strings().notification,
-        userInfo.role === ROLE.OFFICER_DISTRICT
+        userInfo.role === ROLE.OFFICER_PROVINCE
           ? 'Bạn đã đăng bài thành công'
           : 'Cảm ơn bạn đã đăng bài. Chúng tôi sẽ gửi lại thông báo khi bài của bạn được phê duyệt.',
         () => {

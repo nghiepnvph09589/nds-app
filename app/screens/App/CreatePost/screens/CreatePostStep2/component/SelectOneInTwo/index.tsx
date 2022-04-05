@@ -39,12 +39,8 @@ const SelectOneInTwo = ({
               style={stylesOr.ic}
             />
             <Text
-              style={[
-                stylesOr.txt,
-                item?.name.length > 14
-                  ? { ...fonts.regular13 }
-                  : { ...fonts.regular16 },
-              ]}
+              numberOfLines={2}
+              style={[stylesOr.txt]}
               children={item?.name}
             />
           </TouchableOpacity>
@@ -77,5 +73,7 @@ const stylesOr = StyleSheet.create({
   },
   txt: {
     marginLeft: 10,
+    flex: 1,
+    ...fonts.regular16,
   },
 })

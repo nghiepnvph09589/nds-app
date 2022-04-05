@@ -5,7 +5,6 @@ import { DonateRequestMedia } from '@app/screens/App/Home/model'
 import { dimensions, styleView } from '@app/theme'
 import React, { useRef } from 'react'
 import { View, ViewStyle } from 'react-native'
-import { createThumbnail } from 'react-native-create-thumbnail'
 import FastImage from 'react-native-fast-image'
 import useMediaData, { MEDIA_TYPE } from './hooks'
 
@@ -25,24 +24,6 @@ const PostImageArea = (props: Props) => {
   )
 
   const count = dataMedia?.length
-
-  const renderThumbnail = async (url: string) => {
-    try {
-      const thumbnail = await createThumbnail({
-        url: url,
-        format: 'jpeg',
-        timeStamp: 0,
-      })
-      return thumbnail.path
-      //setThumbnailVideo(thumbnail.path)
-    } catch (err) {
-      return ''
-      // console.log(err)
-    } finally {
-      return ''
-      //setIsLoadingThumb(false)
-    }
-  }
 
   if (dataMedia[0]?.type === MEDIA_TYPE.VIDEO) {
     urlVideo.current = dataMedia[0].url
