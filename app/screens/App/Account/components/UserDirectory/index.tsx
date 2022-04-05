@@ -62,9 +62,9 @@ const UserDirectory = () => {
         }}
         label1={R.strings().edit_user_info}
         source1={R.images.ic_edit_user}
-        label2={'Danh sách ủng hộ của bạn'}
+        label2={'Danh sách đã ủng hộ'}
         source2={R.images.ic_list2}
-        label3={R.strings().list_post}
+        label3={'Tin đăng của tôi'}
         source3={R.images.ic_list_post}
         onPress3={() => {
           ;``

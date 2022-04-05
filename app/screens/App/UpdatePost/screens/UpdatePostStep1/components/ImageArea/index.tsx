@@ -37,6 +37,7 @@ const ImageArea = (props: ImageAreaProps) => {
           format: 'png',
           timeStamp: 0,
         })
+        reactotron.log!(thumbnail.path)
 
         dataImageVideo[index].urlVideo = thumbnail.path
         setDataImageVideo([...dataImageVideo])

@@ -15,6 +15,7 @@ export type HomeType = {
   listPost: ListPostData[]
 }
 export type ListPostData = {
+  phone: string
   id: number
   name: string
   title: string
@@ -46,6 +47,8 @@ export type ListPostData = {
     name: string
     value: string
   }
+  status: number
+  end_date: Date
 }
 export type DonateRequestMedia = {
   id: string

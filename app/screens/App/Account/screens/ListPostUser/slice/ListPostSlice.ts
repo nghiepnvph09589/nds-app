@@ -26,7 +26,7 @@ const initState: ListPostSlice = {
 
 export const getDataListPost = createAsyncThunk(
   'ListPostSlice',
-  async (payload: { page: number; limit?: number }) => {
+  async (payload: { page: number; limit?: number; status?: number }) => {
     const res = await ListPostApi.getListPost(payload)
     return res
   }

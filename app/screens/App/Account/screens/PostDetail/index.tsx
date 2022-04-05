@@ -44,6 +44,7 @@ interface PostDetailProps {
       status: number
       type?: number
       endDate: Date | undefined
+      typeNavigate?: number
     }
   }
 }
@@ -51,7 +52,7 @@ interface PostDetailProps {
 const PostDetail = (props: PostDetailProps) => {
   const dispatch = useDispatch()
   const userInfo = useAppSelector(state => state.accountReducer).data
-  const { id, status, type, endDate } = props.route.params
+  const { id, status, type, endDate, typeNavigate } = props.route.params
   const [isError, setIsError] = useState<boolean>(false)
   const ref = React.useRef<ActionSheetRef>(null)
   const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -119,14 +120,18 @@ const PostDetail = (props: PostDetailProps) => {
   }
 
   const handleApprove = async () => {
-    if (type === STATUS_TYPE.COMPLETE) {
-      NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
+    if (typeNavigate === 1) {
+      onUpdateDataPostToReducer()
+    } else if (type === STATUS_TYPE.COMPLETE) {
+      onUpdateDataPostToReducer()
     } else if (
       type === STATUS_TYPE.WAIT_CONFIRM &&
       userInfo.role === ROLE.OFFICER_DISTRICT &&
       status === 2
     ) {
-      NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
+      onUpdateDataPostToReducer()
+    } else if (!endDate) {
+      showDatePicker()
     } else {
       showConfirm(
         R.strings().notification,
@@ -334,15 +339,19 @@ const PostDetail = (props: PostDetailProps) => {
         </Tabs>
       </ScrollView>
       <ButtonBack />
-      <ViewBottom
-        status={dataPostDetail?.status}
-        openOption={() => {
-          ref.current?.show()
-        }}
-        type={type}
-        handleApprove={endDate ? handleApprove : showDatePicker}
-        id={dataPostDetail?.id}
-      />
+      {!(typeNavigate === 1 && type !== STATUS_TYPE.EDIT) && (
+        <ViewBottom
+          typeNavigate={typeNavigate}
+          status={dataPostDetail?.status}
+          openOption={() => {
+            ref.current?.show()
+          }}
+          type={type}
+          handleApprove={handleApprove}
+          id={dataPostDetail?.id}
+        />
+      )}
+
       <ActionSheet
         ref={ref}
         onPressOption={async item => {
