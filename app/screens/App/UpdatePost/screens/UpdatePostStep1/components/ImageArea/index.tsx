@@ -27,20 +27,20 @@ const ImageArea = (props: ImageAreaProps) => {
   const { onPress } = props
   const dataPost = useAppSelector(state => state.updatePostReducer)
   const [dataImageVideo, setDataImageVideo] = useState<Media[]>(
-    dataPost.new_media
+    JSON.parse(JSON.stringify(dataPost.new_media))
   )
+
   useEffect(() => {
-    dataImageVideo.forEach(async (item, index) => {
+    const newData = [...dataImageVideo]
+    newData.forEach(async (item, index) => {
       if (item.type === MEDIA_TYPE.VIDEO) {
         const thumbnail = await createThumbnail({
           url: item.url ? item.url : '',
           format: 'png',
           timeStamp: 0,
         })
-        reactotron.log!(thumbnail.path)
-
-        dataImageVideo[index].urlVideo = thumbnail.path
-        setDataImageVideo([...dataImageVideo])
+        newData[index].urlVideo = thumbnail.path
+        setDataImageVideo([...newData])
       }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,12 +73,7 @@ const ImageArea = (props: ImageAreaProps) => {
         const formData = new FormData()
         images.forEach(item => {
           formData.append('image', {
-            uri:
-              Platform.OS !== 'ios'
-                ? item.path
-                : item.sourceURL
-                ? item.sourceURL.replace('file://', '')
-                : '',
+            uri: item.path,
             name:
               Platform.OS !== 'ios'
                 ? item.path.substring(item.path.lastIndexOf('/') + 1)
@@ -127,12 +122,7 @@ const ImageArea = (props: ImageAreaProps) => {
         showLoading()
         const formData = new FormData()
         formData.append('video', {
-          uri:
-            Platform.OS !== 'ios'
-              ? video.path
-              : video.sourceURL
-              ? video.sourceURL.replace('file://', '')
-              : '',
+          uri: video.path,
           name:
             Platform.OS !== 'ios'
               ? video.path.substring(video.path.lastIndexOf('/') + 1)

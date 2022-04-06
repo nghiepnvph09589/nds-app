@@ -139,7 +139,7 @@ const CreatePost = () => {
                     <CreatePostStep3
                       onBack={onBack}
                       onNext={() => {
-                        NavigationUtil.navigate(SCREEN_ROUTER_APP.HOME)
+                        NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_POST)
                       }}
                     />
                   )}

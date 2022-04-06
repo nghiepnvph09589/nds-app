@@ -1,5 +1,6 @@
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { STATUS_TYPE } from '@app/constant/Constant'
+import { SCREEN_ROUTER_APP, STATUS_TYPE } from '@app/constant/Constant'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, dimensions, fonts } from '@app/theme'
 import { ScrollableTab, Tab, Tabs, View } from 'native-base'
 import React, { useState } from 'react'
@@ -40,6 +41,9 @@ const ListPostUser = () => {
   ]
   return (
     <ScreenWrapper
+      onPressButtonBack={() => {
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.USER)
+      }}
       back
       color={colors.text}
       backgroundHeader="white"

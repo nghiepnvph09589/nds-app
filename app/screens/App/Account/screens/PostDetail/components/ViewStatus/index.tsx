@@ -12,12 +12,13 @@ interface ViewStatusProps {
   status: number
   reason?: string
   id: number
+  typeNavigate?: number
 }
 
 const ViewStatus = (props: ViewStatusProps) => {
   const [isEnabled, setIsEnabled] = useState(true)
   const [textStatus, setTextStatus] = useState<string>('Đang hoạt động')
-  const { type, status, reason, id } = props
+  const { type, status, reason, id, typeNavigate } = props
 
   const toggleSwitch = () => {
     showConfirm(
@@ -44,7 +45,7 @@ const ViewStatus = (props: ViewStatusProps) => {
   return (
     <>
       <View style={styles.v_container}>
-        {type === STATUS_TYPE.COMPLETE && (
+        {type === STATUS_TYPE.COMPLETE && typeNavigate !== 1 && (
           <View style={styles.v_row2}>
             <Text style={styles.status}>Trạng thái</Text>
             <Text

@@ -101,6 +101,7 @@ const PostDetail = (props: PostDetailProps) => {
   const [isDatePickerVisible, setDatePickerVisibility] =
     useState<boolean>(false)
   const end_date = useRef<Date | undefined>(endDate)
+
   useEffect(() => {
     getDataPostDetail()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -130,7 +131,7 @@ const PostDetail = (props: PostDetailProps) => {
       status === 2
     ) {
       onUpdateDataPostToReducer()
-    } else if (!endDate) {
+    } else if (!endDate && userInfo.role === ROLE.OFFICER_PROVINCE) {
       showDatePicker()
     } else {
       showConfirm(
@@ -142,7 +143,7 @@ const PostDetail = (props: PostDetailProps) => {
             await PostDetailApi.approvePost({
               id,
               reason: '',
-              end_date: end_date.current,
+              end_date: end_date.current ? end_date.current : '',
             })
             if (userInfo.role === ROLE.OFFICER_PROVINCE) {
               dispatch(getDataHome({ page: 1 }))
@@ -202,7 +203,9 @@ const PostDetail = (props: PostDetailProps) => {
       id: dataPostDetail.id,
     }
     dispatch(updateDataPost(payload))
-    NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
+    NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST, {
+      typeNavigate: typeNavigate,
+    })
   }
   const onSubmit = () => {
     setIsSubmit(true)
@@ -303,6 +306,7 @@ const PostDetail = (props: PostDetailProps) => {
         <PostImageArea data={dataPostDetail.DonateRequestMedia} />
         {!(!type && type !== 0) && (
           <ViewStatus
+            typeNavigate={typeNavigate}
             id={dataPostDetail.id}
             reason={
               type === 0
@@ -374,7 +378,6 @@ const PostDetail = (props: PostDetailProps) => {
             }, 1000)
           } else if (item.id === 0) {
             onUpdateDataPostToReducer()
-            //NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST)
           } else if (item.id === 2) {
             NavigationUtil.navigate(SCREEN_ROUTER_APP.BANK_INFO, {
               data: dataPostDetail,

@@ -51,19 +51,20 @@ const ImageArea = (props: ImageAreaProps) => {
       mediaType: 'photo',
       multiple: true,
     }).then(async images => {
-      console.log(images)
+      reactotron.log!(images)
       const dataImage = dataImageVideo.filter(
         item => item.typeMedia === MEDIA_TYPE.IMAGE
       )
       if (dataImage.length + images.length <= 10) {
         const arrayImage = images.map((item: Image) => {
           return {
-            uri:
-              Platform.OS !== 'ios'
-                ? item.path
-                : item.sourceURL
-                ? item.sourceURL.replace('file://', '')
-                : '',
+            uri: item.path,
+            // uri:
+            //   Platform.OS !== 'ios'
+            //     ? item.path
+            //     : item.sourceURL
+            //     ? item.sourceURL.replace('file://', '')
+            //     : '',
             typeMedia: MEDIA_TYPE.IMAGE,
             type: item.mime,
             name:
@@ -96,25 +97,14 @@ const ImageArea = (props: ImageAreaProps) => {
       if (dataVideo.length === 0) {
         try {
           const thumbnail = await createThumbnail({
-            url:
-              Platform.OS !== 'ios'
-                ? video.path
-                : video.sourceURL
-                ? video.sourceURL.replace('file://', '')
-                : '',
-
+            url: video.path,
             format: 'png',
             timeStamp: 0,
           })
           const arrayVideo = [
             {
               urlThumbnail: thumbnail.path,
-              uri:
-                Platform.OS !== 'ios'
-                  ? video.path
-                  : video.sourceURL
-                  ? video.sourceURL.replace('file://', '')
-                  : video.sourceURL,
+              uri: video.path,
               typeMedia: MEDIA_TYPE.VIDEO,
               type: video.mime,
               name:

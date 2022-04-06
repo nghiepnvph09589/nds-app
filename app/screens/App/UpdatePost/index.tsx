@@ -11,13 +11,16 @@ import StepIndicator from 'react-native-step-indicator'
 import Swiper from 'react-native-swiper'
 import { useDispatch } from 'react-redux'
 import UpdatePostStep1 from './screens/UpdatePostStep1'
-
-import CreatePostStep2 from './screens/UpdatePostStep2'
+import UpdatePostStep2 from './screens/UpdatePostStep2'
 import UpdatePostStep3 from './screens/UpdatePostStep3'
-
 import { clearDataPost } from './slice/UpdatePostSlice'
 
-const UpdatePost = () => {
+interface UpdatePostProps {
+  route: { params: { typeNavigate: number } }
+}
+
+const UpdatePost = (props: UpdatePostProps) => {
+  const { typeNavigate } = props.route?.params
   const dispatch = useDispatch()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -136,14 +139,19 @@ const UpdatePost = () => {
                       onNext={onNext}
                     />
                   ) : index === 1 ? (
-                    <CreatePostStep2 onBack={onBack} onNext={onNext} />
+                    <UpdatePostStep2 onBack={onBack} onNext={onNext} />
                   ) : (
                     <UpdatePostStep3
+                      typeNavigate={typeNavigate}
                       onBack={onBack}
                       onNext={() => {
-                        NavigationUtil.navigate(
-                          SCREEN_ROUTER_APP.MANAGE_LIST_POST
-                        )
+                        if (typeNavigate === 2) {
+                          NavigationUtil.navigate(
+                            SCREEN_ROUTER_APP.MANAGE_LIST_POST
+                          )
+                        } else {
+                          NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_POST)
+                        }
                       }}
                     />
                   )}

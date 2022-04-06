@@ -15,16 +15,18 @@ const BankInfo = (props: BankInfoProps) => {
     <View style={styles.v_container}>
       <Bank
         title="Tài khoản chữ thập đỏ"
-        name={data?.BankInfos[0]?.account_name}
-        number={data?.BankInfos[0]?.account_number}
-        branchName={data?.BankInfos[0]?.branch_name}
+        name={data?.BankInfos[data?.BankInfos.length - 1]?.account_name}
+        number={data?.BankInfos[data?.BankInfos.length - 1]?.account_number}
+        branchName={data?.BankInfos[data?.BankInfos.length - 1]?.branch_name}
       />
-      <Bank
-        title="Tài khoản người nhận hỗ trợ"
-        name={data?.BankInfos[0]?.account_name}
-        number={data?.BankInfos[0]?.account_number}
-        branchName={data?.BankInfos[0]?.branch_name}
-      />
+      {data?.BankInfos.length > 1 && (
+        <Bank
+          title="Tài khoản người nhận hỗ trợ"
+          name={data?.BankInfos[0]?.account_name}
+          number={data?.BankInfos[0]?.account_number}
+          branchName={data?.BankInfos[0]?.branch_name}
+        />
+      )}
     </View>
   )
 }

@@ -45,10 +45,11 @@ const UpdateSupportManage = (props: Props) => {
           includeBase64: false,
           maxHeight: 500,
           maxWidth: 500,
-          selectionLimit: 4 - listImage.length,
+          selectionLimit: 10 - listImage.length,
           includeExtra: true,
         },
         (res: any) => {
+          reactotron.log!(res)
           setListImage(listImage.concat(res))
         },
         () => {

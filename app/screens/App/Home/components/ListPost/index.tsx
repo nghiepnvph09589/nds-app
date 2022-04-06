@@ -114,8 +114,13 @@ const ListPost = () => {
       }
       contentContainerStyle={styles.v_list}
       onRefresh={onRefreshData}
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{
+        backgroundColor:
+          data?.listPost.length === 0 ? 'white' : colors.backgroundColor,
+      }}
       refreshing={false}
-      data={data.listPost}
+      data={data?.listPost}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       showsVerticalScrollIndicator={false}

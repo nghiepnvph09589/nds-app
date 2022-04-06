@@ -1,6 +1,7 @@
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import { DEFAULT_PARAMS } from '@app/constant/Constant'
+import { getDataListPost } from '@app/screens/App/Account/screens/ListPostUser/slice/ListPostSlice'
 import { getDataListManagePost } from '@app/screens/App/Account/screens/ManageListPost/slice/ManageListPostSlice'
 import { useAppSelector } from '@app/store'
 import { colors, fonts } from '@app/theme'
@@ -19,6 +20,7 @@ import SelectProvince from './components/SelectProvince'
 interface CreatPostStep3Props {
   onBack: () => void
   onNext: () => void
+  typeNavigate?: number
 }
 interface address {
   id: number
@@ -28,7 +30,7 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
   const { lat, long } = useAppSelector(state => state.locationReducer)
   const dataPost = useAppSelector(state => state.updatePostReducer)
   const dispatch = useDispatch()
-  const { onBack, onNext } = props
+  const { onBack, onNext, typeNavigate } = props
   const [province, setProvince] = useState<address>({
     id: dataPost.province_id,
     name: dataPost.province_name,
@@ -83,13 +85,23 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
         R.strings().notification,
         'Bạn đã cập nhật bài viết thành công',
         () => {
-          dispatch(
-            getDataListManagePost({
-              status: 2,
-              limit: DEFAULT_PARAMS.LIMIT,
-              page: DEFAULT_PARAMS.PAGE,
-            })
-          )
+          if (typeNavigate === 2) {
+            dispatch(
+              getDataListManagePost({
+                status: 2,
+                limit: DEFAULT_PARAMS.LIMIT,
+                page: DEFAULT_PARAMS.PAGE,
+              })
+            )
+          } else {
+            dispatch(
+              getDataListPost({
+                status: 1,
+                limit: DEFAULT_PARAMS.LIMIT,
+                page: DEFAULT_PARAMS.PAGE,
+              })
+            )
+          }
           onNext()
         }
       )

@@ -79,6 +79,7 @@ const ListManage = (props: ListManageProps) => {
               type: status,
               status: item.status,
               endDate: item.end_date,
+              typeNavigate: 2,
             })
           }}
           style={styles.v_container}

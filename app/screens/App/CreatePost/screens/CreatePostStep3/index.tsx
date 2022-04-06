@@ -1,6 +1,7 @@
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
-import { ROLE } from '@app/constant/Constant'
+import { DEFAULT_PARAMS, ROLE } from '@app/constant/Constant'
+import { getDataListPost } from '@app/screens/App/Account/screens/ListPostUser/slice/ListPostSlice'
 import { useAppSelector } from '@app/store'
 import { colors, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
@@ -74,6 +75,13 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
           ? 'Bạn đã đăng bài thành công'
           : 'Cảm ơn bạn đã đăng bài. Chúng tôi sẽ gửi lại thông báo khi bài của bạn được phê duyệt.',
         () => {
+          dispatch(
+            getDataListPost({
+              status: 2,
+              limit: DEFAULT_PARAMS.LIMIT,
+              page: DEFAULT_PARAMS.PAGE,
+            })
+          )
           onNext()
         }
       )
