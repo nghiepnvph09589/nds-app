@@ -42,7 +42,7 @@ const Header = (props: HeaderProps) => {
             style={styles.v_name}
           >
             <Text style={styles.txt_name}>
-              {!!name ? name : `${R.strings().login}`}
+              {name ? name : `${R.strings().login}`}
             </Text>
           </TouchableOpacity>
 

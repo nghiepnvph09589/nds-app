@@ -20,7 +20,7 @@ const InfoPost = (props: InfoPost) => {
       <FstImage
         resizeMode="cover"
         style={styles.avatar}
-        source={avatar ? { uri: avatar } : R.images.img_avatar3}
+        source={!!avatar ? { uri: avatar } : R.images.img_avatar3}
       />
       <View style={styles.v_info}>
         <Text style={styles.txt_name}>

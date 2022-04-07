@@ -7,7 +7,13 @@ import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native'
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import { useDispatch } from 'react-redux'
 import { DataBanner } from '../../mockup'
 import { ListPostData } from '../../model'
@@ -86,8 +92,8 @@ const ListPost = () => {
       <View style={styles.v_item}>
         <InfoPost
           avatar={
-            item?.User?.profile_picture_path
-              ? item?.User.profile_picture_url.replace('http://', 'https://')
+            item?.User?.profile_picture_url
+              ? item?.User.profile_picture_path.replace('http://', 'https://')
               : ''
           }
           name={item?.User?.name}

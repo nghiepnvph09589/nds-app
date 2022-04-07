@@ -7,17 +7,35 @@ import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import isEqual from 'react-fast-compare'
 import { StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Yup from 'yup'
+import BankApi from '../api/BankApi'
+import DropdownBottomSheet, {
+  renderButtonText,
+  renderRow,
+} from '@app/components/DropdownBottom'
 
-interface ChangePassProps {
+interface UpdateBankProps {
   route: { params: { user_id: string } }
 }
 
-const UpdateBankComponent = (props: ChangePassProps) => {
+const UpdateBankComponent = (props: UpdateBankProps) => {
+  const [dataBank, setDataBank] = useState([])
+  useEffect(() => {
+    getDataBank()
+  }, [])
+  const [bankName, setBankName] = useState('')
+  const [bankId, setBankId] = useState(0)
+
+  const getDataBank = async () => {
+    try {
+      const res = await BankApi.getListBank({})
+      setDataBank(res.data)
+    } catch (error) {}
+  }
   const UpdateBankSchema = Yup.object().shape({
     accountName: Yup.string()
       .trim()
@@ -33,6 +51,7 @@ const UpdateBankComponent = (props: ChangePassProps) => {
     accountNumber: string
     branchName: string
   }) => {
+    console.log(item)
     // if (item.password !== item.confirmPassword) {
     //   showMessages(
     //     R.strings().notification,
@@ -83,6 +102,26 @@ const UpdateBankComponent = (props: ChangePassProps) => {
               touched,
             }) => (
               <>
+                <DropdownBottomSheet
+                  isRequire
+                  data={dataBank}
+                  defaultValue={'Chọn ngân hàng'}
+                  renderRow={(item, index, isSelected) =>
+                    renderRow(item.name, index, isSelected)
+                  }
+                  // textStyle={
+                  //   { color: colors.text }
+                  //   // !!provinceId && { color: colors.colorDefault.text }
+                  // }
+                  isTextInput
+                  renderButtonText={item => renderButtonText(item.name)}
+                  onSelect={(index, item) => {
+                    setBankId(item.id)
+                    setBankName(item.name)
+                  }}
+                  nameAtr="name"
+                  keyExtractor="id"
+                />
                 <RNTextInput
                   containerStyle={styles.v_container_input}
                   errorStyle={styles.txt_error}
@@ -125,7 +164,7 @@ const UpdateBankComponent = (props: ChangePassProps) => {
                 <RNButton
                   onPress={handleSubmit}
                   style={styles.v_button}
-                  title={R.strings().confirm}
+                  title={R.strings().save}
                 />
               </>
             )}
@@ -141,6 +180,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingHorizontal: 15,
+    paddingTop: 15,
   },
   v_note: {
     textAlign: 'center',

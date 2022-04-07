@@ -130,6 +130,7 @@ function strings() {
     manage_list_support: I18n.t('manage_list_support', { defaultValue: '' }),
     note_messages: I18n.t('note_messages', { defaultValue: '' }),
     note_blank: I18n.t('note_blank', { defaultValue: '' }),
+    enter_search_text: I18n.t('enter_search_text', { defaultValue: '' }),
   }
 }
 export default strings
