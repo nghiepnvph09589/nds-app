@@ -1,10 +1,15 @@
 import R from '@app/assets/R'
+import DropdownBottomSheet, {
+  renderButtonText,
+  renderRow,
+} from '@app/components/DropdownBottom'
 import RNButton from '@app/components/RNButton/RNButton'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { NAME_REGEX, SCREEN_ROUTER_AUTH } from '@app/constant/Constant'
+import { NAME_REGEX, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, fonts } from '@app/theme'
+import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { Formik } from 'formik'
 import React, { memo, useEffect, useState } from 'react'
@@ -12,28 +17,34 @@ import isEqual from 'react-fast-compare'
 import { StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Yup from 'yup'
+import { Bank } from '..'
 import BankApi from '../api/BankApi'
-import DropdownBottomSheet, {
-  renderButtonText,
-  renderRow,
-} from '@app/components/DropdownBottom'
 
 interface UpdateBankProps {
-  route: { params: { user_id: string } }
+  route: {
+    params: {
+      dataBank: Bank
+      id: number
+      callback: (id: number) => Promise<void>
+    }
+  }
 }
 
 const UpdateBankComponent = (props: UpdateBankProps) => {
-  const [dataBank, setDataBank] = useState([])
+  const { id, dataBank } = props.route.params
+  const [listBank, setListBank] = useState([])
+
   useEffect(() => {
     getDataBank()
   }, [])
-  const [bankName, setBankName] = useState('')
-  const [bankId, setBankId] = useState(0)
+
+  const [bankName, setBankName] = useState(dataBank?.DFBank?.name)
+  const [bankId, setBankId] = useState(dataBank?.bank_id)
 
   const getDataBank = async () => {
     try {
       const res = await BankApi.getListBank({})
-      setDataBank(res.data)
+      setListBank(res.data)
     } catch (error) {}
   }
   const UpdateBankSchema = Yup.object().shape({
@@ -51,22 +62,40 @@ const UpdateBankComponent = (props: UpdateBankProps) => {
     accountNumber: string
     branchName: string
   }) => {
-    console.log(item)
-    // if (item.password !== item.confirmPassword) {
-    //   showMessages(
-    //     R.strings().notification,
-    //     R.strings().confirm_password_not_success
-    //   )
-    //   return
-    // }
+    if (!bankId) {
+      showMessages(R.strings().notification, 'Vui lòng chọn ngân hàng')
+      return
+    }
+    const payloadCreateBank = {
+      donate_request_id: id,
+      bank_id: bankId,
+      bank_name: bankName,
+      account_name: item.accountName,
+      account_number: item.accountNumber,
+      branch_name: item.branchName,
+      type: 1,
+    }
+    const payloadUpdateBank = {
+      id: dataBank.id,
+      bank_id: bankId,
+      bank_name: bankName,
+      account_name: item.accountName,
+      account_number: item.accountNumber,
+      branch_name: item.branchName,
+      type: 1,
+    }
+
     try {
       showLoading()
-      // await ChangePassApi.changePass({
-      //   user_id: props.route.params.user_id,
-      //   new_password: item.password,
-      // })
+      if (dataBank.id === 0) {
+        await BankApi.createBank(payloadCreateBank)
+      } else {
+        await BankApi.updateBank(payloadUpdateBank)
+      }
+
+      // props.route.params.callback({id: res.})
       hideLoading()
-      NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN)
+      NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST)
     } catch (error) {
       hideLoading()
     }
@@ -77,7 +106,11 @@ const UpdateBankComponent = (props: UpdateBankProps) => {
       color={colors.text}
       backgroundHeader="white"
       forceInset={['left']}
-      titleHeader={'Sửa tài khoản ngân hàng'}
+      titleHeader={
+        dataBank.id === 0
+          ? 'Thêm tài khoản ngân hàng'
+          : 'Sửa tài khoản ngân hàng'
+      }
       children={
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="always"
@@ -85,9 +118,12 @@ const UpdateBankComponent = (props: UpdateBankProps) => {
         >
           <Formik
             initialValues={{
-              accountName: '',
-              accountNumber: '',
-              branchName: '',
+              accountName: dataBank.account_name,
+              accountNumber:
+                dataBank.account_number === 0
+                  ? ''
+                  : dataBank.account_number.toString(),
+              branchName: dataBank.branch_name,
             }}
             onSubmit={_onSubmit}
             validationSchema={UpdateBankSchema}
@@ -104,15 +140,16 @@ const UpdateBankComponent = (props: UpdateBankProps) => {
               <>
                 <DropdownBottomSheet
                   isRequire
-                  data={dataBank}
-                  defaultValue={'Chọn ngân hàng'}
+                  data={listBank}
+                  defaultValue={
+                    dataBank.DFBank.name
+                      ? dataBank.DFBank.name
+                      : 'Chọn ngân hàng'
+                  }
                   renderRow={(item, index, isSelected) =>
                     renderRow(item.name, index, isSelected)
                   }
-                  // textStyle={
-                  //   { color: colors.text }
-                  //   // !!provinceId && { color: colors.colorDefault.text }
-                  // }
+                  textStyle={!!dataBank.DFBank.id && { color: colors.text }}
                   isTextInput
                   renderButtonText={item => renderButtonText(item.name)}
                   onSelect={(index, item) => {
@@ -147,6 +184,7 @@ const UpdateBankComponent = (props: UpdateBankProps) => {
                   value={values.accountNumber}
                   errorMessage={errors.accountNumber}
                   touched={touched.accountNumber}
+                  keyboardType="number-pad"
                 />
                 <RNTextInput
                   containerStyle={styles.v_container_input2}
