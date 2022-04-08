@@ -20,7 +20,7 @@ const ListImage = ({
   listImage: any[]
   deleteImage: (index: number) => void
   selectImage: () => void
-  loading: boolean
+  loading?: boolean
 }) => {
   return (
     <View style={styles.ctn}>
@@ -28,7 +28,14 @@ const ListImage = ({
       <View style={styles.v_list_img}>
         {listImage.map((item: any, index: number) => {
           return (
-            <View style={styles.ctn_img}>
+            <View
+              style={[
+                styles.ctn_img,
+                {
+                  marginLeft: index === 0 || index === 4 || index == 8 ? 0 : 15,
+                },
+              ]}
+            >
               <FstImage
                 source={{ uri: item?.uri }}
                 style={styles.img_support}
@@ -44,7 +51,7 @@ const ListImage = ({
             </View>
           )
         })}
-        {listImage.length < 4 && (
+        {listImage.length < 10 && (
           <TouchableOpacity onPress={selectImage} style={styles.btn_upload_img}>
             <FstImage
               source={R.images.img_border_upload}
@@ -86,13 +93,14 @@ const styles = StyleSheet.create({
   },
   v_list_img: {
     ...styleView.rowItem,
-    marginTop: 15,
+    flexWrap: 'wrap',
+    width: dimensions.width - 30,
   },
   ctn_img: {
-    marginRight: 15,
     width: (dimensions.width - 75) / 4,
     height: (dimensions.width - 75) / 4,
     borderRadius: 8,
+    marginTop: 15,
   },
   img_support: {
     width: (dimensions.width - 75) / 4,
@@ -111,6 +119,7 @@ const styles = StyleSheet.create({
     height: 25,
   },
   btn_upload_img: {
+    marginTop: 15,
     alignSelf: 'flex-start',
   },
   img_upload_img: {

@@ -10,9 +10,9 @@ import {
 import React, { useState } from 'react'
 import { colors, dimensions, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import { launchImageLibrary, launchImageLibraryMultiple } from './SelectMedia'
 
 import CreatePostApi from '@app/screens/App/CreatePost/api/CreatePostApi'
+import ImagePicker from 'react-native-image-crop-picker'
 import InputUpdate from './components/InputUpdate'
 import ListImage from './components/ListImage'
 import NavigationUtil from '@app/navigation/NavigationUtil'
@@ -32,59 +32,92 @@ const UpdateSupportManage = (props: Props) => {
   const [content, setContent] = useState<string>('')
   const [listImage, setListImage] = useState<any[]>([])
   const [video, setVideo] = useState<any>('')
-  const [loadingImage, setLoadingImage] = useState<boolean>(false)
-  const [loadingVideo, setLoadingVideo] = useState<boolean>(false)
+  // const [loadingImage, setLoadingImage] = useState<boolean>(false)
+  // const [loadingVideo, setLoadingVideo] = useState<boolean>(false)
   const [date, setDate] = useState<any>('')
 
   const selectImage = async () => {
-    setLoadingImage(true)
-    try {
-      await launchImageLibraryMultiple(
-        {
-          mediaType: 'photo',
-          includeBase64: false,
-          maxHeight: 500,
-          maxWidth: 500,
-          selectionLimit: 10 - listImage.length,
-          includeExtra: true,
-        },
-        (res: any) => {
-          reactotron.log!(res)
-          setListImage(listImage.concat(res))
-        },
-        () => {
-          setLoadingImage(false)
+    // setLoadingImage(true)
+    // try {
+    //   await launchImageLibraryMultiple(
+    //     {
+    //       mediaType: 'photo',
+    //       includeBase64: false,
+    //       maxHeight: 500,
+    //       maxWidth: 500,
+    //       selectionLimit: 10 - listImage.length,
+    //       includeExtra: true,
+    //     },
+    //     (res: any) => {
+    //       setListImage(listImage.concat(res))
+    //     },
+    //     () => {
+    //       setLoadingImage(false)
+    //     }
+    //   )
+    // } catch (error) {
+    // } finally {
+    //   setLoadingImage(false)
+    // }
+    ImagePicker.openPicker({
+      mediaType: 'photo',
+      multiple: true,
+      minFiles: 1,
+      maxFiles: 10 - listImage.length,
+    }).then(async images => {
+      let arrayImage = images.map((item: any) => {
+        return {
+          uri: item.path,
+          typeMedia: MEDIA_TYPE.IMAGE,
+          type: item.mime,
+          name:
+            Platform.OS !== 'ios'
+              ? item.path.substring(item.path.lastIndexOf('/') + 1)
+              : item.filename,
         }
-      )
-    } catch (error) {
-    } finally {
-      setLoadingImage(false)
-    }
+      })
+      setListImage(listImage.concat(arrayImage))
+    })
   }
 
   const selectVideo = async () => {
-    setLoadingVideo(true)
-    try {
-      await launchImageLibrary(
-        {
-          mediaType: 'video',
-          includeBase64: false,
-          maxHeight: 500,
-          maxWidth: 500,
-          selectionLimit: 1,
-          includeExtra: true,
-        },
-        (res: any) => {
-          setVideo(res)
-        },
-        () => {
-          setLoadingVideo(false)
-        }
-      )
-    } catch (error) {
-    } finally {
-      setLoadingVideo(false)
-    }
+    // setLoadingVideo(true)
+    // try {
+    //   await launchImageLibrary(
+    //     {
+    //       mediaType: 'video',
+    //       includeBase64: false,
+    //       maxHeight: 500,
+    //       maxWidth: 500,
+    //       selectionLimit: 1,
+    //       includeExtra: true,
+    //     },
+    //     (res: any) => {
+    //       setVideo(res)
+    //     },
+    //     () => {
+    //       setLoadingVideo(false)
+    //     }
+    //   )
+    // } catch (error) {
+    // } finally {
+    //   setLoadingVideo(false)
+    // }
+    ImagePicker.openPicker({
+      mediaType: 'video',
+      minFiles: 1,
+    }).then(async images => {
+      let video: any = {
+        uri: images.path,
+        typeMedia: MEDIA_TYPE.VIDEO,
+        type: images.mime,
+        name:
+          Platform.OS !== 'ios'
+            ? images.path.substring(images.path.lastIndexOf('/') + 1)
+            : images.filename,
+      }
+      setVideo(video)
+    })
   }
   const deleteImage = async (index: number) => {
     let list = listImage
@@ -124,17 +157,17 @@ const UpdateSupportManage = (props: Props) => {
       if (listMedia.length !== 0) {
         const formData = new FormData()
         listMedia.forEach(item => {
-          if (item.type === MEDIA_TYPE.IMAGE) {
+          if (item.typeMedia === MEDIA_TYPE.IMAGE) {
             formData.append('image', {
               uri: item.uri,
               name: item.name,
-              type: 'image/jpeg',
+              type: item.type,
             })
-          } else if (item.type === MEDIA_TYPE.VIDEO) {
+          } else if (item.typeMedia === MEDIA_TYPE.VIDEO) {
             formData.append('video', {
               uri: item.uri,
               name: item.name,
-              type: 'video/mp4',
+              type: item.type,
             })
           }
         })
@@ -205,7 +238,7 @@ const UpdateSupportManage = (props: Props) => {
           listImage={listImage}
           deleteImage={deleteImage}
           selectImage={selectImage}
-          loading={loadingImage}
+          // loading={loadingImage}
         />
         <SelectVideo
           onDelete={() => {
@@ -213,7 +246,7 @@ const UpdateSupportManage = (props: Props) => {
           }}
           video={video}
           selectVideo={selectVideo}
-          loading={loadingVideo}
+          // loading={loadingVideo}
         />
       </ScrollView>
       <TouchableOpacity onPress={onSubmit} style={styles.btn_submit}>

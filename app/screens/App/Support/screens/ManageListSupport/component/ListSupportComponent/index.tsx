@@ -1,4 +1,8 @@
-import { API_STATUS, SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import {
+  API_STATUS,
+  SCREEN_ROUTER_APP,
+  STATUS_SUPPORT,
+} from '@app/constant/Constant'
 import {
   ActivityIndicator,
   FlatList,
@@ -155,10 +159,26 @@ const ItemSupport = ({
           />
           {item?.DonateRequest?.title}
         </Text>
-        <Text
-          style={styles.create_at}
-          children={DateUtils.formatShortDate(item?.create_at)}
-        />
+        <View
+          style={{
+            ...styleView.rowItemBetween,
+            alignItems: 'center',
+            paddingVertical: 2,
+          }}
+        >
+          <Text
+            style={styles.create_at}
+            children={DateUtils.formatShortDate(item?.create_at)}
+          />
+          {item?.status === STATUS_SUPPORT.WAITING && (
+            <View style={styles.district_acc}>
+              <Text
+                style={{ color: colors.primary, ...fonts.regular12 }}
+                children={'Huyện đã duyệt'}
+              />
+            </View>
+          )}
+        </View>
       </View>
     </TouchableOpacity>
   )
@@ -205,5 +225,12 @@ const styles = StyleSheet.create({
   txt_item_default: {
     ...fonts.regular16,
     color: colors.textColor.gray9,
+  },
+  district_acc: {
+    paddingHorizontal: 7,
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingVertical: 3,
+    borderColor: colors.primary,
   },
 })

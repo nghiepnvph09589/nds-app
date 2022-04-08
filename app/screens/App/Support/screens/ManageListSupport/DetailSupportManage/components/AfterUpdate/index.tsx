@@ -5,10 +5,11 @@ import RNImageViewer from '@app/components/RNMediaViewer'
 import React from 'react'
 
 const AfterUpdate = ({ data }: { data: dataSupportDetail }) => {
-  const listImage = data?.DonateImages.filter(item => item?.type === 1).slice(
-    0,
-    4
-  )
+  const listImage = data?.DonateImages.filter(item => item?.type === 1)
+  //   .slice(
+  //   0,
+  //   4
+  // )
   const listVideo = data?.DonateImages.filter(item => item?.type === 2)
   return (
     <View style={styles.ctn}>
@@ -61,7 +62,7 @@ const AfterUpdate = ({ data }: { data: dataSupportDetail }) => {
         </View>
       )} */}
       {listVideo.length !== 0 && (
-        <RNImageViewer data={listVideo} title={'Video thực té'} />
+        <RNImageViewer data={listVideo} title={'Video thực tế'} />
       )}
     </View>
   )

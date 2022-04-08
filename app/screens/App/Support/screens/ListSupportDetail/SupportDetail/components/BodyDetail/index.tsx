@@ -10,6 +10,7 @@ import RowDetail from './components/RowDetail'
 const BodyDetail = ({ data }: { data?: dataSupportDetail }) => {
   const listVideo = data?.DonateImages.filter(item => item?.type === 2)
   const listImage: any = data?.DonateImages.filter(item => item?.type === 1)
+  console.log(listImage)
   return (
     <View style={stylesBody.ctn_default}>
       <View style={stylesBody.ctn}>
@@ -21,6 +22,7 @@ const BodyDetail = ({ data }: { data?: dataSupportDetail }) => {
         )}
         <RowDetail name={'Người ủng hộ'} value={data?.name} />
         <RowDetail name={'Số điện thoại'} value={data?.phone} />
+        {data?.note && <RowDetail name={'Nội dung'} value={data?.note} />}
         <FormSupport data={data} />
         {/* {listImage?.length !== 0 && <ListImage data={data} />} */}
         {listImage?.length !== 0 && (
@@ -55,13 +57,12 @@ const stylesBody = StyleSheet.create({
   ctn_default: {
     backgroundColor: colors.white,
     paddingHorizontal: 8,
-    paddingBottom: 20,
   },
   ctn: {
     borderWidth: 1,
     padding: 15,
     borderRadius: 12,
     borderColor: colors.border,
-    paddingBottom: 0,
+    paddingBottom: 20,
   },
 })

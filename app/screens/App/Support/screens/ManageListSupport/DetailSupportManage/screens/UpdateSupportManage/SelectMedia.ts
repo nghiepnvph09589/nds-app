@@ -136,10 +136,6 @@ export function launchImageLibrary(
           }
         } else if (result?.assets) {
           let firstAsset = result?.assets[0]
-          // let uri =
-          //   Platform.OS === 'android'
-          //     ? firstAsset?.uri
-          //     : firstAsset?.uri.replace('file://', '')
           let img: any = {
             uri:
               Platform.OS === 'android'
