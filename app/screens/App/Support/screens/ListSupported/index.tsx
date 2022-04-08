@@ -13,16 +13,16 @@ import { colors } from '@app/theme/colors'
 const headerComponent = [
   {
     id: STATUS_SUPPORT.WAITING,
-    name: 'Chờ phê duyệt',
+    name: 'Chưa liên hệ',
   },
   {
     id: STATUS_SUPPORT.APPROVE,
-    name: 'Đã duyệt',
+    name: 'Đã liên hệ',
   },
-  {
-    id: STATUS_SUPPORT.EDIT,
-    name: 'Yêu cầu chỉnh sửa',
-  },
+  // {
+  //   id: STATUS_SUPPORT.EDIT,
+  //   name: 'Yêu cầu chỉnh sửa',
+  // },
   {
     id: STATUS_SUPPORT.SUCCESS,
     name: 'Hoàn thành',

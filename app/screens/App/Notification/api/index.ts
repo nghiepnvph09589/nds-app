@@ -9,10 +9,10 @@ interface readNotify {
   id: number
 }
 export const getListNotification = (payload?: getNotify) =>
-  ApiClient.get(``, { params: payload })
+  ApiClient.get(`/api/v1/notification/list`, { params: payload })
 export const requestCountNotification = (payload: CountNotify) =>
   ApiClient.get(``, payload)
 export const requestReadAllNotification = (payload: readAllNotify) =>
   ApiClient.put(``, payload)
 export const requestReadNotification = (payload: readNotify) =>
-  ApiClient.path(``, payload)
+  ApiClient.get(`/api/v1/notification/changs-status/${payload?.id}`, payload)

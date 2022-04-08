@@ -89,7 +89,11 @@ const DEFAULT_PARAMS = {
   PAGE: 1,
   LIMIT: 5,
 }
-
+export const NOTIFICATION_TYPE = {
+  DONATE: 1, // ủng hộ
+  POST: 2, // bài đăng
+  NEWS_BANNER: 3, // tin tức
+}
 export const STATUS_SUPPORT = {
   WAITING: 2, //chờ duyệt
   APPROVE: 3, //đã duyệt

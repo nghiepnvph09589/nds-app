@@ -20,19 +20,19 @@ const StatusSupport = ({
       if (isUpdate === 1) {
         return 'Yêu cầu chỉnh sửa'
       } else {
-        return 'Chờ phê duyệt'
+        return 'Chưa liên hệ'
       }
     } else if (status === STATUS_SUPPORT.WAITING) {
       if (isUpdate === 1) {
         return 'Yêu cầu chỉnh sửa'
       } else {
-        return 'Chờ phê duyệt'
+        return 'Chưa liên hệ'
       }
     } else if (status === STATUS_SUPPORT.APPROVE) {
       if (isUpdate === 1) {
         return 'Yêu cầu chỉnh sửa'
       } else {
-        return 'Đã duyệt'
+        return 'Đã liên hệ'
       }
     } else if (status === STATUS_SUPPORT.SUCCESS) {
       return 'Hoàn thành'
@@ -46,7 +46,7 @@ const StatusSupport = ({
         <View style={styles.district_acc}>
           <Text
             style={{ color: colors.primary, ...fonts.regular12 }}
-            children={'Huyện đã duyệt'}
+            children={'Huyện đã liên hệ'}
           />
         </View>
       )}

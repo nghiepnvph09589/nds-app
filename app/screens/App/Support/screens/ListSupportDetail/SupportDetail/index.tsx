@@ -1,12 +1,12 @@
+import { API_STATUS, STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
-import { API_STATUS } from '@app/constant/Constant'
-import BodyDetail from './components/BodyDetail'
-import ContentDetail from './components/ContentDetail'
+import AfterUpdate from '../../ManageListSupport/DetailSupportManage/components/AfterUpdate'
+import CharityHouse from '../../ManageListSupport/DetailSupportManage/components/CharityHouse'
 import Error from '@app/components/Error/Error'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
+import { View } from 'react-native'
 import { colors } from '@app/theme'
 import { getDetailSupportManage } from '../../ManageListSupport/DetailSupportManage/api'
 
@@ -48,19 +48,26 @@ const SupportDetailScreen = (props: Props) => {
       forceInset={['left']}
       titleHeader={'Chi tiết ủng hộ'}
       backgroundColor={colors.white}
+      borderBottomHeader={colors.border}
       scroll
     >
-      <View style={styles.ctn}>
+      {/* <View style={styles.ctn}>
         <ContentDetail data={data} />
         <BodyDetail data={data} />
+      </View> */}
+      <View style={{ paddingHorizontal: 15 }}>
+        <CharityHouse data={data} />
+        {data?.status === STATUS_SUPPORT_DETAIL.UPDATE_SUPPORT && (
+          <AfterUpdate data={data} />
+        )}
       </View>
     </ScreenWrapper>
   )
 }
 export default SupportDetailScreen
-const styles = StyleSheet.create({
-  ctn: {
-    marginTop: 1,
-    backgroundColor: colors.white,
-  },
-})
+// const styles = StyleSheet.create({
+//   ctn: {
+//     marginTop: 1,
+//     backgroundColor: colors.white,
+//   },
+// })
