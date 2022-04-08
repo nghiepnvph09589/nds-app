@@ -46,6 +46,11 @@ export type BankInfos = {
   account_name: string
   account_number: number
   type: number
+  DFBank: {
+    id: number
+    name: string
+    key: number
+  }
 }
 
 export type DonateRequestMedia = {

@@ -13,14 +13,18 @@ const BankInfo = (props: BankInfoProps) => {
   const { data } = props
   return (
     <View style={styles.v_container}>
-      <Bank
-        title="Tài khoản chữ thập đỏ"
-        name={data?.BankInfos[data?.BankInfos.length - 1]?.account_name}
-        number={data?.BankInfos[data?.BankInfos.length - 1]?.account_number}
-        branchName={data?.BankInfos[data?.BankInfos.length - 1]?.branch_name}
-      />
+      {data.BankInfos.length > 0 && (
+        <Bank
+          nameBank={data?.BankInfos[data?.BankInfos?.length - 1].DFBank.name}
+          title="Tài khoản chữ thập đỏ"
+          name={data?.BankInfos[data?.BankInfos?.length - 1]?.account_name}
+          number={data?.BankInfos[data?.BankInfos?.length - 1]?.account_number}
+          branchName={data?.BankInfos[data?.BankInfos?.length - 1]?.branch_name}
+        />
+      )}
       {data?.BankInfos.length > 1 && (
         <Bank
+          nameBank={data?.BankInfos[0].DFBank.name}
           title="Tài khoản người nhận hỗ trợ"
           name={data?.BankInfos[0]?.account_name}
           number={data?.BankInfos[0]?.account_number}
@@ -32,11 +36,13 @@ const BankInfo = (props: BankInfoProps) => {
 }
 
 const Bank = ({
+  nameBank,
   title,
   name,
   number,
   branchName,
 }: {
+  nameBank: string
   title: string
   name: string
   number: number
@@ -46,7 +52,7 @@ const Bank = ({
     <>
       <Text style={styles.txt_label}>{title}</Text>
       <View style={styles.v_bank}>
-        <Text style={styles.txt_bank}>Vietcombank</Text>
+        <Text style={styles.txt_bank}>{nameBank}</Text>
         <ViewRow label="Tên tài khoản" content={name} />
         <ViewRow copy label="Số tài khoản" content={number} />
         <ViewRow label="Chi nhánh" content={branchName} />

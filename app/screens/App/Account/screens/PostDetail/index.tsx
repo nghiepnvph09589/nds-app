@@ -125,11 +125,7 @@ const PostDetail = (props: PostDetailProps) => {
       onUpdateDataPostToReducer()
     } else if (type === STATUS_TYPE.COMPLETE) {
       onUpdateDataPostToReducer()
-    } else if (
-      type === STATUS_TYPE.WAIT_CONFIRM &&
-      userInfo.role === ROLE.OFFICER_DISTRICT &&
-      status === 2
-    ) {
+    } else if (userInfo.role === ROLE.OFFICER_DISTRICT && status === 2) {
       onUpdateDataPostToReducer()
     } else if (!endDate && userInfo.role === ROLE.OFFICER_PROVINCE) {
       showDatePicker()

@@ -1,5 +1,8 @@
+/* eslint-disable react-native/no-inline-styles */
+import R from '@app/assets/R'
 import * as theme from '@app/theme'
-
+import { fonts } from '@app/theme'
+import React, { Component } from 'react'
 import {
   Platform,
   StyleSheet,
@@ -7,14 +10,9 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from 'react-native'
-import React, { Component } from 'react'
-import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
-
-import FastImage from 'react-native-fast-image'
 import { Header } from 'react-native-elements'
+import FastImage from 'react-native-fast-image'
 import NavigationUtil from '../navigation/NavigationUtil'
-import R from '@app/assets/R'
-import { fonts } from '@app/theme'
 
 interface Props {
   color?: string
@@ -54,7 +52,6 @@ export class BackButton extends Component<BackProps> {
       >
         <FastImage
           source={R.images.ic_back}
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{ width: 24, height: 24 }}
           tintColor={theme.colors.black}
           resizeMode="contain"
@@ -104,6 +101,7 @@ export default class RNHeader extends Component<Props> {
             style={[
               {
                 ...fonts.semi_bold18,
+                textAlign: 'center',
               },
               { color: color || 'white' },
             ]}

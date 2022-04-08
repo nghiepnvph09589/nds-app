@@ -5,12 +5,18 @@ import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+interface SelectAddressProps {
+  onSaveDataLocation: ({ lt, lng }: { lt: number; lng: number }) => void
+}
 
-const SelectAddress = () => {
+const SelectAddress = (props: SelectAddressProps) => {
+  const { onSaveDataLocation } = props
   return (
     <TouchableOpacity
       onPress={() => {
-        NavigationUtil.navigate(SCREEN_ROUTER_APP.ADDRESS_MAP)
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.ADDRESS_MAP, {
+          onCallBack: onSaveDataLocation,
+        })
       }}
       style={styles.v_container}
     >

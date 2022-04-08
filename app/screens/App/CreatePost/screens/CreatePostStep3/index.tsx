@@ -6,7 +6,7 @@ import { useAppSelector } from '@app/store'
 import { colors, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import CreatePostApi from '../../api/CreatePostApi'
@@ -27,7 +27,7 @@ interface address {
   name: string
 }
 const CreatePostStep3 = (props: CreatPostStep3Props) => {
-  const { lat, long } = useAppSelector(state => state.locationReducer)
+  const location = useAppSelector(state => state.locationReducer)
   const dataCreatPost = useAppSelector(state => state.creatPostReducer)
   const userInfo = useAppSelector(state => state.accountReducer).data
   const dispatch = useDispatch()
@@ -35,6 +35,8 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
   const [province, setProvince] = useState<address>({ id: 0, name: '' })
   const [district, setDistrict] = useState<address>({ id: 0, name: '' })
   const [ward, setWard] = useState<address>({ id: 0, name: '' })
+  const lat = useRef<number>(location?.lat)
+  const long = useRef<number>(location?.long)
 
   useEffect(() => {
     console.log(province, district, ward)
@@ -61,8 +63,8 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
       district_id: district.id,
       ward_id: ward.id,
       address,
-      lat: lat,
-      long: long,
+      lat: lat.current,
+      long: long.current,
     }
     dispatch(updateDataCreatePost(payload))
     try {
@@ -91,6 +93,12 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
     }
   }
 
+  const onSaveDataLocation = ({ lt, lng }: { lt: number; lng: number }) => {
+    console.log(lng, lt)
+    lat.current = lt
+    long.current = lng
+  }
+
   return (
     <>
       <View style={styles.v_container}>
@@ -113,7 +121,7 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
           onChangeText={setAddress}
           value={address}
         />
-        <SelectAddress />
+        <SelectAddress onSaveDataLocation={onSaveDataLocation} />
       </View>
       <ViewBottom label={R.strings().post} onBack={onBack} onNext={onPost} />
     </>

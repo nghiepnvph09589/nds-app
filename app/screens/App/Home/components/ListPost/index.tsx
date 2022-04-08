@@ -78,6 +78,7 @@ const ListPost = () => {
   } else {
     hideLoading()
   }
+
   if (isError)
     return (
       <Error
@@ -87,13 +88,14 @@ const ListPost = () => {
         }}
       />
     )
+
   const renderItem = ({ item }: { item: ListPostData }) => {
     return (
       <View style={styles.v_item}>
         <InfoPost
           avatar={
-            item?.User?.profile_picture_url
-              ? item?.User.profile_picture_path.replace('http://', 'https://')
+            item?.User?.profile_picture_path
+              ? item?.User.profile_picture_url.replace('http://', 'https://')
               : ''
           }
           name={item?.User?.name}

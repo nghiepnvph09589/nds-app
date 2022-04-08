@@ -7,7 +7,7 @@ import { useAppSelector } from '@app/store'
 import { colors, fonts } from '@app/theme'
 import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import UpdatePostApi from '../../api/UpdatePostApi'
@@ -27,8 +27,9 @@ interface address {
   name: string
 }
 const UpdatePostStep3 = (props: CreatPostStep3Props) => {
-  const { lat, long } = useAppSelector(state => state.locationReducer)
   const dataPost = useAppSelector(state => state.updatePostReducer)
+  const lat = useRef<number>(dataPost?.lat)
+  const long = useRef<number>(dataPost?.long)
   const dispatch = useDispatch()
   const { onBack, onNext, typeNavigate } = props
   const [province, setProvince] = useState<address>({
@@ -69,8 +70,8 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
       district_id: district.id,
       ward_id: ward.id,
       address,
-      lat: lat,
-      long: long,
+      lat: lat.current,
+      long: long.current,
       new_media: dataPost.new_media.map((item: Media) => {
         return { media_url: item.media_url, type: item.type }
       }),
@@ -111,6 +112,12 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
     }
   }
 
+  const onSaveDataLocation = ({ lt, lng }: { lt: number; lng: number }) => {
+    console.log(lng, lt)
+    lat.current = lt
+    long.current = lng
+  }
+
   return (
     <>
       <View style={styles.v_container}>
@@ -133,7 +140,7 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
           onChangeText={setAddress}
           value={address}
         />
-        <SelectAddress />
+        <SelectAddress onSaveDataLocation={onSaveDataLocation} />
       </View>
       <ViewBottom label={R.strings().post} onBack={onBack} onNext={onPost} />
     </>

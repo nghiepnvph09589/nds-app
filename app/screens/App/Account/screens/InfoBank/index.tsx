@@ -7,15 +7,69 @@ import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import { dimension } from '@app/constant/Theme'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, dimensions, fonts } from '@app/theme'
-import React from 'react'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { PostDetailData } from '../PostDetail/model'
+import BankApi from '././api/BankApi'
 interface BankInfoProps {
   route: { params: { data: PostDetailData } }
+}
+export type Bank = {
+  id: number
+  donate_request_id: number
+  bank_id: number
+  branch_name: string
+  account_name: string
+  account_number: number
+  type: number
+  status: number
+  create_at: string
+  DFBank: {
+    id: number
+    name: string
+    key: string
+  }
 }
 
 const InfoBank = (props: BankInfoProps) => {
   const { data } = props.route.params
+  const [dataBank, setDataBank] = useState<Bank>({
+    id: 0,
+    donate_request_id: 0,
+    bank_id: 0,
+    branch_name: '',
+    account_name: '',
+    account_number: 0,
+    type: 0,
+    status: 0,
+    create_at: '',
+    DFBank: {
+      id: 0,
+      name: '',
+      key: '',
+    },
+  })
+  useEffect(() => {
+    getDataBank(data.BankInfos[0].id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const getDataBank = async (id: number) => {
+    if (data.BankInfos.length === 2) {
+      showLoading()
+      try {
+        const res = await BankApi.getDetailBank({
+          id,
+        })
+        setDataBank(res.data)
+      } catch (error) {
+      } finally {
+        hideLoading()
+      }
+    }
+  }
+
   return (
     <ScreenWrapper
       back
@@ -26,11 +80,12 @@ const InfoBank = (props: BankInfoProps) => {
       children={
         <>
           <View style={styles.v_container}>
-            {data.BankInfos.length > 0 ? (
+            {dataBank.id !== 0 ? (
               <Bank
-                name={data?.BankInfos[0]?.account_name}
-                number={data?.BankInfos[0]?.account_number}
-                branchName={data?.BankInfos[0]?.branch_name}
+                nameBank={dataBank.DFBank.name}
+                name={dataBank?.account_name}
+                number={dataBank?.account_number}
+                branchName={dataBank?.branch_name}
               />
             ) : (
               <View
@@ -47,7 +102,7 @@ const InfoBank = (props: BankInfoProps) => {
                   resizeMode="contain"
                 />
                 <Text style={styles.textEmpty}>
-                  {'Chưa có tài khoản người nhận nào'}
+                  {'Chưa có tài khoản người nhận'}
                 </Text>
               </View>
             )}
@@ -55,10 +110,15 @@ const InfoBank = (props: BankInfoProps) => {
           <RNButton
             style={{ marginHorizontal: 15 }}
             onPress={() => {
-              NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_BANK)
+              NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_BANK, {
+                id: data.id,
+                type: dataBank.id === 0 ? 1 : 2,
+                dataBank: dataBank,
+                callback: getDataBank,
+              })
             }}
             title={
-              data.BankInfos.length === 0
+              dataBank.id === 0
                 ? 'Thêm tài khoản ngân hàng'
                 : 'Sửa tài khoản ngân hàng'
             }
@@ -70,10 +130,12 @@ const InfoBank = (props: BankInfoProps) => {
 }
 
 const Bank = ({
+  nameBank,
   name,
   number,
   branchName,
 }: {
+  nameBank: string
   name: string
   number: number
   branchName: string
@@ -81,7 +143,7 @@ const Bank = ({
   return (
     <>
       <View style={styles.v_bank}>
-        <Text style={styles.txt_bank}>Vietcombank</Text>
+        <Text style={styles.txt_bank}>{nameBank}</Text>
         <ViewRow label="Tên tài khoản" content={name} />
         <ViewRow copy label="Số tài khoản" content={number} />
         <ViewRow label="Chi nhánh" content={branchName} />

@@ -2,7 +2,7 @@ import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import { MAP_BOX_STYLE } from '@app/config'
 import MapboxGL from '@react-native-mapbox-gl/maps'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 interface PositionProps {
@@ -14,9 +14,10 @@ const Position = (props: PositionProps) => {
   const mapRef = useRef(undefined)
   const cameraRef = useRef(undefined)
   const { lat, long } = props
-  const [annotationPoint, setAnnotationPoint] = useState(
-    long ? [long, lat] : undefined
-  )
+  // const [annotationPoint, setAnnotationPoint] = useState(
+  //   long ? [long, lat] : undefined
+  // )
+  console.log(long, lat)
 
   const defaultCamera = {
     centerCoordinate: [105.784883, 21.028073],
@@ -43,7 +44,7 @@ const Position = (props: PositionProps) => {
           minZoomLevel={10}
           maxZoomLevel={18}
           padding={{ paddingBottom: 100 }}
-          centerCoordinate={annotationPoint}
+          centerCoordinate={[long, lat]}
         />
         <MapboxGL.MarkerView id="pointAnno" coordinate={[long, lat]}>
           <FstImage
