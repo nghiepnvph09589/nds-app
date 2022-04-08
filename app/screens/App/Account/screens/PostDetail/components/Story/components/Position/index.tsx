@@ -2,7 +2,7 @@ import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import { MAP_BOX_STYLE } from '@app/config'
 import MapboxGL from '@react-native-mapbox-gl/maps'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 interface PositionProps {

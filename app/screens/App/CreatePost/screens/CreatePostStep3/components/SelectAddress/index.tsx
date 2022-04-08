@@ -1,10 +1,10 @@
-import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { colors, fonts } from '@app/theme'
-import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
-import NavigationUtil from '@app/navigation/NavigationUtil'
+import FstImage from '@app/components/FstImage'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import { colors, fonts } from '@app/theme'
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 
 interface SelectAddressProps {
   onSaveDataLocation: ({ lt, lng }: { lt: number; lng: number }) => void

@@ -17,11 +17,16 @@ interface AddressMapProps {
   }
 }
 const AddressMap = (props: AddressMapProps) => {
+  const dataPost = useAppSelector(state => state.updatePostReducer)
   const mapRef = useRef(undefined)
   const cameraRef = useRef(undefined)
   const { lat, long } = useAppSelector(state => state.locationReducer)
   const [annotationPoint, setAnnotationPoint] = useState(
-    long ? [long, lat] : [105.784883, 21.028073]
+    dataPost.long !== 0
+      ? [dataPost.long, dataPost.lat]
+      : long
+      ? [long, lat]
+      : [105.784883, 21.028073]
   )
   const [isLoading, setIsLoading] = useState(false)
 
@@ -70,8 +75,8 @@ const AddressMap = (props: AddressMapProps) => {
             >
               <FstImage
                 style={{
-                  width: 30,
-                  height: 30,
+                  width: 50,
+                  height: 50,
                   //transform: [{ rotate: `${(props.bearing || 0) - 90}deg` }],
                 }}
                 resizeMode="contain"

@@ -13,13 +13,15 @@ const BankInfo = (props: BankInfoProps) => {
   const { data } = props
   return (
     <View style={styles.v_container}>
-      <Bank
-        nameBank={data?.BankInfos[data?.BankInfos.length - 1].DFBank.name}
-        title="Tài khoản chữ thập đỏ"
-        name={data?.BankInfos[data?.BankInfos.length - 1]?.account_name}
-        number={data?.BankInfos[data?.BankInfos.length - 1]?.account_number}
-        branchName={data?.BankInfos[data?.BankInfos.length - 1]?.branch_name}
-      />
+      {data.BankInfos.length > 0 && (
+        <Bank
+          nameBank={data?.BankInfos[data?.BankInfos?.length - 1].DFBank.name}
+          title="Tài khoản chữ thập đỏ"
+          name={data?.BankInfos[data?.BankInfos?.length - 1]?.account_name}
+          number={data?.BankInfos[data?.BankInfos?.length - 1]?.account_number}
+          branchName={data?.BankInfos[data?.BankInfos?.length - 1]?.branch_name}
+        />
+      )}
       {data?.BankInfos.length > 1 && (
         <Bank
           nameBank={data?.BankInfos[0].DFBank.name}

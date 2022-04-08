@@ -13,8 +13,9 @@ const AddressMap = () => {
   const mapRef = useRef(undefined)
   const cameraRef = useRef(undefined)
   const { lat, long } = useAppSelector(state => state.locationReducer)
+  const dataPost = useAppSelector(state => state.updatePostReducer)
   const [annotationPoint, setAnnotationPoint] = useState(
-    long ? [long, lat] : undefined
+    dataPost.lat === 0 ? [long, lat] : [dataPost.long, dataPost.lat]
   )
 
   const defaultCamera = {
