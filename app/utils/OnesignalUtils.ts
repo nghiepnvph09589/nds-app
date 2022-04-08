@@ -43,23 +43,24 @@ export default abstract class OneSignalUtil {
       store.dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
     reactotron.log!('Prompt response:', notification?.notification)
   }
+
   static onOpened = (notification: any) => {
     reactotron.log!('Prompt response:', notification?.notification)
-    switch (notification?.type) {
+    switch (notification?.additionalData?.type) {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
-          id: notification?.notification_id,
+          id: notification?.additionalData?.notification_id,
           customer: ROLE.CUSTOMER,
         })
         return
       case NOTIFICATION_TYPE.POST:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, {
-          id: notification?.notification_id,
+          id: notification?.additionalData?.notification_id,
         })
         return
       case NOTIFICATION_TYPE.NEWS_BANNER:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.BANNER_DETAIL, {
-          id_banner: notification?.notification_id,
+          id_banner: notification?.additionalData?.notification_id,
         })
         return
     }
