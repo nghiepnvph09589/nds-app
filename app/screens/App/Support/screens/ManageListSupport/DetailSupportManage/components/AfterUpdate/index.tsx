@@ -17,7 +17,7 @@ const AfterUpdate = ({ data }: { data: dataSupportDetail }) => {
         <Text style={styles.txt_title} children={data?.title} />
         <Text style={styles.content} children={data?.content} />
       </View>
-      {listImage.length !== 0 && (
+      {listImage?.length !== 0 && (
         <RNImageViewer data={listImage} title={'Hình ảnh thực tế'} />
       )}
       {/* {listImage.length !== 0 && (

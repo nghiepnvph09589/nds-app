@@ -30,18 +30,14 @@ const ApproveButton = ({
         {status === STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT && (
           <Text
             style={{ ...fonts.semi_bold16, color: colors.white }}
-            children={
-              role === ROLE.OFFICER_PROVINCE ? 'Phê duyệt' : 'Yêu cầu phê duyệt'
-            }
+            children={'Đã liên hệ'}
           />
         )}
         {status === STATUS_SUPPORT_DETAIL.DISTRICT_ACCEPT && (
           <Text
             style={{ ...fonts.semi_bold16, color: colors.white }}
             children={
-              role === ROLE.OFFICER_PROVINCE
-                ? 'Phê duyệt'
-                : 'Đã yêu cầu phê duyệt'
+              role === ROLE.OFFICER_PROVINCE ? 'Đã liên hệ' : 'Huyện đã liên hệ'
             }
           />
         )}

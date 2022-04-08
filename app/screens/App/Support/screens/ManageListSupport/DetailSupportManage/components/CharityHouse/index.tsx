@@ -17,6 +17,7 @@ const CharityHouse = ({ data }: { data?: dataSupportDetail }) => {
           value={DateUtils.formatShortDate(data?.end_date)}
         />
       )}
+      {data?.note && <RowDetail name={'Nội dung'} value={data?.note} />}
       <View style={charityHouseStyle.ctn_list}>
         <Text
           style={charityHouseStyle.txt_form_support}

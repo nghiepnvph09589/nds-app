@@ -174,7 +174,7 @@ const ItemSupport = ({
             <View style={styles.district_acc}>
               <Text
                 style={{ color: colors.primary, ...fonts.regular12 }}
-                children={'Huyện đã duyệt'}
+                children={'Huyện đã liên hệ'}
               />
             </View>
           )}

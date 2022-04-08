@@ -64,7 +64,9 @@ const CreateSupportScreen = (props: Props) => {
     try {
       const res = await getListFormSupport(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        setDataFormSupport(res?.data)
+        setDataFormSupport(
+          res?.data.filter((item: { type: number }) => item?.type === 2)
+        )
       }
     } catch (error) {
       console.log(error)
@@ -135,7 +137,7 @@ const CreateSupportScreen = (props: Props) => {
           name: userInfo?.name,
           phone: userInfo?.phone,
           email: userInfo?.email,
-          // noteMessages: '',
+          noteMessages: '',
         }}
         onSubmit={onSubmit}
         validationSchema={Schema}
