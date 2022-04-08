@@ -1,13 +1,24 @@
+import {
+  NOTIFICATION_TYPE,
+  ONESIGNAL_APP_ID,
+  ROLE,
+  SCREEN_ROUTER_APP,
+} from '@app/constant/Constant'
+
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { Dispatch } from 'redux'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import OneSignal from 'react-native-onesignal'
 import reactotron from 'reactotron-react-native'
+import { requestListNotificationThunk } from '@app/screens/App/Notification/slice'
+import store from '@app/store'
 
 export default abstract class OneSignalUtil {
   private static Dispatch: Dispatch
   static initialize(Dispatch: Dispatch) {
     this.Dispatch = Dispatch
     OneSignal.setLogLevel(6, 0)
-    OneSignal.setAppId('db34fa73-c810-494c-b274-08ee6202a7ad')
+    OneSignal.setAppId(ONESIGNAL_APP_ID)
     this.onPushNotification()
   }
 
@@ -22,9 +33,35 @@ export default abstract class OneSignalUtil {
   }
 
   static onShow = async (notification: any) => {
+    // reactotron.log!('Prompt response:', notification?.notification)
+    const body = {
+      page: 1,
+      limit: 15,
+    }
+    const token = await AsyncStorageService.getToken()
+    token &&
+      store.dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
     reactotron.log!('Prompt response:', notification?.notification)
   }
   static onOpened = (notification: any) => {
     reactotron.log!('Prompt response:', notification?.notification)
+    switch (notification?.type) {
+      case NOTIFICATION_TYPE.DONATE:
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
+          id: notification?.notification_id,
+          customer: ROLE.CUSTOMER,
+        })
+        return
+      case NOTIFICATION_TYPE.POST:
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, {
+          id: notification?.notification_id,
+        })
+        return
+      case NOTIFICATION_TYPE.NEWS_BANNER:
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.BANNER_DETAIL, {
+          id_banner: notification?.notification_id,
+        })
+        return
+    }
   }
 }

@@ -9,13 +9,17 @@ import {
 import React, { useEffect, useState } from 'react'
 import { colors, fonts } from '@app/theme'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
+import { API_STATUS } from '@app/constant/Constant'
 import Empty from '@app/components/Empty/Empty'
 import FastImage from 'react-native-fast-image'
 import FstImage from '@app/components/FstImage'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
+import RenderHTML from 'react-native-render-html'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { getBannerDetail } from './api'
 
 interface Data {
   image_url: string
@@ -31,22 +35,27 @@ interface Props {
   }
 }
 
-const mockData: any = {
-  image_url:
-    'http://dev.ndsapi.winds.vn/uploads/image/image_b874aee0cb1b44d9bc27ab85705d22dd.jpg',
-  title_banner:
-    'Cùng em học trực tuyến - Nâng niu triệu ước mơ học vấn không gián đoạn',
-  description:
-    'Năm học mới 2021-2022 đã chính thức được bắt đầu. Năm học này bắt đầu thật đặc biệt khi đại dịch Covid hoành hành khiến nhiều học sinh và thầy cô không thể trực tiếp tới trường. Mặc dù vậy, các tỉnh, thành phố trên cả nước tổ chức khai giảng năm học mới với nhiều hình thức linh hoạt, tạo động lực cho các thầy cô, học sinh và toàn ngành giáo dục quyết tâm hoàn thành các mục tiêu đề ra trong năm học mới.',
-}
 const { width } = Dimensions.get('window')
 const BannerDetailScreen = (props: Props) => {
   const id_banner = props.route?.params?.id_banner
-  const [data, setData] = useState<Data>(mockData)
+  const [data, setData] = useState<Data>()
   const [error, setError] = useState<boolean>(false)
-  const getData = () => {
+  const getData = async () => {
     const payload = {
       id: id_banner,
+    }
+    showLoading()
+    try {
+      const res = await getBannerDetail(payload)
+      if (res?.code === API_STATUS.SUCCESS) {
+        setData(res?.data)
+        setError(false)
+      }
+      // eslint-disable-next-line no-catch-shadow
+    } catch (error) {
+      setError(true)
+    } finally {
+      hideLoading()
     }
   }
   useEffect(() => {
@@ -73,13 +82,15 @@ const RenderBody = ({ data }: { data: any }) => {
     <View>
       <FstImage
         source={{
-          uri: data?.image_url,
+          uri: data?.media_url,
         }}
+        resizeMode={'contain'}
         style={styles.banner}
       />
       <View style={styles.ctn_txt}>
-        <Text style={styles.sm16_gr9} children={data?.title_banner} />
-        <Text style={styles.description} children={data?.description} />
+        <Text style={styles.sm16_gr9} children={data?.title} />
+        {/* <Text style={styles.description} children={data?.content} /> */}
+        <RenderHTML source={{ html: data?.content }} />
       </View>
       <View style={styles.v_back}>
         <TouchableOpacity

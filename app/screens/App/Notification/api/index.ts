@@ -13,6 +13,6 @@ export const getListNotification = (payload?: getNotify) =>
 export const requestCountNotification = (payload: CountNotify) =>
   ApiClient.get(``, payload)
 export const requestReadAllNotification = (payload: readAllNotify) =>
-  ApiClient.put(``, payload)
+  ApiClient.get(`/api/v1/notification/changs-status-list`, payload)
 export const requestReadNotification = (payload: readNotify) =>
   ApiClient.get(`/api/v1/notification/changs-status/${payload?.id}`, payload)

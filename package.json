@@ -61,6 +61,7 @@
     "react-native-permissions": "^3.3.1",
     "react-native-reanimated": "^2.1.0",
     "react-native-rename": "^2.9.0",
+    "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.2.0",
     "react-native-step-indicator": "^1.0.3",

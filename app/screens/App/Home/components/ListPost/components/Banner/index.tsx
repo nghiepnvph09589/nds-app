@@ -11,21 +11,23 @@ import { colors } from '@app/theme'
 const window = Dimensions.get('window')
 const { width } = window
 interface SlideBarProps {
-  dataBanner: Banners[]
+  dataBanner?: Banners[]
 }
 const Banner = (props: SlideBarProps) => {
-  const { dataBanner } = props
+  const dataBanner = props.dataBanner
   const renderItemBanner = useCallback(
     ({ item }: { item: Banners; index: number }) => {
       return (
         <TouchableOpacity
           onPress={() => {
-            NavigationUtil.navigate(SCREEN_ROUTER_APP.BANNER_DETAIL)
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.BANNER_DETAIL, {
+              id_banner: item?.id,
+            })
           }}
           children={
             <FstImage
-              source={item?.image_url}
-              //source={{ uri: item?.image_url }}
+              // source={item?.image_url}
+              source={{ uri: item?.media_url }}
               style={[styles.imgBanner]}
               resizeMode="cover"
             />

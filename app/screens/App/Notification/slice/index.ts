@@ -32,19 +32,22 @@ export const NotificationSlice = createSlice({
     // clearNotifyCount: state => {
     //   state.countNotification = 0
     // },
-    // readAllNotify: state => {
-    //   state.data = state.data.map((item: any) => ({ ...item, is_read: 1 }))
-    // },
-    // readNotificationForId: (state, action) => {
-    //   // state.data[action.payload].is_read = 1
-    //   state.data = state.data.map((item: any) => {
-    //     if (item.id === action.payload) {
-    //       return { ...item, is_read: 1 }
-    //     } else {
-    //       return { ...item }
-    //     }
-    //   })
-    // },
+    readAllNotify: state => {
+      state.data = state.data.map((item: any) => ({
+        ...item,
+        NotificationPushes: [{ id: item?.id }],
+      }))
+    },
+    readNotificationForId: (state, action) => {
+      // state.data[action.payload].is_read = 1
+      state.data = state.data.map((item: any) => {
+        if (item.id === action.payload) {
+          return { ...item, NotificationPushes: [{ id: item?.id }] }
+        } else {
+          return { ...item }
+        }
+      })
+    },
   },
   extraReducers: builder => {
     builder.addCase(requestListNotificationThunk.pending, (state, action) => {
@@ -87,8 +90,8 @@ export const {
   // readNotification,
   // setCountNotify,
   // clearNotifyCount,
-  // readAllNotify,
-  // readNotificationForId,
+  readAllNotify,
+  readNotificationForId,
 } = NotificationSlice.actions
 
 export default NotificationSlice.reducer

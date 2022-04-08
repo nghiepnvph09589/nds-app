@@ -1,29 +1,24 @@
-import Empty from '@app/components/Empty/Empty'
-import Error from '@app/components/Error/Error'
-import { DEFAULT_PARAMS } from '@app/constant/Constant'
-import { getDataUserInfo } from '@app/screens/App/Account/slices/AccountSlice'
-import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
-import { useAppSelector } from '@app/store'
-import { colors } from '@app/theme'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import { API_STATUS, DEFAULT_PARAMS } from '@app/constant/Constant'
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
-import { useDispatch } from 'react-redux'
-import { DataBanner } from '../../mockup'
-import { ListPostData } from '../../model'
-import { getDataHome } from '../../slice/HomeSlice'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import Banner from './components/Banner'
 import CategoryAndAddress from './components/CategoryAndAddress'
 import ContentPost from './components/ContentPost'
+import Empty from '@app/components/Empty/Empty'
+import Error from '@app/components/Error/Error'
+import HomeApi from '../../api/HomeApi'
 import InfoPost from './components/InfoPost'
+import { ListPostData } from '../../model'
 import PostImageArea from './components/PostImageArea'
 import Support from './components/Support'
+import { colors } from '@app/theme'
+import { getDataHome } from '../../slice/HomeSlice'
+import { getDataUserInfo } from '@app/screens/App/Account/slices/AccountSlice'
+import { useAppSelector } from '@app/store'
+import { useDispatch } from 'react-redux'
 
 const ListPost = () => {
   const { isLoading, isError, data, isLastPage, isLoadMore } = useAppSelector(
@@ -33,10 +28,15 @@ const ListPost = () => {
     page: DEFAULT_PARAMS.PAGE,
     limit: DEFAULT_PARAMS.LIMIT,
   })
+  const [dataBanner, setDataBanner] = useState<any[]>()
   const dispatch = useDispatch()
-
+  const getDataBanner = async () => {
+    const res = await HomeApi.getListBanner()
+    if (res?.code === API_STATUS.SUCCESS) setDataBanner(res?.data)
+  }
   useEffect(() => {
     getHome()
+    getDataBanner()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [body])
 
@@ -114,7 +114,7 @@ const ListPost = () => {
     <FlatList
       ListHeaderComponent={
         <>
-          <Banner dataBanner={DataBanner} />
+          <Banner dataBanner={dataBanner} />
           <CategoryAndAddress />
         </>
       }

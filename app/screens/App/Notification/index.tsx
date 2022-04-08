@@ -1,3 +1,9 @@
+import {
+  API_STATUS,
+  NOTIFICATION_TYPE,
+  ROLE,
+  SCREEN_ROUTER_APP,
+} from '@app/constant/Constant'
 import { Body, Item } from './model'
 import {
   FlatList,
@@ -6,14 +12,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {
-  NOTIFICATION_TYPE,
-  ROLE,
-  SCREEN_ROUTER_APP,
-} from '@app/constant/Constant'
 import React, { useCallback, useEffect, useState } from 'react'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import {
+  readAllNotify,
+  readNotificationForId,
+  requestListNotificationThunk,
+} from './slice'
+import { requestReadAllNotification, requestReadNotification } from './api'
 import { useAppDispatch, useAppSelector } from '@app/store'
 
 import DateUtils from '@app/utils/DateUtils'
@@ -23,12 +30,11 @@ import FstImage from '@app/components/FstImage'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { requestListNotificationThunk } from './slice'
-import { requestReadNotification } from './api'
 
 const NotificationScreen = () => {
-  const { data, isLoading, isLoadMore, isLastPage, error, countNotification } =
-    useAppSelector(state => state.NotificationReducer)
+  const { data, isLoading, isLoadMore, isLastPage, error } = useAppSelector(
+    state => state.NotificationReducer
+  )
   const [body, setBody] = useState<Body>({
     page: 1,
     limit: 15,
@@ -58,8 +64,17 @@ const NotificationScreen = () => {
     getData()
   }, [body, getData])
 
-  const onNavigation = async (item: Item, index?: number) => {
+  const readAllNotification = async () => {
+    const res = await requestReadAllNotification({})
+    if (res?.code === API_STATUS.SUCCESS) {
+      await Dispatch(readAllNotify())
+    }
+    // await Dispatch(readAllNotify())
+  }
+
+  const onNavigation = async (item: Item) => {
     if (item.NotificationPushes.length === 0) {
+      Dispatch(readNotificationForId(item?.id))
       await requestReadNotification({ id: item.id })
     }
 
@@ -77,7 +92,7 @@ const NotificationScreen = () => {
         return
       case NOTIFICATION_TYPE.NEWS_BANNER:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.BANNER_DETAIL, {
-          id: item?.notification_id,
+          id_banner: item?.notification_id,
         })
         return
     }
@@ -96,7 +111,7 @@ const NotificationScreen = () => {
       backgroundHeader={colors.white}
       color="black"
       forceInset={['left']}
-      rightComponent={<RightComponent onPress={() => {}} />}
+      rightComponent={<RightComponent onPress={readAllNotification} />}
       borderBottomHeader={colors.border}
     >
       <View style={styles.ctn}>
@@ -117,7 +132,7 @@ const NotificationScreen = () => {
               item={item}
               index={index}
               onPress={() => {
-                onNavigation(item, index)
+                onNavigation(item)
               }}
             />
           )}
@@ -140,7 +155,13 @@ const ItemNotification = ({
 }) => {
   return (
     <TouchableOpacity
-      style={styles.ctn_item}
+      style={[
+        styles.ctn_item,
+        {
+          backgroundColor:
+            item.NotificationPushes.length !== 0 ? colors.white : '#FBE9E8',
+        },
+      ]}
       onPress={onPress}
       key={`${index}`}
     >
