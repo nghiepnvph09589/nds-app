@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { colors, fonts } from '@app/theme'
 import FstImage from '@app/components/FstImage'
@@ -6,11 +6,19 @@ import R from '@app/assets/R'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 
-const SelectAddress = () => {
+interface SelectAddressProps {
+  onSaveDataLocation: ({ lt, lng }: { lt: number; lng: number }) => void
+}
+
+const SelectAddress = (props: SelectAddressProps) => {
+  const { onSaveDataLocation } = props
+
   return (
     <TouchableOpacity
       onPress={() => {
-        NavigationUtil.navigate(SCREEN_ROUTER_APP.ADDRESS_MAP)
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.ADDRESS_MAP, {
+          onCallBack: onSaveDataLocation,
+        })
       }}
       style={styles.v_container}
     >

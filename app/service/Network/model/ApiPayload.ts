@@ -8,6 +8,7 @@ export interface RegisterPayload {
 export interface LoginPayload {
   user_name: string
   password: string
+  device_id?: string
 }
 
 export interface CheckAccountPayload {

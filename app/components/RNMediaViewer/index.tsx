@@ -82,7 +82,14 @@ const RNImageViewer = ({
                   {item?.type === 1 ? (
                     <FstImage
                       source={{ uri: item?.media_url }}
-                      style={[styles.img_update, styleImage]}
+                      style={[
+                        styles.img_update,
+                        styleImage,
+                        {
+                          marginTop: index > 3 ? 5 : 0,
+                          marginRight: index === 3 || index === 7 ? 0 : 5,
+                        },
+                      ]}
                     />
                   ) : (
                     <View
@@ -187,13 +194,13 @@ const styles = StyleSheet.create({
   },
   list_img: {
     ...styleView.rowItem,
+    flexWrap: 'wrap',
     marginTop: 15,
   },
   img_update: {
     width: (dimensions.width - 78) / 4,
     height: (dimensions.width - 78) / 4,
     borderRadius: 8,
-    marginRight: 6,
   },
   v_index: {
     position: 'absolute',

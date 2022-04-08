@@ -102,7 +102,7 @@ const InfoBank = (props: BankInfoProps) => {
                   resizeMode="contain"
                 />
                 <Text style={styles.textEmpty}>
-                  {'Chưa có tài khoản người nhận nào'}
+                  {'Chưa có tài khoản người nhận'}
                 </Text>
               </View>
             )}

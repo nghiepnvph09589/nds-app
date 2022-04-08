@@ -4,18 +4,26 @@ import FstImage from '@app/components/FstImage'
 import RNButton from '@app/components/RNButton/RNButton'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { MAP_BOX_STYLE } from '@app/config'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import React, { useCallback, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-const AddressMap = () => {
+
+interface AddressMapProps {
+  route: {
+    params: { onCallBack: ({ lt, lng }: { lt: number; lng: number }) => void }
+  }
+}
+const AddressMap = (props: AddressMapProps) => {
   const mapRef = useRef(undefined)
   const cameraRef = useRef(undefined)
   const { lat, long } = useAppSelector(state => state.locationReducer)
   const [annotationPoint, setAnnotationPoint] = useState(
-    long ? [long, lat] : undefined
+    long ? [long, lat] : [105.784883, 21.028073]
   )
+  const [isLoading, setIsLoading] = useState(false)
 
   const defaultCamera = {
     centerCoordinate: [105.784883, 21.028073],
@@ -49,7 +57,17 @@ const AddressMap = () => {
               padding={{ paddingBottom: 100 }}
               centerCoordinate={annotationPoint}
             />
-            <MapboxGL.MarkerView id="pointAnno" coordinate={[long, lat]}>
+            <MapboxGL.MarkerView
+              onDragStart={() => setIsLoading(true)}
+              onDragEnd={(props: any) => {
+                setAnnotationPoint(props.geometry.coordinates)
+                console.log(props.geometry.coordinates)
+                setIsLoading(false)
+              }}
+              draggable={true}
+              id="pointAnno"
+              coordinate={annotationPoint}
+            >
               <FstImage
                 style={{
                   width: 30,
@@ -63,9 +81,17 @@ const AddressMap = () => {
           </MapboxGL.MapView>
           <View style={{ backgroundColor: 'white' }}>
             <RNButton
-              onPress={() => {}}
+              isLoading={isLoading}
+              onPress={() => {
+                console.log(annotationPoint[1])
+                props.route.params.onCallBack({
+                  lt: annotationPoint[1],
+                  lng: annotationPoint[0],
+                })
+                NavigationUtil.goBack()
+              }}
               style={styles.v_button}
-              title={'Chọn vị trí'}
+              title={isLoading ? 'Đang tìm vị trí' : 'Chọn vị trí'}
             />
           </View>
         </>

@@ -22,7 +22,7 @@ const SelectVideo = ({
   video: any
   onDelete: () => void
   selectVideo: () => void
-  loading: boolean
+  loading?: boolean
 }) => {
   return (
     <View style={styles.ctn}>
@@ -63,7 +63,11 @@ const SelectVideo = ({
                     source={R.images.ic_upload_img}
                     style={styles.ic_upload_img}
                   />
-                  <Text style={styles.txt_upload} children={'Tải Video'} />
+                  <Text
+                    numberOfLines={1}
+                    style={styles.txt_upload}
+                    children={'Tải Video'}
+                  />
                 </View>
               )}
             </View>

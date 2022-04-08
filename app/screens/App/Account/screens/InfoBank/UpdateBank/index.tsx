@@ -92,8 +92,6 @@ const UpdateBankComponent = (props: UpdateBankProps) => {
       } else {
         await BankApi.updateBank(payloadUpdateBank)
       }
-
-      // props.route.params.callback({id: res.})
       hideLoading()
       NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST)
     } catch (error) {

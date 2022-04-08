@@ -51,7 +51,7 @@ const CreateSupportScreen = (props: Props) => {
     email: Yup.string()
       .email(R.strings().validateEmail)
       .required(R.strings().email_blank),
-    // noteMessages: Yup.string().required(R.strings().note_blank),
+    noteMessages: Yup.string().required(R.strings().note_blank),
   })
 
   const getDataFormSupport = async () => {
@@ -76,7 +76,7 @@ const CreateSupportScreen = (props: Props) => {
     name: string
     phone: string
     email: string
-    // noteMessages: string
+    noteMessages: string
   }) => {
     showConfirm(R.strings().notification, 'Xác nhận ủng hộ', () => {
       postSupport(value)
@@ -86,7 +86,7 @@ const CreateSupportScreen = (props: Props) => {
     name: string
     phone: string
     email: string
-    // noteMessages: string
+    noteMessages: string
   }) => {
     if (!form.length) {
       showMessages(R.strings().notification, 'Vui lòng chọn hình thức ủng hộ')
@@ -201,20 +201,20 @@ const CreateSupportScreen = (props: Props) => {
                   errorMessage={errors.email}
                   touched={touched.email}
                 />
-                {/* <RNTextInput
+                <RNTextInput
                   containerStyle={styles.container_input}
                   errorStyle={styles.txt_error}
                   placeholder={R.strings().note_messages}
                   inputContainerStyle={styles.v_input}
                   returnKeyType={'next'}
-                  leftIcon={R.images.ic_email}
+                  // leftIcon={R.images.ic_email}
                   onChangeText={handleChange('noteMessages')}
                   onBlur={handleBlur('noteMessages')}
                   onSubmitEditing={() => setSubmitting(true)}
                   value={values.noteMessages}
                   errorMessage={errors.noteMessages}
                   touched={touched.noteMessages}
-                /> */}
+                />
                 <Text
                   style={styles.txt_form_support}
                   children={'Hình thức ủng hộ'}

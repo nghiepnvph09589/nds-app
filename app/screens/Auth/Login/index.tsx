@@ -1,19 +1,5 @@
-import R from '@app/assets/R'
-import FstImage from '@app/components/FstImage'
-import RNButton from '@app/components/RNButton/RNButton'
-import RNTextInput from '@app/components/RNTextInput'
-import {
-  PHONE_REGEX,
-  SCREEN_ROUTER,
-  SCREEN_ROUTER_AUTH,
-} from '@app/constant/Constant'
-import NavigationUtil from '@app/navigation/NavigationUtil'
-import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
-import { colors, fonts } from '@app/theme'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import { Formik } from 'formik'
-import React, { useRef, useEffect } from 'react'
+import * as Yup from 'yup'
+
 import {
   Dimensions,
   ImageBackground,
@@ -24,11 +10,29 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { isIphoneX } from 'react-native-iphone-x-helper'
+import {
+  PHONE_REGEX,
+  SCREEN_ROUTER,
+  SCREEN_ROUTER_AUTH,
+} from '@app/constant/Constant'
+import React, { useEffect, useRef, useState } from 'react'
+import { colors, fonts } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
+import { Formik } from 'formik'
+import FstImage from '@app/components/FstImage'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useDispatch } from 'react-redux'
-import * as Yup from 'yup'
 import LoginApi from './api/LoginApi'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import OneSignal from 'react-native-onesignal'
+import R from '@app/assets/R'
+import RNButton from '@app/components/RNButton/RNButton'
+import RNTextInput from '@app/components/RNTextInput'
+import { isIphoneX } from 'react-native-iphone-x-helper'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import { useDispatch } from 'react-redux'
+
 const { width } = Dimensions.get('window')
 
 const LoginScreen = () => {
@@ -41,7 +45,13 @@ const LoginScreen = () => {
       .max(11, R.strings().validatePhone)
       .required(R.strings().phone_blank),
   })
+  const [deviceID, setDeviceID] = useState<undefined | string>()
+  const getDeviceID = async () => {
+    const deviceState = await OneSignal.getDeviceState()
+    setDeviceID(deviceState?.userId)
+  }
   useEffect(() => {
+    getDeviceID()
     Keyboard.addListener('keyboardDidShow', keyboardDidShow)
     return () => {
       Keyboard.removeListener('keyboardDidShow', keyboardDidShow)
@@ -66,6 +76,7 @@ const LoginScreen = () => {
           const res = await LoginApi.login({
             user_name: item.phone,
             password: item.phone,
+            device_id: deviceID,
           })
           hideLoading()
           await AsyncStorageService.putToken(res?.data?.token)

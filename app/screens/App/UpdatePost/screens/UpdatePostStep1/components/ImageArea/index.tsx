@@ -63,6 +63,7 @@ const ImageArea = (props: ImageAreaProps) => {
     ImagePicker.openPicker({
       mediaType: 'photo',
       multiple: true,
+      maxFiles: 10,
     }).then(async images => {
       console.log(images)
       const dataImage = dataImageVideo.filter(
