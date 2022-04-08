@@ -1,3 +1,4 @@
+import { Body, Item } from './model'
 import {
   FlatList,
   StyleSheet,
@@ -5,55 +6,89 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import {
+  NOTIFICATION_TYPE,
+  ROLE,
+  SCREEN_ROUTER_APP,
+} from '@app/constant/Constant'
+import React, { useCallback, useEffect, useState } from 'react'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import { useAppDispatch, useAppSelector } from '@app/store'
 
 import DateUtils from '@app/utils/DateUtils'
 import Empty from '@app/components/Empty/Empty'
+import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
-import React from 'react'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-
-const data = [
-  {
-    title:
-      'Bạn đã ủng hộ cho tin đăng Cùng em học trực tuyến - Nâng niu triệu ước mơ học vấn không gián đoạn',
-    create_at: '2022-03-31T04:31:59.000Z',
-  },
-  {
-    title: 'Lá Lành đùm là rách',
-    create_at: '2022-03-31T04:31:59.000Z',
-  },
-  {
-    title: 'Bài viết của bạn đã được phê duyệt',
-    create_at: '2022-03-31T04:31:59.000Z',
-  },
-  {
-    title:
-      'Bạn đã ủng hộ cho tin đăng Cùng em học trực tuyến - Nâng niu triệu ước mơ học vấn không gián đoạn',
-    create_at: '2022-03-31T04:31:59.000Z',
-  },
-  {
-    title: 'Lá Lành đùm là rách',
-    create_at: '2022-03-31T04:31:59.000Z',
-  },
-  {
-    title: 'Bài viết của bạn đã được phê duyệt',
-    create_at: '2022-03-31T04:31:59.000Z',
-  },
-]
+import { requestListNotificationThunk } from './slice'
+import { requestReadNotification } from './api'
 
 const NotificationScreen = () => {
+  const { data, isLoading, isLoadMore, isLastPage, error, countNotification } =
+    useAppSelector(state => state.NotificationReducer)
+  const [body, setBody] = useState<Body>({
+    page: 1,
+    limit: 15,
+  })
+  const Dispatch = useAppDispatch()
   var onEndReachedCalledDuringMomentum = true
 
   const onMomentumScrollBegin = () => {
     onEndReachedCalledDuringMomentum = false
   }
   const handleLoadMore = () => {
-    if (!onEndReachedCalledDuringMomentum) {
+    if (!onEndReachedCalledDuringMomentum && !isLastPage && !isLoadMore) {
+      setBody({ ...body, page: body.page + 1 })
     }
     onEndReachedCalledDuringMomentum = true
   }
+  const getData = useCallback(() => {
+    Dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
+  }, [Dispatch, body])
+
+  const onRefreshData = () => {
+    //  getCountNotification()
+    setBody({ ...body, page: 1 })
+  }
+
+  useEffect(() => {
+    getData()
+  }, [body, getData])
+
+  const onNavigation = async (item: Item, index?: number) => {
+    if (item.NotificationPushes.length === 0) {
+      await requestReadNotification({ id: item.id })
+    }
+
+    switch (item?.type) {
+      case NOTIFICATION_TYPE.DONATE:
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
+          id: item?.notification_id,
+          customer: ROLE.CUSTOMER,
+        })
+        return
+      case NOTIFICATION_TYPE.POST:
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, {
+          id: item?.notification_id,
+        })
+        return
+      case NOTIFICATION_TYPE.NEWS_BANNER:
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.BANNER_DETAIL, {
+          id: item?.notification_id,
+        })
+        return
+    }
+  }
+
+  if (isLoading) {
+    showLoading()
+  } else {
+    hideLoading()
+  }
+  if (error) return <Error reload={getData} />
   return (
     <ScreenWrapper
       titleHeader={R.strings().notification}
@@ -66,10 +101,11 @@ const NotificationScreen = () => {
     >
       <View style={styles.ctn}>
         <FlatList
+          onRefresh={onRefreshData}
           style={styles.flatlist}
           // ref={listRef}
           data={data}
-          // refreshing={isLoading}
+          refreshing={isLoading}
           scrollEventThrottle={16}
           onEndReachedThreshold={0.05}
           onMomentumScrollBegin={onMomentumScrollBegin}
@@ -77,7 +113,13 @@ const NotificationScreen = () => {
           showsVerticalScrollIndicator={false}
           onEndReached={handleLoadMore}
           renderItem={({ item, index }) => (
-            <ItemNotification item={item} index={index} onPress={() => {}} />
+            <ItemNotification
+              item={item}
+              index={index}
+              onPress={() => {
+                onNavigation(item, index)
+              }}
+            />
           )}
           keyExtractor={(_, index) => `${index}`}
           ListEmptyComponent={() => <Empty description={'Danh sách trống'} />}
