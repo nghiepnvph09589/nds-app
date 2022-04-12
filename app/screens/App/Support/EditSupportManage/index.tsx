@@ -1,22 +1,9 @@
 import * as Yup from 'yup'
 
-import {
-  API_STATUS,
-  NAME_REGEX,
-  PHONE_REGEX,
-  ROLE,
-  SCREEN_ROUTER_APP,
-} from '@app/constant/Constant'
-import {
-  Keyboard,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { API_STATUS, NAME_REGEX, PHONE_REGEX } from '@app/constant/Constant'
 import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, fonts, styleView } from '@app/theme'
-import { createSupport, getListFormSupport } from './api'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 
@@ -27,16 +14,21 @@ import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import SelectForm from './component/SelectForm'
+import SelectForm from '../components/SelectForm'
+import { editSupportManage } from './api'
+import { getListFormSupport } from '../CreateSupport/api'
 import { itemFormSupport } from './model'
-import { useAppSelector } from '@app/store'
 
 interface Props {
-  route: { params: { id: number } }
+  route: {
+    params: { id: number; data: dataSupportDetail; onAction: () => void }
+  }
 }
-const CreateSupportScreen = (props: Props) => {
-  const userInfo = useAppSelector(state => state.accountReducer.data)
-  const [form, setForm] = useState<number[]>([])
+const EditSupportScreen = (props: Props) => {
+  const formSupport: number[] = props?.route?.params?.data.form_support.map(
+    item => item?.id
+  )
+  const [form, setForm] = useState<number[]>(formSupport || [])
   const [dataFormSupport, setDataFormSupport] = useState<itemFormSupport[]>([])
   const Schema = Yup.object().shape({
     name: Yup.string()
@@ -51,11 +43,9 @@ const CreateSupportScreen = (props: Props) => {
     email: Yup.string()
       .email(R.strings().validateEmail)
       .required(R.strings().email_blank),
-    noteMessages: Yup.string().required(R.strings().note_blank),
   })
 
   const getDataFormSupport = async () => {
-    Keyboard.dismiss()
     const payload = {
       page: 1,
       limit: 20,
@@ -64,9 +54,7 @@ const CreateSupportScreen = (props: Props) => {
     try {
       const res = await getListFormSupport(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        setDataFormSupport(
-          res?.data.filter((item: { type: number }) => item?.type === 2)
-        )
+        setDataFormSupport(res?.data)
       }
     } catch (error) {
       console.log(error)
@@ -80,7 +68,7 @@ const CreateSupportScreen = (props: Props) => {
     email: string
     noteMessages: string
   }) => {
-    showConfirm(R.strings().notification, 'Xác nhận ủng hộ', () => {
+    showConfirm(R.strings().notification, 'Xác nhận sửa ủng hộ?', () => {
       postSupport(value)
     })
   }
@@ -95,21 +83,23 @@ const CreateSupportScreen = (props: Props) => {
       return
     }
     const payload = {
-      donate_request_id: props?.route?.params?.id,
-      phone: value.phone,
-      name: value.name,
-      form_support: form,
-      email: value.email,
-      // note: value?.noteMessages,
+      id: props?.route?.params?.id,
+      params: {
+        phone: value.phone,
+        name: value.name,
+        form_support: form,
+        email: value.email,
+        note: value?.noteMessages,
+      },
     }
     showLoading()
     try {
-      const res = await createSupport(payload)
+      const res = await editSupportManage(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        showMessages('Thông báo', 'Ủng hộ của bạn đã được gửi!!', () => {
-          NavigationUtil.replace(SCREEN_ROUTER_APP.LIST_SUPPORT, {
-            pageProvince: userInfo?.role === ROLE?.OFFICER_PROVINCE ? 1 : 0,
-          })
+        // setDataFormSupport(res?.data)
+        showMessages('Thông báo', 'Sửa thành công', () => {
+          props?.route?.params?.onAction()
+          NavigationUtil.goBack()
         })
       }
     } catch (error) {
@@ -130,14 +120,13 @@ const CreateSupportScreen = (props: Props) => {
       backgroundHeader="white"
       forceInset={['left']}
       titleHeader={R.strings().support}
-      borderBottomHeader={colors.border}
     >
       <Formik
         initialValues={{
-          name: userInfo?.name,
-          phone: userInfo?.phone,
-          email: userInfo?.email,
-          noteMessages: '',
+          name: props?.route?.params?.data?.name,
+          phone: props?.route?.params?.data?.phone,
+          email: props?.route?.params?.data?.email,
+          noteMessages: props?.route?.params?.data?.note,
         }}
         onSubmit={onSubmit}
         validationSchema={Schema}
@@ -209,7 +198,7 @@ const CreateSupportScreen = (props: Props) => {
                   placeholder={R.strings().note_messages}
                   inputContainerStyle={styles.v_input}
                   returnKeyType={'next'}
-                  // leftIcon={R.images.ic_email}
+                  //   leftIcon={R.images.ic_email}
                   onChangeText={handleChange('noteMessages')}
                   onBlur={handleBlur('noteMessages')}
                   onSubmitEditing={() => setSubmitting(true)}
@@ -234,7 +223,7 @@ const CreateSupportScreen = (props: Props) => {
                 <FstImage source={R.images.ic_love2} style={styles.ic_love} />
                 <Text
                   style={styles.txt_submit}
-                  children={'Gửi yêu cầu ủng hộ'}
+                  children={R.strings().support}
                 />
               </TouchableOpacity>
             </KeyboardAwareScrollView>
@@ -245,7 +234,7 @@ const CreateSupportScreen = (props: Props) => {
   )
 }
 
-export default CreateSupportScreen
+export default EditSupportScreen
 
 const styles = StyleSheet.create({
   ctn: {

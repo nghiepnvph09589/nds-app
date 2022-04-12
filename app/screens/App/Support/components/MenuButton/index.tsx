@@ -17,7 +17,7 @@ import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 
 import ApproveButton from './components/Approvebutton'
-import { ChangeStatusSupport } from '../../api'
+import { ChangeStatusSupport } from '../../DetailSupportManage/api'
 import Modal from 'react-native-modal'
 import ModalOption from './components/ModalOption'
 import ModalReasonCancel from './components/ModalReasonCancel'

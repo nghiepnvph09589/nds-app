@@ -13,12 +13,12 @@ import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
 import CreatePostApi from '@app/screens/App/CreatePost/api/CreatePostApi'
 import ImagePicker from 'react-native-image-crop-picker'
-import InputUpdate from './components/InputUpdate'
-import ListImage from './components/ListImage'
+import InputUpdate from '../components/InputUpdate'
+import ListImage from '../components/ListImage'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import SelectVideo from './components/SelectVideo'
+import SelectVideo from '../components/SelectVideo'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import reactotron from 'reactotron-react-native'
 import { requestUpdateSupportManage } from './api'
@@ -32,8 +32,6 @@ const UpdateSupportManage = (props: Props) => {
   const [content, setContent] = useState<string>('')
   const [listImage, setListImage] = useState<any[]>([])
   const [video, setVideo] = useState<any>('')
-  // const [loadingImage, setLoadingImage] = useState<boolean>(false)
-  // const [loadingVideo, setLoadingVideo] = useState<boolean>(false)
   const [date, setDate] = useState<any>('')
 
   const selectImage = async () => {
@@ -238,7 +236,6 @@ const UpdateSupportManage = (props: Props) => {
           listImage={listImage}
           deleteImage={deleteImage}
           selectImage={selectImage}
-          // loading={loadingImage}
         />
         <SelectVideo
           onDelete={() => {
@@ -246,7 +243,6 @@ const UpdateSupportManage = (props: Props) => {
           }}
           video={video}
           selectVideo={selectVideo}
-          // loading={loadingVideo}
         />
       </ScrollView>
       <TouchableOpacity onPress={onSubmit} style={styles.btn_submit}>

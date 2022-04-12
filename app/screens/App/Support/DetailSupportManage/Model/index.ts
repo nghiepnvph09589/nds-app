@@ -19,4 +19,5 @@ interface dataSupportDetail {
   title: string
   DonateImages: any[]
   end_date?: string
+  province_id: number
 }

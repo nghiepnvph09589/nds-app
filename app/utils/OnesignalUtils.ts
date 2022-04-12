@@ -1,7 +1,6 @@
 import {
   NOTIFICATION_TYPE,
   ONESIGNAL_APP_ID,
-  ROLE,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
 
@@ -50,7 +49,7 @@ export default abstract class OneSignalUtil {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: notification?.additionalData?.notification_id,
-          customer: ROLE.CUSTOMER,
+          // customer: ROLE.CUSTOMER,
         })
         return
       case NOTIFICATION_TYPE.POST:

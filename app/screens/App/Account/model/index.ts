@@ -14,6 +14,7 @@ export type AccountType = {
   role: number
   donate: number
   post: number
+  province_id: number
 }
 export type AccountSlice = {
   isError: boolean

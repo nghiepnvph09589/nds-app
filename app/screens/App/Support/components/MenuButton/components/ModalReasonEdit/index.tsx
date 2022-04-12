@@ -11,58 +11,59 @@ import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 
 import { API_STATUS } from '@app/constant/Constant'
-import { ChangeStatusSupport } from '../../../../api'
 import FastImage from 'react-native-fast-image'
 import Modal from 'react-native-modal'
 import R from '@app/assets/R'
+import { requestEditSupport } from '../../../../DetailSupportManage/api'
 
-const ModalReasonCancel = ({
-  showCancel,
-  setShowCancel,
+const ModalReasonEdit = ({
+  showRequest,
+  setShowRequest,
   submit,
   id,
 }: {
-  showCancel: boolean
-  setShowCancel: (status: boolean) => void
+  showRequest: boolean
+  setShowRequest: (status: boolean) => void
   submit: () => void
   id?: number
 }) => {
   const [reason, setReason] = useState<string>('')
-  const onCancel = () => {
+
+  const onSubmit = () => {
     showConfirm(
       R.strings().notification,
-      'Bạn chắc chắn từ chối ủng hộ này?',
+      'Bạn chắc chắn yêu cầu sửa ủng hộ này?',
       () => {
-        changStatus()
+        send()
       }
     )
   }
-  const changStatus = async () => {
+  const send = async () => {
     if (reason.trim() === '') {
-      showMessages(R.strings().notification, 'Vui lòng nhập lý do từ chối')
+      showMessages(R.strings().notification, 'Vui lòng nhập nội dung chỉnh sửa')
       return
     }
     const payload: {
       id?: number
-      params: {
-        status: number
-        reason: string
-      }
+      params: { reason_request: string }
     } = {
       id: id,
       params: {
-        status: 0,
-        reason: reason,
+        reason_request: reason,
       },
     }
     showLoading()
     try {
-      const res = await ChangeStatusSupport(payload)
+      const res = await requestEditSupport(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        showMessages(R.strings().notification, 'Đã từ chối ủng hộ', () => {
-          setShowCancel(false)
-          submit()
-        })
+        showMessages(
+          R.strings().notification,
+          'Đã yêu cầu chỉnh sửa ủng hộ',
+          () => {
+            setShowRequest(false)
+            submit()
+          }
+        )
       }
     } catch (error) {
       console.log(error)
@@ -73,16 +74,16 @@ const ModalReasonCancel = ({
   return (
     <Modal
       onBackdropPress={() => {
-        setShowCancel(false)
+        setShowRequest(false)
       }}
-      isVisible={showCancel}
+      isVisible={showRequest}
     >
       <View style={styles.ctn}>
         <View style={styles.v_title}>
-          <Text style={styles.txt_title} children={'Từ chối'} />
+          <Text style={styles.txt_title} children={'Yêu cầu chỉnh sửa'} />
           <TouchableOpacity
             onPress={() => {
-              setShowCancel(false)
+              setShowRequest(false)
             }}
             style={styles.btn_close}
           >
@@ -94,11 +95,11 @@ const ModalReasonCancel = ({
           value={reason}
           multiline
           maxLength={225}
-          placeholder={'Nhập lý do từ chối'}
+          placeholder={'Nhập nội dung yêu cầu chỉnh sửa'}
           style={styles.input_content}
           placeholderTextColor={'#8898A7'}
         />
-        <TouchableOpacity onPress={onCancel} style={styles.submit}>
+        <TouchableOpacity onPress={onSubmit} style={styles.submit}>
           <Text
             style={{
               ...fonts.semi_bold16,
@@ -111,9 +112,7 @@ const ModalReasonCancel = ({
     </Modal>
   )
 }
-
-export default ModalReasonCancel
-
+export default ModalReasonEdit
 const styles = StyleSheet.create({
   input_content: {
     paddingTop: 14,

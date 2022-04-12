@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
-import AfterUpdate from './components/AfterUpdate'
-import BtnDetailPost from './components/BtnDetailPost'
-import BtnUpdateCustomer from './components/BtnUpdateCustomer'
-import CharityHouse from './components/CharityHouse'
+import AfterUpdate from '../components/AfterUpdate'
+import BtnDetailPost from '../components/BtnDetailPost'
+import BtnUpdateCustomer from '../components/BtnUpdateCustomer'
+import CharityHouse from '../components/CharityHouse'
 import Error from '@app/components/Error/Error'
-import MenuButton from './components/MenuButton'
+import MenuButton from '../components/MenuButton'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import StatusSupport from './components/StatusSupport'
+import StatusSupport from '../components/StatusSupport'
 import { colors } from '@app/theme'
 import { getDetailSupportManage } from './api'
 import { useAppSelector } from '@app/store'
@@ -77,7 +77,7 @@ const DetailSupportScreen = (props: Props) => {
         data?.status !== STATUS_SUPPORT_DETAIL.UPDATE_SUPPORT &&
         userInfo.role !== ROLE.OFFICER_WARD &&
         userInfo.role !== ROLE.CUSTOMER &&
-        !props.route?.params?.customer && (
+        userInfo.province_id === data?.province_id && (
           <MenuButton
             id={data?.id}
             onAction={() => {
@@ -89,8 +89,8 @@ const DetailSupportScreen = (props: Props) => {
           />
         )}
 
-      {props.route?.params?.customer &&
-        data?.status !== STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT && (
+      {data?.status === STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT &&
+        props.route.params.customer && (
           <BtnUpdateCustomer
             data={data}
             onAction={() => {
