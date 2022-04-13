@@ -110,6 +110,7 @@ const images = {
   img_project_completed: require('./images/img_project_completed.png'),
   img_project_home: require('./images/img_project_home.png'),
   img_red_cross: require('./images/img_red_cross.png'),
+  img_splash: require('./images/img_splash.png'),
   img_vietbuiltding_banner: require('./images/img_vietbuiltding_banner.png'),
 }
 export default images

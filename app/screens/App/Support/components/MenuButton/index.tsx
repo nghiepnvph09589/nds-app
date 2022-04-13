@@ -17,6 +17,7 @@ import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 
 import ApproveButton from './components/Approvebutton'
+import BtnUpdateCustomer from '../BtnUpdateCustomer'
 import { ChangeStatusSupport } from '../../DetailSupportManage/api'
 import Modal from 'react-native-modal'
 import ModalOption from './components/ModalOption'
@@ -25,6 +26,7 @@ import ModalReasonEdit from './components/ModalReasonEdit'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import UpdateSupportButton from './components/UpdateSupportButton'
+import { dimension } from '@app/constant/Theme'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import { useAppSelector } from '@app/store'
 
@@ -79,7 +81,7 @@ const MenuButton = ({
         showMessages(
           R.strings().notification,
           dataUser?.role === ROLE.OFFICER_PROVINCE
-            ? 'Đã phê duyệt thành công'
+            ? 'Đã phê duyệt'
             : 'Đã gửi yêu cầu phê duyệt',
           () => {
             onAction()
@@ -97,21 +99,13 @@ const MenuButton = ({
   const showButtonUpdateStatus = (status?: number) => {
     switch (status) {
       case STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT:
-        return (
-          <ApproveButton
-            onPress={onAccept}
-            role={dataUser?.role}
-            status={status}
-          />
-        )
+        return <ApproveButton onPress={onAccept} />
       case STATUS_SUPPORT_DETAIL.DISTRICT_ACCEPT:
-        return (
-          <ApproveButton
-            onPress={onAccept}
-            role={dataUser?.role}
-            status={status}
-          />
-        )
+        if (dataUser.role === 2) {
+          return <ApproveButton onPress={onAccept} />
+        } else {
+          return <></>
+        }
       case STATUS_SUPPORT_DETAIL.PROVINCE_ACCEPT:
         return (
           <UpdateSupportButton
@@ -129,8 +123,6 @@ const MenuButton = ({
     if (dataUser?.role === 3) {
       if (status === 1) {
         return 1
-      } else if (status === 2 && data?.is_update === 1) {
-        return 1
       } else {
         return 0
       }
@@ -138,7 +130,7 @@ const MenuButton = ({
       return 1
     }
   }
-  // if (error) return <Error reload={() => {}} />
+
   return (
     <View style={styles.ctn}>
       {showButtonUpdateStatus(status)}
@@ -158,6 +150,18 @@ const MenuButton = ({
           />
         </TouchableOpacity>
       )}
+      {dataUser.role === ROLE.OFFICER_DISTRICT &&
+        status === 2 &&
+        data?.is_update === 1 && (
+          <View style={{ width: dimension.width - 30 }}>
+            <BtnUpdateCustomer
+              data={data}
+              onAction={() => {
+                onAction()
+              }}
+            />
+          </View>
+        )}
       <Modal
         onBackdropPress={() => {
           setShow(false)

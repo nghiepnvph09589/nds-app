@@ -1,33 +1,21 @@
 import { APP_SLICE, SCREEN_ROUTER } from '@app/constant/Constant'
-import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import React, { useEffect } from 'react'
-import { Button, Text, View } from 'react-native'
+
+import FastImage from 'react-native-fast-image'
+import R from '@app/assets/R'
+import { StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import splashScreen from 'react-native-splash-screen'
 
 const SplashScreen = (props: any) => {
   useEffect(() => {
+    splashScreen.hide()
     props.navigateSwitch(SCREEN_ROUTER.MAIN)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        paddingTop: 100,
-        backgroundColor: '#3892',
-      }}
-    >
-      <Text style={{ marginBottom: 50 }}>SPLASH</Text>
-
-      <Button
-        onPress={() => {
-          props.navigateSwitch(SCREEN_ROUTER.MAIN)
-        }}
-        title="CUSTOMER"
-      />
-    </View>
-  )
+  return <FastImage source={R.images.img_splash} style={styles.image} />
 }
 
 const mapStateToProps = (state: any) => ({
@@ -37,5 +25,11 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = {
   navigateSwitch,
 }
-
+const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
 export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)

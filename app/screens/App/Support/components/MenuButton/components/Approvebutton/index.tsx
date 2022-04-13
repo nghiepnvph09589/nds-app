@@ -1,4 +1,3 @@
-import { ROLE, STATUS_SUPPORT_DETAIL } from '@app/constant/Constant'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, fonts, styleView } from '@app/theme'
 
@@ -6,41 +5,19 @@ import FastImage from 'react-native-fast-image'
 import R from '@app/assets/R'
 import React from 'react'
 
-const ApproveButton = ({
-  onPress,
-  role,
-  status,
-}: {
-  onPress: () => void
-  role: number
-  status: number
-}) => {
+const ApproveButton = ({ onPress }: { onPress: () => void }) => {
   return (
-    <TouchableOpacity
-      disabled={status === 2 && role === ROLE.OFFICER_DISTRICT}
-      onPress={onPress}
-      style={styles.accept}
-    >
+    <TouchableOpacity onPress={onPress} style={styles.accept}>
       <View style={styles.v_content_accept}>
         <FastImage
           tintColor={'white'}
           source={R.images.ic_accept_support}
           style={styles.ic_accept}
         />
-        {status === STATUS_SUPPORT_DETAIL.CUSTOMER_SUPPORT && (
-          <Text
-            style={{ ...fonts.semi_bold16, color: colors.white }}
-            children={'Đã liên hệ'}
-          />
-        )}
-        {status === STATUS_SUPPORT_DETAIL.DISTRICT_ACCEPT && (
-          <Text
-            style={{ ...fonts.semi_bold16, color: colors.white }}
-            children={
-              role === ROLE.OFFICER_PROVINCE ? 'Đã liên hệ' : 'Huyện đã liên hệ'
-            }
-          />
-        )}
+        <Text
+          style={{ ...fonts.semi_bold16, color: colors.white }}
+          children={'Đã liên hệ'}
+        />
       </View>
     </TouchableOpacity>
   )

@@ -51,6 +51,7 @@ const ManageListSupportScreen = () => {
             setPage(i.i)
           }}
           renderTabBar={renderTabBar}
+          locked={true}
         >
           {headerComponent.map(item => {
             return (

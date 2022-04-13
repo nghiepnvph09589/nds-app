@@ -64,6 +64,7 @@
     "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.2.0",
+    "react-native-splash-screen": "^3.3.0",
     "react-native-step-indicator": "^1.0.3",
     "react-native-swiper": "^1.6.0",
     "react-native-swiper-flatlist": "^3.0.16",

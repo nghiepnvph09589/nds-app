@@ -45,6 +45,21 @@ const DetailSupportScreen = (props: Props) => {
     getData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  const checkRoleMenu = () => {
+    if (userInfo.role === ROLE.OFFICER_PROVINCE) {
+      if (userInfo.province_id === data?.province_id) {
+        return 1
+      } else {
+        return 0
+      }
+    } else if (userInfo.role === ROLE.OFFICER_DISTRICT) {
+      if (userInfo.district_id === data?.district_id) {
+        return 1
+      } else {
+        return 0
+      }
+    }
+  }
   if (error) return <Error reload={getData} />
   return (
     <ScreenWrapper
@@ -77,7 +92,7 @@ const DetailSupportScreen = (props: Props) => {
         data?.status !== STATUS_SUPPORT_DETAIL.UPDATE_SUPPORT &&
         userInfo.role !== ROLE.OFFICER_WARD &&
         userInfo.role !== ROLE.CUSTOMER &&
-        userInfo.province_id === data?.province_id && (
+        checkRoleMenu() === 1 && (
           <MenuButton
             id={data?.id}
             onAction={() => {
