@@ -143,15 +143,26 @@ const PostDetail = (props: PostDetailProps) => {
             })
             if (userInfo.role === ROLE.OFFICER_PROVINCE) {
               dispatch(getDataHome({ page: 1 }))
-            }
-            dispatch(
-              getDataListManagePost({
-                status: 2,
-                limit: DEFAULT_PARAMS.LIMIT,
-                page: DEFAULT_PARAMS.PAGE,
+              dispatch(
+                getDataListManagePost({
+                  status: 3,
+                  limit: DEFAULT_PARAMS.LIMIT,
+                  page: DEFAULT_PARAMS.PAGE,
+                })
+              )
+              NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST, {
+                page: 2,
               })
-            )
-            NavigationUtil.goBack()
+            } else {
+              dispatch(
+                getDataListManagePost({
+                  status: 2,
+                  limit: DEFAULT_PARAMS.LIMIT,
+                  page: DEFAULT_PARAMS.PAGE,
+                })
+              )
+              NavigationUtil.goBack()
+            }
           } catch (error) {
           } finally {
             hideLoading()
@@ -218,20 +229,23 @@ const PostDetail = (props: PostDetailProps) => {
             id,
             reason_request: inputText,
           })
+          dispatch(
+            getDataListManagePost({
+              status: 2,
+              limit: DEFAULT_PARAMS.LIMIT,
+              page: DEFAULT_PARAMS.PAGE,
+            })
+          )
+          NavigationUtil.goBack()
         } else if (typeOption === 3) {
           await PostDetailApi.approvePost({
             id,
             reason: inputText,
           })
-        }
-        dispatch(
-          getDataListManagePost({
-            status: 2,
-            limit: DEFAULT_PARAMS.LIMIT,
-            page: DEFAULT_PARAMS.PAGE,
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST, {
+            page: 3,
           })
-        )
-        NavigationUtil.goBack()
+        }
       } catch (error) {
       } finally {
         hideLoading()
@@ -270,15 +284,24 @@ const PostDetail = (props: PostDetailProps) => {
       })
       if (userInfo.role === ROLE.OFFICER_PROVINCE) {
         dispatch(getDataHome({ page: 1 }))
+        dispatch(
+          getDataListManagePost({
+            status: 3,
+            limit: DEFAULT_PARAMS.LIMIT,
+            page: DEFAULT_PARAMS.PAGE,
+          })
+        )
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST, { page: 2 })
+      } else {
+        dispatch(
+          getDataListManagePost({
+            status: 2,
+            limit: DEFAULT_PARAMS.LIMIT,
+            page: DEFAULT_PARAMS.PAGE,
+          })
+        )
+        NavigationUtil.goBack()
       }
-      dispatch(
-        getDataListManagePost({
-          status: 2,
-          limit: DEFAULT_PARAMS.LIMIT,
-          page: DEFAULT_PARAMS.PAGE,
-        })
-      )
-      NavigationUtil.goBack()
     } catch (error) {
     } finally {
       hideLoading()
@@ -340,18 +363,23 @@ const PostDetail = (props: PostDetailProps) => {
         </Tabs>
       </ScrollView>
       <ButtonBack />
-      {!(typeNavigate === 1 && type !== STATUS_TYPE.EDIT) && (
-        <ViewBottom
-          typeNavigate={typeNavigate}
-          status={dataPostDetail?.status}
-          openOption={() => {
-            ref.current?.show()
-          }}
-          type={type}
-          handleApprove={handleApprove}
-          id={dataPostDetail?.id}
-        />
-      )}
+      {!(typeNavigate === 1 && type !== STATUS_TYPE.EDIT) &&
+        !(
+          status === 2 &&
+          typeNavigate === 2 &&
+          userInfo.role === ROLE.OFFICER_DISTRICT
+        ) && (
+          <ViewBottom
+            typeNavigate={typeNavigate}
+            status={dataPostDetail?.status}
+            openOption={() => {
+              ref.current?.show()
+            }}
+            type={type}
+            handleApprove={handleApprove}
+            id={dataPostDetail?.id}
+          />
+        )}
 
       <ActionSheet
         ref={ref}
