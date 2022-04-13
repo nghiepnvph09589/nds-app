@@ -4,6 +4,7 @@ import {
 } from '@react-navigation/bottom-tabs'
 import {
   MAIN_TAB,
+  ROLE,
   SCREEN_ROUTER,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
@@ -104,11 +105,15 @@ const RenderTabBarIcon = ({
                 source={TAB_BAR[route.name].icon}
                 resizeMode={'contain'}
               />
-              {!!count && count !== 0 && !focused && (
-                <View style={styles.v_dot}>
-                  <Text style={styles.count} children={count} />
-                </View>
-              )}
+              {!!count &&
+                count !== 0 &&
+                !focused &&
+                userInfo.role !== ROLE.CUSTOMER &&
+                userInfo.role !== ROLE.OFFICER_WARD && (
+                  <View style={styles.v_dot}>
+                    <Text style={styles.count} children={count} />
+                  </View>
+                )}
             </View>
           ) : (
             <FastImage
