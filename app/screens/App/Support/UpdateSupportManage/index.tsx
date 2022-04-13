@@ -1,4 +1,8 @@
-import { API_STATUS, MEDIA_TYPE } from '@app/constant/Constant'
+import {
+  API_STATUS,
+  MEDIA_TYPE,
+  SCREEN_ROUTER_APP,
+} from '@app/constant/Constant'
 import {
   Keyboard,
   Platform,
@@ -20,7 +24,6 @@ import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import SelectVideo from '../components/SelectVideo'
 import { isIphoneX } from 'react-native-iphone-x-helper'
-import reactotron from 'reactotron-react-native'
 import { requestUpdateSupportManage } from './api'
 import { showMessages } from '@app/utils/AlertHelper'
 
@@ -147,10 +150,11 @@ const UpdateSupportManage = (props: Props) => {
     Keyboard.dismiss()
     showLoading()
     try {
+      console.log(new Date('2022-04-13T04:17:10.493Z').toISOString())
       let params: any = {
         title: title,
         content: content,
-        end_date: new Date(date).toISOString(),
+        end_date: date,
       }
       if (listMedia.length !== 0) {
         const formData = new FormData()
@@ -193,11 +197,12 @@ const UpdateSupportManage = (props: Props) => {
         id: props?.route?.params?.id,
         params: params,
       }
-      reactotron.log!(payload)
       const res = await requestUpdateSupportManage(payload)
       if (res?.code === API_STATUS.SUCCESS) {
         showMessages(R.strings().notification, 'Cập nhật hoàn thành!', () => {
-          NavigationUtil.goBack()
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_SUPPORT, {
+            pageList: 2,
+          })
           props?.route?.params?.onAction()
         })
       }

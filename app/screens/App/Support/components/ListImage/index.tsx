@@ -52,7 +52,20 @@ const ListImage = ({
           )
         })}
         {listImage.length < 10 && (
-          <TouchableOpacity onPress={selectImage} style={styles.btn_upload_img}>
+          <TouchableOpacity
+            onPress={selectImage}
+            style={[
+              styles.btn_upload_img,
+              {
+                marginLeft:
+                  listImage.length === 0 ||
+                  listImage.length === 4 ||
+                  listImage.length === 8
+                    ? 0
+                    : 15,
+              },
+            ]}
+          >
             <FstImage
               source={R.images.img_border_upload}
               style={styles.img_upload_img}

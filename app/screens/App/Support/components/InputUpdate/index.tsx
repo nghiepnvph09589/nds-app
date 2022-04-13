@@ -84,9 +84,10 @@ const InputUpdate = ({
           mode="date"
           onCancel={() => setShow(false)}
           onConfirm={(date: Date) => {
+            // console.log(date.toISOString())
             setShow(false)
             setDateBirth(DateUtils.formatShortDate(date))
-            onChange(DateUtils.formatShortDate(date))
+            onChange(date.toISOString())
           }}
         />
       </TouchableOpacity>

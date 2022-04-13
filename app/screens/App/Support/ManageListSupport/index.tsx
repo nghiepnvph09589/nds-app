@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
 import { ScrollableTab, Tab, Tabs } from 'native-base'
 import { StyleSheet, View } from 'react-native'
 import { dimensions, fonts } from '@app/theme'
 
 import ListSupportComponent from './component/ListSupportComponent'
 import R from '@app/assets/R'
+import React from 'react'
 import { STATUS_SUPPORT } from '@app/constant/Constant'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { colors } from '@app/theme/colors'
@@ -31,8 +31,17 @@ const headerComponent = [
     name: 'Từ chối',
   },
 ]
-const ManageListSupportScreen = () => {
-  const [page, setPage] = useState<number>(0)
+
+interface Props {
+  route: {
+    params: {
+      pageList: number
+    }
+  }
+}
+const ManageListSupportScreen = (props: Props) => {
+  // const [page, setPage] = useState<number>(0)
+
   return (
     <ScreenWrapper
       back
@@ -44,12 +53,13 @@ const ManageListSupportScreen = () => {
     >
       <View style={styles.ctn}>
         <Tabs
-          page={page}
+          initialPage={props?.route?.params?.pageList}
+          page={props?.route?.params?.pageList}
           tabContainerStyle={styles.tabContainerStyle}
           tabBarUnderlineStyle={styles.underline}
-          onChangeTab={(i: any) => {
-            setPage(i.i)
-          }}
+          // onChangeTab={(i: any) => {
+          //   setPage(i.i)
+          // }}
           renderTabBar={renderTabBar}
           locked={true}
         >

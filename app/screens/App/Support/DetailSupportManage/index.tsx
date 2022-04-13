@@ -16,7 +16,14 @@ import { getDetailSupportManage } from './api'
 import { useAppSelector } from '@app/store'
 
 interface Props {
-  route: { params: { id: number; onRefreshData: () => void; customer: number } }
+  route: {
+    params: {
+      id: number
+      onRefreshData: () => void
+      customer: number
+      setPageList: (page: number) => void
+    }
+  }
 }
 const DetailSupportScreen = (props: Props) => {
   const [data, setData] = useState<dataSupportDetail>()

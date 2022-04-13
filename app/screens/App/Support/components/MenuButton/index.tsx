@@ -85,6 +85,11 @@ const MenuButton = ({
             : 'Đã gửi yêu cầu phê duyệt',
           () => {
             onAction()
+            dataUser?.role === ROLE.OFFICER_PROVINCE
+              ? NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_SUPPORT, {
+                  pageList: 1,
+                })
+              : NavigationUtil.goBack()
           }
         )
       }
