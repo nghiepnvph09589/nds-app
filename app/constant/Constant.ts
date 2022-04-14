@@ -72,6 +72,8 @@ const MEDIA_TYPE = {
 
 export const ONESIGNAL_APP_ID = 'db34fa73-c810-494c-b274-08ee6202a7ad'
 
+export const GOONG_HOST = 'https://rsapi.goong.io/'
+
 const STATUS_TYPE = {
   WAIT_CONFIRM: 2, //chờ xác nhận
   EDIT: 1, //đã xác nhận

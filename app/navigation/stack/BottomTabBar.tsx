@@ -10,7 +10,6 @@ import {
 } from '@app/constant/Constant'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
-
 import Account from '@app/screens/App/Account'
 import AsyncStorage from '@react-native-community/async-storage'
 import CreatePost from '@app/screens/App/CreatePost'

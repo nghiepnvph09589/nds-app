@@ -41,6 +41,7 @@
     "react-fast-compare": "^3.2.0",
     "react-moment": "^1.1.1",
     "react-native": "0.64.2",
+    "react-native-autocomplete-dropdown": "^1.1.7",
     "react-native-code-push": "^7.0.4",
     "react-native-create-thumbnail": "^1.5.1",
     "react-native-elements": "^3.4.1",
