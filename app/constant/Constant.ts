@@ -74,6 +74,8 @@ export const ONESIGNAL_APP_ID = 'db34fa73-c810-494c-b274-08ee6202a7ad'
 
 export const GOONG_HOST = 'https://rsapi.goong.io/'
 
+export const api_key = 'F5qwKLv2gvV4UCKXSbN39hVvl0gxYjYKKPigkfLj'
+
 const STATUS_TYPE = {
   WAIT_CONFIRM: 2, //chờ xác nhận
   EDIT: 1, //đã xác nhận

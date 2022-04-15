@@ -29,6 +29,8 @@ const images = {
   ic_copy: require('./images/ic_copy.png'),
   ic_create_post: require('./images/ic_create_post.png'),
   ic_credit_card: require('./images/ic_credit_card.png'),
+  ic_current_location: require('./images/ic_current_location.png'),
+  ic_dot_red: require('./images/ic_dot_red.png'),
   ic_down: require('./images/ic_down.png'),
   ic_edit_avatar: require('./images/ic_edit_avatar.png'),
   ic_edit_support: require('./images/ic_edit_support.png'),

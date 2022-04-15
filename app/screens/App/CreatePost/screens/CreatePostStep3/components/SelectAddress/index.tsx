@@ -3,7 +3,7 @@ import FstImage from '@app/components/FstImage'
 import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, fonts } from '@app/theme'
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 
 interface SelectAddressProps {
@@ -12,12 +12,18 @@ interface SelectAddressProps {
 
 const SelectAddress = (props: SelectAddressProps) => {
   const { onSaveDataLocation } = props
+  const [address, setAddress] = useState('')
+
+  const onSetAddress = ({ addressLocation }: { addressLocation: string }) => {
+    setAddress(addressLocation)
+  }
 
   return (
     <TouchableOpacity
       onPress={() => {
         NavigationUtil.navigate(SCREEN_ROUTER_APP.ADDRESS_MAP, {
           onCallBack: onSaveDataLocation,
+          onSetAddress: onSetAddress,
         })
       }}
       style={styles.v_container}
@@ -27,7 +33,9 @@ const SelectAddress = (props: SelectAddressProps) => {
         style={styles.icon}
         source={R.images.ic_location4}
       />
-      <Text style={styles.text}>{R.strings().select_address_map}</Text>
+      <Text style={styles.text}>
+        {address ? address : R.strings().select_address_map}
+      </Text>
       <FstImage
         resizeMode="contain"
         style={styles.icon}
@@ -42,13 +50,13 @@ export default SelectAddress
 const styles = StyleSheet.create({
   v_container: {
     flexDirection: 'row',
-    backgroundColor: '#F8F9FA',
+    backgroundColor: '#FDF4F4',
     marginTop: 20,
     paddingVertical: 13,
     alignItems: 'center',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E9ECEF',
+    borderColor: '#F7D3D1',
     paddingHorizontal: 15,
   },
   icon: {

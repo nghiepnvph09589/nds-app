@@ -178,7 +178,6 @@ const MainTab = (route: any) => {
                   return
                 } else if (route.name === MAIN_TAB.CREATE_POST) {
                   NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_POST)
-                  //dispatch(navigateSwitch(SCREEN_ROUTER.CREATE_POST))
                   return
                 }
                 if (props.onPress) props.onPress(e)
