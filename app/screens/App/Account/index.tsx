@@ -7,6 +7,7 @@ import Messages from '@app/components/Messages'
 import { SCREEN_ROUTER } from '@app/constant/Constant'
 import UserDirectory from './components/UserDirectory'
 import UserInfo from './components/UserInfo'
+import { clearNotifyCount } from '../Notification/slice'
 import { logout } from './slices/AccountSlice'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import { requestLogout } from './api/AccountApi'
@@ -20,6 +21,7 @@ const Account = () => {
   const handleLogout = async () => {
     await requestLogout({})
     dispatch(logout())
+    dispatch(clearNotifyCount())
     await AsyncStorageService.putToken('')
     dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
   }

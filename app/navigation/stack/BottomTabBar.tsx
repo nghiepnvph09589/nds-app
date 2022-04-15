@@ -9,7 +9,9 @@ import {
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { colors, fonts } from '@app/theme'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
+
 import Account from '@app/screens/App/Account'
 import AsyncStorage from '@react-native-community/async-storage'
 import CreatePost from '@app/screens/App/CreatePost'
@@ -20,15 +22,14 @@ import NavigationUtil from '../NavigationUtil'
 import NotificationScreen from '@app/screens/App/Notification'
 import R from '@app/assets/R'
 import React from 'react'
-import { colors, fonts } from '@app/theme'
 import { createStackNavigator } from '@react-navigation/stack'
 import { dimension } from '@app/constant/Theme'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import reactotron from 'reactotron-react-native'
 import { showConfirm } from '@app/utils/AlertHelper'
-import { useDispatch } from 'react-redux'
 import { useAppSelector } from '@app/store'
+import { useDispatch } from 'react-redux'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -84,6 +85,9 @@ const RenderTabBarIcon = ({
   const tintColor = focused ? colors.primary : '#ADB5BD'
   const userInfo = useAppSelector(state => state.accountReducer.data)
   const count = userInfo.post + userInfo.donate
+  const countNotify = useAppSelector(
+    state => state.NotificationReducer.countNotification
+  )
   return (
     <>
       {!isNotCreatPost(TAB_BAR[route.name].title) ? (
@@ -113,6 +117,20 @@ const RenderTabBarIcon = ({
                     <Text style={styles.count} children={count} />
                   </View>
                 )}
+            </View>
+          ) : route.name === MAIN_TAB.NOTIFICATION ? (
+            <View>
+              <FastImage
+                style={styles.img_icon}
+                tintColor={tintColor}
+                source={TAB_BAR[route.name].icon}
+                resizeMode={'contain'}
+              />
+              {!!countNotify && !focused && (
+                <View style={styles.v_dot}>
+                  <Text style={styles.count} children={1} />
+                </View>
+              )}
             </View>
           ) : (
             <FastImage

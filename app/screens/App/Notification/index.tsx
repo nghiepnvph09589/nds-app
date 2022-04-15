@@ -11,15 +11,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import {
   readAllNotify,
   readNotificationForId,
   requestListNotificationThunk,
+  setCountNotify,
 } from './slice'
-import { requestReadAllNotification, requestReadNotification } from './api'
+import {
+  requestCountNotification,
+  requestReadAllNotification,
+  requestReadNotification,
+} from './api'
 import { useAppDispatch, useAppSelector } from '@app/store'
 
 import DateUtils from '@app/utils/DateUtils'
@@ -50,9 +55,10 @@ const NotificationScreen = () => {
     }
     onEndReachedCalledDuringMomentum = true
   }
-  const getData = useCallback(() => {
+  const getData = () => {
     Dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
-  }, [Dispatch, body])
+    getCountNotRead()
+  }
 
   const onRefreshData = () => {
     //  getCountNotification()
@@ -61,16 +67,21 @@ const NotificationScreen = () => {
 
   useEffect(() => {
     getData()
-  }, [body, getData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [body])
 
   const readAllNotification = async () => {
     const res = await requestReadAllNotification({})
     if (res?.code === API_STATUS.SUCCESS) {
       await Dispatch(readAllNotify())
     }
-    // await Dispatch(readAllNotify())
   }
-
+  const getCountNotRead = async () => {
+    const res = await requestCountNotification()
+    if (res?.code === API_STATUS.SUCCESS) {
+      await Dispatch(setCountNotify(res?.data?.notification_not_seen))
+    }
+  }
   const onNavigation = async (item: Item) => {
     if (item.NotificationPushes.length === 0) {
       Dispatch(readNotificationForId(item?.id))

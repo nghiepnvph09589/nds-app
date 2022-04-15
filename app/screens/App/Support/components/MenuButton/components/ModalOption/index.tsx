@@ -90,7 +90,7 @@ const ModalOption = ({
           <RowBtn
             onPress={cancelSupport}
             source={R.images.ic_cancel_support}
-            name={'Từ chối'}
+            name={'Xóa'}
           />
         )}
       </View>
