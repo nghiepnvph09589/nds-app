@@ -1,31 +1,19 @@
 import { Platform, RefreshControl, ScrollView, StyleSheet } from 'react-native'
-import { ROLE, SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
-import { getDataUserInfo, logout } from '../../slices/AccountSlice'
+import { ROLE, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 
-import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import Directory from './components/Directory'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import React from 'react'
-import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import { requestLogout } from '../../api/AccountApi'
-import { showConfirm } from '@app/utils/AlertHelper'
+import { getDataUserInfo } from '../../slices/AccountSlice'
 import { useAppSelector } from '@app/store'
 import { useDispatch } from 'react-redux'
 
-const UserDirectory = () => {
+const UserDirectory = ({ logout }: { logout: () => void }) => {
   const { data } = useAppSelector(state => state.accountReducer)
   const dispatch = useDispatch()
 
-  const handleLogout = async () => {
-    showConfirm(R.strings().notification, 'Đăng xuất tài khoản?', async () => {
-      await requestLogout({})
-      dispatch(logout())
-      await AsyncStorageService.putToken('')
-      dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
-    })
-  }
   const onRefresh = () => {
     dispatch(getDataUserInfo())
   }
@@ -87,7 +75,7 @@ const UserDirectory = () => {
         onPress1={() => {
           NavigationUtil.navigate(SCREEN_ROUTER_APP.CHANGE_PASS)
         }}
-        onPress2={handleLogout}
+        onPress2={logout}
         label1={R.strings().change_password}
         source1={R.images.ic_change_pass}
         label2={R.strings().logout}

@@ -1,7 +1,6 @@
 import {
   API_STATUS,
   NOTIFICATION_TYPE,
-  ROLE,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
 import { Body, Item } from './model'
@@ -82,7 +81,7 @@ const NotificationScreen = () => {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: item?.notification_id,
-          customer: ROLE.CUSTOMER,
+          // customer: ROLE.CUSTOMER,
         })
         return
       case NOTIFICATION_TYPE.POST:

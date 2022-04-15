@@ -23,6 +23,7 @@ import { showConfirm, showMessages } from '@app/utils/AlertHelper'
 import { Formik } from 'formik'
 import FstImage from '@app/components/FstImage'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Messages from '@app/components/Messages'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
@@ -36,6 +37,7 @@ interface Props {
 }
 const CreateSupportScreen = (props: Props) => {
   const userInfo = useAppSelector(state => state.accountReducer.data)
+  const [messagesStatus, setMessagesStatus] = useState<boolean>(false)
   const [form, setForm] = useState<number[]>([])
   const [dataFormSupport, setDataFormSupport] = useState<itemFormSupport[]>([])
   const Schema = Yup.object().shape({
@@ -106,11 +108,12 @@ const CreateSupportScreen = (props: Props) => {
     try {
       const res = await createSupport(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        showMessages('Thông báo', 'Ủng hộ của bạn đã được gửi!!', () => {
-          NavigationUtil.replace(SCREEN_ROUTER_APP.LIST_SUPPORT, {
-            pageProvince: userInfo?.role === ROLE?.OFFICER_PROVINCE ? 1 : 0,
-          })
-        })
+        // showMessages('Thông báo', 'Ủng hộ của bạn đã được gửi!!', () => {
+        //   NavigationUtil.replace(SCREEN_ROUTER_APP.LIST_SUPPORT, {
+        //     pageProvince: userInfo?.role === ROLE?.OFFICER_PROVINCE ? 1 : 0,
+        //   })
+        // })
+        setMessagesStatus(true)
       }
     } catch (error) {
       console.log(error)
@@ -241,6 +244,26 @@ const CreateSupportScreen = (props: Props) => {
           </>
         )}
       </Formik>
+      {messagesStatus && (
+        <Messages
+          hide={() => {
+            NavigationUtil.replace(SCREEN_ROUTER_APP.LIST_SUPPORT, {
+              pageProvince: userInfo?.role === ROLE?.OFFICER_PROVINCE ? 1 : 0,
+            })
+            setMessagesStatus(false)
+          }}
+          onAccept={() => {
+            NavigationUtil.replace(SCREEN_ROUTER_APP.LIST_SUPPORT, {
+              pageProvince: userInfo?.role === ROLE?.OFFICER_PROVINCE ? 1 : 0,
+            })
+            setMessagesStatus(false)
+          }}
+          description={
+            'Cảm ơn bạn đã ủng hộ. Chúng tôi sẽ liên hệ với bạn để xác nhận thông tin'
+          }
+          bannerNotify={R.images.img_empty}
+        />
+      )}
     </ScreenWrapper>
   )
 }
