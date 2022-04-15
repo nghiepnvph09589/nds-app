@@ -12,14 +12,15 @@ import {
   View,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { colors, dimensions, fonts, styleView } from '@app/theme'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import {
+  clearNotifyCount,
   readAllNotify,
   readNotificationForId,
   requestListNotificationThunk,
   setCountNotify,
 } from './slice'
+import { colors, dimensions, fonts, styleView } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import {
   requestCountNotification,
   requestReadAllNotification,
@@ -74,6 +75,7 @@ const NotificationScreen = () => {
     const res = await requestReadAllNotification({})
     if (res?.code === API_STATUS.SUCCESS) {
       await Dispatch(readAllNotify())
+      await Dispatch(clearNotifyCount())
     }
   }
   const getCountNotRead = async () => {
@@ -107,7 +109,9 @@ const NotificationScreen = () => {
         return
     }
   }
-
+  const countNotify = useAppSelector(
+    state => state.NotificationReducer.countNotification
+  )
   if (isLoading) {
     showLoading()
   } else {
@@ -121,7 +125,9 @@ const NotificationScreen = () => {
       backgroundHeader={colors.white}
       color="black"
       forceInset={['left']}
-      rightComponent={<RightComponent onPress={readAllNotification} />}
+      rightComponent={
+        countNotify ? <RightComponent onPress={readAllNotification} /> : <></>
+      }
       borderBottomHeader={colors.border}
     >
       <View style={styles.ctn}>
