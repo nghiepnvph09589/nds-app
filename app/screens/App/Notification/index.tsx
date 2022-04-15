@@ -1,7 +1,6 @@
 import {
   API_STATUS,
   NOTIFICATION_TYPE,
-  ROLE,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
 import { Body, Item } from './model'
@@ -12,15 +11,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { colors, dimensions, fonts, styleView } from '@app/theme'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import React, { useEffect, useState } from 'react'
 import {
+  clearNotifyCount,
   readAllNotify,
   readNotificationForId,
   requestListNotificationThunk,
+  setCountNotify,
 } from './slice'
-import { requestReadAllNotification, requestReadNotification } from './api'
+import { colors, dimensions, fonts, styleView } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import {
+  requestCountNotification,
+  requestReadAllNotification,
+  requestReadNotification,
+} from './api'
 import { useAppDispatch, useAppSelector } from '@app/store'
 
 import DateUtils from '@app/utils/DateUtils'
@@ -51,9 +56,10 @@ const NotificationScreen = () => {
     }
     onEndReachedCalledDuringMomentum = true
   }
-  const getData = useCallback(() => {
+  const getData = () => {
     Dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
-  }, [Dispatch, body])
+    getCountNotRead()
+  }
 
   const onRefreshData = () => {
     //  getCountNotification()
@@ -62,16 +68,22 @@ const NotificationScreen = () => {
 
   useEffect(() => {
     getData()
-  }, [body, getData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [body])
 
   const readAllNotification = async () => {
     const res = await requestReadAllNotification({})
     if (res?.code === API_STATUS.SUCCESS) {
       await Dispatch(readAllNotify())
+      await Dispatch(clearNotifyCount())
     }
-    // await Dispatch(readAllNotify())
   }
-
+  const getCountNotRead = async () => {
+    const res = await requestCountNotification()
+    if (res?.code === API_STATUS.SUCCESS) {
+      await Dispatch(setCountNotify(res?.data?.notification_not_seen))
+    }
+  }
   const onNavigation = async (item: Item) => {
     if (item.NotificationPushes.length === 0) {
       Dispatch(readNotificationForId(item?.id))
@@ -82,7 +94,7 @@ const NotificationScreen = () => {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: item?.notification_id,
-          customer: ROLE.CUSTOMER,
+          // customer: ROLE.CUSTOMER,
         })
         return
       case NOTIFICATION_TYPE.POST:
@@ -97,7 +109,9 @@ const NotificationScreen = () => {
         return
     }
   }
-
+  const countNotify = useAppSelector(
+    state => state.NotificationReducer.countNotification
+  )
   if (isLoading) {
     showLoading()
   } else {
@@ -111,7 +125,9 @@ const NotificationScreen = () => {
       backgroundHeader={colors.white}
       color="black"
       forceInset={['left']}
-      rightComponent={<RightComponent onPress={readAllNotification} />}
+      rightComponent={
+        countNotify ? <RightComponent onPress={readAllNotification} /> : <></>
+      }
       borderBottomHeader={colors.border}
     >
       <View style={styles.ctn}>

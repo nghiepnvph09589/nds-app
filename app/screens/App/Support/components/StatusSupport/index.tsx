@@ -40,7 +40,14 @@ const StatusSupport = ({
   }
   return (
     <View style={styles.ctn}>
-      <FstImage source={R.images.ic_status_awaiting} style={styles.img} />
+      <FstImage
+        source={
+          status === 1 || status === 2
+            ? R.images.ic_phone_support
+            : R.images.ic_status_awaiting
+        }
+        style={styles.img}
+      />
       <Text style={styles.txt} children={renderStatus(status)} />
       {status === STATUS_SUPPORT.WAITING && (
         <View style={styles.district_acc}>

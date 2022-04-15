@@ -26,12 +26,12 @@ export const NotificationSlice = createSlice({
     // readNotification: (state, action) => {
     //   state.data[action.payload].is_read = 1
     // },
-    // setCountNotify: (state, action) => {
-    //   state.countNotification = action.payload
-    // },
-    // clearNotifyCount: state => {
-    //   state.countNotification = 0
-    // },
+    setCountNotify: (state, action) => {
+      state.countNotification = action.payload
+    },
+    clearNotifyCount: state => {
+      state.countNotification = 0
+    },
     readAllNotify: state => {
       state.data = state.data.map((item: any) => ({
         ...item,
@@ -88,8 +88,8 @@ export const NotificationSlice = createSlice({
 
 export const {
   // readNotification,
-  // setCountNotify,
-  // clearNotifyCount,
+  setCountNotify,
+  clearNotifyCount,
   readAllNotify,
   readNotificationForId,
 } = NotificationSlice.actions

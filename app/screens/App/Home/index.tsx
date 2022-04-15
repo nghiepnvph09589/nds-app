@@ -1,27 +1,41 @@
-import { updateLocation } from '@app/screens/LocationSlice'
-import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
-import { useAppSelector } from '@app/store'
-import { colors } from '@app/theme'
-import { Permission, PERMISSION_TYPE } from '@app/utils/AppPermission'
+import { PERMISSION_TYPE, Permission } from '@app/utils/AppPermission'
 import React, { useEffect } from 'react'
 import { StatusBar, StyleSheet, View } from 'react-native'
+
+import { API_STATUS } from '@app/constant/Constant'
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import Geolocation from 'react-native-geolocation-service'
-import { useDispatch } from 'react-redux'
-import { getDataUserInfo } from '../Account/slices/AccountSlice'
 import Header from './components/Header'
 import ListPost from './components/ListPost'
+import { colors } from '@app/theme'
+import { getDataUserInfo } from '../Account/slices/AccountSlice'
+import { requestCountNotification } from '../Notification/api'
+import { setCountNotify } from '../Notification/slice'
+import { updateLocation } from '@app/screens/LocationSlice'
+import { useAppSelector } from '@app/store'
+import { useDispatch } from 'react-redux'
+
 const Home = () => {
   const dispatch = useDispatch()
 
   const userInfo = useAppSelector(state => state.accountReducer.data)
   useEffect(() => {
     getDataUser()
+    getCountNotifyNotRead()
     setTimeout(() => {
       requestPermission()
     }, 4000)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  const getCountNotifyNotRead = async () => {
+    const token = await AsyncStorageService.getToken()
+    if (token) {
+      const res = await requestCountNotification()
+      if (res?.code === API_STATUS.SUCCESS) {
+        await dispatch(setCountNotify(res?.data?.notification_not_seen))
+      }
+    }
+  }
   const requestPermission = async () => {
     const token = await AsyncStorageService.getToken()
     if (token) {

@@ -28,7 +28,7 @@ const headerComponent = [
   },
   {
     id: STATUS_SUPPORT.CANCEL,
-    name: 'Từ chối',
+    name: 'Xóa',
   },
 ]
 

@@ -78,19 +78,19 @@ const ModalOption = ({
             line
           />
         )}
-        {checkBtnRequestEdit() === 1 && (
+        {/* {checkBtnRequestEdit() === 1 && (
           <RowBtn
             onPress={requestEdit}
             source={R.images.ic_request_edit_support}
             name={'Yêu cầu chỉnh sửa'}
             line
           />
-        )}
+        )} */}
         {checkBtnCancelSupport() === 1 && (
           <RowBtn
             onPress={cancelSupport}
             source={R.images.ic_cancel_support}
-            name={'Từ chối'}
+            name={'Xóa'}
           />
         )}
       </View>

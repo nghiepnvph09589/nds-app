@@ -1,13 +1,30 @@
+import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 
-import React from 'react'
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
+import Messages from '@app/components/Messages'
+import { SCREEN_ROUTER } from '@app/constant/Constant'
 import UserDirectory from './components/UserDirectory'
 import UserInfo from './components/UserInfo'
+import { clearNotifyCount } from '../Notification/slice'
+import { logout } from './slices/AccountSlice'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import { requestLogout } from './api/AccountApi'
 import { useAppSelector } from '@app/store'
+import { useDispatch } from 'react-redux'
 
 const Account = () => {
   const { data, isLoading } = useAppSelector(state => state.accountReducer)
+  const [messagesStatus, setMessagesStatus] = useState<boolean>(false)
+  const dispatch = useDispatch()
+  const handleLogout = async () => {
+    await requestLogout({})
+    dispatch(logout())
+    dispatch(clearNotifyCount())
+    await AsyncStorageService.putToken('')
+    dispatch(navigateSwitch(SCREEN_ROUTER.AUTH))
+  }
   if (isLoading) {
     showLoading()
   } else {
@@ -23,7 +40,26 @@ const Account = () => {
             : ''
         }
       />
-      <UserDirectory />
+      <UserDirectory
+        logout={() => {
+          setMessagesStatus(true)
+        }}
+      />
+      {messagesStatus && (
+        <Messages
+          hide={() => {
+            setMessagesStatus(false)
+          }}
+          onAccept={() => {
+            handleLogout()
+            setMessagesStatus(false)
+          }}
+          onCancel={() => {
+            setMessagesStatus(false)
+          }}
+          description={'Bạn có chắc chán muốn đăng xuất không'}
+        />
+      )}
     </View>
   )
 }

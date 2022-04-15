@@ -1,15 +1,20 @@
 import {
+  API_STATUS,
   NOTIFICATION_TYPE,
   ONESIGNAL_APP_ID,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
+import {
+  requestListNotificationThunk,
+  setCountNotify,
+} from '@app/screens/App/Notification/slice'
 
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import { Dispatch } from 'redux'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import OneSignal from 'react-native-onesignal'
 import reactotron from 'reactotron-react-native'
-import { requestListNotificationThunk } from '@app/screens/App/Notification/slice'
+import { requestCountNotification } from '@app/screens/App/Notification/api'
 import store from '@app/store'
 
 export default abstract class OneSignalUtil {
@@ -30,7 +35,15 @@ export default abstract class OneSignalUtil {
       this.onOpened(notification?.notification)
     })
   }
-
+  static getCountNotifyNotRead = async () => {
+    const token = await AsyncStorageService.getToken()
+    if (token) {
+      const res = await requestCountNotification()
+      if (res?.code === API_STATUS.SUCCESS) {
+        await store.dispatch(setCountNotify(res?.data?.notification_not_seen))
+      }
+    }
+  }
   static onShow = async (notification: any) => {
     // reactotron.log!('Prompt response:', notification?.notification)
     const body = {
@@ -40,6 +53,7 @@ export default abstract class OneSignalUtil {
     const token = await AsyncStorageService.getToken()
     token &&
       store.dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
+    token && this.getCountNotifyNotRead()
     reactotron.log!('Prompt response:', notification?.notification)
   }
 

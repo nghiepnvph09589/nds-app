@@ -68,6 +68,7 @@ const images = {
   ic_package: require('./images/ic_package.png'),
   ic_pause: require('./images/ic_pause.png'),
   ic_phone: require('./images/ic_phone.png'),
+  ic_phone_support: require('./images/ic_phone_support.png'),
   ic_play: require('./images/ic_play.png'),
   ic_post: require('./images/ic_post.png'),
   ic_product: require('./images/ic_product.png'),
