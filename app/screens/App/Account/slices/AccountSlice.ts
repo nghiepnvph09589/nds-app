@@ -16,6 +16,10 @@ const initState: AccountSlice = {
     profile_picture_path: '',
     profile_picture_url: '',
     role: ROLE.CUSTOMER,
+    donate: 0,
+    post: 0,
+    province_id: 0,
+    district_id: 0,
   },
 }
 
@@ -39,6 +43,10 @@ const accountSlice = createSlice({
         profile_picture_path: '',
         profile_picture_url: '',
         role: ROLE.CUSTOMER,
+        donate: 0,
+        post: 0,
+        province_id: 0,
+        district_id: 0,
       }
     },
   },

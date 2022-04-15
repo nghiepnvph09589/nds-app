@@ -4,12 +4,12 @@ import {
 } from '@react-navigation/bottom-tabs'
 import {
   MAIN_TAB,
+  ROLE,
   SCREEN_ROUTER,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper'
-
 import Account from '@app/screens/App/Account'
 import AsyncStorage from '@react-native-community/async-storage'
 import CreatePost from '@app/screens/App/CreatePost'
@@ -20,7 +20,7 @@ import NavigationUtil from '../NavigationUtil'
 import NotificationScreen from '@app/screens/App/Notification'
 import R from '@app/assets/R'
 import React from 'react'
-import { colors } from '@app/theme'
+import { colors, fonts } from '@app/theme'
 import { createStackNavigator } from '@react-navigation/stack'
 import { dimension } from '@app/constant/Theme'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
@@ -28,6 +28,7 @@ import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
 import reactotron from 'reactotron-react-native'
 import { showConfirm } from '@app/utils/AlertHelper'
 import { useDispatch } from 'react-redux'
+import { useAppSelector } from '@app/store'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -81,16 +82,11 @@ const RenderTabBarIcon = ({
   route?: any
 }) => {
   const tintColor = focused ? colors.primary : '#ADB5BD'
+  const userInfo = useAppSelector(state => state.accountReducer.data)
+  const count = userInfo.post + userInfo.donate
   return (
     <>
-      {isNotCreatPost(TAB_BAR[route.name].title) ? (
-        <FastImage
-          style={styles.img_icon}
-          tintColor={tintColor}
-          source={TAB_BAR[route.name].icon}
-          resizeMode={'contain'}
-        />
-      ) : (
+      {!isNotCreatPost(TAB_BAR[route.name].title) ? (
         <View style={styles.v_qrCode}>
           <FstImage
             resizeMode="contain"
@@ -98,6 +94,35 @@ const RenderTabBarIcon = ({
             source={R.images.ic_create_post}
           />
         </View>
+      ) : (
+        <>
+          {route.name === MAIN_TAB.USER ? (
+            <View>
+              <FastImage
+                style={styles.img_icon}
+                tintColor={tintColor}
+                source={TAB_BAR[route.name].icon}
+                resizeMode={'contain'}
+              />
+              {!!count &&
+                count !== 0 &&
+                !focused &&
+                userInfo.role !== ROLE.CUSTOMER &&
+                userInfo.role !== ROLE.OFFICER_WARD && (
+                  <View style={styles.v_dot}>
+                    <Text style={styles.count} children={count} />
+                  </View>
+                )}
+            </View>
+          ) : (
+            <FastImage
+              style={styles.img_icon}
+              tintColor={tintColor}
+              source={TAB_BAR[route.name].icon}
+              resizeMode={'contain'}
+            />
+          )}
+        </>
       )}
     </>
   )
@@ -249,5 +274,21 @@ const styles = StyleSheet.create({
     borderTopColor: 'transparent',
     borderColor: 'transparent',
     elevation: 0,
+  },
+  v_dot: {
+    width: 19,
+    height: 19,
+    backgroundColor: 'red',
+    borderRadius: 19 / 2,
+    position: 'absolute',
+    justifyContent: 'center',
+    right: -12,
+    top: -10,
+    alignItems: 'center',
+  },
+  count: {
+    color: 'white',
+    ...fonts.regular11,
+    fontWeight: '500',
   },
 })

@@ -3,18 +3,30 @@ import { SCREEN_ROUTER_APP, STATUS_TYPE } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, dimensions, fonts } from '@app/theme'
 import { ScrollableTab, Tab, Tabs, View } from 'native-base'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import ListManage from './screens/ListManage'
 
-const ManageListPost = () => {
+interface PostProps {
+  route: { params: { page: number } }
+}
+
+const ManageListPost = (props: PostProps) => {
   const [page, setPage] = useState<number>(0)
 
   const onChangeTab = (changeTabProps: { i: number }) => {
     const newTabIndex = changeTabProps.i
     setPage(newTabIndex)
   }
+
+  useEffect(() => {
+    if (props?.route.params?.page) {
+      setPage(props?.route.params?.page)
+    } else {
+      setPage(0)
+    }
+  }, [props?.route?.params])
 
   const listStatus = [
     {
@@ -55,7 +67,7 @@ const ManageListPost = () => {
             tabBarUnderlineStyle={styles.underlineStyle}
             onChangeTab={onChangeTab}
             page={page}
-            initialPage={0}
+            initialPage={props?.route.params?.page}
             renderTabBar={() => <ScrollableTab style={styles.scroll_tab} />}
           >
             {listStatus.map(item => {
