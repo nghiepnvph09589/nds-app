@@ -37,7 +37,7 @@ const DetailSupportScreen = (props: Props) => {
     try {
       const res = await getDetailSupportManage(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        setData(res.data)
+        setData(res?.data)
         setError(false)
       }
       // eslint-disable-next-line no-catch-shadow
