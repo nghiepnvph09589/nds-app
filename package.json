@@ -19,7 +19,6 @@
     "cpi": "appcenter codepush release-react -a Apps-Windsoft/NDS_IOS -d Production"
   },
   "dependencies": {
-    "@react-native-clipboard/clipboard": "^1.8.5",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/datetimepicker": "^3.5.2",

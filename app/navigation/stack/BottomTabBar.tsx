@@ -128,7 +128,7 @@ const RenderTabBarIcon = ({
               />
               {!!countNotify && !focused && (
                 <View style={styles.v_dot}>
-                  <Text style={styles.count} children={1} />
+                  <Text style={styles.count} children={countNotify} />
                 </View>
               )}
             </View>
