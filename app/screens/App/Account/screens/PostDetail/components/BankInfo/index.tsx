@@ -1,10 +1,12 @@
+/* eslint-disable react-native/no-inline-styles */
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import { colors, fonts } from '@app/theme'
+import Clipboard from '@react-native-clipboard/clipboard'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { PostDetailData } from '../../model'
-
+import Toast from 'react-native-toast-message'
 interface BankInfoProps {
   data: PostDetailData
 }
@@ -69,6 +71,15 @@ const ViewRow = ({
   content: string | number
   copy?: boolean
 }) => {
+  const copyToClipboard = () => {
+    Clipboard.setString(content.toString())
+    Toast.show({
+      type: 'info',
+      text1: 'Đã sao chép số tài khoản',
+      visibilityTime: 2000,
+    })
+  }
+
   return (
     <View
       style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}
@@ -78,7 +89,7 @@ const ViewRow = ({
       </Text>
       <Text style={{ ...fonts.regular16, color: colors.text }}>{content}</Text>
       {copy && (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={copyToClipboard}>
           <FstImage
             style={{ width: 24, height: 24, marginLeft: 8 }}
             source={R.images.ic_copy}

@@ -19,6 +19,7 @@
     "cpi": "appcenter codepush release-react -a Apps-Windsoft/NDS_IOS -d Production"
   },
   "dependencies": {
+    "@react-native-clipboard/clipboard": "^1.8.5",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/datetimepicker": "^3.5.2",
@@ -41,7 +42,6 @@
     "react-fast-compare": "^3.2.0",
     "react-moment": "^1.1.1",
     "react-native": "0.64.2",
-    "react-native-autocomplete-dropdown": "^1.1.7",
     "react-native-code-push": "^7.0.4",
     "react-native-create-thumbnail": "^1.5.1",
     "react-native-elements": "^3.4.1",
@@ -69,6 +69,7 @@
     "react-native-step-indicator": "^1.0.3",
     "react-native-swiper": "^1.6.0",
     "react-native-swiper-flatlist": "^3.0.16",
+    "react-native-toast-message": "^1.6.0",
     "react-native-vector-icons": "^8.1.0",
     "react-native-video": "^5.2.0",
     "react-redux": "^7.2.4",
@@ -120,7 +121,7 @@
     ]
   },
   "lint-staged": {
-    "*.{js,jsx,ts}": [
+    "*.{jsx,ts}": [
       "prettier --write",
       "eslint"
     ]

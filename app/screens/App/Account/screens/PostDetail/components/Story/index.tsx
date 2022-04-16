@@ -23,7 +23,7 @@ const Story = (props: StoryProps) => {
         gender={data.gender}
         year={data.year_of_birth}
         phone={data.phone}
-        address={`${data?.DFWard?.name}, ${data?.DFDistrict?.name}, ${data?.DFProvince?.name}`}
+        address={` ${data?.address}, ${data?.DFWard?.name}, ${data?.DFDistrict?.name}, ${data?.DFProvince?.name}`}
       />
       <Position long={data.long} lat={data.lat} />
       <TargetGroup

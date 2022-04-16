@@ -1,7 +1,9 @@
 import R from '@app/assets/R'
+import { AutocompleteDropdown } from '@app/components/AutocompleteDropdown'
 import FstImage from '@app/components/FstImage'
 import RNButton from '@app/components/RNButton/RNButton'
 import { MAP_BOX_STYLE } from '@app/config'
+import reactotron from '@app/config/ReactotronConfig'
 import { api_key, GOONG_HOST } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { useAppSelector } from '@app/store'
@@ -11,13 +13,13 @@ import axios from 'axios'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ActivityIndicator,
+  Alert,
   Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native'
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import {
   getBottomSpace,
   getStatusBarHeight,
@@ -41,13 +43,11 @@ const AddressMap = (props: AddressMapProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [centerCoordinate, setCenterCoordinate] = useState(
-    dataPost.long !== 0
-      ? [dataPost.long, dataPost.lat]
-      : long
-      ? [long, lat]
-      : [105.784883, 21.028073]
+    dataPost.long !== 0 ? [dataPost.long, dataPost.lat] : [long, lat]
   )
   const location = useRef<any>([])
+  const isSearchLocation = useRef<boolean>(false)
+  const isPressLocation = useRef<boolean>(false)
 
   const defaultCamera = {
     centerCoordinate:
@@ -73,19 +73,25 @@ const AddressMap = (props: AddressMapProps) => {
           },
         })
       ).data
-      const suggestions = res.predictions.map((item: any, index: number) => ({
-        id: index,
-        title: item.description,
-        place_id: item.place_id,
-      }))
-      setSuggestionsList(suggestions)
+      reactotron.log!(res.predictions)
+      if (res.predictions) {
+        const suggestions = res.predictions.map((item: any, index: number) => ({
+          id: index,
+          title: item.description,
+          place_id: item.place_id,
+        }))
+        setSuggestionsList(suggestions)
+      } else {
+        setSuggestionsList([])
+      }
     } catch (error) {
     } finally {
     }
   }, [])
 
-  const onSelectItem = useCallback(async (item: any) => {
+  const onSelectItem = async (item: any) => {
     item && setSelectedItem(item)
+    isSearchLocation.current = true
     console.log(item)
     try {
       const res = (
@@ -96,10 +102,15 @@ const AddressMap = (props: AddressMapProps) => {
           },
         })
       ).data
-      setCenterCoordinate([
-        res.result.geometry.location.lng,
-        res.result.geometry.location.lat,
-      ])
+      setCenterCoordinate(() => {
+        return [105.784883, 21.028073]
+      })
+      setCenterCoordinate(() => {
+        return [
+          res.result.geometry.location.lng,
+          res.result.geometry.location.lat,
+        ]
+      })
       location.current = [
         res.result.geometry.location.lng,
         res.result.geometry.location.lat,
@@ -107,7 +118,7 @@ const AddressMap = (props: AddressMapProps) => {
     } catch (error) {
     } finally {
     }
-  }, [])
+  }
 
   useEffect(() => {
     getAutoCompleteLocation(centerCoordinate)
@@ -128,6 +139,7 @@ const AddressMap = (props: AddressMapProps) => {
       console.log(res.results[0].formatted_address)
       const item = { title: res.results[0].formatted_address }
       setSelectedItem(item)
+      //setCenterCoordinate(locationAddress)
     } catch (error) {
     } finally {
       setIsLoading(false)
@@ -146,11 +158,22 @@ const AddressMap = (props: AddressMapProps) => {
         }, [])}
         onRegionWillChange={() => {
           setIsLoading(true)
+          //dropdownController.current.clear()
         }}
         onRegionIsChanging={() => {}}
         onRegionDidChange={feature => {
-          getAutoCompleteLocation(feature.geometry.coordinates)
-          location.current = feature.geometry.coordinates
+          console.log(feature)
+          setIsLoading(false)
+          if (!isSearchLocation.current) {
+            if (!isPressLocation.current) {
+              getAutoCompleteLocation(feature.geometry.coordinates)
+              location.current = feature.geometry.coordinates
+            }
+          }
+          setTimeout(() => {
+            isSearchLocation.current = false
+            isPressLocation.current = false
+          }, 2000)
         }}
       >
         <MapboxGL.Camera
@@ -160,11 +183,11 @@ const AddressMap = (props: AddressMapProps) => {
           defaultSettings={defaultCamera}
           animationMode={'moveTo'}
           animationDuration={10}
-          minZoomLevel={15}
-          maxZoomLevel={28}
+          minZoomLevel={2}
+          maxZoomLevel={100}
           centerCoordinate={centerCoordinate}
         />
-        {/* <MapboxGL.MarkerView id="marker" coordinate={annotationPoint}>
+        {/* <MapboxGL.MarkerView id="marker" coordinate={[long, lat]}>
           <FstImage
             style={styles.ic_marker}
             resizeMode="contain"
@@ -184,6 +207,9 @@ const AddressMap = (props: AddressMapProps) => {
           controller={(controller: any) => {
             dropdownController.current = controller
           }}
+          onClear={() => {
+            setSuggestionsList([])
+          }}
           direction={Platform.select({ ios: 'down' })}
           debounce={600}
           textInputProps={{
@@ -202,13 +228,14 @@ const AddressMap = (props: AddressMapProps) => {
           inputContainerStyle={styles.inputContainerStyle}
           containerStyle={styles.containerStyle}
           useFilter={false}
-          clearOnFocus={false}
+          clearOnFocus={true}
           closeOnBlur={true}
           onSelectItem={(item: any) => {
             onSelectItem(item)
           }}
           onChangeText={getSuggestions}
           dataSet={suggestionsList}
+          emptyResultText="Danh sách trống"
         />
       </View>
       <FstImage
@@ -218,9 +245,15 @@ const AddressMap = (props: AddressMapProps) => {
       />
       <TouchableOpacity
         onPress={() => {
+          isPressLocation.current = true
           location.current = [long, lat]
           getAutoCompleteLocation([long, lat])
-          setCenterCoordinate([long, lat])
+          setCenterCoordinate(prevState => {
+            return [105.784883, 21.028073]
+          })
+          setCenterCoordinate(prevState => {
+            return [long, lat]
+          })
         }}
         style={styles.v_current_location}
       >
@@ -246,7 +279,9 @@ const AddressMap = (props: AddressMapProps) => {
               style={styles.icon}
               source={R.images.ic_dot_red}
             />
-            <Text style={styles.txt_location}>{selectedItem?.title}</Text>
+            <Text numberOfLines={3} style={styles.txt_location}>
+              {selectedItem?.title}
+            </Text>
           </View>
         )}
         <RNButton

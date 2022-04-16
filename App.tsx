@@ -5,7 +5,7 @@ import AppContainer from './AppContainer'
 import { LoadingProgress } from '@app/components/Loading'
 import { Provider } from 'react-redux'
 import { RNAlert } from '@app/components/RNAlert/RNAlert'
-import { Toast } from 'native-base'
+import Toast from 'react-native-toast-message'
 import codePush from 'react-native-code-push'
 import { progressHolder } from '@app/utils/LoadingProgressRef'
 import store from '@app/store'
@@ -17,10 +17,11 @@ class App extends Component {
         break
       case codePush.SyncStatus.DOWNLOADING_PACKAGE:
         Toast.show({
-          position: 'top',
-          text: 'Đang tải bản cập nhật mới',
-          duration: 2000,
+          type: 'info',
+          text1: 'Đang tải bản cập nhật mới',
+          visibilityTime: 2000,
         })
+        console.log('Downloading package.')
         break
       case codePush.SyncStatus.INSTALLING_UPDATE:
         break
@@ -52,6 +53,7 @@ class App extends Component {
       <Provider store={store}>
         <AppContainer />
         <RNAlert />
+        <Toast ref={ref => Toast.setRef(ref)} />
         <LoadingProgress ref={progressHolder} />
       </Provider>
     )
