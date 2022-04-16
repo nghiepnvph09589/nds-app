@@ -126,7 +126,14 @@ const NotificationScreen = () => {
       color="black"
       forceInset={['left']}
       rightComponent={
-        countNotify ? <RightComponent onPress={readAllNotification} /> : <></>
+        countNotify ? (
+          <RightComponent
+            onPress={readAllNotification}
+            countNotify={countNotify}
+          />
+        ) : (
+          <></>
+        )
       }
       borderBottomHeader={colors.border}
     >
@@ -198,10 +205,19 @@ const ItemNotification = ({
 
 export default NotificationScreen
 
-const RightComponent = ({ onPress }: { onPress: () => void }) => {
+const RightComponent = ({
+  onPress,
+  countNotify,
+}: {
+  onPress: () => void
+  countNotify: number
+}) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Text style={styles.txt_read_notification} children={'Đọc tất cả'} />
+      <Text
+        style={styles.txt_read_notification}
+        children={`Đọc tất cả (${countNotify})`}
+      />
     </TouchableOpacity>
   )
 }
