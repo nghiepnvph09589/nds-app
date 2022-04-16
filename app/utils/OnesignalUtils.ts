@@ -69,6 +69,7 @@ export default abstract class OneSignalUtil {
       case NOTIFICATION_TYPE.POST:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, {
           id: notification?.additionalData?.notification_id,
+          typeNavigate: 3,
         })
         return
       case NOTIFICATION_TYPE.NEWS_BANNER:

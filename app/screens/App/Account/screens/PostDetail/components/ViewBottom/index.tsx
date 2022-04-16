@@ -31,6 +31,7 @@ interface ViewBottomProps {
   id: number
   status: number
   typeNavigate?: number
+  is_update?: number
 }
 
 const ViewBottom = (props: ViewBottomProps) => {
