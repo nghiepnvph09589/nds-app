@@ -13,7 +13,6 @@ import axios from 'axios'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ActivityIndicator,
-  Alert,
   Platform,
   StyleSheet,
   Text,
@@ -56,7 +55,7 @@ const AddressMap = (props: AddressMapProps) => {
         : long
         ? [long, lat]
         : [105.784883, 21.028073],
-    zoomLevel: 12,
+    zoomLevel: 15,
   }
   const dropdownController = useRef(null)
 
@@ -136,6 +135,14 @@ const AddressMap = (props: AddressMapProps) => {
           },
         })
       ).data
+      if (isPressLocation.current) {
+        setCenterCoordinate(() => {
+          return [105.784883, 21.028073]
+        })
+        setCenterCoordinate(() => {
+          return [long, lat]
+        })
+      }
       console.log(res.results[0].formatted_address)
       const item = { title: res.results[0].formatted_address }
       setSelectedItem(item)
@@ -156,14 +163,10 @@ const AddressMap = (props: AddressMapProps) => {
         ref={useCallback(r => {
           mapRef.current = r
         }, [])}
-        onRegionWillChange={() => {
-          setIsLoading(true)
-          //dropdownController.current.clear()
-        }}
+        onRegionWillChange={() => {}}
         onRegionIsChanging={() => {}}
         onRegionDidChange={feature => {
           console.log(feature)
-          setIsLoading(false)
           if (!isSearchLocation.current) {
             if (!isPressLocation.current) {
               getAutoCompleteLocation(feature.geometry.coordinates)
@@ -173,7 +176,7 @@ const AddressMap = (props: AddressMapProps) => {
           setTimeout(() => {
             isSearchLocation.current = false
             isPressLocation.current = false
-          }, 2000)
+          }, 1000)
         }}
       >
         <MapboxGL.Camera
@@ -248,12 +251,6 @@ const AddressMap = (props: AddressMapProps) => {
           isPressLocation.current = true
           location.current = [long, lat]
           getAutoCompleteLocation([long, lat])
-          setCenterCoordinate(prevState => {
-            return [105.784883, 21.028073]
-          })
-          setCenterCoordinate(prevState => {
-            return [long, lat]
-          })
         }}
         style={styles.v_current_location}
       >
@@ -409,6 +406,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    height: 300,
   },
   v_bar: {
     flexDirection: 'row',

@@ -17,6 +17,7 @@ export type PostDetailData = {
   gender: number
   year_of_birth: number
   reason: string
+  is_update: number
   status: number
   group_name: number
   DonateRequestMedia: DonateRequestMedia[]

@@ -332,7 +332,7 @@ PODS:
     - React-perflogger (= 0.64.2)
   - RNCAsyncStorage (1.12.1):
     - React-Core
-  - RNCClipboard (1.8.5):
+  - RNCClipboard (1.5.1):
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
@@ -446,7 +446,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
-  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
+  - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
@@ -559,7 +559,7 @@ EXTERNAL SOURCES:
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCClipboard:
-    :path: "../node_modules/@react-native-clipboard/clipboard"
+    :path: "../node_modules/@react-native-community/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNDateTimePicker:
@@ -590,7 +590,7 @@ SPEC CHECKSUMS:
   CodePush: b51b7ac64c07d4eacfc8cc5750a1dd28adbf2528
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 2d604da2558559f6f66005905ab65c3d014fb79a
+  FBReactNativeSpec: 1eba22e489531db159b7dfe93c7a2078ef274d7d
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
@@ -633,7 +633,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: a9904c6d0218fb9f8b19d6dd88607225927668f9
   ReactCommon: 149906e01aa51142707a10665185db879898e966
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
-  RNCClipboard: cc054ad1e8a33d2a74cd13e565588b4ca928d8fd
+  RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
   RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
@@ -652,4 +652,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 2bc9ad7c422760f0c2811965cc8380f028568363
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2

@@ -2,11 +2,12 @@
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import { colors, fonts } from '@app/theme'
-import Clipboard from '@react-native-clipboard/clipboard'
+
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { PostDetailData } from '../../model'
 import Toast from 'react-native-toast-message'
+import Clipboard from '@react-native-community/clipboard'
 interface BankInfoProps {
   data: PostDetailData
 }

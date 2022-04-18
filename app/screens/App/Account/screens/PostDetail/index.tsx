@@ -30,6 +30,7 @@ import ButtonBack from './components/ButtonBack'
 import ModalDeny from './components/ModalDeny'
 import Story from './components/Story'
 import ViewBottom from './components/ViewBottom'
+import ViewBottom2 from './components/ViewBottom2'
 import ViewStatus from './components/ViewStatus'
 import {
   DonateCategoryDetails,
@@ -76,6 +77,7 @@ const PostDetail = (props: PostDetailProps) => {
     year_of_birth: 0,
     reason: '',
     status: 3,
+    is_update: 0,
     group_name: 0,
     DonateRequestMedia: [],
     DonateCategoryDetails: [],
@@ -113,6 +115,7 @@ const PostDetail = (props: PostDetailProps) => {
       const res = await PostDetailApi.getPostDetail({ id })
       setIsError(false)
       setDataPostDetail(res.data)
+      end_date.current = res.data.end_date
     } catch (error) {
       setIsError(true)
     } finally {
@@ -121,6 +124,21 @@ const PostDetail = (props: PostDetailProps) => {
   }
 
   const handleApprove = async () => {
+    if (typeNavigate === 3) {
+      if (
+        (dataPostDetail.is_update === 1 || dataPostDetail.is_update === 2) &&
+        (userInfo.role === ROLE.CUSTOMER ||
+          userInfo.role === ROLE.OFFICER_WARD ||
+          userInfo.role === ROLE.OFFICER_DISTRICT)
+      ) {
+        onUpdateDataPostToReducer()
+        return
+      } else {
+        if (!end_date.current && userInfo.role === ROLE.OFFICER_PROVINCE) {
+          showDatePicker()
+        }
+      }
+    }
     if (typeNavigate === 1) {
       onUpdateDataPostToReducer()
     } else if (type === STATUS_TYPE.COMPLETE) {
@@ -368,8 +386,10 @@ const PostDetail = (props: PostDetailProps) => {
           status === 2 &&
           typeNavigate === 2 &&
           userInfo.role === ROLE.OFFICER_DISTRICT
-        ) && (
+        ) &&
+        typeNavigate !== 3 && (
           <ViewBottom
+            is_update={dataPostDetail?.is_update}
             typeNavigate={typeNavigate}
             status={dataPostDetail?.status}
             openOption={() => {
@@ -378,6 +398,20 @@ const PostDetail = (props: PostDetailProps) => {
             type={type}
             handleApprove={handleApprove}
             id={dataPostDetail?.id}
+          />
+        )}
+      {typeNavigate === 3 &&
+        !(
+          (userInfo.role === ROLE.CUSTOMER ||
+            userInfo.role === ROLE.OFFICER_WARD) &&
+          dataPostDetail.is_update === 0
+        ) && (
+          <ViewBottom2
+            handleApprove={handleApprove}
+            openOption={() => {
+              ref.current?.show()
+            }}
+            is_update={dataPostDetail.is_update}
           />
         )}
 
