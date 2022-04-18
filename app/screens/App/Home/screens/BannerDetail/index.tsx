@@ -1,6 +1,7 @@
 import {
   Dimensions,
   Platform,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -64,7 +65,7 @@ const BannerDetailScreen = (props: Props) => {
   }, [])
 
   return (
-    <View style={styles.v_container}>
+    <ScrollView style={styles.v_container}>
       <StatusBar backgroundColor={colors.primary} barStyle="dark-content" />
       <View style={styles.v_header}>
         {error ? (
@@ -73,7 +74,7 @@ const BannerDetailScreen = (props: Props) => {
           <RenderBody data={data} />
         )}
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
   },
   banner: {
     width: width,
-    height: width / 2.1,
+    height: width / 2.5,
   },
   ctn_txt: {
     padding: 15,

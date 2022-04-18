@@ -40,10 +40,12 @@ const RNImageViewer = ({
     'gif',
     'webp',
     'jpeg',
+    'heic',
     'PNG',
     'JPG',
     'GIF',
     'JPEG',
+    'HEIC',
   ]
   const MEDIA_TYPE = {
     IMAGE: 1,

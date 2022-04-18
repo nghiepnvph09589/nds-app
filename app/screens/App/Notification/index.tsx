@@ -35,6 +35,7 @@ import FstImage from '@app/components/FstImage'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
+import { WaveIndicator } from 'react-native-indicators'
 
 const NotificationScreen = () => {
   const { data, isLoading, isLoadMore, isLastPage, error } = useAppSelector(
@@ -112,11 +113,12 @@ const NotificationScreen = () => {
   const countNotify = useAppSelector(
     state => state.NotificationReducer.countNotification
   )
-  if (isLoading) {
-    showLoading()
-  } else {
-    hideLoading()
-  }
+  // if (isLoading) {
+  //   showLoading()
+  // } else {
+  //   hideLoading()
+  // }
+  if (isLoading) return <Loading />
   if (error) return <Error reload={getData} />
   return (
     <ScreenWrapper
@@ -162,6 +164,7 @@ const NotificationScreen = () => {
           keyExtractor={(_, index) => `${index}`}
           ListEmptyComponent={() => <Empty description={'Danh sách trống'} />}
         />
+        {/* <Loading /> */}
       </View>
     </ScreenWrapper>
   )
@@ -219,6 +222,36 @@ const RightComponent = ({
         children={`Đọc tất cả (${countNotify})`}
       />
     </TouchableOpacity>
+  )
+}
+
+const Loading = () => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(52, 52, 52, 0.5)',
+      }}
+    >
+      <View
+        style={{
+          backgroundColor: 'white',
+          width: '20%',
+          aspectRatio: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: dimensions.width * 0.3,
+        }}
+      >
+        <WaveIndicator
+          color={colors.primary}
+          count={3}
+          size={dimensions.width * 0.13}
+        />
+      </View>
+    </View>
   )
 }
 

@@ -54,7 +54,9 @@ const EditSupportScreen = (props: Props) => {
     try {
       const res = await getListFormSupport(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        setDataFormSupport(res?.data)
+        setDataFormSupport(
+          res?.data.filter((item: { type: number }) => item?.type === 2)
+        )
       }
     } catch (error) {
       console.log(error)
@@ -96,7 +98,6 @@ const EditSupportScreen = (props: Props) => {
     try {
       const res = await editSupportManage(payload)
       if (res?.code === API_STATUS.SUCCESS) {
-        // setDataFormSupport(res?.data)
         showMessages('Thông báo', 'Sửa thành công', () => {
           props?.route?.params?.onAction()
           NavigationUtil.goBack()
