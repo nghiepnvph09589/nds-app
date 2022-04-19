@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Platform,
   StyleProp,
   StyleSheet,
   Text,
@@ -16,6 +17,7 @@ import Modal from 'react-native-modal'
 import R from '@app/assets/R'
 import Video from 'react-native-video'
 import { getOffset } from '@app/utils/Responsive'
+import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 
 const RNImageViewer = ({
   data,
@@ -178,6 +180,21 @@ const RNImageViewer = ({
             </>
           )}
         />
+        <TouchableOpacity
+          onPress={() => {
+            setIsVisible(false)
+          }}
+          style={{
+            position: 'absolute',
+            top: Platform.OS !== 'ios' ? 100 : getStatusBarHeight() + 80,
+            right: 30,
+          }}
+        >
+          <FstImage
+            style={{ width: 32, height: 32 }}
+            source={R.images.ic_exit}
+          />
+        </TouchableOpacity>
       </Modal>
     </View>
   )

@@ -92,6 +92,7 @@ const CreateSupportScreen = (props: Props) => {
     email: string
     noteMessages: string
   }) => {
+    Keyboard.dismiss()
     if (!form.length) {
       showMessages(R.strings().notification, 'Vui lòng chọn hình thức ủng hộ')
       return
@@ -231,7 +232,9 @@ const CreateSupportScreen = (props: Props) => {
                 />
               </View>
               <TouchableOpacity
-                onPress={handleSubmit}
+                onPress={() => {
+                  handleSubmit()
+                }}
                 style={styles.btn_submit}
               >
                 <FstImage source={R.images.ic_love2} style={styles.ic_love} />

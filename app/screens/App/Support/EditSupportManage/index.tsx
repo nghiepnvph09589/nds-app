@@ -1,8 +1,14 @@
 import * as Yup from 'yup'
 
 import { API_STATUS, NAME_REGEX, PHONE_REGEX } from '@app/constant/Constant'
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, fonts, styleView } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import { showConfirm, showMessages } from '@app/utils/AlertHelper'
@@ -80,6 +86,7 @@ const EditSupportScreen = (props: Props) => {
     email: string
     noteMessages: string
   }) => {
+    Keyboard.dismiss()
     if (!form.length) {
       showMessages(R.strings().notification, 'Vui lòng chọn hình thức ủng hộ')
       return
@@ -218,7 +225,9 @@ const EditSupportScreen = (props: Props) => {
                 />
               </View>
               <TouchableOpacity
-                onPress={handleSubmit}
+                onPress={() => {
+                  handleSubmit()
+                }}
                 style={styles.btn_submit}
               >
                 <FstImage source={R.images.ic_love2} style={styles.ic_love} />

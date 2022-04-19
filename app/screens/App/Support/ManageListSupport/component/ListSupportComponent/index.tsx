@@ -56,7 +56,7 @@ const ListSupportComponent = ({ status }: { status: number }) => {
         if (page > 1) {
           setData(data.concat(res.data?.rows))
         } else if (page === 1) {
-          setData(res.data?.rows)
+          setData(res.data)
         }
         setError(false)
       }

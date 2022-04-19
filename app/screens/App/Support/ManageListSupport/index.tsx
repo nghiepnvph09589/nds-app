@@ -16,7 +16,7 @@ const headerComponent = [
   },
   {
     id: STATUS_SUPPORT.APPROVE,
-    name: 'Đã lên hệ',
+    name: 'Đã liên hệ',
   },
   // {
   //   id: STATUS_SUPPORT.EDIT,
