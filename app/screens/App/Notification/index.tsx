@@ -20,7 +20,6 @@ import {
   setCountNotify,
 } from './slice'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import {
   requestCountNotification,
   requestReadAllNotification,
@@ -34,6 +33,7 @@ import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
+import RenderHTML from 'react-native-render-html'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { WaveIndicator } from 'react-native-indicators'
 
@@ -89,6 +89,7 @@ const NotificationScreen = () => {
     if (item.NotificationPushes.length === 0) {
       Dispatch(readNotificationForId(item?.id))
       await requestReadNotification({ id: item.id })
+      await getCountNotRead()
     }
 
     switch (item?.type) {
@@ -192,16 +193,24 @@ const ItemNotification = ({
       onPress={onPress}
       key={`${index}`}
     >
-      <FstImage
-        source={R.images.img_vietbuiltding_banner}
-        style={styles.item_img}
-      />
+      <FstImage source={R.images.img_avatar3} style={styles.item_img} />
       <View style={styles.item_detail}>
-        <Text style={styles.title} children={item?.title} />
-        <Text
-          style={styles.time}
-          children={DateUtils.formatShortDate(item?.create_at)}
-        />
+        <View style={{ ...styleView.rowItem }}>
+          <Text numberOfLines={1} style={styles.title} children={item?.title} />
+          <View style={{ ...styleView.rowItem }}>
+            <FstImage
+              style={{ width: 25, height: 25, marginRight: 5 }}
+              source={R.images.ic_clock}
+            />
+            <Text
+              style={styles.time}
+              children={DateUtils.formatShortDate(item?.create_at)}
+            />
+          </View>
+        </View>
+        <View style={{ height: 28, marginTop: 8 }}>
+          <RenderHTML source={{ html: item?.content }} />
+        </View>
       </View>
     </TouchableOpacity>
   )
@@ -289,9 +298,9 @@ const styles = StyleSheet.create({
     ...fonts.regular16,
     color: colors.textColor.gray9,
     lineHeight: 25,
+    flex: 1,
   },
   time: {
-    marginTop: 10,
     ...fonts.regular14,
     color: colors.textColor.gray8,
     lineHeight: 22,

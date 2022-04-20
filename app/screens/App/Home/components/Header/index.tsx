@@ -1,18 +1,20 @@
 import {
+  Platform,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  Platform,
+  View,
 } from 'react-native'
-import React from 'react'
+import { SCREEN_ROUTER, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import { colors, fonts } from '@app/theme'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
+
 import FstImage from '@app/components/FstImage'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
-import { useDispatch } from 'react-redux'
+import React from 'react'
 import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import { SCREEN_ROUTER } from '@app/constant/Constant'
+import { useDispatch } from 'react-redux'
 
 interface HeaderProps {
   avatar: string
@@ -46,7 +48,11 @@ const Header = (props: HeaderProps) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              NavigationUtil.navigate(SCREEN_ROUTER_APP.CONTACT)
+            }}
+          >
             <FstImage style={styles.icon} source={R.images.ic_support} />
           </TouchableOpacity>
         </View>

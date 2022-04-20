@@ -128,7 +128,10 @@ const RenderTabBarIcon = ({
               />
               {!!countNotify && !focused && (
                 <View style={styles.v_dot}>
-                  <Text style={styles.count} children={countNotify} />
+                  <Text
+                    style={styles.count}
+                    children={countNotify > 99 ? '99+' : countNotify}
+                  />
                 </View>
               )}
             </View>
@@ -293,7 +296,7 @@ const styles = StyleSheet.create({
     elevation: 0,
   },
   v_dot: {
-    width: 19,
+    width: 25,
     height: 19,
     backgroundColor: 'red',
     borderRadius: 19 / 2,
