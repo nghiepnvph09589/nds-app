@@ -51,7 +51,9 @@ const InfoBank = (props: BankInfoProps) => {
     },
   })
   useEffect(() => {
-    getDataBank(data.BankInfos[0].id)
+    if (data.BankInfos && data.BankInfos.length > 0) {
+      getDataBank(data.BankInfos[0].id)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -3,9 +3,10 @@ import React, { useState } from 'react'
 import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import { colors, fonts } from '@app/theme'
-import { STATUS_TYPE } from '@app/constant/Constant'
+import { ROLE, STATUS_TYPE } from '@app/constant/Constant'
 import { showConfirm } from '@app/utils/AlertHelper'
 import PostDetailApi from '../../api/PostDetailApi'
+import { useAppSelector } from '@app/store'
 
 interface ViewStatusProps {
   type: number
@@ -16,6 +17,7 @@ interface ViewStatusProps {
 }
 
 const ViewStatus = (props: ViewStatusProps) => {
+  const userInfo = useAppSelector(state => state.accountReducer).data
   const [isEnabled, setIsEnabled] = useState(true)
   const [textStatus, setTextStatus] = useState<string>('Đang hoạt động')
   const { type, status, reason, id, typeNavigate } = props
@@ -45,26 +47,28 @@ const ViewStatus = (props: ViewStatusProps) => {
   return (
     <>
       <View style={styles.v_container}>
-        {type === STATUS_TYPE.COMPLETE && typeNavigate !== 1 && (
-          <View style={styles.v_row2}>
-            <Text style={styles.status}>Trạng thái</Text>
-            <Text
-              style={[
-                styles.status2,
-                { color: isEnabled ? colors.primary : colors.text },
-              ]}
-            >
-              {textStatus}
-            </Text>
-            <Switch
-              trackColor={{ false: '#767577', true: colors.primary }}
-              thumbColor={'#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isEnabled}
-            />
-          </View>
-        )}
+        {type === STATUS_TYPE.COMPLETE &&
+          typeNavigate !== 1 &&
+          userInfo.role === ROLE.OFFICER_PROVINCE && (
+            <View style={styles.v_row2}>
+              <Text style={styles.status}>Trạng thái</Text>
+              <Text
+                style={[
+                  styles.status2,
+                  { color: isEnabled ? colors.primary : colors.text },
+                ]}
+              >
+                {textStatus}
+              </Text>
+              <Switch
+                trackColor={{ false: '#767577', true: colors.primary }}
+                thumbColor={'#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+              />
+            </View>
+          )}
         <View style={styles.v_row}>
           <FstImage style={styles.icon} source={R.images.ic_post} />
           <Text style={styles.text}>
