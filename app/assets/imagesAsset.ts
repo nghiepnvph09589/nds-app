@@ -6,6 +6,7 @@ const images = {
   ic_arrow_left: require('./images/ic_arrow_left.png'),
   ic_arrow_right: require('./images/ic_arrow_right.png'),
   ic_arrow_right_circle: require('./images/ic_arrow_right_circle.png'),
+  ic_arrow_up: require('./images/ic_arrow_up.png'),
   ic_avatar_default: require('./images/ic_avatar_default.png'),
   ic_back: require('./images/ic_back.png'),
   ic_back2: require('./images/ic_back2.png'),

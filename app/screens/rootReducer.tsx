@@ -7,6 +7,7 @@ import ManageListPostSlice from './App/Account/screens/ManageListPost/slice/Mana
 import NotificationSlice from './App/Notification/slice'
 import SwitchNavigatorSlice from '@app/navigation/switchNavigatorSlice'
 import UpdatePostSlice from './App/UpdatePost/slice/UpdatePostSlice'
+import HumanAddressSlice from './App/HumanAddress/slice/HumanAddressSlice'
 const rootReducer = {
   switchNavigatorReducer: SwitchNavigatorSlice,
   accountReducer: AccountSlice,
@@ -17,6 +18,7 @@ const rootReducer = {
   listPostReducer: ListPostSlice,
   manageListPostReducer: ManageListPostSlice,
   NotificationReducer: NotificationSlice,
+  humanAddressReducer: HumanAddressSlice,
 }
 
 export default rootReducer

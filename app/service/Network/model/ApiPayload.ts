@@ -29,3 +29,15 @@ export interface HomePayload {
   page?: number
   limit?: number
 }
+
+export interface ListAddressPayload {
+  page?: number
+  limit?: number
+  startDate?: string
+  endDate?: string
+  province_id?: number
+  district_id?: number
+  ward_id?: number
+  group_id?: number
+  category_id?: [number]
+}

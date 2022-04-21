@@ -30,11 +30,12 @@ import reactotron from 'reactotron-react-native'
 import { showConfirm } from '@app/utils/AlertHelper'
 import { useAppSelector } from '@app/store'
 import { useDispatch } from 'react-redux'
+import HumanAddress from '@app/screens/App/HumanAddress'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
-const { HOME, LOCATION, USER, CREATE_POST, NOTIFICATION } = MAIN_TAB
+const { HOME, HUMAN_ADDRESS, USER, CREATE_POST, NOTIFICATION } = MAIN_TAB
 
 export const TAB_BAR = {
   [HOME]: {
@@ -43,10 +44,10 @@ export const TAB_BAR = {
     route: Home,
     title: R.strings().home,
   },
-  [LOCATION]: {
-    name: MAIN_TAB.LOCATION,
+  [HUMAN_ADDRESS]: {
+    name: MAIN_TAB.HUMAN_ADDRESS,
     icon: R.images.ic_location3,
-    route: NotificationScreen,
+    route: HumanAddress,
     title: R.strings().product,
   },
   [CREATE_POST]: {
@@ -110,7 +111,6 @@ const RenderTabBarIcon = ({
               />
               {!!count &&
                 count !== 0 &&
-                !focused &&
                 userInfo.role !== ROLE.CUSTOMER &&
                 userInfo.role !== ROLE.OFFICER_WARD && (
                   <View style={styles.v_dot}>
@@ -199,6 +199,9 @@ const MainTab = (route: any) => {
                   return
                 } else if (route.name === MAIN_TAB.CREATE_POST) {
                   NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_POST)
+                  return
+                } else if (route.name === MAIN_TAB.HUMAN_ADDRESS) {
+                  NavigationUtil.navigate(SCREEN_ROUTER_APP.HUMAN_ADDRESS)
                   return
                 }
                 if (props.onPress) props.onPress(e)

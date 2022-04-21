@@ -131,6 +131,7 @@ function strings() {
     note_messages: I18n.t('note_messages', { defaultValue: '' }),
     note_blank: I18n.t('note_blank', { defaultValue: '' }),
     enter_search_text: I18n.t('enter_search_text', { defaultValue: '' }),
+    human_address: I18n.t('human_address', { defaultValue: '' }),
   }
 }
 export default strings
