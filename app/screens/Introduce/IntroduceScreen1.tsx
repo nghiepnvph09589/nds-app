@@ -41,7 +41,6 @@ const IntroduceScreen1 = () => {
     })
   }
   const onStart = async () => {
-    // await AsyncStorageService.putFirstly('1')
     await AsyncStorage.setItem('firstly', '1')
     dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
   }

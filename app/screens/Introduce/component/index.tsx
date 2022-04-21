@@ -9,7 +9,7 @@ import {
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper'
 
-import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
+import AsyncStorage from '@react-native-community/async-storage'
 import FstImage from '@app/components/FstImage'
 import React from 'react'
 import { SCREEN_ROUTER } from '@app/constant/Constant'
@@ -27,7 +27,7 @@ const ComponentIntroduce = ({
 }) => {
   const dispatch = useDispatch()
   const onStart = async () => {
-    await AsyncStorageService.setFirstly('1')
+    await AsyncStorage.setItem('firstly', '1')
     dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
   }
   return (
