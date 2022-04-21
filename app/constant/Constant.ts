@@ -83,7 +83,7 @@ export const api_key = '3yJu457TLe2c9bvAuzohv7ms6ds65uPRUnG587bi'
 
 const STATUS_TYPE = {
   WAIT_CONFIRM: 2, //chờ xác nhận
-  EDIT: 1, //đã xác nhận
+  EDIT: 1, //chỉnh sửa
   COMPLETE: 3, //Hoàn thành
   DENY: 0, //Tùe chối
 }

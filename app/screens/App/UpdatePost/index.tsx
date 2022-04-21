@@ -150,7 +150,9 @@ const UpdatePost = (props: UpdatePostProps) => {
                             SCREEN_ROUTER_APP.MANAGE_LIST_POST
                           )
                         } else {
-                          NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_POST)
+                          NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_POST, {
+                            page: 0,
+                          })
                         }
                       }}
                     />

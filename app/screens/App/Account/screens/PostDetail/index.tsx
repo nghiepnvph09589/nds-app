@@ -139,6 +139,17 @@ const PostDetail = (props: PostDetailProps) => {
         }
       }
     }
+    if (
+      typeNavigate === 2 &&
+      userInfo.role === ROLE.OFFICER_DISTRICT &&
+      type === STATUS_TYPE.EDIT
+    ) {
+      setTypeOption(3)
+      setTimeout(() => {
+        setIsVisible(!isVisible)
+      }, 1000)
+      return
+    }
     if (typeNavigate === 1) {
       onUpdateDataPostToReducer()
     } else if (type === STATUS_TYPE.COMPLETE) {
@@ -163,7 +174,7 @@ const PostDetail = (props: PostDetailProps) => {
               dispatch(getDataHome({ page: 1 }))
               dispatch(
                 getDataListManagePost({
-                  status: 3,
+                  status: STATUS_TYPE.COMPLETE,
                   limit: DEFAULT_PARAMS.LIMIT,
                   page: DEFAULT_PARAMS.PAGE,
                 })
@@ -249,17 +260,26 @@ const PostDetail = (props: PostDetailProps) => {
           })
           dispatch(
             getDataListManagePost({
-              status: 2,
+              status: STATUS_TYPE.EDIT,
               limit: DEFAULT_PARAMS.LIMIT,
               page: DEFAULT_PARAMS.PAGE,
             })
           )
-          NavigationUtil.goBack()
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST, {
+            page: 1,
+          })
         } else if (typeOption === 3) {
           await PostDetailApi.approvePost({
             id,
             reason: inputText,
           })
+          dispatch(
+            getDataListManagePost({
+              status: STATUS_TYPE.DENY,
+              limit: DEFAULT_PARAMS.LIMIT,
+              page: DEFAULT_PARAMS.PAGE,
+            })
+          )
           NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST, {
             page: 3,
           })
@@ -304,7 +324,7 @@ const PostDetail = (props: PostDetailProps) => {
         dispatch(getDataHome({ page: 1 }))
         dispatch(
           getDataListManagePost({
-            status: 3,
+            status: STATUS_TYPE.COMPLETE,
             limit: DEFAULT_PARAMS.LIMIT,
             page: DEFAULT_PARAMS.PAGE,
           })
@@ -328,6 +348,28 @@ const PostDetail = (props: PostDetailProps) => {
 
   if (isError) return <Error reload={getDataPostDetail} />
 
+  const renderData = () => {
+    let data = [
+      { text: 'Chỉnh sửa', id: 0, icon: R.images.ic_edit_support },
+      { text: 'Yêu cầu chỉnh sửa', id: 1, icon: R.images.ic_edit_support },
+      { text: 'Tài khoản ngân hàng', id: 2, icon: R.images.ic_credit_card },
+      { text: 'Từ chối', id: 3, icon: R.images.ic_cancel_support },
+    ]
+    if (
+      userInfo.role === ROLE.OFFICER_PROVINCE &&
+      type === STATUS_TYPE.COMPLETE
+    ) {
+      data.splice(0, 2)
+      data.splice(1, 1)
+    } else if (
+      userInfo.role === ROLE.OFFICER_PROVINCE &&
+      type === STATUS_TYPE.EDIT
+    ) {
+      data.splice(1, 1)
+    }
+    return data
+  }
+
   return (
     <>
       <ScrollView style={styles.v_container}>
@@ -342,7 +384,7 @@ const PostDetail = (props: PostDetailProps) => {
           onModalHide={onModalHide}
         />
         <PostImageArea data={dataPostDetail.DonateRequestMedia} />
-        {!(!type && type !== 0) && userInfo.role === ROLE.OFFICER_PROVINCE && (
+        {!(!type && type !== 0) && (
           <ViewStatus
             typeNavigate={typeNavigate}
             id={dataPostDetail.id}
@@ -383,7 +425,7 @@ const PostDetail = (props: PostDetailProps) => {
       <ButtonBack />
       {!(typeNavigate === 1 && type !== STATUS_TYPE.EDIT) &&
         !(
-          status === 2 &&
+          (status === 2 || status === 3) &&
           typeNavigate === 2 &&
           userInfo.role === ROLE.OFFICER_DISTRICT
         ) &&
@@ -438,12 +480,7 @@ const PostDetail = (props: PostDetailProps) => {
         }}
         textOptionStyle={styles.textOptionStyle}
         //  / optionStyle={styles.optionStyle}
-        option={[
-          { text: 'Chỉnh sửa', id: 0, icon: R.images.ic_edit_support },
-          { text: 'Yêu cầu chỉnh sửa', id: 1, icon: R.images.ic_edit_support },
-          { text: 'Tài khoản ngân hàng', id: 2, icon: R.images.ic_credit_card },
-          { text: 'Từ chối', id: 3, icon: R.images.ic_cancel_support },
-        ]}
+        option={renderData()}
       />
       <DateTimePickerModal
         isVisible={isDatePickerVisible}

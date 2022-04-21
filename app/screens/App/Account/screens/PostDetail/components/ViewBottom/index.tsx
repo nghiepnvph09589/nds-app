@@ -53,7 +53,10 @@ const ViewBottom = (props: ViewBottomProps) => {
   }
   return (
     <>
-      {type && type !== STATUS_TYPE.DENY && typeNavigate !== 1 ? (
+      {type &&
+      type !== STATUS_TYPE.DENY &&
+      typeNavigate !== 1 &&
+      !(typeNavigate === 2 && userInfo.role === ROLE.OFFICER_DISTRICT) ? (
         <View style={styles.v_button3}>
           <TouchableOpacity onPress={handleApprove} style={styles.v_button2}>
             <FstImage style={styles.icon} source={R.images.ic_approve} />
@@ -74,6 +77,12 @@ const ViewBottom = (props: ViewBottomProps) => {
       ) : type === STATUS_TYPE.EDIT && typeNavigate === 1 ? (
         <TouchableOpacity onPress={handleApprove} style={styles.v_button}>
           <Text style={styles.text}>{'Chỉnh sửa'}</Text>
+        </TouchableOpacity>
+      ) : type === STATUS_TYPE.EDIT &&
+        typeNavigate === 2 &&
+        userInfo.role === ROLE.OFFICER_DISTRICT ? (
+        <TouchableOpacity onPress={handleApprove} style={styles.v_button}>
+          <Text style={styles.text}>{'Từ chối'}</Text>
         </TouchableOpacity>
       ) : !type && type !== 0 ? (
         <TouchableOpacity onPress={onSupport} style={styles.v_button}>
