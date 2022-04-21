@@ -1,17 +1,19 @@
 import { APP_SLICE, ROOT_STACK, SCREEN_ROUTER } from '@app/constant/Constant'
-import SplashScreen from '@app/screens/SplashScreen'
-import { NavigationContainer } from '@react-navigation/native'
-import {
-  createStackNavigator,
-  StackHeaderInterpolationProps,
-} from '@react-navigation/stack'
 import React, { memo } from 'react'
-import isEqual from 'react-fast-compare'
-import { connect } from 'react-redux'
+import {
+  StackHeaderInterpolationProps,
+  createStackNavigator,
+} from '@react-navigation/stack'
+
+import { NavigationContainer } from '@react-navigation/native'
 import NavigationUtil from './NavigationUtil'
-import { StackMainScreen } from './stack/BottomTabBar'
+import SplashScreen from '@app/screens/SplashScreen'
 import { StackAppCustomerScreen } from './stack/StackApp'
 import { StackAuthScreen } from './stack/StackAuth'
+import { StackIntroduceScreen } from './stack/StackIntroduce'
+import { StackMainScreen } from './stack/BottomTabBar'
+import { connect } from 'react-redux'
+import isEqual from 'react-fast-compare'
 
 const RootStack = createStackNavigator()
 const screenOptions = {
@@ -53,7 +55,13 @@ const renderSwitch = (switchApp: string) => {
           component={StackAuthScreen}
         />
       )
-
+    case SCREEN_ROUTER.INTRODUCE:
+      return (
+        <RootStack.Screen
+          name={SCREEN_ROUTER.INTRODUCE}
+          component={StackIntroduceScreen}
+        />
+      )
     case SCREEN_ROUTER.MAIN:
       return (
         <>

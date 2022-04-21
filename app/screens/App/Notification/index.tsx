@@ -63,7 +63,7 @@ const NotificationScreen = () => {
   }
 
   const onRefreshData = () => {
-    //  getCountNotification()
+    getCountNotRead()
     setBody({ ...body, page: 1 })
   }
 
@@ -96,7 +96,6 @@ const NotificationScreen = () => {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: item?.notification_id,
-          // customer: ROLE.CUSTOMER,
         })
         return
       case NOTIFICATION_TYPE.POST:
@@ -115,11 +114,6 @@ const NotificationScreen = () => {
   const countNotify = useAppSelector(
     state => state.NotificationReducer.countNotification
   )
-  // if (isLoading) {
-  //   showLoading()
-  // } else {
-  //   hideLoading()
-  // }
   if (isLoading) return <Loading />
   if (error) return <Error reload={getData} />
   return (
@@ -145,7 +139,6 @@ const NotificationScreen = () => {
         <FlatList
           onRefresh={onRefreshData}
           style={styles.flatlist}
-          // ref={listRef}
           data={data}
           refreshing={isLoading}
           scrollEventThrottle={16}
@@ -185,6 +178,7 @@ const ItemNotification = ({
     <TouchableOpacity
       style={[
         styles.ctn_item,
+        // eslint-disable-next-line react-native/no-inline-styles
         {
           backgroundColor:
             item.NotificationPushes.length !== 0 ? colors.white : '#FBE9E8',
@@ -198,10 +192,7 @@ const ItemNotification = ({
         <View style={{ ...styleView.rowItem }}>
           <Text numberOfLines={1} style={styles.title} children={item?.title} />
           <View style={{ ...styleView.rowItem }}>
-            <FstImage
-              style={{ width: 25, height: 25, marginRight: 5 }}
-              source={R.images.ic_clock}
-            />
+            <FstImage style={styles.ic_clock} source={R.images.ic_clock} />
             <Text
               style={styles.time}
               children={DateUtils.formatShortDate(item?.create_at)}
@@ -237,24 +228,8 @@ const RightComponent = ({
 
 const Loading = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgba(52, 52, 52, 0.5)',
-      }}
-    >
-      <View
-        style={{
-          backgroundColor: 'white',
-          width: '20%',
-          aspectRatio: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: dimensions.width * 0.3,
-        }}
-      >
+    <View style={styles.ctn_loading}>
+      <View style={styles.loading}>
         <WaveIndicator
           color={colors.primary}
           count={3}
@@ -304,5 +279,20 @@ const styles = StyleSheet.create({
     ...fonts.regular14,
     color: colors.textColor.gray8,
     lineHeight: 22,
+  },
+  ic_clock: { width: 25, height: 25, marginRight: 5 },
+  ctn_loading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
+  },
+  loading: {
+    backgroundColor: 'white',
+    width: '20%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: dimensions.width * 0.3,
   },
 })
