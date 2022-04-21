@@ -103,7 +103,7 @@ const CreateSupportScreen = (props: Props) => {
       name: value.name,
       form_support: form,
       email: value.email,
-      // note: value?.noteMessages,
+      note: value?.noteMessages,
     }
     showLoading()
     try {
