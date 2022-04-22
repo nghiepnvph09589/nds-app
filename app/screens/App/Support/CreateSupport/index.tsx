@@ -43,7 +43,7 @@ const CreateSupportScreen = (props: Props) => {
   const Schema = Yup.object().shape({
     name: Yup.string()
       .trim()
-      .matches(NAME_REGEX, R.strings().validateEmail)
+      .matches(NAME_REGEX, 'Tên sai định dạng')
       .required(R.strings().name_blank),
     phone: Yup.string()
       .matches(PHONE_REGEX, R.strings().validatePhone)

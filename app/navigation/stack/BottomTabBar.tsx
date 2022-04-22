@@ -18,6 +18,7 @@ import CreatePost from '@app/screens/App/CreatePost'
 import FastImage from 'react-native-fast-image'
 import FstImage from '@app/components/FstImage'
 import Home from '@app/screens/App/Home'
+import HumanAddress from '@app/screens/App/HumanAddress'
 import NavigationUtil from '../NavigationUtil'
 import NotificationScreen from '@app/screens/App/Notification'
 import R from '@app/assets/R'
@@ -30,7 +31,6 @@ import reactotron from 'reactotron-react-native'
 import { showConfirm } from '@app/utils/AlertHelper'
 import { useAppSelector } from '@app/store'
 import { useDispatch } from 'react-redux'
-import HumanAddress from '@app/screens/App/HumanAddress'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -114,7 +114,10 @@ const RenderTabBarIcon = ({
                 userInfo.role !== ROLE.CUSTOMER &&
                 userInfo.role !== ROLE.OFFICER_WARD && (
                   <View style={styles.v_dot}>
-                    <Text style={styles.count} children={count} />
+                    <Text
+                      style={styles.count}
+                      children={count > 99 ? '99+' : count}
+                    />
                   </View>
                 )}
             </View>
@@ -126,7 +129,7 @@ const RenderTabBarIcon = ({
                 source={TAB_BAR[route.name].icon}
                 resizeMode={'contain'}
               />
-              {!!countNotify && !focused && (
+              {!!countNotify && (
                 <View style={styles.v_dot}>
                   <Text
                     style={styles.count}

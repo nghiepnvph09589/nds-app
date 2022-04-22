@@ -46,10 +46,10 @@ export const fonts = {
   //   fontSize: moderateScale(12),
   //   fontFamily: R.fonts.san_bold
   // },
-  // bold14: {
-  //   fontSize: moderateScale(14),
-  //   fontFamily: R.fonts.san_bold
-  // },
+  bold14: {
+    fontSize: moderateScale(14),
+    fontFamily: R.fonts.san_bold,
+  },
   // bold16: {
   //   fontSize: moderateScale(16),
   //   fontFamily: R.fonts.san_bold

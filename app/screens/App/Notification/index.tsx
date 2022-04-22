@@ -190,13 +190,17 @@ const ItemNotification = ({
       <View style={styles.item_detail}>
         <View style={{ ...styleView.rowItem }}>
           <Text numberOfLines={1} style={styles.title} children={item?.title} />
-          <View style={{ ...styleView.rowItem }}>
+          {/* <View style={{ ...styleView.rowItem }}>
             <FstImage style={styles.ic_clock} source={R.images.ic_clock} />
             <Text
               style={styles.time}
-              children={DateUtils.formatShortDate(item?.create_at)}
+              children={DateUtils.formatShortYear(item?.create_at)}
             />
-          </View>
+          </View> */}
+          <Text
+            style={styles.time}
+            children={DateUtils.formatShortYear(item?.create_at)}
+          />
         </View>
         <Text
           style={styles.content}
@@ -255,15 +259,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   ctn_item: {
-    ...styleView.rowItem,
+    ...styleView.rowItemBetween,
     paddingHorizontal: 15,
-    paddingVertical: 16,
+    paddingVertical: 15,
     borderBottomWidth: 1,
     borderColor: colors.border,
   },
   item_img: {
-    width: dimensions.width * 0.13,
-    height: dimensions.width * 0.13,
+    width: dimensions.width * 0.12,
+    height: dimensions.width * 0.12,
     marginRight: 15,
     borderRadius: 10,
   },
@@ -271,13 +275,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    ...fonts.semi_bold16,
+    ...fonts.semi_bold14,
     color: colors.textColor.gray9,
     lineHeight: 25,
     flex: 1,
   },
   time: {
-    ...fonts.regular14,
+    ...fonts.regular12,
     color: colors.textColor.gray8,
     lineHeight: 22,
   },
@@ -298,7 +302,7 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: 5,
-    ...fonts.regular15,
+    ...fonts.regular13,
     color: colors.textColor.gray9,
   },
 })
