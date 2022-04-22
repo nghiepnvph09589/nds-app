@@ -13,17 +13,16 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  useState,
+  useState
 } from 'react'
 import {
-  Alert,
   Dimensions,
   Keyboard,
   Platform,
   ScrollView,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native'
 import { moderateScale, ScaledSheet } from 'react-native-size-matters'
 import { withFadeAnimation } from './HOC/withFadeAnimation'
@@ -174,7 +173,7 @@ export const AutocompleteDropdown = memo(
     const setInputText = (text) => {
       setSearchText(text)
     }
-    
+
     const setItem = (item) => {
       setSelectedItem(item)
     }
@@ -331,7 +330,7 @@ export const AutocompleteDropdown = memo(
         {/* it's necessary use onLayout here for Androd (bug?) */}
         <View
           ref={containerRef}
-          onLayout={(_) => {}}
+          onLayout={(_) => { }}
           style={[props.inputContainerStyle]}
         >
           <InputComponent

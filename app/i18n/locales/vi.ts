@@ -117,4 +117,5 @@ export default {
   note_messages: 'Lời nhắn',
   note_blank: 'Lời nhắn đang để trống',
   enter_search_text: 'Nhập nội dung tìm kiếm',
+  human_address: 'Địa điểm nhân đạo',
 }
