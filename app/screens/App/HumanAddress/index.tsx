@@ -19,9 +19,14 @@ import { getListAddress } from './slice/HumanAddressSlice'
 import { HumanAddressType } from './model'
 import { useAppSelector } from '@app/store'
 
-import { DEFAULT_PARAMS } from '@app/constant/Constant'
+import {
+  DEFAULT_PARAMS,
+  MEDIA_TYPE,
+  SCREEN_ROUTER_APP,
+} from '@app/constant/Constant'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import Error from '@app/components/Error/Error'
+import NavigationUtil from '@app/navigation/NavigationUtil'
 
 const dataFilter = [
   { title: 'Khu vực' },
@@ -80,43 +85,40 @@ const HumanAddress = () => {
 
   const renderItem = useCallback(({ item }: { item: HumanAddressType }) => {
     return (
-      <View style={styles.v_item}>
+      <TouchableOpacity
+        onPress={() => {
+          NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, {
+            id: item.id,
+          })
+        }}
+        style={styles.v_item}
+      >
         <FstImage
           resizeMode="cover"
           style={styles.img_post}
-          source={{ uri: item?.DonateRequestMedia[0]?.media_url }}
+          source={
+            item?.DonateRequestMedia[0]?.type === MEDIA_TYPE.IMAGE
+              ? { uri: item?.DonateRequestMedia[0]?.media_url }
+              : R.images.img_red_cross
+          }
         />
-        <View
-          style={{ flex: 1, marginLeft: 16, justifyContent: 'space-between' }}
-        >
-          <Text
-            numberOfLines={2}
-            style={{
-              ...fonts.regular16,
-              color: colors.text,
-              fontWeight: '500',
-              marginTop: 3,
-            }}
-          >
+        <View style={styles.v_content}>
+          <Text numberOfLines={2} style={styles.txt_title}>
             {item?.title}
           </Text>
-          <Text
-            numberOfLines={1}
-            style={{
-              ...fonts.regular16,
-              color: '#595959',
-            }}
-          >
+          <Text numberOfLines={1} style={styles.txt_content2}>
             {item?.content}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }, [])
+
   const keyExtractor = useCallback((item: HumanAddressType) => `${item.id}`, [])
   return (
     <ScreenWrapper
       back
+      rightComponent={<ButtonFilter />}
       color={colors.text}
       backgroundHeader="white"
       forceInset={['left']}
@@ -140,7 +142,7 @@ const HumanAddress = () => {
             ))}
           </ScrollView>
           <View style={styles.v_line} />
-          <View style={{ flex: 1 }}>
+          <View style={styles.v_list}>
             <View style={styles.v_row}>
               <FstImage style={styles.image} source={R.images.ic_annotation} />
               <Text style={styles.txt_count_address}>11 địa điểm nhân đạo</Text>
@@ -172,9 +174,46 @@ const HumanAddress = () => {
   )
 }
 
+const ButtonFilter = () => {
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        NavigationUtil.navigate(SCREEN_ROUTER_APP.FILTER)
+      }}
+      style={styles.v_row2}
+    >
+      <Text style={styles.txt_filter2}>Lọc</Text>
+      <FstImage style={styles.ic_filter} source={R.images.ic_filter} />
+    </TouchableOpacity>
+  )
+}
+
 export default HumanAddress
 
 const styles = StyleSheet.create({
+  txt_content2: { ...fonts.regular16, color: '#595959' },
+  txt_title: {
+    ...fonts.regular16,
+    color: colors.text,
+    fontWeight: '500',
+    marginTop: 3,
+  },
+  txt_filter2: {
+    ...fonts.regular14,
+    color: colors.primary,
+    marginRight: 4,
+  },
+  v_row2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ic_filter: {
+    width: 24,
+    height: 24,
+  },
+  v_list: {
+    flex: 1,
+  },
   v_content: { flex: 1, marginLeft: 16, justifyContent: 'space-between' },
   img_post: { width: 80, height: 80, borderRadius: 8 },
   v_item: {

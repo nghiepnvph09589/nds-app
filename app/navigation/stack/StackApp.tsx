@@ -24,6 +24,7 @@ import UpdatePost from '@app/screens/App/UpdatePost'
 import UpdateSupportManage from '@app/screens/App/Support/UpdateSupportManage'
 import { createStackNavigator } from '@react-navigation/stack'
 import HumanAddress from '@app/screens/App/HumanAddress'
+import FilterScreen from '@app/screens/App/HumanAddress/screens/FilterScreen'
 const {
   NOTIFICATION,
   UPDATE_ACCOUNT,
@@ -48,6 +49,7 @@ const {
   BANK_INFO,
   UPDATE_BANK,
   HUMAN_ADDRESS,
+  FILTER,
 } = SCREEN_ROUTER_APP
 const Stack = createStackNavigator()
 
@@ -75,6 +77,7 @@ const mainScreen = {
   [BANK_INFO]: InfoBank,
   [UPDATE_BANK]: UpdateBank,
   [HUMAN_ADDRESS]: HumanAddress,
+  [FILTER]: FilterScreen,
 }
 
 export const StackAppCustomerScreen = () => {

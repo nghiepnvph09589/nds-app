@@ -397,6 +397,11 @@ const PostDetail = (props: PostDetailProps) => {
             }
             status={status}
             type={type}
+            name={
+              dataPostDetail?.DonateDequestHistory
+                ? dataPostDetail?.DonateDequestHistory[0]?.User?.name
+                : ''
+            }
           />
         )}
         <Tabs
