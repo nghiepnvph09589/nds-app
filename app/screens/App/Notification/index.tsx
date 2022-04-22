@@ -33,7 +33,6 @@ import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import R from '@app/assets/R'
-import RenderHTML from 'react-native-render-html'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { WaveIndicator } from 'react-native-indicators'
 
@@ -59,7 +58,6 @@ const NotificationScreen = () => {
   }
   const getData = () => {
     Dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
-    getCountNotRead()
   }
 
   const onRefreshData = () => {
@@ -96,6 +94,7 @@ const NotificationScreen = () => {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: item?.notification_id,
+          // onRefreshData: getCountNotRead,
         })
         return
       case NOTIFICATION_TYPE.POST:
@@ -142,7 +141,7 @@ const NotificationScreen = () => {
           data={data}
           refreshing={isLoading}
           scrollEventThrottle={16}
-          onEndReachedThreshold={0.05}
+          onEndReachedThreshold={0.5}
           onMomentumScrollBegin={onMomentumScrollBegin}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
@@ -170,7 +169,7 @@ const ItemNotification = ({
   index,
   onPress,
 }: {
-  item: any
+  item: Item
   index: number
   onPress: () => void
 }) => {
@@ -199,9 +198,11 @@ const ItemNotification = ({
             />
           </View>
         </View>
-        <View style={{ height: 28, marginTop: 8 }}>
-          <RenderHTML source={{ html: item?.content }} />
-        </View>
+        <Text
+          style={styles.content}
+          numberOfLines={3}
+          children={item?.content}
+        />
       </View>
     </TouchableOpacity>
   )
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    ...fonts.regular16,
+    ...fonts.semi_bold16,
     color: colors.textColor.gray9,
     lineHeight: 25,
     flex: 1,
@@ -294,5 +295,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: dimensions.width * 0.3,
+  },
+  content: {
+    marginTop: 5,
+    ...fonts.regular15,
+    color: colors.textColor.gray9,
   },
 })

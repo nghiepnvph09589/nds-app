@@ -52,6 +52,9 @@ const DetailSupportScreen = (props: Props) => {
     getData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  const refresh = () => {
+    props?.route?.params?.onRefreshData()
+  }
   const checkRoleMenu = () => {
     if (userInfo.role === ROLE.OFFICER_PROVINCE) {
       if (userInfo.province_id === data?.province_id) {
@@ -76,7 +79,6 @@ const DetailSupportScreen = (props: Props) => {
       forceInset={['left']}
       titleHeader={'Chi tiết ủng hộ'}
       backgroundColor={colors.white}
-      // eslint-disable-next-line react-native/no-inline-styles
       style={{ flex: 1 }}
       borderBottomHeader={colors.border}
     >
@@ -103,7 +105,6 @@ const DetailSupportScreen = (props: Props) => {
           <MenuButton
             id={data?.id}
             onAction={() => {
-              props?.route?.params?.onRefreshData()
               getData()
             }}
             status={data?.status}
@@ -116,7 +117,6 @@ const DetailSupportScreen = (props: Props) => {
           <BtnUpdateCustomer
             data={data}
             onAction={() => {
-              props?.route?.params?.onRefreshData()
               getData()
             }}
           />

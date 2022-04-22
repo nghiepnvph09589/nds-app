@@ -12,6 +12,9 @@ export interface Item {
   type: number
   NotificationPushes: any[]
   notification_id: number
+  create_at: string
+  title: string
+  content: string
 }
 
 export interface Body {
