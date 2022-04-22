@@ -105,7 +105,6 @@ const DetailSupportScreen = (props: Props) => {
           <MenuButton
             id={data?.id}
             onAction={() => {
-              refresh()
               getData()
             }}
             status={data?.status}
@@ -118,7 +117,6 @@ const DetailSupportScreen = (props: Props) => {
           <BtnUpdateCustomer
             data={data}
             onAction={() => {
-              refresh()
               getData()
             }}
           />

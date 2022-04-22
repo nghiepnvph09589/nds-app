@@ -95,7 +95,7 @@ const NotificationScreen = () => {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: item?.notification_id,
-          onRefreshData: getCountNotRead,
+          // onRefreshData: getCountNotRead,
         })
         return
       case NOTIFICATION_TYPE.POST:
