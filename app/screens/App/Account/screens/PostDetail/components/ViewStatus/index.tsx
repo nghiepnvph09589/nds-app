@@ -14,13 +14,14 @@ interface ViewStatusProps {
   reason?: string
   id: number
   typeNavigate?: number
+  name?: string
 }
 
 const ViewStatus = (props: ViewStatusProps) => {
   const userInfo = useAppSelector(state => state.accountReducer).data
   const [isEnabled, setIsEnabled] = useState(true)
   const [textStatus, setTextStatus] = useState<string>('Đang hoạt động')
-  const { type, status, reason, id, typeNavigate } = props
+  const { type, status, reason, id, typeNavigate, name } = props
 
   const toggleSwitch = () => {
     showConfirm(
@@ -91,6 +92,9 @@ const ViewStatus = (props: ViewStatusProps) => {
           )}
         </View>
         {!!reason && <Text style={styles.txt_reason}>{reason}</Text>}
+        {status === 2 && type === STATUS_TYPE.WAIT_CONFIRM && (
+          <Text style={styles.txt_reason}>{`Nguời duyệt: ${name}`}</Text>
+        )}
       </View>
       <View style={styles.v_line} />
     </>

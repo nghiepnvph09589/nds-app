@@ -50,6 +50,6 @@ export type ListPostData = {
 }
 export type DonateRequestMedia = {
   id: string
-  type: string
+  type: number
   media_url: string
 }

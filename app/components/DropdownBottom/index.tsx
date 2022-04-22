@@ -435,27 +435,6 @@ class DropdownBottom extends Component<DropdownBottomProps, State> {
                   onEndReachedThreshold={0.1}
                   onMomentumScrollBegin={this.onMomentumScrollBegin}
                   onEndReached={handleLoadMore}
-                  // removeClippedSubviews={true}
-                  // ListHeaderComponent={
-                  //   <>
-                  //     {data && !hideSearch && !!data.length && (
-                  //       <Search
-                  //         // eslint-disable-next-line react-native/no-inline-styles
-                  //         style={{
-                  //           marginTop: 10,
-                  //           paddingHorizontal: 5,
-                  //           marginBottom: 10,
-                  //         }}
-                  //         placeholder="Nhập nội dung tìm kiếm"
-                  //         value={this.state.search}
-                  //         clear={() => {
-                  //           this.handleSearch('')
-                  //         }}
-                  //         onChangeText={this.handleSearch}
-                  //       />
-                  //     )}
-                  //   </>
-                  // }
                   keyExtractor={(item, index) => index.toString()}
                   ListEmptyComponent={
                     <Text style={styles.txtEmpty} children="Không có dữ liệu" />
