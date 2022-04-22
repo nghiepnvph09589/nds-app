@@ -54,16 +54,16 @@ export default abstract class OneSignalUtil {
     token &&
       store.dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
     token && this.getCountNotifyNotRead()
-    reactotron.log!('Prompt response:', notification?.notification)
+    console.log!('Prompt response:', notification?.notification)
   }
 
   static onOpened = (notification: any) => {
-    reactotron.log!('Prompt response:', notification?.notification)
+    console.log!('Prompt response:', notification?.notification)
     switch (notification?.additionalData?.type) {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: notification?.additionalData?.notification_id,
-          // customer: ROLE.CUSTOMER,
+          onRefreshData: this.getCountNotifyNotRead,
         })
         return
       case NOTIFICATION_TYPE.POST:

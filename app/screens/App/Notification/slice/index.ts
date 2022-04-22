@@ -87,7 +87,6 @@ export const NotificationSlice = createSlice({
 })
 
 export const {
-  // readNotification,
   setCountNotify,
   clearNotifyCount,
   readAllNotify,

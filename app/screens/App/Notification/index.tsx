@@ -59,7 +59,6 @@ const NotificationScreen = () => {
   }
   const getData = () => {
     Dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
-    getCountNotRead()
   }
 
   const onRefreshData = () => {
@@ -96,6 +95,7 @@ const NotificationScreen = () => {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: item?.notification_id,
+          onRefreshData: getCountNotRead,
         })
         return
       case NOTIFICATION_TYPE.POST:
@@ -142,7 +142,7 @@ const NotificationScreen = () => {
           data={data}
           refreshing={isLoading}
           scrollEventThrottle={16}
-          onEndReachedThreshold={0.05}
+          onEndReachedThreshold={0.5}
           onMomentumScrollBegin={onMomentumScrollBegin}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
@@ -198,9 +198,6 @@ const ItemNotification = ({
               children={DateUtils.formatShortDate(item?.create_at)}
             />
           </View>
-        </View>
-        <View style={{ height: 28, marginTop: 8 }}>
-          <RenderHTML source={{ html: item?.content }} />
         </View>
       </View>
     </TouchableOpacity>
