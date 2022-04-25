@@ -7,6 +7,27 @@ export const LINKING_TYPE = {
   MESSAGE: 4,
 }
 
+export const LinkingMaps = (name: any, long: any, lat: any) => {
+  const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' })
+  const latLng = `${lat},${long}`
+  const label = name
+  const url = Platform.select({
+    ios: `https://www.google.com/maps/place/?q=${label}/@${lat},${long}`,
+    android: `${scheme}${latLng}(${label})`,
+  })
+  Linking.canOpenURL(url as string)
+    .then(supported => {
+      if (!supported) {
+        let browser_url =
+          'https://www.google.de/maps/@' + lat + ',' + long + '?q=' + label
+        return Linking.openURL(browser_url)
+      } else {
+        return Linking.openURL(url as string)
+      }
+    })
+    .catch(err => console.log('error', err))
+}
+
 const LinkingUtils = (type: number, value: string) => {
   //   const operator = Platform.select({ ios: '&', android: '?' })
   switch (type) {

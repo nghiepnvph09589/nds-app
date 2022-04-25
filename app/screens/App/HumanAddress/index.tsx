@@ -4,7 +4,6 @@ import Empty from '@app/components/Empty/Empty'
 import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import reactotron from '@app/config/ReactotronConfig'
 import {
   DEFAULT_PARAMS,
   MEDIA_TYPE,
@@ -185,6 +184,7 @@ const HumanAddress = () => {
             ))}
           </ScrollView>
           <View style={styles.v_line} />
+
           <View style={styles.v_list}>
             <View style={styles.v_row}>
               <FstImage style={styles.image} source={R.images.ic_annotation} />
@@ -211,6 +211,9 @@ const HumanAddress = () => {
               ListEmptyComponent={<Empty description={'Danh sách rỗng'} />}
             />
           </View>
+          <View style={styles.v_shadow}>
+            <View style={{ backgroundColor: 'white' }}></View>
+          </View>
         </>
       }
     />
@@ -220,6 +223,13 @@ const HumanAddress = () => {
 export default HumanAddress
 
 const styles = StyleSheet.create({
+  v_shadow: {
+    top: 40,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
   txt_content2: { ...fonts.regular16, color: '#595959' },
   txt_title: {
     ...fonts.regular16,

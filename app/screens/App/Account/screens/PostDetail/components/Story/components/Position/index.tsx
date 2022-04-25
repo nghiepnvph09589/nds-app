@@ -1,9 +1,10 @@
 import R from '@app/assets/R'
 import FstImage from '@app/components/FstImage'
 import { MAP_BOX_STYLE } from '@app/config'
+import { LinkingMaps } from '@app/utils/LinkingUtils'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import React, { useCallback, useRef } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 
 interface PositionProps {
   long: number
@@ -14,9 +15,6 @@ const Position = (props: PositionProps) => {
   const mapRef = useRef(undefined)
   const cameraRef = useRef(undefined)
   const { lat, long } = props
-  // const [annotationPoint, setAnnotationPoint] = useState(
-  //   long ? [long, lat] : undefined
-  // )
   console.log(long, lat)
 
   const defaultCamera = {
@@ -24,7 +22,12 @@ const Position = (props: PositionProps) => {
     zoomLevel: 12,
   }
   return (
-    <View style={styles.v_container}>
+    <TouchableOpacity
+      onPress={() => {
+        LinkingMaps('', long, lat)
+      }}
+      style={styles.v_container}
+    >
       <MapboxGL.MapView
         style={styles.map}
         scrollEnabled={false}
@@ -41,9 +44,8 @@ const Position = (props: PositionProps) => {
           defaultSettings={defaultCamera}
           animationMode={'moveTo'}
           animationDuration={0}
-          minZoomLevel={10}
+          minZoomLevel={16}
           maxZoomLevel={18}
-          padding={{ paddingBottom: 100 }}
           centerCoordinate={[long, lat]}
         />
         <MapboxGL.MarkerView id="pointAnno" coordinate={[long, lat]}>
@@ -54,7 +56,7 @@ const Position = (props: PositionProps) => {
           />
         </MapboxGL.MarkerView>
       </MapboxGL.MapView>
-    </View>
+    </TouchableOpacity>
   )
 }
 

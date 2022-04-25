@@ -87,30 +87,32 @@ const FilterScreen = (props: any) => {
   }
 
   const handleConfirm = () => {
-    const payload = {
-      page: DEFAULT_PARAMS.PAGE,
-      limit: DEFAULT_PARAMS.LIMIT,
-      province_id: province_id.current ? province_id.current : undefined,
-      district_id: district_id.current ? district_id.current : undefined,
-      ward_id: ward_id.current ? ward_id.current : undefined,
-      group_id: group_id.current ? group_id.current : undefined,
-      category_id: subject.current.concat(needs.current),
-    }
-    dispatch(getListAddress(payload))
-    NavigationUtil.goBack()
-    props.route.params.onCallBack({
-      item: {
-        province_id: province_id.current,
-        district_id: district_id.current,
-        ward_id: ward_id.current,
-        group_id: group_id.current,
-        subject: subject.current,
-        needs: needs.current,
-        province_name: province_name.current,
-        district_name: district_name.current,
-        ward_name: ward_name.current,
-      },
-    })
+    setListProvince([])
+
+    // const payload = {
+    //   page: DEFAULT_PARAMS.PAGE,
+    //   limit: DEFAULT_PARAMS.LIMIT,
+    //   province_id: province_id.current ? province_id.current : undefined,
+    //   district_id: district_id.current ? district_id.current : undefined,
+    //   ward_id: ward_id.current ? ward_id.current : undefined,
+    //   group_id: group_id.current ? group_id.current : undefined,
+    //   category_id: subject.current.concat(needs.current),
+    // }
+    // dispatch(getListAddress(payload))
+    // NavigationUtil.goBack()
+    // props.route.params.onCallBack({
+    //   item: {
+    //     province_id: province_id.current,
+    //     district_id: district_id.current,
+    //     ward_id: ward_id.current,
+    //     group_id: group_id.current,
+    //     subject: subject.current,
+    //     needs: needs.current,
+    //     province_name: province_name.current,
+    //     district_name: district_name.current,
+    //     ward_name: ward_name.current,
+    //   },
+    // })
   }
   return (
     <ScreenWrapper
