@@ -31,32 +31,46 @@ const ComponentIntroduce = ({
     dispatch(navigateSwitch(SCREEN_ROUTER.MAIN))
   }
   return (
-    <View style={styles.v_container} key={`${index}`}>
-      <StatusBar backgroundColor={colors.primary} barStyle="dark-content" />
-      <View style={styles.body}>
-        <FstImage
-          source={item.img}
-          style={{
-            marginTop: dimensions.height * 0.17,
-            width: dimensions.width - 40,
-            height: dimensions.width - 40,
-          }}
-        />
-        <View style={styles.v_content}>
-          <Text style={styles.title} children={item.title} />
-          <Text style={styles.content} children={item.content} />
-        </View>
-        <TouchableOpacity onPress={onStart} style={styles.btn_skip}>
-          <Text style={styles.txt_skip} children={'Bỏ qua'} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.v_bottom}>
-        <TouchableOpacity onPress={onNext} style={styles.btn_next}>
-          <Text
-            style={styles.txt_next}
-            children={index === 2 ? 'Bắt đầu' : 'Tiếp theo'}
-          />
-        </TouchableOpacity>
+    // <View style={styles.v_container} key={`${index}`}>
+    //   <StatusBar backgroundColor={colors.primary} barStyle="dark-content" />
+    //   <View style={styles.body}>
+    //     <FstImage
+    //       source={item.img}
+    //       style={{
+    //         marginTop: dimensions.height * 0.17,
+    //         width: dimensions.width - 40,
+    //         height: dimensions.width - 40,
+    //       }}
+    //     />
+    //     <View style={styles.v_content}>
+    //       <Text style={styles.title} children={item.title} />
+    //       <Text style={styles.content} children={item.content} />
+    //     </View>
+    //     <TouchableOpacity onPress={onStart} style={styles.btn_skip}>
+    //       <Text style={styles.txt_skip} children={'Bỏ qua'} />
+    //     </TouchableOpacity>
+    //   </View>
+    //   <View style={styles.v_bottom}>
+    //     <TouchableOpacity onPress={onNext} style={styles.btn_next}>
+    //       <Text
+    //         style={styles.txt_next}
+    //         children={index === 2 ? 'Bắt đầu' : 'Tiếp theo'}
+    //       />
+    //     </TouchableOpacity>
+    //   </View>
+    // </View>
+    <View style={styles.body}>
+      <FstImage
+        source={item.img}
+        style={{
+          marginTop: dimensions.height * 0.17,
+          width: dimensions.width - 40,
+          height: dimensions.width - 40,
+        }}
+      />
+      <View style={styles.v_content}>
+        <Text style={styles.title} children={item.title} />
+        <Text style={styles.content} children={item.content} />
       </View>
     </View>
   )
@@ -67,6 +81,7 @@ export default ComponentIntroduce
 const styles = StyleSheet.create({
   body: {
     flex: 1,
+    width: dimensions.width,
   },
   v_container: {
     width: dimensions.width,
