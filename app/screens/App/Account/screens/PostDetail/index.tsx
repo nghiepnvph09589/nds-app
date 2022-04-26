@@ -142,7 +142,8 @@ const PostDetail = (props: PostDetailProps) => {
     if (
       typeNavigate === 2 &&
       userInfo.role === ROLE.OFFICER_DISTRICT &&
-      type === STATUS_TYPE.EDIT
+      type === STATUS_TYPE.EDIT &&
+      dataPostDetail.is_update === 2
     ) {
       setTypeOption(3)
       setTimeout(() => {
@@ -428,6 +429,7 @@ const PostDetail = (props: PostDetailProps) => {
         </Tabs>
       </ScrollView>
       <ButtonBack />
+
       {!(typeNavigate === 1 && type !== STATUS_TYPE.EDIT) &&
         !(
           (status === 2 || status === 3) &&

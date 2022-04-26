@@ -117,7 +117,7 @@ const ListPost = () => {
       ListHeaderComponent={
         <>
           <Banner dataBanner={dataBanner} />
-          <CategoryAndAddress />
+          {/* <CategoryAndAddress /> */}
         </>
       }
       contentContainerStyle={styles.v_list}

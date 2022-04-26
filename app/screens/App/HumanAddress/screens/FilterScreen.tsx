@@ -5,29 +5,33 @@ import DropdownBottomSheet, {
 } from '@app/components/DropdownBottom'
 import RNButton from '@app/components/RNButton/RNButton'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import reactotron from '@app/config/ReactotronConfig'
 import { DEFAULT_PARAMS } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, fonts } from '@app/theme'
 import React, { useEffect, useRef, useState } from 'react'
 import {
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  ScrollView,
+  View,
 } from 'react-native'
 import { useDispatch } from 'react-redux'
 import HumanAddressApi from '../api/HumanAddressApi'
 import { getListAddress } from '../slice/HumanAddressSlice'
+
 const FilterScreen = (props: any) => {
   const dispatch = useDispatch()
-  const [listProvince, setListProvince] = useState([])
-  const [listDistrict, setListDistrict] = useState([])
-  const [listWard, setListWard] = useState([])
-  const [listSubject, setListSubject] = useState([])
-  const [listNeeds, setListNeeds] = useState([])
-  const [listGroup, setListGroup] = useState([])
+  const [listProvince, setListProvince] = useState(
+    JSON.parse(JSON.stringify(props.route.params.listProvince))
+  )
+  const [listDistrict, setListDistrict] = useState(
+    JSON.parse(JSON.stringify(props.route.params.listDistrict))
+  )
+  const [listWard, setListWard] = useState(
+    JSON.parse(JSON.stringify(props.route.params.listWard))
+  )
+
   const province_id = useRef<any>(props.route.params.province_id)
   const district_id = useRef<any>(props.route.params.district_id)
   const ward_id = useRef<any>(props.route.params.ward_id)
@@ -37,24 +41,6 @@ const FilterScreen = (props: any) => {
   const province_name = useRef<any>(props.route.params.province_name)
   const district_name = useRef<any>(props.route.params.district_name)
   const ward_name = useRef<any>(props.route.params.ward_name)
-  reactotron.log(props.route.params)
-  useEffect(() => {
-    getDataProvince()
-    getDataListCategory()
-    getDataListGroup()
-  }, [])
-  const getDataProvince = async () => {
-    try {
-      const res = await HumanAddressApi.getListProvince({})
-      setListProvince(res.data)
-      if (province_id.current) {
-        getDataDistrict(province_id.current)
-      }
-      if (district_id.current) {
-        getDataWard(district_id.current)
-      }
-    } catch (error) {}
-  }
 
   const getDataDistrict = async (province_id: number) => {
     try {
@@ -70,49 +56,31 @@ const FilterScreen = (props: any) => {
     } catch (error) {}
   }
 
-  const getDataListCategory = async () => {
-    try {
-      const resSubject = await HumanAddressApi.getListCategory({ type: 1 })
-      const resNeeds = await HumanAddressApi.getListCategory({ type: 2 })
-      setListSubject(resSubject.data)
-      setListNeeds(resNeeds.data)
-    } catch (error) {}
-  }
-
-  const getDataListGroup = async () => {
-    try {
-      const res = await HumanAddressApi.getListGroup({})
-      setListGroup(res.data)
-    } catch (error) {}
-  }
-
   const handleConfirm = () => {
-    setListProvince([])
-
-    // const payload = {
-    //   page: DEFAULT_PARAMS.PAGE,
-    //   limit: DEFAULT_PARAMS.LIMIT,
-    //   province_id: province_id.current ? province_id.current : undefined,
-    //   district_id: district_id.current ? district_id.current : undefined,
-    //   ward_id: ward_id.current ? ward_id.current : undefined,
-    //   group_id: group_id.current ? group_id.current : undefined,
-    //   category_id: subject.current.concat(needs.current),
-    // }
-    // dispatch(getListAddress(payload))
-    // NavigationUtil.goBack()
-    // props.route.params.onCallBack({
-    //   item: {
-    //     province_id: province_id.current,
-    //     district_id: district_id.current,
-    //     ward_id: ward_id.current,
-    //     group_id: group_id.current,
-    //     subject: subject.current,
-    //     needs: needs.current,
-    //     province_name: province_name.current,
-    //     district_name: district_name.current,
-    //     ward_name: ward_name.current,
-    //   },
-    // })
+    const payload = {
+      page: DEFAULT_PARAMS.PAGE,
+      limit: DEFAULT_PARAMS.LIMIT,
+      province_id: province_id.current ? province_id.current : undefined,
+      district_id: district_id.current ? district_id.current : undefined,
+      ward_id: ward_id.current ? ward_id.current : undefined,
+      group_id: group_id.current ? group_id.current : undefined,
+      category_id: subject.current.concat(needs.current),
+    }
+    dispatch(getListAddress(payload))
+    NavigationUtil.goBack()
+    props.route.params.onCallBack({
+      item: {
+        province_id: province_id.current,
+        district_id: district_id.current,
+        ward_id: ward_id.current,
+        group_id: group_id.current,
+        subject: subject.current,
+        needs: needs.current,
+        province_name: province_name.current,
+        district_name: district_name.current,
+        ward_name: ward_name.current,
+      },
+    })
   }
   return (
     <ScreenWrapper
@@ -195,7 +163,7 @@ const FilterScreen = (props: any) => {
                 group_id.current = item[0]
               }}
               multiple={false}
-              data={listGroup}
+              data={JSON.parse(JSON.stringify(props.route.params.listGroup))}
               label="Phân nhóm"
             />
             <Select
@@ -205,7 +173,7 @@ const FilterScreen = (props: any) => {
                 console.log(item)
               }}
               multiple={true}
-              data={listSubject}
+              data={JSON.parse(JSON.stringify(props.route.params.listSubject))}
               label="Đối tượng"
             />
             <Select
@@ -215,7 +183,7 @@ const FilterScreen = (props: any) => {
                 console.log(item)
               }}
               multiple={true}
-              data={listNeeds}
+              data={JSON.parse(JSON.stringify(props.route.params.listNeeds))}
               label="Nhu cầu"
             />
           </ScrollView>
