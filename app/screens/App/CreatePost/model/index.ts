@@ -14,8 +14,8 @@ export type CreatePostSlice = {
   gender: number
   year_of_birth: string
   address: string
-  lat: number
-  long: number
+  lat: number | null
+  long: number | null
   group_id: number
   category: Category[]
   media: Media[]

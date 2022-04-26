@@ -27,7 +27,7 @@ interface address {
   name: string
 }
 const CreatePostStep3 = (props: CreatPostStep3Props) => {
-  const location = useAppSelector(state => state.locationReducer)
+  //const location = useAppSelector(state => state.locationReducer)
   const dataCreatPost = useAppSelector(state => state.creatPostReducer)
   const userInfo = useAppSelector(state => state.accountReducer).data
   const dispatch = useDispatch()
@@ -35,8 +35,8 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
   const [province, setProvince] = useState<address>({ id: 0, name: '' })
   const [district, setDistrict] = useState<address>({ id: 0, name: '' })
   const [ward, setWard] = useState<address>({ id: 0, name: '' })
-  const lat = useRef<number>(location?.lat)
-  const long = useRef<number>(location?.long)
+  const lat = useRef<number | null>(null)
+  const long = useRef<number | null>(null)
 
   useEffect(() => {
     console.log(province, district, ward)
@@ -58,6 +58,12 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
       )
       return
     }
+
+    if (!long.current) {
+      showMessages(R.strings().notification, 'Vui lòng chọn địa chỉ chi tiết')
+      return
+    }
+
     const payload = {
       province_id: province.id,
       district_id: district.id,

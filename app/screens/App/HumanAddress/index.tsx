@@ -1,32 +1,31 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator,
-} from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
-import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { colors, fonts } from '@app/theme'
 import R from '@app/assets/R'
-import FstImage from '@app/components/FstImage'
 import Empty from '@app/components/Empty/Empty'
-import { useDispatch } from 'react-redux'
-import { getListAddress } from './slice/HumanAddressSlice'
-import { HumanAddressType } from './model'
-import { useAppSelector } from '@app/store'
-
+import Error from '@app/components/Error/Error'
+import FstImage from '@app/components/FstImage'
+import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import {
   DEFAULT_PARAMS,
   MEDIA_TYPE,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import Error from '@app/components/Error/Error'
 import NavigationUtil from '@app/navigation/NavigationUtil'
+import { useAppSelector } from '@app/store'
+import { colors, fonts } from '@app/theme'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import { useDispatch } from 'react-redux'
+import { HumanAddressType } from './model'
+import { getListAddress } from './slice/HumanAddressSlice'
 
 const dataFilter = [
   { title: 'Khu vực' },
@@ -43,6 +42,16 @@ const HumanAddress = () => {
     page: DEFAULT_PARAMS.PAGE,
     limit: DEFAULT_PARAMS.LIMIT,
   })
+
+  const province_id = useRef<any>(null)
+  const district_id = useRef<any>(null)
+  const ward_id = useRef<any>(null)
+  const group_id = useRef<any>(null)
+  const needs = useRef<any>([])
+  const subject = useRef<any>([])
+  const province_name = useRef<any>('')
+  const district_name = useRef<any>('')
+  const ward_name = useRef<any>('')
 
   useEffect(() => {
     getDataListAddress()
@@ -73,6 +82,18 @@ const HumanAddress = () => {
       ...body,
       page: DEFAULT_PARAMS.PAGE,
     })
+  }
+
+  const onUpdateDate = ({ item }: { item: any }) => {
+    province_id.current = item.province_id
+    district_id.current = item.district_id
+    ward_id.current = item.ward_id
+    group_id.current = item.group_id
+    needs.current = item.needs
+    subject.current = item.subject
+    province_name.current = item.province_name
+    district_name.current = item.district_name
+    ward_name.current = item.ward_name
   }
 
   if (isLoading) {
@@ -118,7 +139,28 @@ const HumanAddress = () => {
   return (
     <ScreenWrapper
       back
-      rightComponent={<ButtonFilter />}
+      rightComponent={
+        <TouchableOpacity
+          onPress={() => {
+            NavigationUtil.navigate(SCREEN_ROUTER_APP.FILTER, {
+              province_id: province_id.current,
+              district_id: district_id.current,
+              ward_id: ward_id.current,
+              group_id: group_id.current,
+              needs: needs.current,
+              subject: subject.current,
+              province_name: province_name.current,
+              district_name: district_name.current,
+              ward_name: ward_name.current,
+              onCallBack: onUpdateDate,
+            })
+          }}
+          style={styles.v_row2}
+        >
+          <Text style={styles.txt_filter2}>Lọc</Text>
+          <FstImage style={styles.ic_filter} source={R.images.ic_filter} />
+        </TouchableOpacity>
+      }
       color={colors.text}
       backgroundHeader="white"
       forceInset={['left']}
@@ -142,6 +184,7 @@ const HumanAddress = () => {
             ))}
           </ScrollView>
           <View style={styles.v_line} />
+
           <View style={styles.v_list}>
             <View style={styles.v_row}>
               <FstImage style={styles.image} source={R.images.ic_annotation} />
@@ -168,29 +211,25 @@ const HumanAddress = () => {
               ListEmptyComponent={<Empty description={'Danh sách rỗng'} />}
             />
           </View>
+          <View style={styles.v_shadow}>
+            <View style={{ backgroundColor: 'white' }}></View>
+          </View>
         </>
       }
     />
   )
 }
 
-const ButtonFilter = () => {
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        NavigationUtil.navigate(SCREEN_ROUTER_APP.FILTER)
-      }}
-      style={styles.v_row2}
-    >
-      <Text style={styles.txt_filter2}>Lọc</Text>
-      <FstImage style={styles.ic_filter} source={R.images.ic_filter} />
-    </TouchableOpacity>
-  )
-}
-
 export default HumanAddress
 
 const styles = StyleSheet.create({
+  v_shadow: {
+    top: 40,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
   txt_content2: { ...fonts.regular16, color: '#595959' },
   txt_title: {
     ...fonts.regular16,

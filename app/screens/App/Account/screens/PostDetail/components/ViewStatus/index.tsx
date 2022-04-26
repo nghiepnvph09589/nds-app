@@ -48,7 +48,7 @@ const ViewStatus = (props: ViewStatusProps) => {
   return (
     <>
       <View style={styles.v_container}>
-        {type === STATUS_TYPE.COMPLETE &&
+        {/* {type === STATUS_TYPE.COMPLETE &&
           typeNavigate !== 1 &&
           userInfo.role === ROLE.OFFICER_PROVINCE && (
             <View style={styles.v_row2}>
@@ -69,7 +69,7 @@ const ViewStatus = (props: ViewStatusProps) => {
                 value={isEnabled}
               />
             </View>
-          )}
+          )} */}
         <View style={styles.v_row}>
           <FstImage style={styles.icon} source={R.images.ic_post} />
           <Text style={styles.text}>
