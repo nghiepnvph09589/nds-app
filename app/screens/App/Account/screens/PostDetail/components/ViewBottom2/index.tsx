@@ -17,11 +17,12 @@ interface ViewBottomProps {
   handleApprove: () => void
   openOption: () => void
   is_update: number
+  status: number
 }
 
 const ViewBottom2 = (props: ViewBottomProps) => {
   const userInfo = useAppSelector(state => state.accountReducer).data
-  const { handleApprove, openOption, is_update } = props
+  const { handleApprove, openOption, is_update, status } = props
 
   return (
     <>
@@ -36,10 +37,10 @@ const ViewBottom2 = (props: ViewBottomProps) => {
           <TouchableOpacity onPress={handleApprove} style={styles.v_button2}>
             <FstImage style={styles.icon} source={R.images.ic_approve} />
             <Text style={styles.text}>
-              {userInfo?.role === ROLE.OFFICER_PROVINCE
-                ? 'Phê duyệt'
-                : is_update === 1 || is_update === 2
+              {userInfo?.role === ROLE.OFFICER_PROVINCE && status === 3
                 ? 'Chỉnh sửa'
+                : userInfo?.role === ROLE.OFFICER_PROVINCE && status === 3 // : is_update === 1 || is_update === 2
+                ? 'Phê duyệt'
                 : 'Yêu cầu phê duyệt'}
             </Text>
           </TouchableOpacity>

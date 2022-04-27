@@ -91,6 +91,7 @@ const LoginScreen = () => {
         })
       }
     } catch (error) {
+    } finally {
       hideLoading()
     }
   }

@@ -22,9 +22,7 @@ import { getListAddress } from '../slice/HumanAddressSlice'
 
 const FilterScreen = (props: any) => {
   const dispatch = useDispatch()
-  const [listProvince, setListProvince] = useState(
-    JSON.parse(JSON.stringify(props.route.params.listProvince))
-  )
+
   const [listDistrict, setListDistrict] = useState(
     JSON.parse(JSON.stringify(props.route.params.listDistrict))
   )
@@ -95,7 +93,7 @@ const FilterScreen = (props: any) => {
             <Text style={styles.txt_label}>Khu vực</Text>
             <DropdownBottomSheet
               isRequire
-              data={listProvince}
+              data={JSON.parse(JSON.stringify(props.route.params.listProvince))}
               defaultValue={
                 province_name.current
                   ? province_name.current
@@ -232,13 +230,20 @@ const Select = ({
 
     var indexCheck = newData.findIndex(value => value.id === item.id)
 
-    newData[indexCheck].isSelected = true
+    newData[indexCheck].isSelected = !newData[indexCheck].isSelected
     newData.forEach((value, index) => {
       if (index !== indexCheck) {
         newData[index].isSelected = false
       }
     })
-    onPress([item.id])
+    let arraySelect: any[] = []
+
+    newData.forEach(value => {
+      if (value.isSelected) {
+        arraySelect.push(value.id)
+      }
+    })
+    onPress(arraySelect)
     setDataSelect([...newData])
   }
   const handleSelectMultiple = (item: any) => {

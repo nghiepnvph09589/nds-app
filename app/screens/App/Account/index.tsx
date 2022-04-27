@@ -1,22 +1,21 @@
-import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-
-import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
-import Messages from '@app/components/Messages'
+import R from '@app/assets/R'
 import { SCREEN_ROUTER } from '@app/constant/Constant'
+import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
+import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
+import { useAppSelector } from '@app/store'
+import { showConfirm } from '@app/utils/AlertHelper'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { clearNotifyCount } from '../Notification/slice'
+import { requestLogout } from './api/AccountApi'
 import UserDirectory from './components/UserDirectory'
 import UserInfo from './components/UserInfo'
-import { clearNotifyCount } from '../Notification/slice'
 import { logout } from './slices/AccountSlice'
-import { navigateSwitch } from '@app/navigation/switchNavigatorSlice'
-import { requestLogout } from './api/AccountApi'
-import { useAppSelector } from '@app/store'
-import { useDispatch } from 'react-redux'
 
 const Account = () => {
   const { data, isLoading } = useAppSelector(state => state.accountReducer)
-  const [messagesStatus, setMessagesStatus] = useState<boolean>(false)
   const dispatch = useDispatch()
   const handleLogout = async () => {
     await requestLogout({})
@@ -42,10 +41,16 @@ const Account = () => {
       />
       <UserDirectory
         logout={() => {
-          setMessagesStatus(true)
+          showConfirm(
+            R.strings().notification,
+            'Bạn có chắc chắn muốn đăng xuất',
+            () => {
+              handleLogout()
+            }
+          )
         }}
       />
-      {messagesStatus && (
+      {/* {messagesStatus && (
         <Messages
           hide={() => {
             setMessagesStatus(false)
@@ -57,9 +62,9 @@ const Account = () => {
           onCancel={() => {
             setMessagesStatus(false)
           }}
-          description={'Bạn có chắc chán muốn đăng xuất không'}
+          description={'Bạn có chắc chắn muốn đăng xuất không'}
         />
-      )}
+      )} */}
     </View>
   )
 }

@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable no-shadow */
 import R from '@app/assets/R'
 import Empty from '@app/components/Empty/Empty'
 import FstImage from '@app/components/FstImage'
@@ -11,6 +11,7 @@ import {
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { useAppSelector } from '@app/store'
 import { colors, dimensions, fonts } from '@app/theme'
+import { showMessages } from '@app/utils/AlertHelper'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
@@ -32,6 +33,11 @@ const dataFilter = [
   { title: 'Phân nhóm', id: 2 },
   { title: 'Đối tượng', id: 3 },
   { title: 'Nhu cầu', id: 4 },
+]
+const dataAddress = [
+  { title: 'Tỉnh/ Thành Phố', id: 1 },
+  { title: 'Quận/ Huyện', id: 2 },
+  { title: 'Phường/ Xã', id: 3 },
 ]
 const HumanAddress = () => {
   const dispatch = useDispatch()
@@ -62,6 +68,7 @@ const HumanAddress = () => {
   const ward_name = useRef<any>('')
   const [isOpened, setIsOpened] = useState(false)
   const [idSelect, setIdSelect] = useState(0)
+  const [idSelectAddress, setIdSelectAddress] = useState(1)
 
   useEffect(() => {
     getDataListAddress()
@@ -78,6 +85,20 @@ const HumanAddress = () => {
     try {
       const res = await HumanAddressApi.getListProvince({})
       listProvince.current = res.data
+    } catch (error) {}
+  }
+
+  const getDataDistrict = async (province_id: number) => {
+    try {
+      const res = await HumanAddressApi.getListDistrict({ province_id })
+      listDistrict.current = res.data
+    } catch (error) {}
+  }
+
+  const getDataWard = async (district_id: number) => {
+    try {
+      const res = await HumanAddressApi.getListWard({ district_id })
+      listWard.current = res.data
     } catch (error) {}
   }
 
@@ -178,6 +199,16 @@ const HumanAddress = () => {
 
   const onPressFilter = (item: any) => {
     if (item.id !== idSelect) {
+      if (item.id === 1) {
+        if (idSelectAddress === 1) {
+          setDataSelect(JSON.parse(JSON.stringify(listProvince.current)))
+        } else if (idSelectAddress === 2) {
+          setDataSelect(JSON.parse(JSON.stringify(listDistrict.current)))
+        } else if (idSelectAddress === 3) {
+          setDataSelect(JSON.parse(JSON.stringify(listWard.current)))
+        }
+        setIdSelect(item.id)
+      }
       if (item.id === 2) {
         setDataSelect(JSON.parse(JSON.stringify(listGroup.current)))
         setIdSelect(item.id)
@@ -191,49 +222,111 @@ const HumanAddress = () => {
         setIdSelect(item.id)
       }
 
-      if (item.id !== 1) {
-        setIsOpened(true)
-      }
+      setIsOpened(true)
     } else {
       setIsOpened(false)
       setIdSelect(0)
     }
   }
 
-  const handleItemSelect = (item: any) => {
-    if (idSelect !== 1) {
-      const newData = [...dataSelect]
-
-      var indexCheck = newData.findIndex(value => value.id === item.id)
-
-      newData[indexCheck].isSelected = !newData[indexCheck].isSelected
-      if (idSelect === 2) {
-        newData.forEach((value, index) => {
-          if (index !== indexCheck) {
-            newData[index].isSelected = false
-          }
-        })
+  const onPressFilterAddress = (item: any) => {
+    if (item.id === 1) {
+      setDataSelect(JSON.parse(JSON.stringify(listProvince.current)))
+    }
+    if (item.id === 2) {
+      if (listDistrict.current.length === 0) {
+        showMessages(R.strings().notification, 'Vui lòng chọn Tỉnh/ Thành Phố')
+        return
+      } else {
+        setDataSelect(JSON.parse(JSON.stringify(listDistrict.current)))
       }
+    } else if (item.id === 3) {
+      if (listWard.current.length === 0) {
+        showMessages(R.strings().notification, 'Vui lòng chọn Quận/ Huyện')
+        return
+      } else {
+        setDataSelect(JSON.parse(JSON.stringify(listWard.current)))
+      }
+    }
+    setIdSelectAddress(item.id)
+  }
 
-      let arraySelect: any[] = []
+  const handleItemSelect = (item: any) => {
+    const newData = [...dataSelect]
 
-      newData.forEach(value => {
-        if (value.isSelected) {
-          arraySelect.push(value.id)
+    var indexCheck = newData.findIndex(value => value.id === item.id)
+
+    newData[indexCheck].isSelected = !newData[indexCheck].isSelected
+    if (idSelect === 2 || idSelect === 1) {
+      newData.forEach((value, index) => {
+        if (index !== indexCheck) {
+          newData[index].isSelected = false
         }
       })
-      if (idSelect === 2) {
-        listGroup.current = [...newData]
-        group_id.current = arraySelect.length > 0 ? arraySelect[0] : null
-      } else if (idSelect === 3) {
-        listSubject.current = [...newData]
-        subject.current = arraySelect
-      } else if (idSelect === 4) {
-        listNeeds.current = [...newData]
-        needs.current = arraySelect
-      }
-      setDataSelect([...newData])
     }
+    if (idSelect === 1) {
+      if (newData[indexCheck].isSelected) {
+        if (idSelectAddress === 1) {
+          getDataDistrict(newData[indexCheck].id)
+          province_id.current = newData[indexCheck].id
+          province_name.current = newData[indexCheck].name
+        } else if (idSelectAddress === 2) {
+          getDataWard(newData[indexCheck].id)
+          district_id.current = newData[indexCheck].id
+          district_name.current = newData[indexCheck].name
+        } else if (idSelectAddress === 3) {
+          ward_id.current = newData[indexCheck].id
+          ward_name.current = newData[indexCheck].name
+        }
+      } else {
+        if (idSelectAddress === 1) {
+          listDistrict.current = []
+          listWard.current = []
+          province_id.current = null
+          province_name.current = ''
+          district_id.current = null
+          district_name.current = ''
+          ward_id.current = null
+          ward_name.current = ''
+        } else if (idSelectAddress === 2) {
+          listWard.current = []
+          district_id.current = null
+          district_name.current = ''
+          ward_id.current = null
+          ward_name.current = ''
+        } else if (idSelectAddress === 3) {
+          ward_id.current = null
+          ward_name.current = ''
+        }
+      }
+    }
+
+    let arraySelect: any[] = []
+
+    newData.forEach(value => {
+      if (value.isSelected) {
+        arraySelect.push(value.id)
+      }
+    })
+    if (idSelect === 1) {
+      if (idSelectAddress === 1) {
+        listProvince.current = [...newData]
+      } else if (idSelectAddress === 2) {
+        listDistrict.current = [...newData]
+      } else if (idSelectAddress === 3) {
+        listWard.current = [...newData]
+      }
+    } else if (idSelect === 2) {
+      listGroup.current = [...newData]
+      group_id.current = arraySelect.length > 0 ? arraySelect[0] : null
+    } else if (idSelect === 3) {
+      listSubject.current = [...newData]
+      subject.current = arraySelect
+    } else if (idSelect === 4) {
+      listNeeds.current = [...newData]
+      needs.current = arraySelect
+    }
+    setDataSelect([...newData])
   }
 
   const onPressButtonReset = () => {
@@ -242,8 +335,30 @@ const HumanAddress = () => {
     newData.forEach((value, index) => {
       newData[index].isSelected = false
     })
-
-    if (idSelect === 2) {
+    if (idSelect === 1) {
+      if (idSelectAddress === 1) {
+        listProvince.current = [...newData]
+        listDistrict.current = []
+        listWard.current = []
+        province_id.current = null
+        province_name.current = ''
+        district_id.current = null
+        district_name.current = ''
+        ward_id.current = null
+        ward_name.current = ''
+      } else if (idSelectAddress === 2) {
+        listDistrict.current = [...newData]
+        listWard.current = []
+        district_id.current = null
+        district_name.current = ''
+        ward_id.current = null
+        ward_name.current = ''
+      } else if (idSelectAddress === 3) {
+        listWard.current = [...newData]
+        ward_id.current = null
+        ward_name.current = ''
+      }
+    } else if (idSelect === 2) {
       listGroup.current = [...newData]
       group_id.current = null
     } else if (idSelect === 3) {
@@ -366,6 +481,42 @@ const HumanAddress = () => {
           </View>
           {isOpened && (
             <View style={styles.v_shadow}>
+              {idSelect === 1 && (
+                <View style={styles.v_row_address}>
+                  {dataAddress.map(item => (
+                    <TouchableOpacity
+                      onPress={() => {
+                        onPressFilterAddress(item)
+                      }}
+                      style={[
+                        styles.v_item_address,
+                        {
+                          borderBottomColor:
+                            idSelectAddress === item.id
+                              ? colors.primary
+                              : colors.border,
+                        },
+                      ]}
+                    >
+                      <Text
+                        numberOfLines={1}
+                        style={[
+                          styles.txt_filter,
+                          {
+                            color:
+                              idSelectAddress === item.id
+                                ? colors.primary
+                                : colors.border,
+                          },
+                        ]}
+                      >
+                        {item.title}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+
               <ScrollView style={styles.v_select}>
                 {dataSelect.map((item: any) => (
                   <>
@@ -414,6 +565,19 @@ const HumanAddress = () => {
 export default HumanAddress
 
 const styles = StyleSheet.create({
+  v_item_address: {
+    paddingVertical: 20,
+    borderBottomWidth: 1.5,
+
+    width: (dimensions.width - 30) / 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  v_row_address: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+  },
   icon_check: {
     width: 20,
     height: 20,

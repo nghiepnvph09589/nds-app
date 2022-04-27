@@ -127,9 +127,13 @@ const PostDetail = (props: PostDetailProps) => {
     if (typeNavigate === 3) {
       if (
         (dataPostDetail.is_update === 1 || dataPostDetail.is_update === 2) &&
-        (userInfo.role === ROLE.CUSTOMER ||
-          userInfo.role === ROLE.OFFICER_WARD ||
-          userInfo.role === ROLE.OFFICER_DISTRICT)
+        userInfo.role === ROLE.CUSTOMER
+      ) {
+        onUpdateDataPostToReducer()
+        return
+      } else if (
+        dataPostDetail.status === 3 &&
+        userInfo.role === ROLE.OFFICER_PROVINCE
       ) {
         onUpdateDataPostToReducer()
         return
@@ -358,7 +362,7 @@ const PostDetail = (props: PostDetailProps) => {
     ]
     if (
       userInfo.role === ROLE.OFFICER_PROVINCE &&
-      type === STATUS_TYPE.COMPLETE
+      dataPostDetail.status === 3
     ) {
       data.splice(0, 2)
       data.splice(1, 1)
@@ -454,8 +458,13 @@ const PostDetail = (props: PostDetailProps) => {
           (userInfo.role === ROLE.CUSTOMER ||
             userInfo.role === ROLE.OFFICER_WARD) &&
           dataPostDetail.is_update === 0
+        ) &&
+        !(
+          userInfo.role === ROLE.OFFICER_DISTRICT &&
+          (dataPostDetail.status === 2 || dataPostDetail.status === 3)
         ) && (
           <ViewBottom2
+            status={dataPostDetail?.status}
             handleApprove={handleApprove}
             openOption={() => {
               ref.current?.show()
