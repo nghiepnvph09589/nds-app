@@ -36,7 +36,15 @@ interface ViewBottomProps {
 
 const ViewBottom = (props: ViewBottomProps) => {
   const userInfo = useAppSelector(state => state.accountReducer).data
-  const { type, handleApprove, openOption, id, status, typeNavigate } = props
+  const {
+    type,
+    handleApprove,
+    openOption,
+    id,
+    status,
+    typeNavigate,
+    is_update,
+  } = props
   const dispatch = useDispatch()
   const onSupport = async () => {
     const token = await AsyncStorage.getItem('token')
@@ -56,7 +64,12 @@ const ViewBottom = (props: ViewBottomProps) => {
       {type &&
       type !== STATUS_TYPE.DENY &&
       typeNavigate !== 1 &&
-      !(typeNavigate === 2 && userInfo.role === ROLE.OFFICER_DISTRICT) ? (
+      !(
+        typeNavigate === 2 &&
+        userInfo.role === ROLE.OFFICER_DISTRICT &&
+        is_update === 2 &&
+        type === STATUS_TYPE.EDIT
+      ) ? (
         <View style={styles.v_button3}>
           <TouchableOpacity onPress={handleApprove} style={styles.v_button2}>
             <FstImage style={styles.icon} source={R.images.ic_approve} />
@@ -80,7 +93,8 @@ const ViewBottom = (props: ViewBottomProps) => {
         </TouchableOpacity>
       ) : type === STATUS_TYPE.EDIT &&
         typeNavigate === 2 &&
-        userInfo.role === ROLE.OFFICER_DISTRICT ? (
+        userInfo.role === ROLE.OFFICER_DISTRICT &&
+        is_update === 2 ? (
         <TouchableOpacity onPress={handleApprove} style={styles.v_button}>
           <Text style={styles.text}>{'Từ chối'}</Text>
         </TouchableOpacity>

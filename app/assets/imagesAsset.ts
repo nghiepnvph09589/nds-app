@@ -18,6 +18,7 @@ const images = {
   ic_cart_focus: require('./images/ic_cart_focus.png'),
   ic_change_pass: require('./images/ic_change_pass.png'),
   ic_chat_blue: require('./images/ic_chat_blue.png'),
+  ic_check: require('./images/ic_check.png'),
   ic_checked: require('./images/ic_checked.png'),
   ic_chevron_right: require('./images/ic_chevron_right.png'),
   ic_circle_red: require('./images/ic_circle_red.png'),

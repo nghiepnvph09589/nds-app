@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import R from '@app/assets/R'
 import Empty from '@app/components/Empty/Empty'
-import Error from '@app/components/Error/Error'
 import FstImage from '@app/components/FstImage'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import {
@@ -11,7 +10,7 @@ import {
 } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { useAppSelector } from '@app/store'
-import { colors, fonts } from '@app/theme'
+import { colors, dimensions, fonts } from '@app/theme'
 import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
@@ -24,14 +23,15 @@ import {
   View,
 } from 'react-native'
 import { useDispatch } from 'react-redux'
+import HumanAddressApi from './api/HumanAddressApi'
 import { HumanAddressType } from './model'
 import { getListAddress } from './slice/HumanAddressSlice'
 
 const dataFilter = [
-  { title: 'Khu vực' },
-  { title: 'Phân nhóm' },
-  { title: 'Đối tượng' },
-  { title: 'Nhu cầu' },
+  { title: 'Khu vực', id: 1 },
+  { title: 'Phân nhóm', id: 2 },
+  { title: 'Đối tượng', id: 3 },
+  { title: 'Nhu cầu', id: 4 },
 ]
 const HumanAddress = () => {
   const dispatch = useDispatch()
@@ -42,6 +42,14 @@ const HumanAddress = () => {
     page: DEFAULT_PARAMS.PAGE,
     limit: DEFAULT_PARAMS.LIMIT,
   })
+  const [dataSelect, setDataSelect] = useState<any>([])
+
+  const listProvince = useRef<any>([])
+  const listDistrict = useRef<any>([])
+  const listWard = useRef<any>([])
+  const listSubject = useRef<any>([])
+  const listNeeds = useRef<any>([])
+  const listGroup = useRef<any>([])
 
   const province_id = useRef<any>(null)
   const district_id = useRef<any>(null)
@@ -52,11 +60,42 @@ const HumanAddress = () => {
   const province_name = useRef<any>('')
   const district_name = useRef<any>('')
   const ward_name = useRef<any>('')
+  const [isOpened, setIsOpened] = useState(false)
+  const [idSelect, setIdSelect] = useState(0)
 
   useEffect(() => {
     getDataListAddress()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [body])
+
+  useEffect(() => {
+    getDataProvince()
+    getDataListCategory()
+    getDataListGroup()
+  }, [])
+
+  const getDataProvince = async () => {
+    try {
+      const res = await HumanAddressApi.getListProvince({})
+      listProvince.current = res.data
+    } catch (error) {}
+  }
+
+  const getDataListCategory = async () => {
+    try {
+      const resSubject = await HumanAddressApi.getListCategory({ type: 1 })
+      const resNeeds = await HumanAddressApi.getListCategory({ type: 2 })
+      listSubject.current = resSubject.data
+      listNeeds.current = resNeeds.data
+    } catch (error) {}
+  }
+
+  const getDataListGroup = async () => {
+    try {
+      const res = await HumanAddressApi.getListGroup({})
+      listGroup.current = res.data
+    } catch (error) {}
+  }
 
   const getDataListAddress = () => {
     dispatch(getListAddress(body))
@@ -102,7 +141,7 @@ const HumanAddress = () => {
     hideLoading()
   }
 
-  if (isError) return <Error reload={() => {}} />
+  // if (isError) return <Error reload={() => {}} />
 
   const renderItem = useCallback(({ item }: { item: HumanAddressType }) => {
     return (
@@ -136,6 +175,102 @@ const HumanAddress = () => {
   }, [])
 
   const keyExtractor = useCallback((item: HumanAddressType) => `${item.id}`, [])
+
+  const onPressFilter = (item: any) => {
+    if (item.id !== idSelect) {
+      if (item.id === 2) {
+        setDataSelect(JSON.parse(JSON.stringify(listGroup.current)))
+        setIdSelect(item.id)
+      }
+      if (item.id === 3) {
+        setDataSelect(JSON.parse(JSON.stringify(listSubject.current)))
+        setIdSelect(item.id)
+      }
+      if (item.id === 4) {
+        setDataSelect(JSON.parse(JSON.stringify(listNeeds.current)))
+        setIdSelect(item.id)
+      }
+
+      if (item.id !== 1) {
+        setIsOpened(true)
+      }
+    } else {
+      setIsOpened(false)
+      setIdSelect(0)
+    }
+  }
+
+  const handleItemSelect = (item: any) => {
+    if (idSelect !== 1) {
+      const newData = [...dataSelect]
+
+      var indexCheck = newData.findIndex(value => value.id === item.id)
+
+      newData[indexCheck].isSelected = !newData[indexCheck].isSelected
+      if (idSelect === 2) {
+        newData.forEach((value, index) => {
+          if (index !== indexCheck) {
+            newData[index].isSelected = false
+          }
+        })
+      }
+
+      let arraySelect: any[] = []
+
+      newData.forEach(value => {
+        if (value.isSelected) {
+          arraySelect.push(value.id)
+        }
+      })
+      if (idSelect === 2) {
+        listGroup.current = [...newData]
+        group_id.current = arraySelect.length > 0 ? arraySelect[0] : null
+      } else if (idSelect === 3) {
+        listSubject.current = [...newData]
+        subject.current = arraySelect
+      } else if (idSelect === 4) {
+        listNeeds.current = [...newData]
+        needs.current = arraySelect
+      }
+      setDataSelect([...newData])
+    }
+  }
+
+  const onPressButtonReset = () => {
+    const newData = [...dataSelect]
+
+    newData.forEach((value, index) => {
+      newData[index].isSelected = false
+    })
+
+    if (idSelect === 2) {
+      listGroup.current = [...newData]
+      group_id.current = null
+    } else if (idSelect === 3) {
+      listSubject.current = [...newData]
+      subject.current = []
+    } else if (idSelect === 4) {
+      listNeeds.current = [...newData]
+      needs.current = []
+    }
+    setDataSelect([...newData])
+  }
+
+  const onPressButtonApply = () => {
+    const payload = {
+      page: DEFAULT_PARAMS.PAGE,
+      limit: DEFAULT_PARAMS.LIMIT,
+      province_id: province_id.current ? province_id.current : undefined,
+      district_id: district_id.current ? district_id.current : undefined,
+      ward_id: ward_id.current ? ward_id.current : undefined,
+      group_id: group_id.current ? group_id.current : undefined,
+      category_id: subject.current.concat(needs.current),
+    }
+    dispatch(getListAddress(payload))
+    setIsOpened(false)
+    setIdSelect(0)
+  }
+
   return (
     <ScreenWrapper
       back
@@ -152,6 +287,12 @@ const HumanAddress = () => {
               province_name: province_name.current,
               district_name: district_name.current,
               ward_name: ward_name.current,
+              listProvince: listProvince.current,
+              listDistrict: listDistrict.current,
+              listWard: listWard.current,
+              listSubject: listSubject.current,
+              listNeeds: listNeeds.current,
+              listGroup: listGroup.current,
               onCallBack: onUpdateDate,
             })
           }}
@@ -172,16 +313,28 @@ const HumanAddress = () => {
             horizontal
             style={styles.v_scroll}
           >
-            {dataFilter?.map((item: { title: string }, i: number) => (
-              <TouchableOpacity key={i} style={styles.v_item_scroll}>
-                <Text style={styles.txt_filter}>{item.title}</Text>
-                <FstImage
-                  resizeMode="contain"
-                  style={styles.ic_arrow}
-                  source={R.images.ic_arrow_down}
-                />
-              </TouchableOpacity>
-            ))}
+            {dataFilter?.map(
+              (item: { title: string; id: number }, i: number) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    onPressFilter(item)
+                  }}
+                  key={i}
+                  style={styles.v_item_scroll}
+                >
+                  <Text style={styles.txt_filter}>{item.title}</Text>
+                  <FstImage
+                    resizeMode="contain"
+                    style={styles.ic_arrow}
+                    source={
+                      idSelect === item.id
+                        ? R.images.ic_arrow_up
+                        : R.images.ic_arrow_down
+                    }
+                  />
+                </TouchableOpacity>
+              )
+            )}
           </ScrollView>
           <View style={styles.v_line} />
 
@@ -211,9 +364,47 @@ const HumanAddress = () => {
               ListEmptyComponent={<Empty description={'Danh sách rỗng'} />}
             />
           </View>
-          <View style={styles.v_shadow}>
-            <View style={{ backgroundColor: 'white' }}></View>
-          </View>
+          {isOpened && (
+            <View style={styles.v_shadow}>
+              <ScrollView style={styles.v_select}>
+                {dataSelect.map((item: any) => (
+                  <>
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleItemSelect(item)
+                      }}
+                      style={styles.v_item_select}
+                    >
+                      <Text style={styles.text}>{item?.name}</Text>
+                      {item.isSelected && (
+                        <FstImage
+                          style={styles.icon_check}
+                          source={R.images.ic_check}
+                        />
+                      )}
+                    </TouchableOpacity>
+                    <View style={styles.line} />
+                  </>
+                ))}
+              </ScrollView>
+              <View style={styles.v_bottom}>
+                <TouchableOpacity
+                  onPress={onPressButtonReset}
+                  style={styles.button}
+                >
+                  <Text style={styles.txt_button}>Đặt lại</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={onPressButtonApply}
+                  style={[styles.button, { backgroundColor: colors.primary }]}
+                >
+                  <Text style={[styles.txt_button, { color: colors.white }]}>
+                    Áp dụng
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </>
       }
     />
@@ -223,8 +414,55 @@ const HumanAddress = () => {
 export default HumanAddress
 
 const styles = StyleSheet.create({
+  icon_check: {
+    width: 20,
+    height: 20,
+  },
+  txt_button: {
+    ...fonts.regular16,
+    fontWeight: '500',
+    color: colors.primary,
+  },
+  button: {
+    paddingVertical: 8,
+    width: (dimensions.width - 43) / 2,
+    borderWidth: 1,
+    borderRadius: 12,
+    borderColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  line: {
+    height: 1,
+    backgroundColor: colors.border,
+  },
+  text: {
+    ...fonts.regular16,
+    color: colors.text,
+    fontWeight: '400',
+    flex: 1,
+  },
+  v_bottom: {
+    backgroundColor: 'white',
+    paddingVertical: 11,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  v_select: {
+    backgroundColor: 'white',
+    maxHeight: '50%',
+    paddingHorizontal: 15,
+  },
+  v_item_select: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
   v_shadow: {
-    top: 40,
+    top: 42,
     backgroundColor: 'rgba(0,0,0,0.2)',
     position: 'absolute',
     width: '100%',

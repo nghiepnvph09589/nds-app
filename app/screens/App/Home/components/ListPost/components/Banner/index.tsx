@@ -63,7 +63,7 @@ const Banner = (props: SlideBarProps) => {
 export default Banner
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 16,
+    paddingVertical: 16,
     backgroundColor: 'white',
   },
   imgBanner: {
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
     marginRight: -5,
   },
   v_pagination: {
-    paddingTop: 10,
+    paddingTop: 0,
   },
 })
