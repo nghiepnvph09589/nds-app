@@ -24,6 +24,7 @@ import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import SelectVideo from '../components/SelectVideo'
 import { isIphoneX } from 'react-native-iphone-x-helper'
+import reactotron from 'reactotron-react-native'
 import { requestUpdateSupportManage } from './api'
 import { showMessages } from '@app/utils/AlertHelper'
 
@@ -108,6 +109,14 @@ const UpdateSupportManage = (props: Props) => {
       mediaType: 'video',
       minFiles: 1,
     }).then(async images => {
+      reactotron.log(images)
+      if (images.size / 1024 / 1024 > 32) {
+        showMessages(
+          R.strings().notification,
+          'Dung lượng video quá dài xin thử lại'
+        )
+        return
+      }
       let video: any = {
         uri: images.path,
         typeMedia: MEDIA_TYPE.VIDEO,

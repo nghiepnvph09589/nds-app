@@ -128,58 +128,82 @@ const RNImageViewer = ({
         animationIn={'zoomIn'}
         animationOut={'zoomOut'}
         swipeDirection={'down'}
-        onSwipeCancel={() => setIsVisible(false)}
         style={styles.ctn}
       >
-        <ImageViewer
-          imageUrls={dataImage}
-          enableSwipeDown
-          index={index}
-          swipeDownThreshold={200}
-          onSwipeDown={() => setIsVisible(false)}
-          enablePreload
-          loadingRender={() => <ActivityIndicator size={'large'} />}
-          backgroundColor="#00000012"
-          menuContext={null}
-          renderIndicator={(index, length) => {
-            if (length === 1) {
-              return <></>
-            }
-            return (
-              <View style={styles.v_index}>
-                <Text style={styles.txt_index}>{index + '/' + length}</Text>
-              </View>
-            )
-          }}
-          renderImage={props => (
-            <>
-              {fileExtension(props.source.uri) === 1 ? (
-                <FstImage
-                  resizeMode="contain"
-                  style={{
-                    width: props.style.width,
-                    height: props.style.height,
-                  }}
-                  source={{
-                    uri: props.source.uri,
-                  }}
-                />
-              ) : (
-                <View style={[styles.video]}>
-                  <Video
-                    muted
-                    controls
-                    // paused={videoPause}
+        {fileExtension(dataImage[0].url) === 1 ? (
+          <ImageViewer
+            imageUrls={dataImage}
+            enableSwipeDown
+            index={index}
+            swipeDownThreshold={200}
+            onSwipeDown={() => setIsVisible(false)}
+            enablePreload
+            loadingRender={() => <ActivityIndicator size={'large'} />}
+            backgroundColor="#00000012"
+            menuContext={null}
+            renderIndicator={(index, length) => {
+              if (length === 1) {
+                return <></>
+              }
+              return (
+                <View style={styles.v_index}>
+                  <Text style={styles.txt_index}>{index + '/' + length}</Text>
+                </View>
+              )
+            }}
+            renderImage={props => (
+              <>
+                {fileExtension(props.source.uri) === 1 ? (
+                  <FstImage
+                    resizeMode="contain"
+                    style={{
+                      width: props.style.width,
+                      height: props.style.height,
+                    }}
                     source={{
                       uri: props.source.uri,
                     }}
-                    style={styles.img}
                   />
-                </View>
-              )}
-            </>
-          )}
-        />
+                ) : (
+                  <View style={[styles.video]}>
+                    <Video
+                      muted
+                      controls
+                      // paused={videoPause}
+                      source={{
+                        uri: props.source.uri,
+                      }}
+                      style={styles.img}
+                    />
+                  </View>
+                )}
+              </>
+            )}
+          />
+        ) : (
+          <View
+            style={{
+              alignItems: 'center',
+              width: dimensions.width,
+              height: dimensions.width,
+            }}
+          >
+            <Video
+              muted
+              controls
+              // paused={videoPause}
+              source={{
+                uri: dataImage[0].url,
+              }}
+              resizeMode="contain"
+              style={{
+                width: dimensions.width,
+                height: dimensions.width,
+                backgroundColor: colors.backgroundColor,
+              }}
+            />
+          </View>
+        )}
         <TouchableOpacity
           onPress={() => {
             setIsVisible(false)
@@ -233,6 +257,8 @@ const styles = StyleSheet.create({
     width: dimensions.width,
     height: dimensions.width,
     alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ic_play: {
     width: 40,
