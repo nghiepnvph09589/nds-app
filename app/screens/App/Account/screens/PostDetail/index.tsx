@@ -132,6 +132,12 @@ const PostDetail = (props: PostDetailProps) => {
         onUpdateDataPostToReducer()
         return
       } else if (
+        dataPostDetail.is_update === 1 &&
+        userInfo.role === ROLE.OFFICER_PROVINCE
+      ) {
+        onUpdateDataPostToReducer()
+        return
+      } else if (
         dataPostDetail.status === 3 &&
         userInfo.role === ROLE.OFFICER_PROVINCE
       ) {
@@ -361,6 +367,11 @@ const PostDetail = (props: PostDetailProps) => {
       { text: 'Từ chối', id: 3, icon: R.images.ic_cancel_support },
     ]
     if (
+      userInfo.role === ROLE.OFFICER_PROVINCE &&
+      dataPostDetail.is_update === 1
+    ) {
+      data.splice(0, 2)
+    } else if (
       userInfo.role === ROLE.OFFICER_PROVINCE &&
       dataPostDetail.status === 3
     ) {

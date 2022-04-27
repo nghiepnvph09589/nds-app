@@ -37,7 +37,8 @@ const ViewBottom2 = (props: ViewBottomProps) => {
           <TouchableOpacity onPress={handleApprove} style={styles.v_button2}>
             <FstImage style={styles.icon} source={R.images.ic_approve} />
             <Text style={styles.text}>
-              {userInfo?.role === ROLE.OFFICER_PROVINCE && status === 3
+              {userInfo?.role === ROLE.OFFICER_PROVINCE &&
+              (status === 3 || is_update === 1)
                 ? 'Chỉnh sửa'
                 : userInfo?.role === ROLE.OFFICER_PROVINCE && status === 3 // : is_update === 1 || is_update === 2
                 ? 'Phê duyệt'
