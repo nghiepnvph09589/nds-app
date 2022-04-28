@@ -12,6 +12,7 @@ import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
 import {
   DEFAULT_PARAMS,
+  MEDIA_TYPE,
   SCREEN_ROUTER_APP,
   STATUS_TYPE,
 } from '@app/constant/Constant'
@@ -106,7 +107,11 @@ const ListManage = (props: ListManageProps) => {
             <FstImage
               resizeMode="cover"
               style={styles.image}
-              source={{ uri: item?.DonateRequestMedia[0]?.media_url }}
+              source={
+                item?.DonateRequestMedia[0]?.type === MEDIA_TYPE.IMAGE
+                  ? { uri: item?.DonateRequestMedia[0]?.media_url }
+                  : R.images.img_red_cross
+              }
             />
             <View style={styles.v_post}>
               <Text

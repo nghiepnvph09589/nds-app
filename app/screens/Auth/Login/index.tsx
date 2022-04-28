@@ -65,12 +65,13 @@ const LoginScreen = () => {
     try {
       showLoading()
       const res = await LoginApi.checkAccount({ user_name: item.phone })
-      if (res.type === 0) {
+      console.log(res)
+      if (res.data.type === 0) {
         hideLoading()
         NavigationUtil.navigate(SCREEN_ROUTER_AUTH.REGISTER, {
           phone: item.phone,
         })
-      } else if (res.type === 1) {
+      } else if (res.data.type === 1) {
         try {
           // eslint-disable-next-line no-shadow
           const res = await LoginApi.login({
@@ -84,7 +85,7 @@ const LoginScreen = () => {
         } catch (error) {
           hideLoading()
         }
-      } else if (res.type === 2) {
+      } else if (res.data.type === 2) {
         hideLoading()
         NavigationUtil.navigate(SCREEN_ROUTER_AUTH.LOGIN_STEP_2, {
           phone: item.phone,
