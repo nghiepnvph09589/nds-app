@@ -2,6 +2,7 @@ import {
   API_STATUS,
   NOTIFICATION_TYPE,
   ONESIGNAL_APP_ID,
+  ROLE,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
 import {
@@ -45,7 +46,7 @@ export default abstract class OneSignalUtil {
     }
   }
   static onShow = async (notification: any) => {
-    // reactotron.log!('Prompt response:', notification?.notification)
+    reactotron.log!('Prompt response:', notification?.notification)
     const body = {
       page: 1,
       limit: 15,
@@ -54,16 +55,18 @@ export default abstract class OneSignalUtil {
     token &&
       store.dispatch(requestListNotificationThunk({ body, loadOnTop: false }))
     token && this.getCountNotifyNotRead()
-    console.log!('Prompt response:', notification?.notification)
   }
 
   static onOpened = (notification: any) => {
-    console.log!('Prompt response:', notification?.notification)
+    reactotron.log!('Prompt response:', notification?.notification)
     switch (notification?.additionalData?.type) {
       case NOTIFICATION_TYPE.DONATE:
         NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_SUPPORT_MANAGE, {
           id: notification?.additionalData?.notification_id,
-          // onRefreshData: this.getCountNotifyNotRead,
+          customer:
+            notification?.additionalData?.options === 4
+              ? ROLE.CUSTOMER
+              : undefined,
         })
         return
       case NOTIFICATION_TYPE.POST:

@@ -189,7 +189,7 @@ const ItemNotification = ({
       <FstImage source={R.images.img_avatar3} style={styles.item_img} />
       <View style={styles.item_detail}>
         <View style={{ ...styleView.rowItem }}>
-          <Text numberOfLines={1} style={styles.title} children={item?.title} />
+          <Text numberOfLines={2} style={styles.title} children={item?.title} />
           {/* <View style={{ ...styleView.rowItem }}>
             <FstImage style={styles.ic_clock} source={R.images.ic_clock} />
             <Text

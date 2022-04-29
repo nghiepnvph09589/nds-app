@@ -262,7 +262,9 @@ const CreateSupportScreen = (props: Props) => {
             setMessagesStatus(false)
           }}
           description={
-            'Cảm ơn bạn đã ủng hộ. Chúng tôi sẽ liên hệ với bạn để xác nhận thông tin'
+            userInfo?.role === ROLE?.OFFICER_PROVINCE
+              ? 'Cảm ơn bạn đã ủng hộ'
+              : 'Cảm ơn bạn đã ủng hộ. Chúng tôi sẽ liên hệ với bạn để xác nhận thông tin'
           }
           bannerNotify={R.images.img_empty}
         />
