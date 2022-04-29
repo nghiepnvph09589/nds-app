@@ -26,6 +26,7 @@ interface UpdateBankProps {
       dataBank: Bank
       id: number
       callback: (id: number) => Promise<void>
+      onResetDataPost: () => void
     }
   }
 }
@@ -93,7 +94,8 @@ const UpdateBankComponent = (props: UpdateBankProps) => {
         await BankApi.updateBank(payloadUpdateBank)
       }
       hideLoading()
-      NavigationUtil.navigate(SCREEN_ROUTER_APP.MANAGE_LIST_POST)
+      props.route.params.onResetDataPost()
+      NavigationUtil.navigate(SCREEN_ROUTER_APP.DETAIL_POST, { id: id })
     } catch (error) {
       hideLoading()
     }

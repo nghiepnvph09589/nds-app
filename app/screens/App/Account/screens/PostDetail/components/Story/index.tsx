@@ -15,7 +15,9 @@ const Story = (props: StoryProps) => {
   const { data } = props
   return (
     <>
-      {data.status === 3 && <ListSupport count={0} id={data?.id} />}
+      {data.status === 3 && (
+        <ListSupport count={data?.Donates?.length} id={data?.id} />
+      )}
 
       <Content title={data?.title} content={data?.content} />
       <UserInfo

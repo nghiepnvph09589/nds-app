@@ -7,6 +7,7 @@ import { ROLE, STATUS_TYPE } from '@app/constant/Constant'
 import { showConfirm } from '@app/utils/AlertHelper'
 import PostDetailApi from '../../api/PostDetailApi'
 import { useAppSelector } from '@app/store'
+import DateUtils from '@app/utils/DateUtils'
 
 interface ViewStatusProps {
   type: number
@@ -15,35 +16,36 @@ interface ViewStatusProps {
   id: number
   typeNavigate?: number
   name?: string
+  endData?: number
 }
 
 const ViewStatus = (props: ViewStatusProps) => {
   const userInfo = useAppSelector(state => state.accountReducer).data
   const [isEnabled, setIsEnabled] = useState(true)
   const [textStatus, setTextStatus] = useState<string>('Đang hoạt động')
-  const { type, status, reason, id, typeNavigate, name } = props
+  const { type, status, reason, id, endData, name } = props
 
-  const toggleSwitch = () => {
-    showConfirm(
-      R.strings().notification,
-      isEnabled
-        ? 'Bạn có chắc chắn muốn ẩn bài đăng này'
-        : 'Bạn có chắc chắn muốn hiện bài đăng này',
-      async () => {
-        try {
-          await PostDetailApi.inactivePost({ status: isEnabled ? 0 : 1, id })
-          setIsEnabled(previousState => {
-            if (previousState) {
-              setTextStatus('Ngừng hoạt động')
-            } else if (!previousState) {
-              setTextStatus('Đạng hoạt động')
-            }
-            return !previousState
-          })
-        } catch (error) {}
-      }
-    )
-  }
+  // const toggleSwitch = () => {
+  //   showConfirm(
+  //     R.strings().notification,
+  //     isEnabled
+  //       ? 'Bạn có chắc chắn muốn ẩn bài đăng này'
+  //       : 'Bạn có chắc chắn muốn hiện bài đăng này',
+  //     async () => {
+  //       try {
+  //         await PostDetailApi.inactivePost({ status: isEnabled ? 0 : 1, id })
+  //         setIsEnabled(previousState => {
+  //           if (previousState) {
+  //             setTextStatus('Ngừng hoạt động')
+  //           } else if (!previousState) {
+  //             setTextStatus('Đạng hoạt động')
+  //           }
+  //           return !previousState
+  //         })
+  //       } catch (error) {}
+  //     }
+  //   )
+  // }
 
   return (
     <>
@@ -94,6 +96,11 @@ const ViewStatus = (props: ViewStatusProps) => {
         {!!reason && <Text style={styles.txt_reason}>{reason}</Text>}
         {status === 2 && type === STATUS_TYPE.WAIT_CONFIRM && (
           <Text style={styles.txt_reason}>{`Nguời duyệt: ${name}`}</Text>
+        )}
+        {type === STATUS_TYPE.COMPLETE && endData && (
+          <Text
+            style={styles.txt_reason}
+          >{`Ngày hết hạn: ${DateUtils.formatShortYear(endData)}`}</Text>
         )}
       </View>
       <View style={styles.v_line} />
