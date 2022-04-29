@@ -1,22 +1,24 @@
-import R from '@app/assets/R'
-import RNTextInput from '@app/components/RNTextInput'
+import * as Yup from 'yup'
+
 import { NAME_REGEX, PHONE_REGEX } from '@app/constant/Constant'
-import { colors } from '@app/theme'
-import { showMessages } from '@app/utils/AlertHelper'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-import { Formik } from 'formik'
 import React, { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useDispatch } from 'react-redux'
-import * as Yup from 'yup'
-import ViewBottom from '../../components/ViewBottom'
-import { updateDataCreatePost } from '../../slice/CreatePostSlice'
 import { getListSubject, getListTypeGroup } from './api'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+
+import { Formik } from 'formik'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import R from '@app/assets/R'
+import RNTextInput from '@app/components/RNTextInput'
 import SelectDateBirth from './component/SelectDateBirth'
 import SelectOneInTwo from './component/SelectOneInTwo'
 import SelectSubject from './component/SelectSubject'
 import Title from './component/Title'
+import ViewBottom from '../../components/ViewBottom'
+import { colors } from '@app/theme'
+import { showMessages } from '@app/utils/AlertHelper'
+import { updateDataCreatePost } from '../../slice/CreatePostSlice'
+import { useDispatch } from 'react-redux'
 
 const sexSelect = [
   {
@@ -60,17 +62,12 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
     showLoading()
     try {
       const payload = {
-        group_id: groupId,
         type: type,
       }
       const res = await getListSubject(payload)
       if (type === 1) {
-        setSubject([])
-        setNeed([])
         setDataSubject(res?.data)
       } else if (type === 2) {
-        setSubject([])
-        setNeed([])
         setDataNeed(res?.data)
       }
     } catch (error) {
@@ -85,11 +82,9 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
   }, [])
 
   useEffect(() => {
-    if (groupType !== 0) {
-      getDataSubject(groupType, 1)
-      getDataSubject(groupType, 2)
-    }
-  }, [groupType])
+    getDataSubject(groupType, 1)
+    getDataSubject(groupType, 2)
+  }, [])
 
   const Schema = Yup.object().shape({
     name: Yup.string()

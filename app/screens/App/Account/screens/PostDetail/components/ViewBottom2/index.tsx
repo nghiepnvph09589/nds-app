@@ -46,7 +46,7 @@ const ViewBottom2 = (props: ViewBottomProps) => {
               {userInfo?.role === ROLE.OFFICER_PROVINCE &&
               (status === 3 || is_update === 1 || is_update === 2)
                 ? 'Chỉnh sửa'
-                : userInfo?.role === ROLE.OFFICER_PROVINCE && status === 3
+                : userInfo?.role === ROLE.OFFICER_PROVINCE
                 ? 'Phê duyệt'
                 : 'Yêu cầu phê duyệt'}
             </Text>
