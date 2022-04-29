@@ -28,6 +28,7 @@ interface Props {
 const DetailSupportScreen = (props: Props) => {
   const [data, setData] = useState<dataSupportDetail>()
   const [error, setError] = useState<boolean>(false)
+  console.log(props.route.params.customer)
   const userInfo = useAppSelector(state => state.accountReducer.data)
   const getData = async () => {
     showLoading()
@@ -101,6 +102,7 @@ const DetailSupportScreen = (props: Props) => {
         data?.status !== STATUS_SUPPORT_DETAIL.UPDATE_SUPPORT &&
         userInfo.role !== ROLE.OFFICER_WARD &&
         userInfo.role !== ROLE.CUSTOMER &&
+        !props.route.params.customer &&
         checkRoleMenu() === 1 && (
           <MenuButton
             id={data?.id}

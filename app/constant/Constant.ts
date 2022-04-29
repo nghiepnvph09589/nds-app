@@ -116,7 +116,7 @@ export const STATUS_SUPPORT = {
 }
 
 export const CONTACT = {
-  PHONE: '0368138670',
+  PHONE: '02143842700 ',
   FACEBOOK: 'https://www.facebook.com/nguyen.vannghiep.90/',
   ZALO: '0368138670',
 }

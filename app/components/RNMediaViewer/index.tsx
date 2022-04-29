@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import FastImage, { ImageStyle } from 'react-native-fast-image'
 import React, { useState } from 'react'
 import { colors, dimensions, fonts, styleView } from '@app/theme'
 
 import FstImage from '../FstImage'
-import { ImageStyle } from 'react-native-fast-image'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import Modal from 'react-native-modal'
 import R from '@app/assets/R'
@@ -96,25 +96,43 @@ const RNImageViewer = ({
                       ]}
                     />
                   ) : (
-                    <View
-                      style={{
-                        backgroundColor: colors?.backgroundColor,
-                        borderRadius: 8,
-                        marginBottom: 16,
-                      }}
+                    // <View
+                    //   style={{
+                    //     backgroundColor: colors?.backgroundColor,
+                    //     borderRadius: 8,
+                    //     marginBottom: 16,
+                    //   }}
+                    // >
+                    //   <Video
+                    //     paused={true}
+                    //     source={{ uri: item?.media_url }}
+                    //     style={[styles.video_item, videoStyle]}
+                    //   />
+                    //   <View style={[styles.v_ic_play, videoStyle]}>
+                    //     <FstImage
+                    //       source={R.images.ic_play}
+                    //       style={styles.ic_play}
+                    //     />
+                    //   </View>
+                    // </View>
+                    <FstImage
+                      style={styles.img_update}
+                      source={R.images.img_red_cross}
                     >
-                      <Video
-                        paused={true}
-                        source={{ uri: item?.media_url }}
-                        style={[styles.video_item, videoStyle]}
-                      />
-                      <View style={[styles.v_ic_play, videoStyle]}>
-                        <FstImage
+                      <View
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: 'rgba(0,0,0,0.6)',
+                          ...styleView.centerItem,
+                        }}
+                      >
+                        <FastImage
+                          style={{ width: 42, height: 42 }}
                           source={R.images.ic_play}
-                          style={styles.ic_play}
                         />
                       </View>
-                    </View>
+                    </FstImage>
                   )}
                 </TouchableOpacity>
               )
