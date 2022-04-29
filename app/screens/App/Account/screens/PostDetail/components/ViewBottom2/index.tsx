@@ -32,13 +32,19 @@ const ViewBottom2 = (props: ViewBottomProps) => {
         <TouchableOpacity onPress={handleApprove} style={styles.v_button}>
           <Text style={styles.text}>{'Chỉnh sửa'}</Text>
         </TouchableOpacity>
+      ) : userInfo.role === ROLE.OFFICER_DISTRICT && status === 0 ? (
+        <></>
+      ) : userInfo.role === ROLE.OFFICER_DISTRICT && is_update === 2 ? (
+        <TouchableOpacity onPress={handleApprove} style={styles.v_button}>
+          <Text style={styles.text}>{'Từ chối'}</Text>
+        </TouchableOpacity>
       ) : (
         <View style={styles.v_button3}>
           <TouchableOpacity onPress={handleApprove} style={styles.v_button2}>
             <FstImage style={styles.icon} source={R.images.ic_approve} />
             <Text style={styles.text}>
               {userInfo?.role === ROLE.OFFICER_PROVINCE &&
-              (status === 3 || is_update === 1)
+              (status === 3 || is_update === 1 || is_update === 2)
                 ? 'Chỉnh sửa'
                 : userInfo?.role === ROLE.OFFICER_PROVINCE && status === 3
                 ? 'Phê duyệt'

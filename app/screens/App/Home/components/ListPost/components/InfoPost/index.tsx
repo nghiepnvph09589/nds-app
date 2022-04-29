@@ -1,22 +1,21 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
-import { colors, fonts } from '@app/theme'
-import useTime from './hooks'
-import { useAppSelector } from '@app/store'
+import FstImage from '@app/components/FstImage'
 import { ROLE } from '@app/constant/Constant'
+import { colors, fonts } from '@app/theme'
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import useTime from './hooks'
 
 interface InfoPost {
   name: string
   address: string
   avatar: string
   time: Date
+  role: number
 }
 
 const InfoPost = (props: InfoPost) => {
-  const userInfo = useAppSelector(state => state.accountReducer.data)
-  const { name, address, avatar, time } = props
+  const { name, address, avatar, time, role } = props
 
   return (
     <View style={styles.v_row}>
@@ -35,7 +34,7 @@ const InfoPost = (props: InfoPost) => {
           </Text>
           <Text style={styles.txt_time}>{useTime(time)}</Text>
         </View>
-        {userInfo.role === ROLE.OFFICER_WARD && (
+        {role === ROLE.OFFICER_WARD && (
           <FstImage
             resizeMode="contain"
             style={styles.img_star}

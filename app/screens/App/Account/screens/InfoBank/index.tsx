@@ -13,7 +13,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { PostDetailData } from '../PostDetail/model'
 import BankApi from '././api/BankApi'
 interface BankInfoProps {
-  route: { params: { data: PostDetailData } }
+  route: { params: { data: PostDetailData; onCallBack: () => void } }
 }
 export type Bank = {
   id: number
@@ -117,6 +117,7 @@ const InfoBank = (props: BankInfoProps) => {
                 type: dataBank.id === 0 ? 1 : 2,
                 dataBank: dataBank,
                 callback: getDataBank,
+                onResetDataPost: props.route.params.onCallBack,
               })
             }}
             title={

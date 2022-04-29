@@ -132,7 +132,16 @@ const PostDetail = (props: PostDetailProps) => {
         onUpdateDataPostToReducer()
         return
       } else if (
-        dataPostDetail.is_update === 1 &&
+        userInfo.role === ROLE.OFFICER_DISTRICT &&
+        dataPostDetail.is_update === 2
+      ) {
+        setTypeOption(3)
+        setTimeout(() => {
+          setIsVisible(!isVisible)
+        }, 1000)
+        return
+      } else if (
+        (dataPostDetail.is_update === 1 || dataPostDetail.is_update === 2) &&
         userInfo.role === ROLE.OFFICER_PROVINCE
       ) {
         onUpdateDataPostToReducer()
@@ -159,6 +168,14 @@ const PostDetail = (props: PostDetailProps) => {
       setTimeout(() => {
         setIsVisible(!isVisible)
       }, 1000)
+      return
+    }
+    if (
+      typeNavigate === 2 &&
+      userInfo.role === ROLE.OFFICER_PROVINCE &&
+      (dataPostDetail.is_update === 1 || dataPostDetail.is_update === 2)
+    ) {
+      onUpdateDataPostToReducer()
       return
     }
     if (typeNavigate === 1) {
@@ -357,6 +374,10 @@ const PostDetail = (props: PostDetailProps) => {
     }
   }
 
+  const onResetData = () => {
+    getDataPostDetail()
+  }
+
   if (isError) return <Error reload={getDataPostDetail} />
 
   const renderData = () => {
@@ -368,7 +389,7 @@ const PostDetail = (props: PostDetailProps) => {
     ]
     if (
       userInfo.role === ROLE.OFFICER_PROVINCE &&
-      dataPostDetail.is_update === 1
+      (dataPostDetail.is_update === 1 || dataPostDetail.is_update === 2)
     ) {
       data.splice(0, 2)
     } else if (
@@ -377,12 +398,13 @@ const PostDetail = (props: PostDetailProps) => {
     ) {
       data.splice(0, 2)
       data.splice(1, 1)
-    } else if (
-      userInfo.role === ROLE.OFFICER_PROVINCE &&
-      type === STATUS_TYPE.EDIT
-    ) {
-      data.splice(1, 1)
     }
+    // else if (
+    //   userInfo.role === ROLE.OFFICER_PROVINCE &&
+    //   type === STATUS_TYPE.EDIT
+    // ) {
+    //   data.splice(1, 1)
+    // }
     return data
   }
 
@@ -402,6 +424,7 @@ const PostDetail = (props: PostDetailProps) => {
         <PostImageArea data={dataPostDetail.DonateRequestMedia} />
         {!(!type && type !== 0) && (
           <ViewStatus
+            endData={dataPostDetail?.end_date}
             typeNavigate={typeNavigate}
             id={dataPostDetail.id}
             reason={
@@ -502,6 +525,7 @@ const PostDetail = (props: PostDetailProps) => {
           } else if (item.id === 2) {
             NavigationUtil.navigate(SCREEN_ROUTER_APP.BANK_INFO, {
               data: dataPostDetail,
+              onCallBack: onResetData,
             })
           }
         }}
