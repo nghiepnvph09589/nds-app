@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     marginTop: isIphoneX() ? 51 : 20,
     alignSelf: 'center',
+    borderRadius: 156 / 2,
   },
   v_container: {
     width: width * 0.8,

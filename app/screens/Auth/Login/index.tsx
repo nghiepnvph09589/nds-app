@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
   img_red_cross: {
     width: 156,
     aspectRatio: 1,
+    borderRadius: 156 / 2,
     marginTop: isIphoneX() ? 51 : 20,
     alignSelf: 'center',
   },
