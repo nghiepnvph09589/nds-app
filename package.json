@@ -16,7 +16,9 @@
     "li": " node generateAssetResource.js && prettier --write ./app/assets/strings.ts && prettier --write ./app/assets/imagesAsset.ts",
     "prepare": "husky install",
     "cpa": "appcenter codepush release-react -a Apps-Windsoft/NDS_Android -d Production",
-    "cpi": "appcenter codepush release-react -a Apps-Windsoft/NDS_IOS -d Production"
+    "cpi": "appcenter codepush release-react -a Apps-Windsoft/NDS_IOS -d Production",
+    "cpi-clear": "appcenter codepush deployment clear -a Apps-Windsoft/NDS_IOS Production",
+    "cpa-clear": "appcenter codepush deployment clear -a Apps-Windsoft/NDS_Android Production"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
