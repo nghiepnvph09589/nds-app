@@ -67,7 +67,7 @@ export default {
   edit_user_info: 'Chỉnh sửa thông tin cá nhân',
   support_list: 'Danh sách ủng hộ',
   contact: 'Liên hệ',
-  terms: 'Điều khoản sủ dụng',
+  terms: 'Điều khoản sử dụng',
   logout: 'Đăng xuất',
   not_update: 'Chưa cập nhật',
   see_more: 'Xem thêm',

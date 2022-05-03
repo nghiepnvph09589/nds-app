@@ -57,9 +57,9 @@ const HumanAddress = () => {
   const listNeeds = useRef<any>([])
   const listGroup = useRef<any>([])
 
-  const province_id = useRef<any>(null)
-  const district_id = useRef<any>(null)
-  const ward_id = useRef<any>(null)
+  const province_id = useRef<any>(0)
+  const district_id = useRef<any>(0)
+  const ward_id = useRef<any>(0)
   const group_id = useRef<any>(null)
   const needs = useRef<any>([])
   const subject = useRef<any>([])
@@ -154,6 +154,32 @@ const HumanAddress = () => {
     province_name.current = item.province_name
     district_name.current = item.district_name
     ward_name.current = item.ward_name
+    listDistrict.current = item.listDistrict
+    listWard.current = item.listWard
+    listProvince.current = parseData(listProvince.current, [item.province_id])
+    listDistrict.current = parseData(listDistrict.current, [item.district_id])
+    listWard.current = parseData(listWard.current, [item.ward_id])
+    listGroup.current = parseData(listGroup.current, [item.group_id])
+    listNeeds.current = parseData(listNeeds.current, item.needs)
+    listSubject.current = parseData(listSubject.current, item.subject)
+  }
+
+  const parseData = (data: any[], dataSelected: any[]) => {
+    if (data.length > 0) {
+      data.forEach(item => {
+        item.isSelected = false
+      })
+      const newData = [...data]
+      dataSelected?.forEach(itemParent => {
+        data.forEach((item: any, index: number) => {
+          if (itemParent === item.id) {
+            newData[index].isSelected = true
+          }
+        })
+      })
+
+      return newData
+    }
   }
 
   if (isLoading) {
@@ -388,7 +414,6 @@ const HumanAddress = () => {
 
   return (
     <ScreenWrapper
-      back
       rightComponent={
         <TouchableOpacity
           onPress={() => {

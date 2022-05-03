@@ -1,13 +1,10 @@
-import { StyleSheet, Text, View, Switch } from 'react-native'
-import React, { useState } from 'react'
-import FstImage from '@app/components/FstImage'
 import R from '@app/assets/R'
+import FstImage from '@app/components/FstImage'
+import { STATUS_TYPE } from '@app/constant/Constant'
 import { colors, fonts } from '@app/theme'
-import { ROLE, STATUS_TYPE } from '@app/constant/Constant'
-import { showConfirm } from '@app/utils/AlertHelper'
-import PostDetailApi from '../../api/PostDetailApi'
-import { useAppSelector } from '@app/store'
 import DateUtils from '@app/utils/DateUtils'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 
 interface ViewStatusProps {
   type: number
@@ -17,35 +14,11 @@ interface ViewStatusProps {
   typeNavigate?: number
   name?: string
   endData?: number
+  phone?: number
 }
 
 const ViewStatus = (props: ViewStatusProps) => {
-  const userInfo = useAppSelector(state => state.accountReducer).data
-  const [isEnabled, setIsEnabled] = useState(true)
-  const [textStatus, setTextStatus] = useState<string>('Đang hoạt động')
-  const { type, status, reason, id, endData, name } = props
-
-  // const toggleSwitch = () => {
-  //   showConfirm(
-  //     R.strings().notification,
-  //     isEnabled
-  //       ? 'Bạn có chắc chắn muốn ẩn bài đăng này'
-  //       : 'Bạn có chắc chắn muốn hiện bài đăng này',
-  //     async () => {
-  //       try {
-  //         await PostDetailApi.inactivePost({ status: isEnabled ? 0 : 1, id })
-  //         setIsEnabled(previousState => {
-  //           if (previousState) {
-  //             setTextStatus('Ngừng hoạt động')
-  //           } else if (!previousState) {
-  //             setTextStatus('Đạng hoạt động')
-  //           }
-  //           return !previousState
-  //         })
-  //       } catch (error) {}
-  //     }
-  //   )
-  // }
+  const { type, status, reason, endData, name, phone } = props
 
   return (
     <>
@@ -81,7 +54,7 @@ const ViewStatus = (props: ViewStatusProps) => {
               ? 'Yêu cầu chỉnh sửa'
               : type === STATUS_TYPE.COMPLETE
               ? 'Đã phê duyệt'
-              : type === STATUS_TYPE.DENY
+              : status === STATUS_TYPE.DENY
               ? 'Từ chối'
               : ''}
           </Text>
@@ -95,7 +68,12 @@ const ViewStatus = (props: ViewStatusProps) => {
         </View>
         {!!reason && <Text style={styles.txt_reason}>{reason}</Text>}
         {status === 2 && type === STATUS_TYPE.WAIT_CONFIRM && (
-          <Text style={styles.txt_reason}>{`Nguời duyệt: ${name}`}</Text>
+          <>
+            <Text style={styles.txt_reason}>{`Nguời duyệt: ${name}`}</Text>
+            <Text
+              style={styles.txt_reason}
+            >{`Số điện thoại nguời duyệt: ${phone}`}</Text>
+          </>
         )}
         {type === STATUS_TYPE.COMPLETE && endData && (
           <Text

@@ -422,23 +422,28 @@ const PostDetail = (props: PostDetailProps) => {
           onModalHide={onModalHide}
         />
         <PostImageArea data={dataPostDetail.DonateRequestMedia} />
-        {!(!type && type !== 0) && (
+        {(!(!type && type !== 0) || typeNavigate === 3) && (
           <ViewStatus
             endData={dataPostDetail?.end_date}
             typeNavigate={typeNavigate}
             id={dataPostDetail.id}
             reason={
-              type === 0
+              dataPostDetail.status === 0
                 ? dataPostDetail.reason
                 : type === 1
                 ? dataPostDetail.reason_request
                 : ''
             }
-            status={status}
+            status={dataPostDetail?.status}
             type={type}
             name={
               dataPostDetail?.DonateDequestHistory
                 ? dataPostDetail?.DonateDequestHistory[0]?.User?.name
+                : ''
+            }
+            phone={
+              dataPostDetail?.DonateDequestHistory
+                ? dataPostDetail?.DonateDequestHistory[0]?.User?.user_name
                 : ''
             }
           />

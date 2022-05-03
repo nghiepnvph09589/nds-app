@@ -203,10 +203,11 @@ const MainTab = (route: any) => {
                 } else if (route.name === MAIN_TAB.CREATE_POST) {
                   NavigationUtil.navigate(SCREEN_ROUTER_APP.CREATE_POST)
                   return
-                } else if (route.name === MAIN_TAB.HUMAN_ADDRESS) {
-                  NavigationUtil.navigate(SCREEN_ROUTER_APP.HUMAN_ADDRESS)
-                  return
                 }
+                // else if (route.name === MAIN_TAB.HUMAN_ADDRESS) {
+                //   NavigationUtil.navigate(SCREEN_ROUTER_APP.HUMAN_ADDRESS)
+                //   return
+                // }
                 if (props.onPress) props.onPress(e)
               }}
             />

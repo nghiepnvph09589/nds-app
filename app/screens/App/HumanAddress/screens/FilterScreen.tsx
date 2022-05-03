@@ -8,7 +8,7 @@ import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import { DEFAULT_PARAMS } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
 import { colors, fonts } from '@app/theme'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -26,6 +26,7 @@ const FilterScreen = (props: any) => {
   const [listDistrict, setListDistrict] = useState(
     JSON.parse(JSON.stringify(props.route.params.listDistrict))
   )
+
   const [listWard, setListWard] = useState(
     JSON.parse(JSON.stringify(props.route.params.listWard))
   )
@@ -36,9 +37,13 @@ const FilterScreen = (props: any) => {
   const group_id = useRef<any>(props.route.params.group_id)
   const needs = useRef<any>(props.route.params.needs)
   const subject = useRef<any>(props.route.params.subject)
-  const province_name = useRef<any>(props.route.params.province_name)
-  const district_name = useRef<any>(props.route.params.district_name)
-  const ward_name = useRef<any>(props.route.params.ward_name)
+  const [provinceName, setProvinceName] = useState<any>(
+    props.route.params.province_name
+  )
+  const [districtName, setDistrictName] = useState<any>(
+    props.route.params.district_name
+  )
+  const [wardName, setWardName] = useState<any>(props.route.params.ward_name)
 
   const getDataDistrict = async (province_id: number) => {
     try {
@@ -68,18 +73,23 @@ const FilterScreen = (props: any) => {
     NavigationUtil.goBack()
     props.route.params.onCallBack({
       item: {
-        province_id: province_id.current,
-        district_id: district_id.current,
-        ward_id: ward_id.current,
+        province_id:
+          province_id.current !== 0 ? province_id.current : undefined,
+        district_id:
+          district_id.current !== 0 ? district_id.current : undefined,
+        ward_id: ward_id.current !== 0 ? ward_id.current : undefined,
         group_id: group_id.current,
         subject: subject.current,
         needs: needs.current,
-        province_name: province_name.current,
-        district_name: district_name.current,
-        ward_name: ward_name.current,
+        province_name: provinceName,
+        district_name: districtName,
+        ward_name: wardName,
+        listDistrict: listDistrict,
+        listWard: listWard,
       },
     })
   }
+
   return (
     <ScreenWrapper
       back
@@ -94,11 +104,7 @@ const FilterScreen = (props: any) => {
             <DropdownBottomSheet
               isRequire
               data={JSON.parse(JSON.stringify(props.route.params.listProvince))}
-              defaultValue={
-                province_name.current
-                  ? province_name.current
-                  : 'Tỉnh/ Thành phố'
-              }
+              defaultValue={provinceName ? provinceName : 'Tỉnh/ Thành phố'}
               renderRow={(item, index, isSelected) =>
                 renderRow(item.name, index, isSelected)
               }
@@ -107,9 +113,16 @@ const FilterScreen = (props: any) => {
               isTextInput
               renderButtonText={item => renderButtonText(item.name)}
               onSelect={(index, item) => {
-                getDataDistrict(item.id)
-                province_id.current = item.id
-                province_name.current = item.name
+                if (item.id !== province_id.current) {
+                  province_id.current = item.id
+                  setProvinceName(item.name)
+                  getDataDistrict(item.id)
+                  district_id.current = 0
+                  setDistrictName('')
+                  ward_id.current = 0
+                  setWardName('')
+                  setListWard([])
+                }
               }}
               nameAtr="name"
               keyExtractor="id"
@@ -117,9 +130,7 @@ const FilterScreen = (props: any) => {
             <DropdownBottomSheet
               isRequire
               data={listDistrict}
-              defaultValue={
-                district_name.current ? district_name.current : 'Quận/ Huyện'
-              }
+              defaultValue={districtName ? districtName : 'Quận/ Huyện'}
               textStyle={district_id.current && { color: colors.text }}
               renderRow={(item, index, isSelected) =>
                 renderRow(item.name, index, isSelected)
@@ -127,9 +138,13 @@ const FilterScreen = (props: any) => {
               isTextInput
               renderButtonText={item => renderButtonText(item.name)}
               onSelect={(index, item) => {
-                getDataWard(item.id)
-                district_id.current = item.id
-                district_name.current = item.name
+                if (item.id !== district_id.current) {
+                  getDataWard(item.id)
+                  district_id.current = item.id
+                  setDistrictName(item.name)
+                  ward_id.current = 0
+                  setWardName('')
+                }
               }}
               nameAtr="name"
               keyExtractor="id"
@@ -138,9 +153,7 @@ const FilterScreen = (props: any) => {
             <DropdownBottomSheet
               isRequire
               data={listWard}
-              defaultValue={
-                ward_name.current ? ward_name.current : 'Xã/ Phường'
-              }
+              defaultValue={wardName ? wardName : 'Xã/ Phường'}
               textStyle={ward_id.current && { color: colors.text }}
               renderRow={(item, index, isSelected) =>
                 renderRow(item.name, index, isSelected)
@@ -149,13 +162,12 @@ const FilterScreen = (props: any) => {
               renderButtonText={item => renderButtonText(item.name)}
               onSelect={(index, item) => {
                 ward_id.current = item.id
-                ward_name.current = item.name
+                setWardName(item.name)
               }}
               nameAtr="name"
               keyExtractor="id"
             />
             <Select
-              dataSelected={[group_id.current]}
               onPress={item => {
                 console.log(item)
                 group_id.current = item[0]
@@ -165,7 +177,6 @@ const FilterScreen = (props: any) => {
               label="Phân nhóm"
             />
             <Select
-              dataSelected={subject.current}
               onPress={item => {
                 subject.current = item
                 console.log(item)
@@ -175,7 +186,6 @@ const FilterScreen = (props: any) => {
               label="Đối tượng"
             />
             <Select
-              dataSelected={needs.current}
               onPress={item => {
                 needs.current = item
                 console.log(item)
@@ -200,30 +210,14 @@ const Select = ({
   multiple,
   label,
   data,
-  dataSelected,
   onPress,
 }: {
   multiple: boolean
   label: string
   data: any[]
-  dataSelected: any[]
   onPress: (item: number[]) => void
 }) => {
   const [dataSelect, setDataSelect] = useState(JSON.parse(JSON.stringify(data)))
-
-  useEffect(() => {
-    if (data.length > 0) {
-      const newData = [...data]
-      dataSelected?.forEach(itemParent => {
-        data.forEach((item: any, index: number) => {
-          if (itemParent === item.id) {
-            newData[index].isSelected = true
-          }
-        })
-      })
-      setDataSelect(JSON.parse(JSON.stringify(newData)))
-    }
-  }, [data])
 
   const handleSelect = (item: any) => {
     const newData = [...dataSelect]

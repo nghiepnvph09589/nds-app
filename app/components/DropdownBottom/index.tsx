@@ -260,24 +260,6 @@ export default class DropdownBottomSheet extends Component<Props<any>> {
           }
         />
 
-        {/* <ModalDropdown
-          ref={modalRef}
-          style={[styles.container, styleContainerDropdown]}
-          isShow={isShowInBottom}
-          dropdownStyle={[styles.dropdownStyle, dropDownStyle]}
-          textStyle={[styles.textStyle, buttonTextStyle]}
-          defaultIndex={-1}
-          defaultValue={defaultValue || 'Tất cả'}
-          animated
-          accessible
-          onSelect={onSelect}
-          renderRow={renderRow}
-          options={data}
-          renderButtonText={renderButtonText}
-          isShowIconArrow={isShowIconArrow}
-          data={data}
-          {...props}
-        /> */}
         <DropdownBottom
           styleContainerDropdown={styleContainerDropdown}
           data={this.state.data}

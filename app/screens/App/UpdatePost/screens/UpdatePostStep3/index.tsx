@@ -16,7 +16,8 @@ import { Media } from '../../model'
 import { clearDataPost, updateDataPost } from '../../slice/UpdatePostSlice'
 import SelectAddress from './components/SelectAddress'
 import SelectProvince from './components/SelectProvince'
-
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import moment from 'moment'
 interface CreatPostStep3Props {
   onBack: () => void
   onNext: () => void
@@ -27,6 +28,7 @@ interface address {
   name: string
 }
 const UpdatePostStep3 = (props: CreatPostStep3Props) => {
+  const userInfo = useAppSelector(state => state.accountReducer).data
   const dataPost = useAppSelector(state => state.updatePostReducer)
   const lat = useRef<number>(dataPost?.lat)
   const long = useRef<number>(dataPost?.long)
@@ -44,6 +46,8 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
     id: dataPost.ward_id,
     name: dataPost.ward_name,
   })
+  const [isDatePickerVisible, setDatePickerVisibility] =
+    useState<boolean>(false)
 
   useEffect(() => {
     console.log(province, district, ward)
@@ -65,6 +69,68 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
       )
       return
     }
+    const payload = {
+      province_id: province.id,
+      district_id: district.id,
+      ward_id: ward.id,
+      address,
+      lat: lat.current,
+      long: long.current,
+      new_media: dataPost.new_media.map((item: Media) => {
+        return { media_url: item.media_url, type: item.type }
+      }),
+    }
+    dispatch(updateDataPost(payload))
+    if (userInfo.role) {
+      setDatePickerVisibility(true)
+    } else {
+      try {
+        showLoading()
+        await UpdatePostApi.updatePost({ ...dataPost, ...payload })
+        dispatch(clearDataPost())
+
+        showMessages(
+          R.strings().notification,
+          'Bạn đã cập nhật bài viết thành công',
+          () => {
+            if (typeNavigate === 2) {
+              dispatch(
+                getDataListManagePost({
+                  status: STATUS_TYPE.WAIT_CONFIRM,
+                  limit: DEFAULT_PARAMS.LIMIT,
+                  page: DEFAULT_PARAMS.PAGE,
+                })
+              )
+            } else {
+              dispatch(
+                getDataListPost({
+                  status: STATUS_TYPE.WAIT_CONFIRM,
+                  limit: DEFAULT_PARAMS.LIMIT,
+                  page: DEFAULT_PARAMS.PAGE,
+                })
+              )
+            }
+            onNext()
+          }
+        )
+      } catch (error) {
+      } finally {
+        hideLoading()
+      }
+    }
+  }
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false)
+  }
+
+  const handleConfirm = async (date: Date) => {
+    const datePicker = moment(date)
+      .add(2, 'day')
+      .startOf('day')
+      .toISOString()
+      .replace(/T.*/gi, 'T00:00:00.000Z')
+    // end_date.current = datePicker
     const payload = {
       province_id: province.id,
       district_id: district.id,
@@ -143,6 +209,19 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
         <SelectAddress onSaveDataLocation={onSaveDataLocation} />
       </View>
       <ViewBottom label={R.strings().post} onBack={onBack} onNext={onPost} />
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        locale="vi"
+        confirmTextIOS="Xác nhận"
+        cancelTextIOS="Hủy"
+        customHeaderIOS={() => (
+          <Text style={styles.txt_date_expire}>Ngày hết hạn đăng tin</Text>
+        )}
+        minimumDate={new Date()}
+      />
     </>
   )
 }
@@ -150,6 +229,12 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
 export default UpdatePostStep3
 
 const styles = StyleSheet.create({
+  txt_date_expire: {
+    alignSelf: 'center',
+    ...fonts.regular16,
+    fontWeight: '500',
+    marginTop: 20,
+  },
   v_container: {
     flex: 1,
     backgroundColor: 'white',
