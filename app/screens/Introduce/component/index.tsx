@@ -68,10 +68,10 @@ const ComponentIntroduce = ({
           height: dimensions.width - 40,
         }}
       />
-      <View style={styles.v_content}>
+      {/* <View style={styles.v_content}>
         <Text style={styles.title} children={item.title} />
         <Text style={styles.content} children={item.content} />
-      </View>
+      </View> */}
     </View>
   )
 }
@@ -80,8 +80,9 @@ export default ComponentIntroduce
 
 const styles = StyleSheet.create({
   body: {
-    flex: 1,
+    // flex: 1,
     width: dimensions.width,
+    paddingHorizontal: 20,
   },
   v_container: {
     width: dimensions.width,

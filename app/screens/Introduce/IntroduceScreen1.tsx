@@ -25,19 +25,19 @@ const IntroduceScreen1 = () => {
   const dispatch = useDispatch()
   const introduceData = [
     {
-      id: 1,
+      id: 0,
       img: R.images.img_introduce1,
       title: 'Cộng đồng',
       content: 'Phát triển cộng đồng chuyên sâu về thiện nguyện tại Lào Cai.',
     },
     {
-      id: 2,
+      id: 1,
       img: R.images.img_introduce2,
       title: 'Kết nối',
       content: 'Kết nối các hoàn cảnh khó khăn tới những nhà hảo tâm',
     },
     {
-      id: 3,
+      id: 2,
       img: R.images.img_introduce3,
       title: 'Chia sẻ',
       content: 'Chia sẻ, ủng hộ, giúp đỡ những mảnh đời có hoàn cảnh khó khăn',
@@ -56,30 +56,36 @@ const IntroduceScreen1 = () => {
   return (
     <View style={styles.v_container}>
       <StatusBar backgroundColor={colors.primary} barStyle="dark-content" />
-      <SwiperFlatList
-        ref={refIndex}
-        autoplay={false}
-        index={0}
-        showPagination
-        keyExtractor={keyExtractor}
-        data={introduceData}
-        renderItem={({ item, index }) => (
-          <ComponentIntroduce
-            item={item}
-            onNext={() => {
-              index < 2 ? upButtonHandler(index) : onStart()
-            }}
-            index={index}
-          />
-        )}
-        paginationActiveColor={colors.primary}
-        paginationStyleItem={styles.item_pagination}
-        paginationDefaultColor={'#D8D8D8'}
-        paginationStyle={styles.v_pagination}
-        onChangeIndex={index => {
-          setIndex(index.index)
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <SwiperFlatList
+          ref={refIndex}
+          autoplay={false}
+          index={0}
+          showPagination
+          keyExtractor={keyExtractor}
+          data={introduceData}
+          renderItem={({ item, index }) => (
+            <ComponentIntroduce
+              item={item}
+              onNext={() => {
+                index < 2 ? upButtonHandler(index) : onStart()
+              }}
+              index={index}
+            />
+          )}
+          paginationActiveColor={colors.primary}
+          paginationStyleItem={styles.item_pagination}
+          paginationDefaultColor={'#D8D8D8'}
+          paginationStyle={styles.v_pagination}
+          onChangeIndex={index => {
+            setIndex(index.index)
+          }}
+        />
+      </View>
+      <View style={styles.v_content}>
+        <Text style={styles.title} children={introduceData[index].title} />
+        <Text style={styles.content} children={introduceData[index].content} />
+      </View>
       <View style={styles.v_bottom}>
         <TouchableOpacity
           onPress={() => {
@@ -108,9 +114,7 @@ const styles = StyleSheet.create({
     height: 7,
     marginRight: -5,
   },
-  v_pagination: {
-    paddingTop: 10,
-  },
+  v_pagination: {},
   v_container: {
     width: dimensions.width,
     flex: 1,
@@ -120,11 +124,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 62,
     paddingVertical: 16,
     backgroundColor: colors.primary,
-    borderRadius: 19,
+    borderRadius: 16,
   },
   v_bottom: {
     alignItems: 'center',
-    marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 30 : 15) : 15,
+    marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 45 : 15) : 15,
   },
   txt_next: {
     ...fonts.semi_bold16,
@@ -138,5 +142,21 @@ const styles = StyleSheet.create({
   txt_skip: {
     ...fonts.semi_bold16,
     color: colors.primary,
+  },
+  content: {
+    marginTop: dimensions.height * 0.033,
+    ...fonts.regular18,
+    color: colors.textColor.gray9,
+    marginHorizontal: 20,
+    textAlign: 'center',
+    lineHeight: 27,
+  },
+  v_content: {
+    alignItems: 'center',
+    marginBottom: dimensions.height * 0.11,
+  },
+  title: {
+    ...fonts.semi_bold24,
+    color: colors.textColor.gray9,
   },
 })

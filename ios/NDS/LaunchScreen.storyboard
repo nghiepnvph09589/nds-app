@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_7" orientation="portrait" appearance="light"/>
+    <device id="retina3_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -14,20 +14,20 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="T2t-i0-ynf">
-                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="JSE-I8-oyQ" userLabel="LaunchScreen">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="T2t-i0-ynf" secondAttribute="bottom" id="8oj-lk-uo8"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="T2t-i0-ynf" secondAttribute="trailing" id="EEt-Yi-aCH"/>
-                            <constraint firstItem="T2t-i0-ynf" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="aHZ-O4-Oth"/>
-                            <constraint firstItem="T2t-i0-ynf" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="pS9-4O-J7x"/>
+                            <constraint firstItem="JSE-I8-oyQ" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="3G7-IL-gsC"/>
+                            <constraint firstAttribute="bottom" secondItem="JSE-I8-oyQ" secondAttribute="bottom" id="ZGO-yF-FNC"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="JSE-I8-oyQ" secondAttribute="trailing" id="dre-fo-Jaz"/>
+                            <constraint firstItem="JSE-I8-oyQ" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="mzE-ux-uDR"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -37,7 +37,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="500" height="1082.6666259765625"/>
+        <image name="LaunchScreen" width="93.5" height="203"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
