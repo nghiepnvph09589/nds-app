@@ -131,6 +131,7 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
       .toISOString()
       .replace(/T.*/gi, 'T00:00:00.000Z')
     // end_date.current = datePicker
+    setDatePickerVisibility(false)
     const payload = {
       province_id: province.id,
       district_id: district.id,
@@ -141,6 +142,7 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
       new_media: dataPost.new_media.map((item: Media) => {
         return { media_url: item.media_url, type: item.type }
       }),
+      end_date: datePicker,
     }
     dispatch(updateDataPost(payload))
     try {
@@ -220,7 +222,7 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
         customHeaderIOS={() => (
           <Text style={styles.txt_date_expire}>Ngày hết hạn đăng tin</Text>
         )}
-        minimumDate={new Date()}
+        minimumDate={dataPost.end_date ? dataPost.end_date : new Date()}
       />
     </>
   )

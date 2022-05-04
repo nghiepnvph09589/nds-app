@@ -19,6 +19,7 @@ const UserDirectory = ({ logout }: { logout: () => void }) => {
   }
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl refreshing={false} onRefresh={onRefresh} />
       }

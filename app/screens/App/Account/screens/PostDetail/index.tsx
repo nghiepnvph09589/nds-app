@@ -265,6 +265,7 @@ const PostDetail = (props: PostDetailProps) => {
       district_name: dataPostDetail.DFDistrict.name,
       ward_name: dataPostDetail.DFWard ? dataPostDetail.DFWard.name : '',
       id: dataPostDetail.id,
+      end_date: dataPostDetail.end_date,
     }
     dispatch(updateDataPost(payload))
     NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST, {
@@ -410,7 +411,10 @@ const PostDetail = (props: PostDetailProps) => {
 
   return (
     <>
-      <ScrollView style={styles.v_container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.v_container}
+      >
         <ModalDeny
           typeOption={typeOption}
           textInput={inputText}

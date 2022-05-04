@@ -52,7 +52,7 @@ const stylesOr = StyleSheet.create({
     flexWrap: 'wrap',
   },
   btn_select: {
-    ...styleView.rowItem,
+    flexDirection: 'row',
     borderWidth: 1,
     width: (dimensions.width - 45) / 2,
     borderRadius: 16,
@@ -69,5 +69,6 @@ const stylesOr = StyleSheet.create({
   txt: {
     marginLeft: 10,
     ...fonts.regular16,
+    flex: 1,
   },
 })

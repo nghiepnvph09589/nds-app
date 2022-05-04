@@ -126,6 +126,7 @@ const CreatePostStep3 = (props: CreatPostStep3Props) => {
       address,
       lat: lat.current,
       long: long.current,
+      end_date: datePicker,
     }
     dispatch(updateDataCreatePost(payload))
     try {
