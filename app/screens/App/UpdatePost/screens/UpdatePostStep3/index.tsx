@@ -1,6 +1,6 @@
 import R from '@app/assets/R'
 import RNTextInput from '@app/components/RNTextInput'
-import { DEFAULT_PARAMS, STATUS_TYPE } from '@app/constant/Constant'
+import { DEFAULT_PARAMS, ROLE, STATUS_TYPE } from '@app/constant/Constant'
 import { getDataListPost } from '@app/screens/App/Account/screens/ListPostUser/slice/ListPostSlice'
 import { getDataListManagePost } from '@app/screens/App/Account/screens/ManageListPost/slice/ManageListPostSlice'
 import { useAppSelector } from '@app/store'
@@ -81,7 +81,7 @@ const UpdatePostStep3 = (props: CreatPostStep3Props) => {
       }),
     }
     dispatch(updateDataPost(payload))
-    if (userInfo.role) {
+    if (userInfo.role === ROLE.OFFICER_PROVINCE) {
       setDatePickerVisibility(true)
     } else {
       try {
