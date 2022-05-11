@@ -67,7 +67,7 @@ const ViewStatus = (props: ViewStatusProps) => {
           )}
         </View>
         {!!reason && <Text style={styles.txt_reason}>{reason}</Text>}
-        {status === 2 && type === STATUS_TYPE.WAIT_CONFIRM && (
+        {status === 2 && (
           <>
             <Text style={styles.txt_reason}>{`Nguời duyệt: ${name}`}</Text>
             <Text

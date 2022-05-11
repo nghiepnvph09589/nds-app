@@ -265,7 +265,7 @@ const PostDetail = (props: PostDetailProps) => {
       district_name: dataPostDetail.DFDistrict.name,
       ward_name: dataPostDetail.DFWard ? dataPostDetail.DFWard.name : '',
       id: dataPostDetail.id,
-      end_date: dataPostDetail.end_date,
+      end_date: dataPostDetail.end_date ? dataPostDetail.end_date : undefined,
     }
     dispatch(updateDataPost(payload))
     NavigationUtil.navigate(SCREEN_ROUTER_APP.UPDATE_POST, {

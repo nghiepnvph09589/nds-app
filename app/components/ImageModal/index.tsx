@@ -197,9 +197,8 @@ const ImageModal = ({
                         uri: urlVideo,
                       }}
                       style={{
-                        width: dimensions.width,
+                        width: '100%',
                         aspectRatio: 1,
-                        alignSelf: 'center',
                       }}
                     />
                   </View>

@@ -146,7 +146,7 @@ const UpdatePost = (props: UpdatePostProps) => {
                       typeNavigate={typeNavigate}
                       onBack={onBack}
                       onNext={() => {
-                        if (typeNavigate === 2) {
+                        if (typeNavigate === 2 || typeNavigate === 3) {
                           if (userInfo.role === ROLE.OFFICER_PROVINCE) {
                             NavigationUtil.navigate(
                               SCREEN_ROUTER_APP.MANAGE_LIST_POST,
