@@ -1,7 +1,6 @@
 import { PERMISSION_TYPE, Permission } from '@app/utils/AppPermission'
 import React, { useEffect } from 'react'
 import { StatusBar, StyleSheet, View } from 'react-native'
-
 import { API_STATUS } from '@app/constant/Constant'
 import AsyncStorageService from '@app/service/AsyncStorage/AsyncStorageService'
 import Geolocation from 'react-native-geolocation-service'
@@ -36,6 +35,7 @@ const Home = () => {
       }
     }
   }
+
   const requestPermission = async () => {
     const token = await AsyncStorageService.getToken()
     if (token) {

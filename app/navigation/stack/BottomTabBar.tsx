@@ -74,7 +74,7 @@ const isNotCreatPost = (title: string) => {
   return title !== TAB_BAR.CREATE_POST.title
 }
 
-const TabBarNameRequireLogin = [USER, CREATE_POST, NOTIFICATION, HUMAN_ADDRESS]
+const TabBarNameRequireLogin = [USER, CREATE_POST, NOTIFICATION]
 
 const RenderTabBarIcon = ({
   focused,

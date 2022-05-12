@@ -7,11 +7,11 @@ import { showMessages } from '@app/utils/AlertHelper'
 import AsyncStoreService from '../AsyncStorage/AsyncStorageService'
 
 const BASE_URL_DEV = 'https://dev.ndsapi.winds.vn'
-// const BASE_URL = 'https://ndsapi.winds.vn'
+const BASE_URL = 'https://ndsapi.winds.vn'
 
 const createAPI = () => {
   const APIInstant = require('axios').default.create()
-  APIInstant.defaults.baseURL = __DEV__ ? BASE_URL_DEV : BASE_URL_DEV
+  APIInstant.defaults.baseURL = __DEV__ ? BASE_URL_DEV : BASE_URL
   APIInstant.defaults.timeout = 20000
   APIInstant.defaults.headers = { 'Content-Type': 'application/json' }
   APIInstant.interceptors.request.use(async (config: any) => {

@@ -188,7 +188,11 @@ const ImageModal = ({
               <>
                 {indexCurrent === 1 && !!urlVideo ? (
                   <View
-                    style={{ flex: 1, width: '100%', justifyContent: 'center' }}
+                    style={{
+                      flex: 1,
+                      width: '100%',
+                      justifyContent: 'center',
+                    }}
                   >
                     <Video
                       controls
@@ -197,9 +201,10 @@ const ImageModal = ({
                         uri: urlVideo,
                       }}
                       style={{
-                        width: '100%',
-                        aspectRatio: 1,
+                        width: dimensions.width,
+                        height: dimensions.width,
                       }}
+                      resizeMode="contain"
                     />
                   </View>
                 ) : (
