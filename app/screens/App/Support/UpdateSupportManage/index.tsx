@@ -1,8 +1,16 @@
+import R from '@app/assets/R'
+import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import {
   API_STATUS,
   MEDIA_TYPE,
   SCREEN_ROUTER_APP,
 } from '@app/constant/Constant'
+import NavigationUtil from '@app/navigation/NavigationUtil'
+import CreatePostApi from '@app/screens/App/CreatePost/api/CreatePostApi'
+import { colors, dimensions, fonts } from '@app/theme'
+import { showMessages } from '@app/utils/AlertHelper'
+import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
+import React, { useState } from 'react'
 import {
   Keyboard,
   Platform,
@@ -11,22 +19,12 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native'
-import React, { useState } from 'react'
-import { colors, dimensions, fonts } from '@app/theme'
-import { hideLoading, showLoading } from '@app/utils/LoadingProgressRef'
-
-import CreatePostApi from '@app/screens/App/CreatePost/api/CreatePostApi'
 import ImagePicker from 'react-native-image-crop-picker'
+import { isIphoneX } from 'react-native-iphone-x-helper'
 import InputUpdate from '../components/InputUpdate'
 import ListImage from '../components/ListImage'
-import NavigationUtil from '@app/navigation/NavigationUtil'
-import R from '@app/assets/R'
-import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
 import SelectVideo from '../components/SelectVideo'
-import { isIphoneX } from 'react-native-iphone-x-helper'
-import reactotron from 'reactotron-react-native'
 import { requestUpdateSupportManage } from './api'
-import { showMessages } from '@app/utils/AlertHelper'
 
 interface Props {
   route: { params: { id: number; onAction: () => void } }
@@ -109,7 +107,6 @@ const UpdateSupportManage = (props: Props) => {
       mediaType: 'video',
       minFiles: 1,
     }).then(async images => {
-      reactotron.log(images)
       if (images.size / 1024 / 1024 > 32) {
         showMessages(
           R.strings().notification,
@@ -159,7 +156,6 @@ const UpdateSupportManage = (props: Props) => {
     Keyboard.dismiss()
     showLoading()
     try {
-      console.log(new Date('2022-04-13T04:17:10.493Z').toISOString())
       let params: any = {
         title: title,
         content: content,
