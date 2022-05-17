@@ -107,6 +107,10 @@ const CreatePostStep2 = (props: CreatPostStep2Props) => {
       showMessages(R.strings().notification, 'Vui lòng chọn ngày sinh')
       return
     }
+    if (groupType === 0) {
+      showMessages(R.strings().notification, 'Vui lòng chọn phân nhóm')
+      return
+    }
     if (subject.length === 0) {
       showMessages(R.strings().notification, 'Vui lòng chọn đối tượng')
       return

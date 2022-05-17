@@ -1,7 +1,8 @@
 import R from '@app/assets/R'
 import ScreenWrapper from '@app/components/Screen/ScreenWrapper'
-import { SCREEN_ROUTER_APP } from '@app/constant/Constant'
+import { ROLE, SCREEN_ROUTER_APP } from '@app/constant/Constant'
 import NavigationUtil from '@app/navigation/NavigationUtil'
+import { useAppSelector } from '@app/store'
 import { colors } from '@app/theme'
 import { showConfirm } from '@app/utils/AlertHelper'
 import React, { useState } from 'react'
@@ -22,7 +23,7 @@ interface UpdatePostProps {
 const UpdatePost = (props: UpdatePostProps) => {
   const { typeNavigate } = props.route?.params
   const dispatch = useDispatch()
-
+  const userInfo = useAppSelector(state => state.accountReducer).data
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [title, setTitle] = useState<string>(R.strings().post)
   const PAGES = ['Page 1', 'Page 2', 'Page 3']
@@ -145,10 +146,19 @@ const UpdatePost = (props: UpdatePostProps) => {
                       typeNavigate={typeNavigate}
                       onBack={onBack}
                       onNext={() => {
-                        if (typeNavigate === 2) {
-                          NavigationUtil.navigate(
-                            SCREEN_ROUTER_APP.MANAGE_LIST_POST
-                          )
+                        if (typeNavigate === 2 || typeNavigate === 3) {
+                          if (userInfo.role === ROLE.OFFICER_PROVINCE) {
+                            NavigationUtil.navigate(
+                              SCREEN_ROUTER_APP.MANAGE_LIST_POST,
+                              {
+                                page: 2,
+                              }
+                            )
+                          } else {
+                            NavigationUtil.navigate(
+                              SCREEN_ROUTER_APP.MANAGE_LIST_POST
+                            )
+                          }
                         } else {
                           NavigationUtil.navigate(SCREEN_ROUTER_APP.LIST_POST, {
                             page: 0,

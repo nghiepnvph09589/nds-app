@@ -44,7 +44,7 @@ const Banner = (props: SlideBarProps) => {
       {!!dataBanner?.length && (
         <SwiperFlatList
           autoplay
-          autoplayDelay={1}
+          autoplayDelay={3}
           autoplayLoop
           index={0}
           showPagination

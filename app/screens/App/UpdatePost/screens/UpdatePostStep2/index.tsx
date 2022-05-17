@@ -63,7 +63,6 @@ const UpdatePostStep2 = (props: CreatPostStep2Props) => {
     showLoading()
     try {
       const payload = {
-        group_id: groupId,
         type: type,
       }
       const newSubject = dataPost.new_category
@@ -105,12 +104,10 @@ const UpdatePostStep2 = (props: CreatPostStep2Props) => {
   }, [])
 
   useEffect(() => {
-    if (groupType !== 0) {
-      getDataSubject(groupType, 1)
-      getDataSubject(groupType, 2)
-    }
+    getDataSubject(groupType, 1)
+    getDataSubject(groupType, 2)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupType])
+  }, [])
 
   const Schema = Yup.object().shape({
     name: Yup.string()
@@ -131,6 +128,10 @@ const UpdatePostStep2 = (props: CreatPostStep2Props) => {
     }
     if (!year_of_birth.current) {
       showMessages(R.strings().notification, 'Vui lòng chọn ngày sinh')
+      return
+    }
+    if (groupType === 0) {
+      showMessages(R.strings().notification, 'Vui lòng chọn phân nhóm')
       return
     }
     if (subject.length === 0) {
